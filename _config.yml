@@ -1,9 +1,9 @@
 # Setup
 title:               "Your Course Title"
 description:         'Your Course Description'
-url:                 https://your-username.github.io
+url:                 https://nglelinh.thub.io
 baseurl:             '/your-repo-name'
-imgurl:              https://your-username.github.io/your-repo-name/img
+imgurl:              https://nglelinh.github.io/probability-and-statistics-self-learning/img
 paginate:            5
 permalink:           pretty
 
@@ -16,7 +16,7 @@ parallel_localization: true
 # Language-specific configurations
 t:
   en:
-    title: "Your Course Title"
+    title: "Probability and Statistics Self Learning"
     description: "Your Course Description"
     home: "Home"
     chapters: "Chapters"
@@ -25,7 +25,7 @@ t:
     required: "Required"
     optional: "Optional"
   vi:
-    title: "Tiêu đề Khóa học của bạn"
+    title: "Sac xuat thong ke"
     description: "Mô tả khóa học của bạn"
     home: "Trang chủ"
     chapters: "Các chương"
@@ -35,9 +35,8 @@ t:
     optional: "Tùy chọn"
 # About/contact
 author:
-  name:              Your Name
-  email:             your.email@example.com
-
+  name:              Nguyen Le Linh
+  email:             nglelinh@gmail.com
 # Gems
 plugins:
   - jekyll-paginate
