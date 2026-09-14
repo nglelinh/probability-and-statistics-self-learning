@@ -1,8 +1,8 @@
 # Setup
-title:               "Your Course Title"
-description:         'Your Course Description'
-url:                 https://nglelinh.thub.io
-baseurl:             '/your-repo-name'
+title:               "Probability and Statistics Self-Learning"
+description:         "A bilingual Probability & Statistics / computational statistics course. Vietnamese is complete (Ch. 01–08); English currently covers Chapter 01."
+url:                 https://nglelinh.github.io
+baseurl:             '/probability-and-statistics-self-learning'
 imgurl:              https://nglelinh.github.io/probability-and-statistics-self-learning/img
 paginate:            5
 permalink:           pretty
@@ -16,8 +16,8 @@ parallel_localization: true
 # Language-specific configurations
 t:
   en:
-    title: "Probability and Statistics Self Learning"
-    description: "Your Course Description"
+    title: "Probability and Statistics Self-Learning"
+    description: "Computational statistics: simulation, inference, and data-driven reasoning. English track starts at Chapter 01; Chapters 02–08 are still Vietnamese-only."
     home: "Home"
     chapters: "Chapters"
     language: "Language"
@@ -25,8 +25,8 @@ t:
     required: "Required"
     optional: "Optional"
   vi:
-    title: "Sac xuat thong ke"
-    description: "Mô tả khóa học của bạn"
+    title: "Xác suất và Thống kê tự học"
+    description: "Khóa học Xác suất & Thống kê / thống kê tính toán. Bản tiếng Việt đủ Chương 01–08; bản tiếng Anh đang mở từ Chương 01."
     home: "Trang chủ"
     chapters: "Các chương"
     language: "Ngôn ngữ"
