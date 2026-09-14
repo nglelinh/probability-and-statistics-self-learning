@@ -3,64 +3,77 @@ layout: post
 title: contents
 chapter: home
 order: 1
-owner: Your Name
+owner: nglelinh
 ---
 
-A comprehensive introduction to [your course subject], covering fundamental concepts, practical applications, and advanced topics.
+A self-paced introduction to **probability and computational statistics** for data science students. Vietnamese is the primary, complete track. English currently mirrors **Chapter 01** only; Chapters 02–08 remain Vietnamese-only.
 
-# Course Objectives
+# Course objectives
 
-- Provide students with a solid foundation in [subject area] to support their learning and professional development.
+- Build intuition for randomness, sampling, and uncertainty by *computing* rather than only deriving closed forms.
+- Implement simulation, resampling, and basic statistical learning workflows in Python.
+- Read estimates, intervals, and tests with the skepticism a working data scientist needs.
+- Connect classical inference (Ross, OpenIntro) to the algorithmic tools used in modern pipelines.
 
-- Enable students to understand key concepts and apply them to solve real-world problems.
+## Course outline
 
-- Develop analytical and critical thinking skills through hands-on exercises and projects.
+### Chapter 01: Introduction *(English + Vietnamese)*
 
-- Prepare students for advanced study or professional work in [related field].
+- Computational statistics and data-driven thinking
+- Math reference: continuity and uniform continuity
+- Math reference: derivatives and multivariable calculus
+- Supervised learning, loss, and the bias–variance tradeoff
+- End-to-end machine learning workflow
+- Cross-validation and resampling
+- Model selection criteria (AIC, BIC, and related tools)
 
-## Course Outline
+### Chapter 02: Descriptive statistics *(Vietnamese only for now)*
 
-The course is divided into the following chapters:
+- Data types and measurement scales
+- Numerical summaries
+- Visualization and exploratory data analysis
 
-### Chapter 0: Introduction
-- Overview of the course
-- Fundamental concepts
-- Course structure and expectations
+### Chapter 03: Probability *(Vietnamese only for now)*
 
-### Chapter 1: [Topic 1]
-- Subtopic 1.1
-- Subtopic 1.2
-- Practical applications
+- Axioms and interpretations of probability
+- Counting and conditional probability
 
-### Chapter 2: [Topic 2]
-- Subtopic 2.1
-- Subtopic 2.2
-- Case studies
+### Chapter 04: Probability distributions *(Vietnamese only for now)*
 
-### Chapter 3: [Topic 3]
-- Advanced concepts
-- Integration with previous topics
-- Real-world examples
+- Random variables, expectation, and variance
+- Discrete and continuous families
+- Sampling distributions
 
-*Add more chapters as needed for your course*
+### Chapter 05: Estimation *(Vietnamese only for now)*
 
-## Main Textbooks
+- Point estimation
+- Interval estimation
 
-- [Author Name], [Book Title], [Publisher], [Year].
+### Chapter 06: Hypothesis testing *(Vietnamese only for now)*
 
-- [Author Name], [Book Title], [Publisher], [Year].
+- Tests for means and proportions
+- Inferential concepts and common pitfalls
+
+### Chapter 07: Regression *(Vietnamese only for now)*
+
+- Simple and multiple linear regression
+- Regularization and logistic regression
+
+### Chapter 08: Analysis of variance *(Vietnamese only for now)*
+
+- One-way ANOVA and the logic of comparing groups
+
+## Main textbooks
+
+- Sheldon Ross, *A First Course in Probability*, Pearson, 2012.
 
 ## References
 
-- [Author Name], [Book Title], [Publisher], [Year].
+- David Diez, Mine Çetinkaya-Rundel, and Christopher Barr, *OpenIntro Statistics*, OpenIntro Inc.
+- Allen B. Downey, *Think Stats: Exploratory Data Analysis*, O’Reilly Media, 2014.
+- Mario F. Triola, *Elementary Statistics: Technology Update*, 11th Edition, Pearson, 2012.
 
-- [Author Name], [Book Title], [Publisher], [Year].
+## Additional resources
 
-- [Author Name], [Book Title], [Publisher], [Year].
-
-## Additional Resources
-
-- Online tutorials and documentation
-- Video lectures (if available)
-- Practice problems and solutions
-- Community forums and discussion groups
+- Course repository: [github.com/nglelinh/probability-and-statistics-self-learning](https://github.com/nglelinh/probability-and-statistics-self-learning)
+- Live site: [nglelinh.github.io/probability-and-statistics-self-learning](https://nglelinh.github.io/probability-and-statistics-self-learning/)

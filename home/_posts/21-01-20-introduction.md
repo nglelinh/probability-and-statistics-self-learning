@@ -3,51 +3,31 @@ layout: post
 title: introduction
 order: 3
 chapter: home
-owner: Your Name
+owner: nglelinh
 ---
 
-# Welcome to [Your Course Name]
+# Welcome to Probability and Statistics Self-Learning
 
-This course provides comprehensive coverage of [your subject area]. Whether you're a beginner or looking to deepen your knowledge, this course will guide you through the essential concepts and practical applications.
+This is a bilingual course in **probability, statistics, and computational statistics** by **Nguyen Le Linh**. The goal is not only to recall classical formulas, but to treat inference as something you can *simulate, approximate, and implement*—the way statistical work actually happens in data science.
 
-## What You'll Learn
+## Language status
 
-Throughout this course, you will:
+- **Vietnamese** is the complete course: Chapters 01–08 (introduction through ANOVA).
+- **English** currently covers **Chapter 01** (seven lessons: computational thinking, math references, supervised learning, ML workflow, cross-validation, and model selection).
+- **English Chapters 02–08 are still pending.** Until those translations exist, use the language switch on a Chapter 01 lesson to jump to the matching Vietnamese page, or browse the Vietnamese track from the sidebar.
 
-- Gain a solid understanding of fundamental concepts in [your subject]
-- Learn practical techniques and methodologies
-- Apply theoretical knowledge to real-world problems
-- Develop critical thinking and problem-solving skills
+## What you will learn
 
-## Course Structure
+- How Monte Carlo simulation and the law of large numbers turn abstract probability questions into computational experiments
+- Core inferential ideas: estimation, uncertainty, and model comparison
+- Practical statistical learning: loss, bias–variance, resampling, and selection criteria (AIC/BIC)
+- Later chapters (Vietnamese): descriptive statistics, probability, distributions, interval estimation, hypothesis testing, regression, and ANOVA
 
-The course is organized into chapters, each focusing on a specific topic. You can navigate through the content using the sidebar menu. Each chapter includes:
+## How to use this site
 
-- **Theoretical explanations** with clear examples
-- **Mathematical formulations** (where applicable)
-- **Practical exercises** to reinforce learning
-- **Real-world applications** and case studies
+1. Start with Chapter 01. English and Vietnamese lessons are paired by `chapter` and `order`.
+2. Continue in Vietnamese for Chapters 02–08, or wait for the English track to catch up.
+3. Work the exercises in Python (NumPy, SciPy, scikit-learn).
+4. Report issues on the [GitHub repository](https://github.com/nglelinh/probability-and-statistics-self-learning).
 
-## Prerequisites
-
-To get the most out of this course, you should have:
-
-- Basic knowledge of [prerequisite 1]
-- Familiarity with [prerequisite 2]
-- [Any other prerequisites]
-
-## How to Use This Course
-
-1. Start with Chapter 0 for an overview
-2. Progress through chapters sequentially or jump to topics of interest
-3. Complete exercises to test your understanding
-4. Refer to the reference materials for deeper exploration
-
-## Support and Feedback
-
-If you have questions or feedback, please:
-- Open an issue on our [GitHub repository](https://github.com/your-username/your-repo-name)
-- Contact the instructor (see Authors page)
-- Join our community discussions
-
-Let's begin your learning journey!
+The live site is [nglelinh.github.io/probability-and-statistics-self-learning](https://nglelinh.github.io/probability-and-statistics-self-learning/).
