@@ -87,6 +87,8 @@ lesson_type: required
 
 Công thức dùng MathJax với `$$...$$`.
 
+Tên file bài giảng **không** dùng prefix `YYYY-MM-DD-` (khác quy ước Jekyll mặc định). Plugin `_plugins/dateless_posts.rb` đọc các file đó thành posts — nếu thiếu plugin, `jekyll build` sẽ bỏ qua toàn bộ bài trong `contents/*/chapter*/_posts/`.
+
 ---
 
 ## Deploy

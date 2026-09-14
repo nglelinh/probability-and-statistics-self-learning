@@ -50,15 +50,6 @@ collections:
     output: true
     permalink: /:categories/:title/
 
-# English posts need a /contents/en/ URL prefix so the language switch
-# can pair them with the matching Vietnamese chapter + order.
-defaults:
-  - scope:
-      path: "contents/en"
-      type: posts
-    values:
-      permalink: /contents/en/:categories/:name/
-
 # Custom vars
 version:             0.0.1
 markdown: kramdown
