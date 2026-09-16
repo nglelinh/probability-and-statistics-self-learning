@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 07-08-00 Tùy chọn: GLM, mô hình hỗn hợp và hồi quy nhân quả
+title: "07-08-00 Tùy chọn: GLM, mô hình hỗn hợp và hồi quy nhân quả"
 chapter: "07"
 order: 8
 owner: nglelinh

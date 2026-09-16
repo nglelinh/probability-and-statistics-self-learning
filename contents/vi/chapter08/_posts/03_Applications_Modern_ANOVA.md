@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 08-03-00 Tùy chọn: ANOVA hiện đại trong thí nghiệm sản phẩm
+title: "Bài 3: Tùy chọn: ANOVA hiện đại trong thí nghiệm sản phẩm"
 chapter: "08"
 order: 3
 owner: nglelinh

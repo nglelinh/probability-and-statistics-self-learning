@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 07-08-00 Optional: GLMs, Mixed Models, and Causal Regression
+title: "07-08-00 Optional: GLMs, Mixed Models, and Causal Regression"
 chapter: "07"
 order: 8
 owner: nglelinh

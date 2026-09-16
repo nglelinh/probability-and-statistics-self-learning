@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 06-03-00 Optional: Hypothesis Testing at Scale
+title: "06-03-00 Optional: Hypothesis Testing at Scale"
 chapter: "06"
 order: 3
 owner: nglelinh

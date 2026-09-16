@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 05-03-00 Tùy chọn: Ước lượng trong học máy hiện đại
+title: "05-03-00 Tùy chọn: Ước lượng trong học máy hiện đại"
 chapter: "05"
 order: 3
 owner: nglelinh

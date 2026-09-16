@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 06-03-00 Tùy chọn: Kiểm định giả thuyết ở quy mô lớn
+title: "06-03-00 Tùy chọn: Kiểm định giả thuyết ở quy mô lớn"
 chapter: "06"
 order: 3
 owner: nglelinh

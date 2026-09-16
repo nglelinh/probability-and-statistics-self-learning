@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 05-03-00 Optional: Estimation in Modern Machine Learning
+title: "05-03-00 Optional: Estimation in Modern Machine Learning"
 chapter: "05"
 order: 3
 owner: nglelinh

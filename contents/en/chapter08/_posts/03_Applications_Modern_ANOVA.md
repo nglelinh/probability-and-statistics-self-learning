@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 08-03-00 Optional: Modern ANOVA in Product Experiments
+title: "08-03-00 Optional: Modern ANOVA in Product Experiments"
 chapter: "08"
 order: 3
 owner: nglelinh
