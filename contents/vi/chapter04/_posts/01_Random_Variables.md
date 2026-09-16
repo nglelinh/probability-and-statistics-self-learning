@@ -504,3 +504,5 @@ Nếu $$X \sim \text{Uniform}(0, 1)$$, tìm phân phối của $$Y = -\ln(X)$$
 - Tính PDF của Y bằng lý thuyết
 - Verify bằng mô phỏng
 - Hint: Đây là phân phối Exponential!
+
+Bài tùy chọn sau, [04-05-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter04/05_Modern_Applications %}), nối biến ngẫu nhiên rời rạc/liên tục và các họ phân phối với mô hình đếm, quá trình Poisson và sinh dữ liệu rời rạc (2020–2024).

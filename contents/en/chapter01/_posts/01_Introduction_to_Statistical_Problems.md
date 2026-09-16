@@ -86,3 +86,5 @@ There are no factorials in that function. It just replays the physical story. Th
 **Exercise 2: Estimating $$\pi$$.** Use Monte Carlo to estimate $$\pi$$. Hint: throw points uniformly into the unit square and count how many land inside the inscribed disk.
 
 **Exercise 3: Monty Hall.** Simulate the Monty Hall problem and show that switching roughly doubles the chance of winning relative to staying.
+
+A later optional lesson, [01-11-00 Applications and recent developments]({% multilang_post_url contents/chapter01/11_Modern_Applications %}), maps Monte Carlo, cross-validation, and model selection onto conformal prediction and LLM evaluation (2023–2024).

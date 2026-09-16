@@ -140,3 +140,5 @@ print(f"Thạc Sĩ > Cử Nhân: {df.iloc[2]['TrinhDo_HocVan'] > df.iloc[0]['Tri
 -   [1] Chapter 1, Sheldon Ross, *A First Course in Probability*, Pearson, 2012.
 -   [2] Chapter 1, David Diez et al., *OpenIntro Statistics*.
 -   [3] Pandas Documentation: [Categorical Data](https://pandas.pydata.org/pandas-docs/stable/user_guide/categorical.html).
+
+Bài tùy chọn sau, [02-04-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter02/04_Modern_Applications %}), nối loại dữ liệu, đặc trưng số và biểu đồ với thực hành ML lấy dữ liệu làm trung tâm (2021–2025).

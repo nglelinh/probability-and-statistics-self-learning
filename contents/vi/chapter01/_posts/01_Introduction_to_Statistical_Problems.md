@@ -90,3 +90,5 @@ Sử dụng phương pháp Monte Carlo để ước lượng số Pi ($$\pi$$). 
 
 **Bài 3: Monty Hall**
 Lập trình mô phỏng bài toán Monty Hall nổi tiếng để chứng minh rằng việc thay đổi lựa chọn sẽ làm tăng gấp đôi cơ hội chiến thắng.
+
+Bài tùy chọn sau, [01-11-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter01/11_Modern_Applications %}), nối Monte Carlo, cross-validation và chọn mô hình với conformal prediction và đánh giá LLM (2023–2024).
