@@ -3,7 +3,11 @@ layout: post
 title: "Bài 1: Giới Thiệu về ANOVA"
 chapter: "08"
 order: 1
-owner: "nglelinh"
+owner: nglelinh
+lang: vi
+categories:
+- chapter08
+lesson_type: required
 ---
 
 ## 1. Mục Tiêu Bài Học

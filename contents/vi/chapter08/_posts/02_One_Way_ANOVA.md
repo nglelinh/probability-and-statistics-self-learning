@@ -3,7 +3,11 @@ layout: post
 title: "Bài 2: Tính Toán và Phân Tích ANOVA Một Yếu Tố"
 chapter: "08"
 order: 2
-owner: "nglelinh"
+owner: nglelinh
+lang: vi
+categories:
+- chapter08
+lesson_type: required
 ---
 
 ## 1. Mục Tiêu Bài Học

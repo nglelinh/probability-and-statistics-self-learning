@@ -13,7 +13,7 @@ Khóa học **Xác suất & Thống kê / Thống kê tính toán** (Probability
 | Ngôn ngữ | Vai trò | Phạm vi hiện tại |
 |----------|---------|------------------|
 | **Tiếng Việt (`contents/vi`)** | Bản khóa học đầy đủ | Chương 01–08 (~28 bài) |
-| **English (`contents/en`)** | Bản đối chiếu đang mở | Chương 01 đã có đủ 7 bài; Chương 02–08 chưa dịch |
+| **English (`contents/en`)** | Bản đối chiếu đang mở | Chương 01 đã có đủ bài lý thuyết; Chương 01–08 có bài ứng dụng tùy chọn; lý thuyết Chương 02–08 vẫn tiếng Việt |
 
 Chuyển ngôn ngữ trên một bài Chapter 01 tiếng Anh sẽ tìm bài tiếng Việt **cùng `chapter` và `order`**. Các bài EN dùng cùng `chapter: "01"` và cùng `order` với bản VI tương ứng.
 
@@ -56,15 +56,8 @@ Output nằm trong `_site/` (thư mục này không commit).
 contents/
 ├── en/
 │   ├── chapter00/          # Ghi chú English track (WIP)
-│   └── chapter01/          # Bản tiếng Anh Chương 01
-│       └── _posts/
-│           ├── 01_Introduction_to_Statistical_Problems.md
-│           ├── 02_Math_Reference_Continuity.md
-│           ├── 03_Math_Reference_Derivatives.md
-│           ├── 04_Supervised_Learning.md
-│           ├── 05_ML_Workflow.md
-│           ├── 06_Cross_Validation.md
-│           └── 07_Model_Selection.md
+│   ├── chapter01/          # Lý thuyết EN + bài ứng dụng tùy chọn
+│   └── chapter02/ … chapter08/  # Bài ứng dụng tùy chọn (lý thuyết 02–08 vẫn VI)
 └── vi/
     ├── chapter01/ … chapter08/   # Bản tiếng Việt đầy đủ
 ```

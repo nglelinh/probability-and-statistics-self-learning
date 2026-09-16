@@ -6,7 +6,7 @@ order: 3
 owner: nglelinh
 lang: vi
 categories:
-- chapter01
+- chapter07
 lesson_type: required
 ---
 
