@@ -2,7 +2,8 @@
 layout: post
 title: "Logistic Regression và Phân Loại Tuyến Tính"
 date: 2021-01-01 00:00:05 +0700
-categories: [probability-and-statistics]
+categories:
+- chapter07
 tags: [classification, logistic-regression, sigmoid, mle, cross-entropy]
 chapter: "07"
 lang: vi

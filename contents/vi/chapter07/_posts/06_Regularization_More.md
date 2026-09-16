@@ -2,7 +2,8 @@
 layout: post
 title: "Regularization: Ridge Regression và Lasso"
 date: 2021-01-01 00:00:04 +0700
-categories: [probability-and-statistics]
+categories:
+- chapter07
 tags: [linear-regression, regularization, ridge, lasso, bias-variance]
 chapter: "07"
 lang: vi

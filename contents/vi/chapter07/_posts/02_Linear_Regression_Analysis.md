@@ -2,7 +2,8 @@
 layout: post
 title: "Hồi Quy Tuyến Tính và Phương Pháp Bình Phương Tối Thiểu (OLS)"
 date: 2021-01-01 00:00:03 +0700
-categories: [probability-and-statistics]
+categories:
+- chapter07
 tags: [linear-regression, ols, gauss-markov, residuals]
 chapter: "07"
 lang: vi
