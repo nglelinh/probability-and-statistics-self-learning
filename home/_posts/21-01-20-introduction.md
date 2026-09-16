@@ -14,7 +14,7 @@ This is a bilingual course in **probability, statistics, and computational stati
 
 - **Vietnamese** is the complete course: Chapters 01–08 (introduction through ANOVA).
 - **English** currently covers **Chapter 01** (seven lessons: computational thinking, math references, supervised learning, ML workflow, cross-validation, and model selection).
-- **English Chapters 02–04 theory is still pending.** Chapters 05–08 have optional English application lessons (paired with Vietnamese by `chapter` and `order`); the required theory for those chapters remains Vietnamese-only.
+- **English required theory for Chapters 02–08 is still pending.** Optional English application lessons now exist for Chapters 01–08 (paired with Vietnamese by `chapter` and `order`); required theory for 02–08 remains Vietnamese-only.
 
 ## What you will learn
 

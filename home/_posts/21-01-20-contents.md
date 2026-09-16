@@ -6,7 +6,7 @@ order: 1
 owner: nglelinh
 ---
 
-A self-paced introduction to **probability and computational statistics** for data science students. Vietnamese is the primary, complete track. English currently mirrors **Chapter 01** only; Chapters 02–08 remain Vietnamese-only.
+A self-paced introduction to **probability and computational statistics** for data science students. Vietnamese is the primary, complete track. English mirrors **Chapter 01** theory and has optional application lessons for Chapters 01–08; required theory for Chapters 02–08 remains Vietnamese-only.
 
 # Course objectives
 
@@ -26,23 +26,27 @@ A self-paced introduction to **probability and computational statistics** for da
 - End-to-end machine learning workflow
 - Cross-validation and resampling
 - Model selection criteria (AIC, BIC, and related tools)
+- Optional: applications and recent developments (conformal prediction, LLM evaluation)
 
-### Chapter 02: Descriptive statistics *(Vietnamese only for now)*
+### Chapter 02: Descriptive statistics *(Vietnamese theory; optional EN+VI application)*
 
 - Data types and measurement scales
 - Numerical summaries
 - Visualization and exploratory data analysis
+- Optional: applications and recent developments (data-centric ML)
 
-### Chapter 03: Probability *(Vietnamese only for now)*
+### Chapter 03: Probability *(Vietnamese theory; optional EN+VI application)*
 
 - Axioms and interpretations of probability
 - Counting and conditional probability
+- Optional: applications and recent developments
 
-### Chapter 04: Probability distributions *(Vietnamese only for now)*
+### Chapter 04: Probability distributions *(Vietnamese theory; optional EN+VI application)*
 
 - Random variables, expectation, and variance
 - Discrete and continuous families
 - Sampling distributions
+- Optional: applications and recent developments
 
 ### Chapter 05: Estimation *(Vietnamese theory; optional EN+VI application)*
 
