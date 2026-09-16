@@ -531,3 +531,5 @@ Dùng mô phỏng để kiểm tra $$P(X \cap Y) \approx P(X) \cdot P(Y)$$
 
 **Bài 4: Paradox Simpson**
 Tìm hiểu về Simpson's Paradox và tạo một ví dụ mô phỏng minh họa hiện tượng này.
+
+Bài tùy chọn sau, [03-02-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter03/02_Modern_Applications %}), nối xác suất có điều kiện, Bayes và độc lập với calibration, LLM và đồ thị nhân quả nhẹ (2021–2023).
