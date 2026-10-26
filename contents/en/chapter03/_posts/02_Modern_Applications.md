@@ -44,6 +44,12 @@ Simpson’s paradox in the exercises is the warning that conditioning is not int
 
 When a paper says “we report ECE,” “we asked the model for a verbal probability,” “we shipped MultinomialNB,” or “we identified the effect in DoWhy,” it is speaking this chapter. Random-variable lessons come next; they refine *how* we number events, not the meaning of $$P(\,\cdot\mid\,\cdot\,)$$.
 
+## Video tham khảo
+
+- [Probability Calibration : Data Science Concepts](https://www.youtube.com/watch?v=AunotauS5yI) — ritvikmath, English. **xem trước.** Probability calibration: the frequency inside each bin should match the predicted score — the ECE and reliability diagram in this note.
+- [Naive Bayes, Clearly Explained!!!](https://www.youtube.com/watch?v=O2L2Uv9pdDA) — StatQuest with Josh Starmer, English. Naive Bayes multiplies conditional probabilities — the independence assumption this note says is still shipping in mail filters.
+- [Simpson's Paradox](https://www.youtube.com/watch?v=ebEkn-BiW5k) — minutephysics, English. Simpson’s paradox: conditioning on a group can reverse the conclusion — why the note separates P(Y|X) from P(Y|do(X)).
+
 ## Sources
 
 1. C. Guo, G. Pleiss, Y. Sun, and K. Q. Weinberger, “On Calibration of Modern Neural Networks,” ICML 2017. [PMLR](https://proceedings.mlr.press/v70/guo17a.html)

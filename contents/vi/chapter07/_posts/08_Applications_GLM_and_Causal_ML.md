@@ -160,6 +160,12 @@ CUPED với hiệp biến *sau* xử lý có thể trừ một phần hiệu ứ
 
 Mở rộng gồm targeted learning, học chính sách từ bandit đã ghi, và kết hợp CUPED với kiểm định tuần tự Chương 06.
 
+## Video tham khảo
+
+- [Explaining generalized linear models (GLMs) | VNT #15](https://www.youtube.com/watch?v=1fZeBafD1nw) — Very Normal, tiếng Anh. **xem trước.** GLM giữ bộ dự đoán tuyến tính, đổi link và họ phương sai — logistic và Poisson là hai trường hợp bài nhắc.
+- [Simple Explanation of Mixed Models (Hierarchical Linear Models, Multilevel Models)](https://www.youtube.com/watch?v=5tOifM51ZOk) — Simplistics (QuantPsych), tiếng Anh. Hệ số ngẫu nhiên khi quan sát cùng một người không độc lập — mục mô hình hỗn hợp của bài.
+- [Double Machine Learning for Causal and Treatment Effects](https://www.youtube.com/watch?v=eHOjmyoPCFU) — Becker Friedman Institute University of Chicago, tiếng Anh. Chernozhukov giảng double/debiased machine learning: moment trực giao và cross-fitting — thủ tục phần nhân quả của bài.
+
 ## Bài tập
 
 **Bài 1 (khái niệm).** Một nhóm hồi quy doanh thu tuần theo dummy xử lý và hai mươi hiệp biến sau nhấp. Họ trích hệ số xử lý như “lift nhân quả.” Giả định nào của CUPED/Lin họ đã phá, và họ có thể đã ước lượng estimand nào thay thế?

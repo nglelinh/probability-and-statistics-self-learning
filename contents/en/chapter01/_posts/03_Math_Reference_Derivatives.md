@@ -115,3 +115,10 @@ The chain rule gives
 $$h'(x) = \frac{\partial f}{\partial x} \cdot 1 + \frac{\partial f}{\partial y} \cdot \frac{d(1 - x)}{dx} = 2x + 2(1 - x)(-1) = 4x - 2$$
 
 Set $$h'(x) = 0$$ to get $$x = 1/2$$, hence the point $$(1/2, 1/2)$$. The same pattern—substitute, differentiate, set the derivative to zero—reappears whenever a statistical estimator is defined by an optimization problem.
+
+## Video tham khảo
+
+- [The paradox of the derivative | Chapter 2, Essence of calculus](https://www.youtube.com/watch?v=9vKqVkMQHKk) — 3Blue1Brown, English. **xem trước.** The derivative as an instantaneous rate of change, matching the limit definition that opens the note.
+- [Visualizing the chain rule and product rule | Chapter 4, Essence of calculus](https://www.youtube.com/watch?v=YG15m2VwSjA) — 3Blue1Brown, English. A visual chain rule for the multivariable composite-function section.
+- [Partial Derivatives and the Gradient of a Function](https://www.youtube.com/watch?v=AXH9Xm6Rbfc) — Professor Dave Explains, English. Partial derivatives and the gradient — the tools the note uses for level curves and critical points.
+

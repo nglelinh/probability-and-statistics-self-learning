@@ -65,6 +65,12 @@ print("nested CV mean:", scores.mean(), "sd:", scores.std(ddof=1))
 
 Khi một bài báo nói “chúng tôi conformal hóa hộp đen,” “chúng tôi báo điểm Arena kèm khoảng,” hoặc “chúng tôi lồng bộ tinh chỉnh,” đó là ngôn ngữ chương này. Các bài sau thêm biến ngẫu nhiên và kiểm định; chúng không thay thế mô phỏng, resampling, hay thói quen hỏi *loại lỗi nào* mà một tiêu chí đang ước lượng.
 
+## Video tham khảo
+
+- [A Tutorial on Conformal Prediction](https://www.youtube.com/watch?v=nql000Lu_iE) — Anastasios Nikolas Angelopoulos, tiếng Anh. **xem trước.** Angelopoulos dạy split conformal: điểm không phù hợp trên tập hiệu chỉnh rồi lấy phân vị — đúng thủ tục bài gắn với arXiv:2107.07511.
+- [Holistic Evaluation of Language Models (HELM) - Yifan Mai, Stanford University](https://www.youtube.com/watch?v=fLoYcXLG6ro) — PyTorch, tiếng Anh. Yifan Mai trình bày HELM, bộ đánh giá nhiều kịch bản mà bài đọc như một thí nghiệm Monte Carlo cho mô hình ngôn ngữ.
+- [11.5 Nested CV for Algorithm Selection (L11 Model Eval. Part 4)](https://www.youtube.com/watch?v=XXFLFWHP9Nc) — Sebastian Raschka, tiếng Anh. Cross-validation lồng để đánh giá cả quy trình chọn mô hình, đúng cảnh báo Bates–Hastie–Tibshirani trong bài.
+
 ## Nguồn
 
 1. A. N. Angelopoulos và S. Bates, “Conformal Prediction: A Gentle Introduction,” *Foundations and Trends in Machine Learning* 16(4), 2023. [DOI](https://doi.org/10.1561/2200000101) · [arXiv:2107.07511](https://arxiv.org/abs/2107.07511)

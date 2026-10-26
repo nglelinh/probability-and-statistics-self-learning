@@ -126,6 +126,12 @@ else:
     -   Nhìn vào cột `reject` (True/False). True nghĩa là có sự khác biệt.
     -   Nhìn `meandiff`: Sự khác biệt trung bình.
 
+## Video tham khảo
+
+- [Phân tích phương sai một yếu tố (One-Way ANOVA) | Phân Tích Thống Kê 23 | Learn to do SCIENCE](https://www.youtube.com/watch?v=JWiznZZEjBw) — Learn to do SCIENCE, tiếng Việt. **xem trước.** Tính ANOVA một yếu tố bằng tiếng Việt, song song với bảng statsmodels bài in ra.
+- [Using Linear Models for t-tests and ANOVA, Clearly Explained!!!](https://www.youtube.com/watch?v=NF5_btOaCig) — StatQuest with Josh Starmer, tiếng Anh. Cùng kiểm định F viết như mô hình tuyến tính với ma trận thiết kế — cách bài nối ANOVA với hồi quy.
+- [Analysis of Variance (ANOVA) and F statistics .... MADE EASY!!!](https://www.youtube.com/watch?v=YllG5Cy6OFw) — Stats with Brian, tiếng Anh. Thống kê F là tỷ số phương sai giữa nhóm trên phương sai trong nhóm — công thức bài tính trước khi kết luận.
+
 ## 8. Bài Tập
 
 1.  (Python) Tải tập dữ liệu `Diet` (hoặc tạo giả lập 3 chế độ ăn kiêng khác nhau).

@@ -596,6 +596,12 @@ def prediction_intervals():
 # prediction_intervals()
 ```
 
+## Video tham khảo
+
+- [The Main Ideas of Fitting a Line to Data (The Main Ideas of Least Squares and Linear Regression.)](https://www.youtube.com/watch?v=PaFPbb66DxQ) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Bình phương tối thiểu như đường làm tổng bình phương phần dư nhỏ nhất — mục hồi quy đơn của bài.
+- [Pearson's Correlation, Clearly Explained!!!](https://www.youtube.com/watch?v=xZ_z8KWkhXE) — StatQuest with Josh Starmer, tiếng Anh. Hệ số tương quan Pearson, trước khi bài chuyển từ tương quan sang đường thẳng.
+- [Correlation vs Causation Explained: Why Patterns Can Mislead Us](https://www.youtube.com/watch?v=ofweqU0Lz4I) — Sprouts, tiếng Anh. Tương quan giả và tương quan không phải nhân quả — mục cạm bẫy bài minh họa bằng mô phỏng.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Correlation vs Causation**

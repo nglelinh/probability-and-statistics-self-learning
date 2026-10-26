@@ -112,6 +112,12 @@ plt.legend()
 plt.show()
 ```
 
+## Video tham khảo
+
+- [Odds and Log(Odds), Clearly Explained!!!](https://www.youtube.com/watch?v=ARfXDSkQf1Y) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Odds và log-odds, đúng biến đổi bài đặt trước hàm sigmoid.
+- [Logistic Regression (and why it's different from Linear Regression)](https://www.youtube.com/watch?v=3bvM3NyMiE0) — Visually Explained, tiếng Anh. Logistic khác hồi quy tuyến tính ở chỗ đầu ra là xác suất qua sigmoid, không phải một đường không chặn.
+- [What is a Decision Boundary?](https://www.youtube.com/watch?v=KJJFfRXFbuc) — Nicholas Leonhard, tiếng Anh. Đường ranh giới là tập điểm mà logit bằng không — mục decision boundary bài vẽ sau khi khớp hệ số.
+
 ### Bài Tập
 1. Thử dùng Logistic Regression cho dữ liệu không phân tách tuyến tính (ví dụ dạng hình tròn `make_circles`). Quan sát kết quả.
 2. Làm thế nào để Logistic Regression phân loại được biên giới cong? (Gợi ý: Feature Engineering, thêm $x_1^2, x_2^2$).

@@ -142,6 +142,12 @@ Peeking is not the only validity threat. Interference (one user’s treatment ch
 
 Extensions that sit on this chapter include variance-reduced tests (CUPED, taken up in Chapter 07), causal inference when assignment is not a clean Bernoulli, and e-value aggregation for living meta-analysis.
 
+## Video tham khảo
+
+- [Trustworthy Online Controlled Experiments at Large Scale w/ Ronny Kohavi | DECISIONS/Replay by Split](https://www.youtube.com/watch?v=kTAFOCynWIg) — Split, English. **xem trước.** Ronny Kohavi on online experiments as two-sample tests at industrial scale — the A/B frame that opens this note.
+- [Peeking at A/B Tests: Why it matters, and what to do about it](https://www.youtube.com/watch?v=6G8F22NSCxk) — KDD2017 video, English. The KDD talk on peeking: watching a p-value and stopping early inflates type I error — the sequential-testing section.
+- [False Discovery Rates, FDR, clearly explained](https://www.youtube.com/watch?v=K8LQSvtjcEo) — StatQuest with Josh Starmer, English. The false-discovery rate and Benjamini–Hochberg for thousands of hypotheses — the multiple-testing section set beside Bonferroni.
+
 ## Exercises
 
 **Exercise 1 (conceptual).** A vendor’s dashboard updates a $$p$$-value every hour and paints the card green at 0.05. Which assumption of the fixed-sample test is violated? Name one always-valid alternative and one operational alternative that does not change the test.

@@ -121,6 +121,12 @@ print(f"Shapiro-Wilk for Group A: p-value={p_value:.3f}")
     -   **Sự thật**: ANOVA chỉ cho biết "Có ít nhất một nhóm khác biệt với các nhóm còn lại". Nó **không** chỉ ra cụ thể là nhóm nào. Để biết nhóm nào, ta cần bước hậu kiểm (Post-hoc analysis) sẽ học ở bài sau.
 -   **Bỏ qua giả định**: Rất nhiều người chạy ANOVA mà không kiểm tra phương sai đồng nhất. Nếu phương sai khác nhau quá nhiều, kết quả F-test có thể sai lệch. Trong trường hợp đó, nên dùng **Welch's ANOVA**.
 
+## Video tham khảo
+
+- [Bài giảng 23: Giới thiệu phân tích phương sai (ANOVA)](https://www.youtube.com/watch?v=I19vEdaM1eY) — Nguyễn Văn Tuấn, tiếng Việt. **xem trước.** Nguyễn Văn Tuấn giới thiệu ANOVA bằng tiếng Việt: so sánh nhiều trung bình một lúc, thay vì một chuỗi t-test.
+- [One-Way ANOVA [Analysis of Variance\] simply explained](https://www.youtube.com/watch?v=mOdYddj5IG8) — numiqo, tiếng Anh. ANOVA một yếu tố: giữa nhóm và trong nhóm, đúng phân rã tổng bình phương bài chuẩn bị.
+- [Levene's test [Test for variance equality\]](https://www.youtube.com/watch?v=x51GDTiPIfI) — numiqo, tiếng Anh. Kiểm định Levene cho phương sai đồng nhất — giả định bài kiểm tra trước khi đọc F.
+
 ## 8. Bài Tập
 
 1.  Tại sao khi so sánh 3 nhóm thuốc, ta không dùng 3 phép kiểm định t-test (A vs B, B vs C, A vs C)?

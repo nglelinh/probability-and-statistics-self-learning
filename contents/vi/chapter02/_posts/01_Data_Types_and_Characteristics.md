@@ -120,6 +120,11 @@ print(f"Thạc Sĩ > Cử Nhân: {df.iloc[2]['TrinhDo_HocVan'] > df.iloc[0]['Tri
 -   **Sai lầm**: Cố gắng vẽ biểu đồ đường (line plot) cho dữ liệu danh mục.
 -   **Hậu quả**: Biểu đồ vô nghĩa.
 
+## Video tham khảo
+
+- [Levels of Measurement - Nominal, Ordinal, Interval and Ratio](https://www.youtube.com/watch?v=8N5IMF-T3pc) — numiqo, tiếng Anh. **xem trước.** Bốn thang đo định danh, thứ bậc, khoảng và tỷ lệ — đúng bảng phân loại bài yêu cầu trước khi chuyển cột trong Pandas.
+- [Scales of Measurement - Nominal, Ordinal, Interval, & Ratio Scale Data](https://www.youtube.com/watch?v=LuBD49SFpWs) — The Organic Chemistry Tutor, tiếng Anh. Thêm ví dụ cho cùng bốn thang, và chỗ dữ liệu số vẫn có thể chỉ là thứ bậc chứ không phải tỷ lệ.
+
 ## 8. Bài Tập
 
 ### Bài tập lý thuyết

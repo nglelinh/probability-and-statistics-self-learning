@@ -79,6 +79,12 @@ print(f"Estimated collision probability with {n_people} people: {prob:.4f}")
 
 There are no factorials in that function. It just replays the physical story. The estimate is about 0.507, which usually surprises people: intuition systematically underweights collisions.
 
+## Video tham khảo
+
+- [Law of Large Numbers - Explained and Visualized](https://www.youtube.com/watch?v=MntX3zWNWec) — Jeremy Blitz-Jones, English. **xem trước.** The sample mean settles on the expectation as the number of trials grows — the law of large numbers this lesson uses to justify Monte Carlo.
+- [6. Monte Carlo Simulation](https://www.youtube.com/watch?v=OgO1gpXSUzU) — MIT OpenCourseWare, English. John Guttag explains why Ulam simulated solitaire instead of counting, then estimates an unknown quantity from random samples — the same move as the dice example and the pi exercise.
+- [Check your intuition: The birthday problem - David Knuffke](https://www.youtube.com/watch?v=KtT_cgMzHx8) — TED-Ed, English. The birthday problem from the lesson: intuition underestimates the chance of a shared birthday, which a repeated experiment puts near one half for 23 people.
+
 ## Exercises
 
 **Exercise 1: Biased coin.** Write a function that tosses a biased coin ($$p = 0.6$$ of heads) 100 times. Repeat the experiment 1000 times and plot a histogram of the number of heads.

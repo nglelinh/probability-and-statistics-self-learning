@@ -429,6 +429,12 @@ def method_of_moments_example():
 # method_of_moments_example()
 ```
 
+## Video tham khảo
+
+- [Maximum Likelihood, clearly explained!!!](https://www.youtube.com/watch?v=XepXtl9YKwc) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Ước lượng hợp lý cực đại: dịch chuyển trung bình và độ lệch của một họ cho đến khi dữ liệu quan sát được có likelihood lớn nhất.
+- [Unbiasedness vs consistency of estimators - an example](https://www.youtube.com/watch?v=6i7mqDJICzQ) — Ben Lambert, tiếng Anh. Chệch và nhất quán là hai tính chất khác nhau của estimator — mục tính chất bài chứng minh trước khi tới MLE.
+- [The Method of Moments ... Made Easy!](https://www.youtube.com/watch?v=OL8kf-gKcqI) — Stats with Brian, tiếng Anh. Phương pháp moment: đặt moment mẫu bằng moment lý thuyết rồi giải tham số — mục cuối bài.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Verify Unbiasedness**

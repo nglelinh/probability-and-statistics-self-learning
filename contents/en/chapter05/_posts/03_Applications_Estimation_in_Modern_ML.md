@@ -175,6 +175,12 @@ MLE in deep nets is computationally successful and inferentially delicate: stand
 
 Open directions that sit on top of this chapter include likelihood-free estimation (simulation-based inference, score matching), hierarchical empirical Bayes for many related ranking markets, and conformal methods under distribution shift.
 
+## Video tham khảo
+
+- [Neural Networks Part 6: Cross Entropy](https://www.youtube.com/watch?v=6ArSys5qHAU) — StatQuest with Josh Starmer, English. **xem trước.** Cross-entropy is the average negative log-likelihood of a categorical model — the identity this note draws between network training and maximum likelihood.
+- [Gaussian Mixture Model](https://www.youtube.com/watch?v=EWd1xRkyEog) — ritvikmath, English. Gaussian mixture models, the family this note fits by moments when the likelihood is multimodal.
+- [Bayesian Updates and Conjugate Priors](https://www.youtube.com/watch?v=GqSX-8AQL90) — Steve Brunton, English. Bayesian updates with conjugate priors, the shrinkage mechanism this note calls empirical Bayes in ranking.
+
 ## Exercises
 
 **Exercise 1 (conceptual).** A language-model paper reports training loss versus compute. Which object in this chapter is the training loss? Why is a smaller training NLL not, by itself, evidence that $$\hat{\theta}$$ is closer to a “true” data-generating parameter?

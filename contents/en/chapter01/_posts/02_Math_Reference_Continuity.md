@@ -92,3 +92,10 @@ The three notions nest:
 **Example 4: $$f(x) = \sqrt{x}$$**
 - On $$[0, 1]$$: continuous and uniformly continuous, but not Lipschitz (the derivative blows up at 0)
 - On $$[a, 1]$$ with $$a > 0$$: Lipschitz with $$L = 1 / (2\sqrt{a})$$
+
+## Video tham khảo
+
+- [Limits, L'Hôpital's rule, and epsilon delta definitions | Chapter 7, Essence of calculus](https://www.youtube.com/watch?v=kfF40MiS7zA) — 3Blue1Brown, English. **xem trước.** A visual epsilon–delta account of limits and continuity, before the lesson tightens the definition to uniform continuity.
+- [Lecture 17: Uniform Continuity and the Definition of the Derivative](https://www.youtube.com/watch?v=f_sNWn7zujU) — MIT OpenCourseWare, English. MIT’s real-analysis lecture puts uniform continuity next to the definition of the derivative — the lesson’s contrast between a point-dependent δ and one δ for the whole domain.
+- [Epsilon-Delta Continuity | This Is What Continuity Actually Means | Visually Explained](https://www.youtube.com/watch?v=2SYsl3SomQc) — Demathify, English. A short picture of why δ may depend on the point c, which is the gap between continuity and uniform continuity in this note.
+

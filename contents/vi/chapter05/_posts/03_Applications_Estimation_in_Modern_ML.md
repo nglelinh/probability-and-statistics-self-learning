@@ -175,6 +175,12 @@ MLE trong mạng sâu thành công về tính toán và mong manh về suy diễ
 
 Hướng mở nằm trên chương này gồm ước lượng không cần likelihood (suy diễn dựa trên mô phỏng, score matching), empirical Bayes phân cấp cho nhiều thị trường xếp hạng liên quan, và conformal dưới dịch chuyển phân phối.
 
+## Video tham khảo
+
+- [Neural Networks Part 6: Cross Entropy](https://www.youtube.com/watch?v=6ArSys5qHAU) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Cross-entropy là âm log-likelihood trung bình của mô hình categorical — đúng đồng nhất bài đặt giữa huấn luyện mạng và MLE.
+- [Gaussian Mixture Model](https://www.youtube.com/watch?v=EWd1xRkyEog) — ritvikmath, tiếng Anh. Mô hình hỗn hợp Gauss, họ mà bài khớp bằng moment khi likelihood nhiều cực trị.
+- [Bayesian Updates and Conjugate Priors](https://www.youtube.com/watch?v=GqSX-8AQL90) — Steve Brunton, tiếng Anh. Cập nhật Bayes với prior liên hợp, cơ chế co mà bài gọi là empirical Bayes trong xếp hạng.
+
 ## Bài tập
 
 **Bài 1 (khái niệm).** Một bài báo mô hình ngôn ngữ báo cáo training loss theo compute. Đối tượng nào trong chương này là training loss? Vì sao NLL huấn luyện nhỏ hơn, tự nó, không phải bằng chứng $$\hat{\theta}$$ gần hơn một tham số sinh dữ liệu “thật”?

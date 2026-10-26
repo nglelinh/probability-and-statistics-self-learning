@@ -158,6 +158,12 @@ def plot_residuals(y_true, y_pred):
     plt.show()
 ```
 
+## Video tham khảo
+
+- [Multiple Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=zITIFTsivN8) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Từ một đường sang một mặt phẳng: hồi quy bội là cùng bình phương tối thiểu với thêm cột — mục đa biến của bài.
+- [16. Projection Matrices and Least Squares](https://www.youtube.com/watch?v=osh80YCg_GM) — MIT OpenCourseWare, tiếng Anh. Hình chiếu vuông góc và ma trận chiếu của MIT — ý nghĩa hình học của OLS trong bài.
+- [Gauss-Markov assumptions part 1](https://www.youtube.com/watch?v=NjTpHS5xLP8) — Ben Lambert, tiếng Anh. Các giả định Gauss–Markov khiến OLS là BLUE — định lý bài phát biểu sau công thức nghiệm.
+
 ### Bài Tập Thực Hành
 Sử dụng bộ dữ liệu `Advertising.csv` (hoặc Boston Housing) để:
 1. Thực hiện Hồi quy tuyến tính đa biến.

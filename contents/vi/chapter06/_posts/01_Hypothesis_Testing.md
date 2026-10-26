@@ -623,6 +623,12 @@ def multiple_testing_problem():
 # multiple_testing_problem()
 ```
 
+## Video tham khảo
+
+- [929. Ý tưởng của kiểm định giả thuyết thống kê | Xác suất và thống kê | Khan Academy](https://www.youtube.com/watch?v=JwlCt6roH6c) — Khan Academy Vietnam, tiếng Việt. **xem trước.** Ý tưởng kiểm định: giả sử H0 đúng rồi hỏi dữ liệu có quá lạ hay không — khung mở đầu bài, bằng tiếng Việt.
+- [p-values: What they are and how to interpret them](https://www.youtube.com/watch?v=vemZtEM63GY) — StatQuest with Josh Starmer, tiếng Anh. p-value là xác suất của dữ liệu cực đoan này nếu H0 đúng, không phải xác suất H0 đúng — mục diễn giải bài cảnh báo.
+- [Type I Errors, Type II Errors, and the Power of the Test](https://www.youtube.com/watch?v=7mE-K_w1v90) — jbstatistics, tiếng Anh. Sai lầm loại I, loại II và lực kiểm định — bảng bài vẽ trước các kiểm định t và chi-bình phương.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Power Analysis**

@@ -45,6 +45,12 @@ Hollmann, Müller, Eggensperger, and Hutter (*TabPFN*, [ICLR 2023](https://iclr.
 
 When a paper says “we filtered Common Crawl by CLIP score,” “we used cleanlab on the labels,” or “do not cluster on the UMAP,” it is speaking Chapter 02. Later probability chapters add sampling models; they do not replace the discipline of type, summary, and picture.
 
+## Video tham khảo
+
+- [StatQuest: t-SNE, Clearly Explained](https://www.youtube.com/watch?v=NEaUSP4YerM) — StatQuest with Josh Starmer, English. **xem trước.** t-SNE keeps local neighborhoods and bends global distances — the Chari–Pachter warning this note calls a modern misleading graph.
+- [UMAP Dimension Reduction, Main Ideas!!!](https://www.youtube.com/watch?v=eN0wFzBA4Sc) — StatQuest with Josh Starmer, English. UMAP is the same kind of nonlinear embedding; the two-dimensional picture is not the original data in the embedding section.
+- [GenAI and Datacomp: Creating the Largest Public Multimodal Dataset in Academia](https://www.youtube.com/watch?v=ba-aqPF6xuw) — AI Council, English. DataComp filters an image–text pool with scores and frequencies — descriptive statistics as the intervention in the dataset-design section.
+
 ## Sources
 
 1. S. Y. Gadre et al., “DataComp: In search of the next generation of multimodal datasets,” NeurIPS 2023. [abstract](https://proceedings.neurips.cc/paper_files/paper/2023/hash/56332d41d55ad7ad8024aac625881be7-Abstract-Datasets_and_Benchmarks.html) · [arXiv:2304.14108](https://arxiv.org/abs/2304.14108)

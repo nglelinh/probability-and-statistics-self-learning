@@ -136,6 +136,11 @@ trong đó $$\hat{\sigma}^2$$ từ full model.
 
 **Nguyên tắc:** Chọn model có $$C_p \approx p$$.
 
+## Video tham khảo
+
+- [Model selection with AIC and AICc](https://www.youtube.com/watch?v=HOqHI53x9Go) — TileStats, tiếng Anh. **xem trước.** AIC phạt độ lệch bằng số tham số và chọn mô hình có tiêu chí nhỏ nhất — đúng công thức và quy tắc trong bài.
+- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, tiếng Anh. Đối chiếu thực nghiệm mà bài nhắc trước khi đưa AIC/BIC: ước lượng lỗi dự đoán bằng cross-validation thay vì một phạt giải tích.
+
 ## Bài Tập
 
 **Bài 1:** Implement BIC từ đầu và so sánh với AIC trên polynomial regression.

@@ -65,6 +65,12 @@ That snippet does not claim a new theorem. It is the Bates–Hastie–Tibshirani
 
 When a paper says “we conformalize a black-box,” “we report Arena scores with intervals,” or “we nest the tuner,” it is speaking this chapter. Later lectures add random variables and tests; they do not replace simulation, resampling, or the habit of asking *which* error a criterion estimates.
 
+## Video tham khảo
+
+- [A Tutorial on Conformal Prediction](https://www.youtube.com/watch?v=nql000Lu_iE) — Anastasios Nikolas Angelopoulos, English. **xem trước.** Angelopoulos teaches split conformal prediction: nonconformity scores on a calibration set, then a quantile — the procedure this note ties to arXiv:2107.07511.
+- [Holistic Evaluation of Language Models (HELM) - Yifan Mai, Stanford University](https://www.youtube.com/watch?v=fLoYcXLG6ro) — PyTorch, English. Yifan Mai presents HELM, the multi-scenario evaluation this note reads as a Monte Carlo experiment for language models.
+- [11.5 Nested CV for Algorithm Selection (L11 Model Eval. Part 4)](https://www.youtube.com/watch?v=XXFLFWHP9Nc) — Sebastian Raschka, English. Nested cross-validation for the whole model-selection procedure, the Bates–Hastie–Tibshirani warning in the note.
+
 ## Sources
 
 1. A. N. Angelopoulos and S. Bates, “Conformal Prediction: A Gentle Introduction,” *Foundations and Trends in Machine Learning* 16(4), 2023. [DOI](https://doi.org/10.1561/2200000101) · [arXiv:2107.07511](https://arxiv.org/abs/2107.07511)

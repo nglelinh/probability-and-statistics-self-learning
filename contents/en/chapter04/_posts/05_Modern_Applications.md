@@ -50,6 +50,12 @@ The sampling-distribution lesson then explains why a Monte Carlo estimate of per
 
 When a paper says “negative-binomial likelihood,” “neural Hawkes intensity,” or “score entropy on tokens,” it is speaking this chapter. Estimation and tests come later; they act on these same named families.
 
+## Video tham khảo
+
+- [Regression with Count Data: Poisson and Negative Binomial](https://www.youtube.com/watch?v=uGKnoAw-PFQ) — Matthew E. Clapham, English. **xem trước.** Poisson and negative-binomial regression when the variance exceeds the mean — the count-model section of this note.
+- [L22.2 Definition of the Poisson Process](https://www.youtube.com/watch?v=D_EGYzqmapc) — MIT OpenCourseWare, English. MIT’s definition of a Poisson process: independent increments and a Poisson count on an interval — the logs and request section.
+- [Discrete Diffusion Modeling by Estimating the Ratios of the Data Distribution – Paper Explained](https://www.youtube.com/watch?v=K_9wQ6LZNpI) — AI Coffee Break with Letitia, English. The SEDD paper this note cites: a discrete generative model that matches probability ratios, a PMF over tokens rather than a point forecast.
+
 ## Sources
 
 1. D. Salinas, V. Flunkert, J. Gasthaus, and T. Januschowski, “DeepAR: Probabilistic forecasting with autoregressive recurrent networks,” *Int. J. Forecasting* 36(3), 2020. [DOI](https://doi.org/10.1016/j.ijforecast.2019.07.001) · [arXiv:1704.04110](https://arxiv.org/abs/1704.04110)

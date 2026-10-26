@@ -113,6 +113,12 @@ plt.show()
 3.  **Spurious Correlations (Tương quan giả)**:
     -   Vẽ biểu đồ thấy hai đường đi cùng nhau không có nghĩa là cái này gây ra cái kia (Correlation $\neq$ Causation). Ví dụ: Doanh số bán kem và Số vụ chết đuối cùng tăng vào mùa hè (biến ẩn là Nhiệt độ).
 
+## Video tham khảo
+
+- [StatQuest: Histograms, Clearly Explained](https://www.youtube.com/watch?v=qBigTkBLU6g) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Histogram nói gì về hình dạng phân phối — biểu đồ đầu tiên trong ví dụ điểm Toán.
+- [Boxplots are Awesome!!!](https://www.youtube.com/watch?v=fHLhBnmwUM0) — StatQuest with Josh Starmer, tiếng Anh. Boxplot so sánh hai nhóm và chỉ outlier, đúng hình bài vẽ cho điểm Toán và Văn.
+- [How to spot a misleading graph - Lea Gaslowitz](https://www.youtube.com/watch?v=E91bGT9BjYk) — TED-Ed, tiếng Anh. Các cách một trục hoặc một hình cắt làm sai thông điệp — mục biểu đồ gây hiểu lầm của bài.
+
 ## 8. Bài Tập
 
 1.  (Python) Tải tập dữ liệu `Tips` từ seaborn (`df = sns.load_dataset('tips')`).

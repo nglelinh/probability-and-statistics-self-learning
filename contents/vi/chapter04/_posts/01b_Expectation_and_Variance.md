@@ -557,6 +557,12 @@ def correlation_not_causation():
 # correlation_not_causation()
 ```
 
+## Video tham khảo
+
+- [Expected Values, Main Ideas!!!](https://www.youtube.com/watch?v=KLs_7b7SKi4) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Kỳ vọng của biến rời rạc như trung bình có trọng số xác suất — định nghĩa mở đầu bài.
+- [Covariance, Clearly Explained!!!](https://www.youtube.com/watch?v=qtaqvPAeEJY) — StatQuest with Josh Starmer, tiếng Anh. Hiệp phương sai rồi tương quan, cho mục cuối bài trước khi nói tương quan không phải nhân quả.
+- [Correlation vs Causation Explained: Why Patterns Can Mislead Us](https://www.youtube.com/watch?v=ofweqU0Lz4I) — Sprouts, tiếng Anh. Vì sao một hệ số tương quan cao chưa cho phép kết luận nguyên nhân — đúng cảnh báo trong bài.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Tính Kỳ Vọng và Phương Sai**
