@@ -18,23 +18,59 @@
 
     {% assign current_lang = page.lang | default: site.default_lang %}
     {% assign pages_list = site.pages | where: "lang", current_lang | sort: "chapter" %}
-    
-    <!-- Hiển thị các chương có sẵn cho ngôn ngữ hiện tại -->
+    {% comment %}
+      Lessons are posts under contents/. Group by the chapter field (course
+      order), not categories: a few lessons still carry a stale category.
+      Posts with no lang are placed by their /contents/vi|en/ path.
+    {% endcomment %}
+    {% assign lesson_posts = site.posts | where_exp: "item", "item.url contains '/contents/'" | sort: "order" %}
+
+    <!-- Mỗi chương là một mục menu; submenu liệt kê mọi bài của chương, theo order. -->
     {% for node in pages_list %}
       {% if node.title != null and node.chapter %}
         {% if node.layout == "page" %}
           {% assign is_hidden = node.hidden | default: false %}
           {% unless is_hidden %}
-            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url | absolute_url }}">
-              {{node.chapter}}. {{ node.title }}
-              {% if node.lesson_type %}
-                {% if node.lesson_type == 'required' %}
+            {% capture chapter_lessons %}
+              {%- for post in lesson_posts -%}
+                {%- assign post_lang = post.lang | default: "" -%}
+                {%- if post_lang == "" -%}
+                  {%- if post.url contains "/contents/vi/" -%}
+                    {%- assign post_lang = "vi" -%}
+                  {%- elsif post.url contains "/contents/en/" -%}
+                    {%- assign post_lang = "en" -%}
+                  {%- endif -%}
+                {%- endif -%}
+                {%- if post.chapter == node.chapter and post_lang == current_lang and post.title -%}
+                  <a class="sidebar-nav-item sidebar-lesson{% if page.url == post.url %} active{% endif %}" href="{{ post.url | absolute_url }}">
+                    {{ post.title }}
+                    {%- if post.lesson_type == "required" %}
+                      <span class="lesson-badge required">{% t required %}</span>
+                    {%- elsif post.lesson_type == "optional" %}
+                      <span class="lesson-badge optional">{% t optional %}</span>
+                    {%- endif %}
+                  </a>
+                {%- endif -%}
+              {%- endfor -%}
+            {% endcapture %}
+            {% assign chapter_lessons = chapter_lessons | strip %}
+            <div class="sidebar-chapter{% if chapter_lessons != "" %} has-lessons{% endif %}">
+              <a class="sidebar-nav-item sidebar-chapter-link{% if page.url == node.url %} active{% endif %}" href="{{ node.url | absolute_url }}">
+                {{ node.chapter }}. {{ node.title }}
+                {% if node.lesson_type == "required" %}
                   <span class="lesson-badge required">{% t required %}</span>
-                {% elsif node.lesson_type == 'optional' %}
+                {% elsif node.lesson_type == "optional" %}
                   <span class="lesson-badge optional">{% t optional %}</span>
                 {% endif %}
+              </a>
+              {% if chapter_lessons != "" %}
+                <input type="checkbox" class="sidebar-chapter-checkbox" id="sidebar-chapter-{{ current_lang }}-{{ node.chapter }}" aria-controls="sidebar-lessons-{{ current_lang }}-{{ node.chapter }}" aria-label="{% t toggle_chapter %}: {{ node.chapter }}. {{ node.title | escape }}"{% if page.chapter == node.chapter %} checked{% endif %}>
+                <span class="sidebar-chapter-chevron" aria-hidden="true"></span>
+                <div class="sidebar-submenu" id="sidebar-lessons-{{ current_lang }}-{{ node.chapter }}">
+                  {{ chapter_lessons }}
+                </div>
               {% endif %}
-            </a>
+            </div>
           {% endunless %}
         {% endif %}
       {% endif %}
