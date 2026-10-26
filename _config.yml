@@ -24,6 +24,7 @@ t:
     switch_language: "Switch to Vietnamese"
     required: "Required"
     optional: "Optional"
+    toggle_chapter: "Show or hide lessons"
   vi:
     title: "Xác suất và Thống kê tự học"
     description: "Khóa học Xác suất & Thống kê / thống kê tính toán. Bản tiếng Việt đủ Chương 01–08; bản tiếng Anh đang mở từ Chương 01."
@@ -33,6 +34,7 @@ t:
     switch_language: "Chuyển sang tiếng Anh"
     required: "Bắt buộc"
     optional: "Tùy chọn"
+    toggle_chapter: "Hiện hoặc ẩn các bài"
 # About/contact
 author:
   name:              Nguyen Le Linh
