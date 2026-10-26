@@ -500,6 +500,12 @@ def complete_ml_workflow():
 - Residual analysis
 - Hiểu tại sao model hoạt động
 
+## Video tham khảo
+
+- [Train, Test, & Validation Sets explained](https://www.youtube.com/watch?v=Zi-0rlM4RDs) — deeplizard, tiếng Anh. **xem trước.** Vì sao phải tách train, validation và test — bước chia dữ liệu trong pipeline của bài.
+- [One-Hot, Label, Target and K-Fold Target Encoding, Clearly Explained!!!](https://www.youtube.com/watch?v=589nCGeWG1w) — StatQuest with Josh Starmer, tiếng Anh. Bài dùng OneHotEncoder khi chuẩn bị đặc trưng; video giải thích one-hot trước các kiểu mã hóa khác.
+- [Machine Learning Tutorial Python - 16: Hyper parameter Tuning (GridSearchCV)](https://www.youtube.com/watch?v=HdlDYng8g9s) — codebasics, tiếng Anh. GridSearchCV trên sklearn để chọn siêu tham số, đúng bước tinh chỉnh trong case study.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: End-to-End Project**

@@ -119,6 +119,11 @@ where $$\hat{\sigma}^2$$ comes from the full model.
 
 **Rule of thumb:** look for a model with $$C_p \approx p$$.
 
+## Video tham khảo
+
+- [Model selection with AIC and AICc](https://www.youtube.com/watch?v=HOqHI53x9Go) — TileStats, English. **xem trước.** AIC penalizes the deviance by the parameter count and picks the smallest score — the formula and the rule in this lesson.
+- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, English. The empirical alternative the lesson sets beside AIC and BIC: estimate prediction error by cross-validation instead of an analytic penalty.
+
 ## Exercises
 
 **Exercise 1.** Implement BIC from scratch and compare it with AIC on the same polynomial path.

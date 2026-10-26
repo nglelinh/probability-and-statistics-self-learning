@@ -341,6 +341,12 @@ def bootstrap_error_estimation(n_bootstrap=100):
 | **Stratified CV** | Classification imbalanced | Đảm bảo tỷ lệ classes | - |
 | **Bootstrap** | Ước lượng uncertainty | Linh hoạt | Phức tạp hơn |
 
+## Video tham khảo
+
+- [Máy Học Ứng Dụng - Bài 11. Phương Pháp Đánh Giá Chéo (Cross-Validation) Trong Máy Học](https://www.youtube.com/watch?v=aKVgXrDBqgk) — OVNE-Giáo Dục Việt, tiếng Việt. **xem trước.** Đánh giá chéo bằng tiếng Việt: xoay fold để ước lượng lỗi trên dữ liệu mới, thay vì tin training error.
+- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, tiếng Anh. Hình khối cho K-fold và leave-one-out, rồi dùng chính CV để chọn tham số tinh chỉnh.
+- [Bootstrapping Main Ideas!!!](https://www.youtube.com/watch?v=Xz0x-8-cgaQ) — StatQuest with Josh Starmer, tiếng Anh. Lấy mẫu có hoàn lại và phần out-of-bag — mục bootstrap ở cuối bài.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Implement K-Fold từ Đầu**

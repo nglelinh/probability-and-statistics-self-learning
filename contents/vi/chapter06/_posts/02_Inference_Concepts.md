@@ -144,6 +144,12 @@ def f_test(X, y):
 
 $$\hat{y} \pm t_{\alpha/2, n-p-1} \cdot \hat{\sigma}\sqrt{1 + \mathbf{x}_0^T(X^TX)^{-1}\mathbf{x}_0}$$
 
+## Video tham khảo
+
+- [Linear Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=7ArmBVF2dCs) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Suy diễn cho hệ số hồi quy: khoảng và p-value của độ dốc, đúng mục khoảng tin cậy cho coefficients.
+- [Multiple Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=zITIFTsivN8) — StatQuest with Josh Starmer, tiếng Anh. So sánh mô hình bằng F khi thêm biến — mục F-test cho ý nghĩa tổng thể.
+- [Prediction Intervals vs. Confidence Intervals](https://www.youtube.com/watch?v=nA0BnTm_bU0) — Stats with Brian, tiếng Anh. Khoảng tin cậy của trung bình có điều kiện khác khoảng dự báo cho một quan sát mới — mục prediction intervals.
+
 ## Bài Tập
 
 **Bài 1:** Implement prediction intervals và visualize chúng.

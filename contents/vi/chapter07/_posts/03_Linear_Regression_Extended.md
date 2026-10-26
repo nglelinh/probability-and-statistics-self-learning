@@ -298,6 +298,12 @@ def comprehensive_model_evaluation():
 - Normality: Q-Q plot, Shapiro-Wilk test
 - Multicollinearity: VIF (Variance Inflation Factor)
 
+## Video tham khảo
+
+- [Linear Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=7ArmBVF2dCs) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Hồi quy tuyến tính từ phần dư đến R² và p-value — trục đánh giá mô hình của bài này.
+- [Simple Linear Regression:  Checking Assumptions with Residual Plots](https://www.youtube.com/watch?v=iMdtTCX2Q70) — jbstatistics, tiếng Anh. Đồ thị phần dư để kiểm tra tuyến tính, phương sai không đổi và điểm lệch — mục giả định bài liệt kê.
+- [R-squared, Clearly Explained!!!](https://www.youtube.com/watch?v=2AQKmw14mHM) — StatQuest with Josh Starmer, tiếng Anh. R² là tỷ lệ tổng bình phương quanh trung bình được đường thẳng giải thích — công thức bài dùng khi chấm điểm fit.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Implement OLS với QR Decomposition**

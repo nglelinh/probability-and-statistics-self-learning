@@ -397,6 +397,12 @@ def demonstrate_distribution_relationships():
 # demonstrate_distribution_relationships()
 ```
 
+## Video tham khảo
+
+- [The Binomial Distribution and Test, Clearly Explained!!!](https://www.youtube.com/watch?v=J8jNoF-K8E8) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Phân phối nhị thức và kiểm định đi kèm — họ rời rạc bài vẽ cùng các họ đếm khác.
+- [The Normal Distribution, Clearly Explained!!!](https://www.youtube.com/watch?v=rzFX5NWojp0) — StatQuest with Josh Starmer, tiếng Anh. Họ chuẩn: hình dạng, trung bình và độ lệch chuẩn, cho mục phân phối liên tục.
+- [An Introduction to the Poisson Distribution](https://www.youtube.com/watch?v=jmqZG6roVqU) — jbstatistics, tiếng Anh. Poisson cho số đếm, và mối liên hệ với nhị thức khi n lớn p nhỏ — đúng mục quan hệ giữa các phân phối.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: So Sánh Binomial và Poisson**

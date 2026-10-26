@@ -473,6 +473,12 @@ def probability_calculations_with_cdf():
 # probability_calculations_with_cdf()
 ```
 
+## Video tham khảo
+
+- [Probability Distribution Functions (PMF, PDF, CDF)](https://www.youtube.com/watch?v=YXLVjCKVP7U) — zedstatistics, tiếng Anh. **xem trước.** PMF, PDF và CDF trên cùng một hình — ba đối tượng bài định nghĩa cho biến rời rạc rồi biến liên tục.
+- [L05.3 Probability Mass Functions](https://www.youtube.com/watch?v=zW1_iugJvF0) — MIT OpenCourseWare, tiếng Anh. Hàm khối xác suất của MIT cho riêng mục biến ngẫu nhiên rời rạc.
+- [An Introduction to Continuous Probability Distributions](https://www.youtube.com/watch?v=OWSOhpS00_s) — jbstatistics, tiếng Anh. Mật độ của biến liên tục: xác suất là diện tích, không phải chiều cao của đường cong — đúng mục PDF của bài.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Tạo Biến Ngẫu Nhiên Tùy Chỉnh**

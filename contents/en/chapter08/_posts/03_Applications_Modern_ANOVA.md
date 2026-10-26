@@ -133,6 +133,12 @@ ANOVA assumes constant variance and, in the classical derivation, Gaussian error
 
 Extensions include permutation ANOVA when the Gaussian assumption is implausible, aligned-rank transforms in human-computer interaction studies, and Bayesian hierarchical ANOVA when many weak factors share a prior—the setting Gelman originally had in mind.
 
+## Video tham khảo
+
+- [Full Factorial Design (DoE - Design of Experiments) Simply explained](https://www.youtube.com/watch?v=cHoYAyYHzB0) — numiqo, English. **xem trước.** A two-factor factorial — the design this note uses for a multi-factor launch instead of a pile of t-tests.
+- [Follow Up ANOVA – Tukey’s HSD Post Hoc Test (12-5)](https://www.youtube.com/watch?v=P1j2CkOjWtM) — Research By Design, English. Tukey HSD after a significant F — one of the two post-hoc choices the note sets beside FDR.
+- [The power of mixed-effects models | Longitudinal 3](https://www.youtube.com/watch?v=MOyjGnjAols) — Very Normal, English. When measurements nest in users or queries, a random variance component replaces a plain F table — the mixed-model section.
+
 ## Exercises
 
 **Exercise 1 (conceptual).** A team runs four button colours and six pairwise $$t$$-tests, then ships the pair with the smallest $$p$$. Which two Chapter 08/06 mistakes did they combine? What single pre-registered contrast would have been cleaner?

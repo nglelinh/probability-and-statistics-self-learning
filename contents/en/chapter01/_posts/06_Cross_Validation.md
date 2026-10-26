@@ -288,6 +288,12 @@ def bootstrap_error_estimation(n_bootstrap=100):
 | **Stratified CV** | Imbalanced classification | Preserves class mix | — |
 | **Bootstrap** | Uncertainty estimates | Flexible | More moving parts |
 
+## Video tham khảo
+
+- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, English. **xem trước.** Block picture of K-fold and leave-one-out, then using that same rotation to tune a parameter.
+- [Bootstrapping Main Ideas!!!](https://www.youtube.com/watch?v=Xz0x-8-cgaQ) — StatQuest with Josh Starmer, English. Sampling with replacement and the out-of-bag idea — the bootstrap section at the end of the lesson.
+- [Máy Học Ứng Dụng - Bài 11. Phương Pháp Đánh Giá Chéo (Cross-Validation) Trong Máy Học](https://www.youtube.com/watch?v=aKVgXrDBqgk) — OVNE-Giáo Dục Việt, Vietnamese. A Vietnamese walkthrough of the same rotation: estimate error on data the fit did not train on.
+
 ## Exercises
 
 **Exercise 1: $$K$$-fold from scratch.** Write `my_kfold_cv(X, y, model, k=5)` without calling scikit-learn’s splitter.

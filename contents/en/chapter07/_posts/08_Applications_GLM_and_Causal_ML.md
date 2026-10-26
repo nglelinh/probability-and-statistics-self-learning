@@ -160,6 +160,12 @@ CUPED with a *post*-treatment covariate can subtract part of the effect; the 201
 
 Extensions include targeted learning, policy learning from logged bandits, and the combination of CUPED with sequential tests from Chapter 06.
 
+## Video tham khảo
+
+- [Explaining generalized linear models (GLMs) | VNT #15](https://www.youtube.com/watch?v=1fZeBafD1nw) — Very Normal, English. **xem trước.** A GLM keeps a linear predictor and changes the link and the variance family — logistic and Poisson are the two cases this note names.
+- [Simple Explanation of Mixed Models (Hierarchical Linear Models, Multilevel Models)](https://www.youtube.com/watch?v=5tOifM51ZOk) — Simplistics (QuantPsych), English. A random intercept when repeated observations on one user are not independent — the mixed-model section.
+- [Double Machine Learning for Causal and Treatment Effects](https://www.youtube.com/watch?v=eHOjmyoPCFU) — Becker Friedman Institute University of Chicago, English. Chernozhukov on double/debiased machine learning: orthogonal scores and cross-fitting — the causal section’s procedure.
+
 ## Exercises
 
 **Exercise 1 (conceptual).** A team regresses weekly revenue on a treatment dummy and twenty post-click covariates. They quote the treatment coefficient as “the causal lift.” Which assumption of CUPED/Lin have they broken, and what estimand might they have estimated instead?

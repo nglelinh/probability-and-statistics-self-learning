@@ -109,3 +109,10 @@ Ba loại tính liên tục tạo thành một thứ bậc của các điều ki
 **Ví dụ 4: $$f(x) = \sqrt{x}$$**
 - **Trên $$[0,1]$$**: Liên tục và liên tục đều, nhưng không phải Lipschitz (đạo hàm không bị chặn gần $$x = 0$$)
 - **Trên $$[a,1]$$ với $$a > 0$$**: Lipschitz với $$L = 1/(2\sqrt{a})$$
+
+## Video tham khảo
+
+- [Limits, L'Hôpital's rule, and epsilon delta definitions | Chapter 7, Essence of calculus](https://www.youtube.com/watch?v=kfF40MiS7zA) — 3Blue1Brown, tiếng Anh. **xem trước.** Định nghĩa epsilon–delta của giới hạn và liên tục, bằng hình, trước khi bài siết điều kiện thành liên tục đều.
+- [Lecture 17: Uniform Continuity and the Definition of the Derivative](https://www.youtube.com/watch?v=f_sNWn7zujU) — MIT OpenCourseWare, tiếng Anh. Bài giảng giải tích của MIT đặt liên tục đều cạnh định nghĩa đạo hàm — đúng chỗ bài phân biệt δ phụ thuộc điểm với một δ dùng cho cả miền.
+- [Epsilon-Delta Continuity | This Is What Continuity Actually Means | Visually Explained](https://www.youtube.com/watch?v=2SYsl3SomQc) — Demathify, tiếng Anh. Một hình ngắn cho câu «δ có thể phụ thuộc vào điểm c», là khác biệt giữa liên tục và liên tục đều trong bài.
+

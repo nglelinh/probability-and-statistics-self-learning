@@ -50,6 +50,12 @@ Bài phân phối lấy mẫu sau đó giải thích vì sao ước lượng Mon
 
 Khi một bài báo nói “hàm hợp lý nhị thức âm,” “cường độ Hawkes nơ-ron,” hoặc “score entropy trên token,” đó là ngôn ngữ chương này. Ước lượng và kiểm định đến sau; chúng tác động trên cùng các họ có tên này.
 
+## Video tham khảo
+
+- [Regression with Count Data: Poisson and Negative Binomial](https://www.youtube.com/watch?v=uGKnoAw-PFQ) — Matthew E. Clapham, tiếng Anh. **xem trước.** Hồi quy đếm Poisson và nhị thức âm khi phương sai lớn hơn kỳ vọng — mục mô hình đếm của bài.
+- [L22.2 Definition of the Poisson Process](https://www.youtube.com/watch?v=D_EGYzqmapc) — MIT OpenCourseWare, tiếng Anh. Định nghĩa quá trình Poisson của MIT: số gia độc lập và số đếm trên một khoảng là Poisson — mục nhật ký và lượt request.
+- [Discrete Diffusion Modeling by Estimating the Ratios of the Data Distribution – Paper Explained](https://www.youtube.com/watch?v=K_9wQ6LZNpI) — AI Coffee Break with Letitia, tiếng Anh. Bài báo SEDD mà bài trích: mô hình sinh rời rạc khớp tỷ số xác suất, tức một PMF trên token chứ không phải một điểm dự báo.
+
 ## Nguồn
 
 1. D. Salinas, V. Flunkert, J. Gasthaus và T. Januschowski, “DeepAR: Probabilistic forecasting with autoregressive recurrent networks,” *Int. J. Forecasting* 36(3), 2020. [DOI](https://doi.org/10.1016/j.ijforecast.2019.07.001) · [arXiv:1704.04110](https://arxiv.org/abs/1704.04110)

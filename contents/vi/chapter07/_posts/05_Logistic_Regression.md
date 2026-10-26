@@ -413,6 +413,12 @@ def plot_roc_curve():
 # plot_roc_curve()
 ```
 
+## Video tham khảo
+
+- [StatQuest: Logistic Regression](https://www.youtube.com/watch?v=yIYKR4sgzI8) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Vì sao đường thẳng không dùng để phân loại, rồi sigmoid và log-odds — mở đầu bài.
+- [Logistic Regression Details Pt 2: Maximum Likelihood](https://www.youtube.com/watch?v=BfKanl1aSG0) — StatQuest with Josh Starmer, tiếng Anh. Hợp lý cực đại cho hệ số logistic — mục MLE bài triển khai từ đầu.
+- [ROC and AUC, Clearly Explained!](https://www.youtube.com/watch?v=4jRBRDbJemM) — StatQuest with Josh Starmer, tiếng Anh. Đường ROC và diện tích AUC — mục đánh giá phân loại ở cuối bài.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Implement Gradient Descent**

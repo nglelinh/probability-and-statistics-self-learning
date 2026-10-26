@@ -122,6 +122,12 @@ print(df.describe())
 -   `pandas.std()` mặc định `ddof=1` (chia cho $n-1$ - Sample Std).
 -   Khi làm việc với dữ liệu mẫu, luôn nhớ dùng `ddof=1` (Degrees of Freedom).
 
+## Video tham khảo
+
+- [Calculating the Mean, Variance and Standard Deviation, Clearly Explained!!!](https://www.youtube.com/watch?v=SzZ6GpcfoQY) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Trung bình, phương sai và độ lệch chuẩn mẫu — ba đặc trưng số bài tính trên tập có outlier.
+- [Review and intuition why we divide by n-1 for the unbiased sample | Khan Academy](https://www.youtube.com/watch?v=KkaU2ur3Ymw) — Khan Academy, tiếng Anh. Vì sao phương sai mẫu chia cho n−1, đúng chỗ bài đặt ddof=1 trong NumPy.
+- [Population and Estimated Parameters, Clearly Explained!!!](https://www.youtube.com/watch?v=vikkiwjQqfU) — StatQuest with Josh Starmer, tiếng Anh. Phân biệt tham số tổng thể với ước lượng trên mẫu, trước khi đọc mean và sd như thống kê chứ không phải hằng số.
+
 ## 8. Bài Tập
 
 1.  Cho tập dữ liệu: $X = \{12, 15, 12, 89, 14, 12, 16\}$.

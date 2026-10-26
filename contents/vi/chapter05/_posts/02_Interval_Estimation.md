@@ -413,6 +413,12 @@ def bootstrap_ci():
 # bootstrap_ci()
 ```
 
+## Video tham khảo
+
+- [Khoảng tin cậy (confidence interval) là gì? | Phân Tích Thống Kê 15 | Learn to do SCIENCE](https://www.youtube.com/watch?v=cr9QjU0yDt0) — Learn to do SCIENCE, tiếng Việt. **xem trước.** Khoảng tin cậy 95% là tính chất của thủ tục trên nhiều mẫu, không phải xác suất tham số nằm trong một khoảng đã tính.
+- [Introduction to the t Distribution (non-technical)](https://www.youtube.com/watch?v=Uv6nGIgZMVw) — jbstatistics, tiếng Anh. Họ t khi chưa biết phương sai — mục khoảng cho trung bình mà bài thay z bằng phân vị t.
+- [Bootstrapping Main Ideas!!!](https://www.youtube.com/watch?v=Xz0x-8-cgaQ) — StatQuest with Josh Starmer, tiếng Anh. Bootstrap lấy phân vị của thống kê trên các mẫu tái chọn — mục khoảng tin cậy bootstrap của bài.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Coverage Simulation**

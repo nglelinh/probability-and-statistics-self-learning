@@ -288,6 +288,12 @@ def demonstrate_curse_of_dimensionality():
 # demonstrate_curse_of_dimensionality()
 ```
 
+## Video tham khảo
+
+- [A Gentle Introduction to Machine Learning](https://www.youtube.com/watch?v=Gv9_4yMHFhI) — StatQuest with Josh Starmer, English. **xem trước.** The supervised frame: regression when Y is continuous and classification when Y is discrete, before the bias–variance section.
+- [Machine Learning Fundamentals: Bias and Variance](https://www.youtube.com/watch?v=EuBBz3bI-aA) — StatQuest with Josh Starmer, English. Bias and variance on a fitted curve — why a more flexible model is not automatically a better predictor.
+- [Statistical Learning: 2.3 Model Selection and Bias Variance Tradeoff](https://www.youtube.com/watch?v=pvcEQfcO3pk) — Stanford Online, English. The same tradeoff in the statistical-learning course this lesson is preparing you for.
+
 ## Exercises
 
 **Exercise 1: Overfitting in a real table.** Using a housing-style regression data set (or another tabular set in scikit-learn), fit polynomial models of several degrees and plot training versus test error.

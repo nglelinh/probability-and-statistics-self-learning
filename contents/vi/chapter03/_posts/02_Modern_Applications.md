@@ -44,6 +44,12 @@ Nghịch lý Simpson trong bài tập là lời cảnh báo rằng điều kiệ
 
 Khi một bài báo nói “chúng tôi báo ECE,” “chúng tôi hỏi mô hình một xác suất nói ra,” “chúng tôi đưa MultinomialNB vào sản xuất,” hoặc “chúng tôi identify hiệu ứng trong DoWhy,” đó là ngôn ngữ chương này. Các bài biến ngẫu nhiên ở chương sau tinh chỉnh *cách* ta gán số cho biến cố, không thay ý nghĩa của $$P(\,\cdot\mid\,\cdot\,)$$.
 
+## Video tham khảo
+
+- [Probability Calibration : Data Science Concepts](https://www.youtube.com/watch?v=AunotauS5yI) — ritvikmath, tiếng Anh. **xem trước.** Hiệu chỉnh xác suất: tần suất trong từng bin phải gần điểm dự đoán — định nghĩa ECE và reliability diagram của bài.
+- [Naive Bayes, Clearly Explained!!!](https://www.youtube.com/watch?v=O2L2Uv9pdDA) — StatQuest with Josh Starmer, tiếng Anh. Naive Bayes nhân các xác suất có điều kiện — giả thiết độc lập mà bài nói vẫn đang chạy trong bộ lọc thư.
+- [Simpson's Paradox](https://www.youtube.com/watch?v=ebEkn-BiW5k) — minutephysics, tiếng Anh. Nghịch lý Simpson: điều kiện hóa một nhóm có thể đảo chiều kết luận — lý do bài tách P(Y|X) khỏi P(Y|do(X)).
+
 ## Nguồn
 
 1. C. Guo, G. Pleiss, Y. Sun và K. Q. Weinberger, “On Calibration of Modern Neural Networks,” ICML 2017. [PMLR](https://proceedings.mlr.press/v70/guo17a.html)

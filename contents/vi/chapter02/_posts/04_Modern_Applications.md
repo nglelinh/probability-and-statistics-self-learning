@@ -45,6 +45,12 @@ Hollmann, Müller, Eggensperger và Hutter (*TabPFN*, [ICLR 2023](https://iclr.c
 
 Khi một bài báo nói “chúng tôi lọc Common Crawl theo điểm CLIP,” “chúng tôi dùng cleanlab trên nhãn,” hoặc “đừng gom cụm trên UMAP,” đó là ngôn ngữ Chương 02. Các chương xác suất sau thêm mô hình lấy mẫu; chúng không thay thế kỷ luật về kiểu, tóm tắt, và hình.
 
+## Video tham khảo
+
+- [StatQuest: t-SNE, Clearly Explained](https://www.youtube.com/watch?v=NEaUSP4YerM) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** t-SNE giữ lân cận cục bộ và bẻ khoảng cách toàn cục — đúng cảnh báo của Chari và Pachter mà bài gọi là biểu đồ gây hiểu lầm hiện đại.
+- [UMAP Dimension Reduction, Main Ideas!!!](https://www.youtube.com/watch?v=eN0wFzBA4Sc) — StatQuest with Josh Starmer, tiếng Anh. UMAP cùng họ nhúng phi tuyến; xem để biết hình hai chiều không phải dữ liệu gốc trong mục embedding.
+- [GenAI and Datacomp: Creating the Largest Public Multimodal Dataset in Academia](https://www.youtube.com/watch?v=ba-aqPF6xuw) — AI Council, tiếng Anh. DataComp lọc một bể ảnh–văn bản bằng điểm và tần suất — thống kê mô tả trở thành can thiệp, như mục thiết kế tập dữ liệu của bài.
+
 ## Nguồn
 
 1. S. Y. Gadre và cộng sự, “DataComp: In search of the next generation of multimodal datasets,” NeurIPS 2023. [tóm tắt](https://proceedings.neurips.cc/paper_files/paper/2023/hash/56332d41d55ad7ad8024aac625881be7-Abstract-Datasets_and_Benchmarks.html) · [arXiv:2304.14108](https://arxiv.org/abs/2304.14108)

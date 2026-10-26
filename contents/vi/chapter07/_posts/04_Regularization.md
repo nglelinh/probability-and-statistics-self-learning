@@ -341,6 +341,12 @@ def practical_feature_selection():
 - **Lasso:** Khi nghi ngờ nhiều features vô dụng, cần feature selection
 - **Elastic Net:** Khi có nhóm features tương quan cao, hoặc $$p > n$$
 
+## Video tham khảo
+
+- [Regularization Part 1: Ridge (L2) Regression](https://www.youtube.com/watch?v=Q81RR3yKn30) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Ridge cộng λ lần bình phương hệ số vào tổng bình phương phần dư, và chọn λ bằng cross-validation.
+- [Regularization Part 2: Lasso (L1) Regression](https://www.youtube.com/watch?v=NGf0voTMlcs) — StatQuest with Josh Starmer, tiếng Anh. Lasso đổi phạt sang trị tuyệt đối để một số hệ số về đúng không — mục chọn đặc trưng của bài.
+- [Regularization Part 3: Elastic Net Regression](https://www.youtube.com/watch?v=1dKRdX9bfIo) — StatQuest with Josh Starmer, tiếng Anh. Elastic net trộn hai phạt, đúng mục bài đặt giữa ridge và lasso.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Implement Lasso với Coordinate Descent**

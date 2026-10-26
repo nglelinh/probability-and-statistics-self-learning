@@ -110,6 +110,12 @@ plt.show()
 print(f"Số biến Lasso giữ lại: {np.sum(lasso.coef_ != 0)}")
 ```
 
+## Video tham khảo
+
+- [Ridge vs Lasso Regression, Visualized!!!](https://www.youtube.com/watch?v=Xm2C_gTAl8c) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Hình phạt L2 co hệ số còn L1 cắt đúng về không — khác biệt bài muốn thấy khi so sánh ridge và lasso.
+- [Regularization Part 3: Elastic Net Regression](https://www.youtube.com/watch?v=1dKRdX9bfIo) — StatQuest with Josh Starmer, tiếng Anh. Elastic net khi muốn cả co lẫn thưa, mục bài đặt sau hai phạt riêng.
+- [Elastic Net Regularization : Data Science Concepts](https://www.youtube.com/watch?v=t6E0Dt5rg9U) — ritvikmath, tiếng Anh. Cùng elastic net từ một góc phạt toán, bổ sung cho đoạn chọn λ của bài.
+
 ### Bài Tập
 1. Sinh một tập dữ liệu có đa cộng tuyến cao (các cột X tương quan mạnh).
 2. So sánh MSE của OLS, Ridge và Lasso trên tập test.

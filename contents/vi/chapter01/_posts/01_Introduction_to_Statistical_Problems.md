@@ -80,6 +80,12 @@ print(f"Xác suất trùng ngày sinh với {n_people} người: {prob:.4f}")
 
 Đoạn code trên không hề sử dụng công thức giai thừa hay lũy thừa phức tạp nào. Nó chỉ đơn giản là mô phỏng lại thực tế một cách chân thực. Kết quả sẽ xấp xỉ 0.507 (hoặc 50.7%), điều này thường gây ngạc nhiên vì trực giác của chúng ta thường đánh giá thấp xác suất trùng lặp.
 
+## Video tham khảo
+
+- [Law of Large Numbers - Explained and Visualized](https://www.youtube.com/watch?v=MntX3zWNWec) — Jeremy Blitz-Jones, tiếng Anh. **xem trước.** Trung bình mẫu tiến về kỳ vọng khi số lần thử tăng — đúng luật số lớn mà bài dùng để biện minh cho mô phỏng Monte Carlo.
+- [6. Monte Carlo Simulation](https://www.youtube.com/watch?v=OgO1gpXSUzU) — MIT OpenCourseWare, tiếng Anh. John Guttag kể vì sao Ulam phải mô phỏng thay vì đếm tổ hợp, rồi ước lượng một đại lượng bằng mẫu ngẫu nhiên — cùng logic với bài toán xúc xắc và ước lượng π.
+- [Check your intuition: The birthday problem - David Knuffke](https://www.youtube.com/watch?v=KtT_cgMzHx8) — TED-Ed, tiếng Anh. Bài toán sinh nhật trong thân bài: trực giác đánh giá thấp xác suất trùng, và vì sao một thí nghiệm lặp lại cho kết quả khoảng một nửa với 23 người.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Mô phỏng Đồng Xu**

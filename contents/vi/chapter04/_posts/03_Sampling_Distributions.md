@@ -143,6 +143,12 @@ Resampling để ước lượng sampling distribution.
 **3. Hypothesis Testing:**
 Test xem model có tốt hơn baseline không.
 
+## Video tham khảo
+
+- [But what is the Central Limit Theorem?](https://www.youtube.com/watch?v=zeJD6dqJ5lo) — 3Blue1Brown, tiếng Anh. **xem trước.** Định lý giới hạn trung tâm bằng bảng Galton và tổng các biến: trung bình mẫu về hình chuẩn dù từng quan sát thì không.
+- [The Central Limit Theorem, Clearly Explained!!!](https://www.youtube.com/watch?v=YAlJCEDH2uY) — StatQuest with Josh Starmer, tiếng Anh. Cùng định lý, ngắn hơn, và chỗ nó biện minh cho kiểm định t mà bài nhắc trong ứng dụng.
+- [The Sampling Distribution of the Sample Mean (fast version)](https://www.youtube.com/watch?v=0zqNGDVNKgA) — jbstatistics, tiếng Anh. Phân phối lấy mẫu của trung bình mẫu — đối tượng bài mô phỏng trước khi gọi tên CLT.
+
 ## Bài Tập
 
 **Bài 1:** Mô phỏng CLT với phân phối Chi-squared. Quan sát tốc độ hội tụ.

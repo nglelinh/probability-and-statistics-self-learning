@@ -507,6 +507,12 @@ def test_independence():
 # test_independence()
 ```
 
+## Video tham khảo
+
+- [Conditional Probabilities, Clearly Explained!!!](https://www.youtube.com/watch?v=_IgyaD7vOOA) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Xác suất có điều kiện từ đếm trong bảng — cầu nối giữa không gian mẫu và định lý Bayes trong bài.
+- [Bayes theorem, the geometry of changing beliefs](https://www.youtube.com/watch?v=HZGCoVF3YvM) — 3Blue1Brown, tiếng Anh. Định lý Bayes như cách chứng cứ đổi niềm tin, đúng công thức bài suy ra từ xác suất có điều kiện.
+- [L03.5 Conditional Independence](https://www.youtube.com/watch?v=7B3cDe39lwY) — MIT OpenCourseWare, tiếng Anh. Độc lập có điều kiện trên một đồ thị ngắn của MIT — phân biệt với độc lập thường, trước khi bài sang lọc spam.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Bài Toán Monty Hall**

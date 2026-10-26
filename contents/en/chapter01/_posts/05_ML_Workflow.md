@@ -434,6 +434,12 @@ def complete_ml_workflow():
 
 **Interpretation.** Feature importance, residual plots, and a sentence about *why* the model works.
 
+## Video tham khảo
+
+- [Train, Test, & Validation Sets explained](https://www.youtube.com/watch?v=Zi-0rlM4RDs) — deeplizard, English. **xem trước.** Why train, validation, and test must stay apart — the split step in this lesson’s pipeline.
+- [One-Hot, Label, Target and K-Fold Target Encoding, Clearly Explained!!!](https://www.youtube.com/watch?v=589nCGeWG1w) — StatQuest with Josh Starmer, English. The lesson encodes categories with OneHotEncoder; this video explains one-hot before the other encodings.
+- [Machine Learning Tutorial Python - 16: Hyper parameter Tuning (GridSearchCV)](https://www.youtube.com/watch?v=HdlDYng8g9s) — codebasics, English. GridSearchCV in scikit-learn for the hyperparameter step of the case study.
+
 ## Exercises
 
 **Exercise 1: End-to-end project.** Run the full workflow on the diabetes data (or another regression table). Compare at least three models.

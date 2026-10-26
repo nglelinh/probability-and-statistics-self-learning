@@ -336,6 +336,12 @@ def demonstrate_curse_of_dimensionality():
 # demonstrate_curse_of_dimensionality()
 ```
 
+## Video tham khảo
+
+- [A Gentle Introduction to Machine Learning](https://www.youtube.com/watch?v=Gv9_4yMHFhI) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Khung học có nhãn: hồi quy khi Y liên tục và phân loại khi Y rời rạc, trước phần bias–variance.
+- [Machine Learning Fundamentals: Bias and Variance](https://www.youtube.com/watch?v=EuBBz3bI-aA) — StatQuest with Josh Starmer, tiếng Anh. Bias và variance trên một đường khớp dữ liệu — lý do mô hình phức tạp hơn không luôn dự đoán tốt hơn.
+- [Statistical Learning: 2.3 Model Selection and Bias Variance Tradeoff](https://www.youtube.com/watch?v=pvcEQfcO3pk) — Stanford Online, tiếng Anh. Cùng đánh đổi đó trong statistical learning, nối sang bài chọn mô hình phía sau.
+
 ## Bài Tập Thực Hành
 
 **Bài 1: Phân Tích Overfitting**

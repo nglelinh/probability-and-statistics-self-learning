@@ -142,6 +142,12 @@ Peeking không phải mối đe dọa hợp lệ duy nhất. Nhiễu (xử lý c
 
 Các mở rộng nằm trên chương này gồm kiểm định giảm phương sai (CUPED, Chương 07 sẽ lấy lại), suy diễn nhân quả khi gán không phải Bernoulli sạch, và gộp e-value cho meta-analysis sống.
 
+## Video tham khảo
+
+- [Trustworthy Online Controlled Experiments at Large Scale w/ Ronny Kohavi | DECISIONS/Replay by Split](https://www.youtube.com/watch?v=kTAFOCynWIg) — Split, tiếng Anh. **xem trước.** Ronny Kohavi nói thí nghiệm trực tuyến là kiểm định hai mẫu ở quy mô công nghiệp — khung A/B mở đầu bài.
+- [Peeking at A/B Tests: Why it matters, and what to do about it](https://www.youtube.com/watch?v=6G8F22NSCxk) — KDD2017 video, tiếng Anh. Báo cáo KDD về peeking: nhìn p-value rồi dừng sớm làm phình sai lầm loại I — mục kiểm định tuần tự của bài.
+- [False Discovery Rates, FDR, clearly explained](https://www.youtube.com/watch?v=K8LQSvtjcEo) — StatQuest with Josh Starmer, tiếng Anh. FDR và Benjamini–Hochberg khi có hàng nghìn giả thuyết — mục đa kiểm định bài đối chiếu với Bonferroni.
+
 ## Bài tập
 
 **Bài 1 (khái niệm).** Dashboard của một nhà cung cấp cập nhật $$p$$-value mỗi giờ và tô thẻ xanh ở 0,05. Giả định nào của kiểm định mẫu cố định bị vi phạm? Nêu một thay thế luôn hợp lệ và một thay thế vận hành không đổi kiểm định.

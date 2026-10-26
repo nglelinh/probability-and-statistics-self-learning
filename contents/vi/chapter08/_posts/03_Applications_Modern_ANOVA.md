@@ -133,6 +133,12 @@ ANOVA giả định phương sai không đổi và, trong dẫn xuất cổ đi�
 
 Mở rộng gồm ANOVA hoán vị khi giả định Gauss khó tin, biến đổi hạng căn chỉnh trong các nghiên cứu tương tác người–máy, và ANOVA phân cấp Bayes khi nhiều yếu tố yếu chia một prior—bối cảnh Gelman vốn nhằm tới.
 
+## Video tham khảo
+
+- [Full Factorial Design (DoE - Design of Experiments) Simply explained](https://www.youtube.com/watch?v=cHoYAyYHzB0) — numiqo, tiếng Anh. **xem trước.** Bố trí giai thừa hai yếu tố — đúng mô hình bài dùng cho một lần ra mắt nhiều yếu tố, thay vì một nắm t-test.
+- [Follow Up ANOVA – Tukey’s HSD Post Hoc Test (12-5)](https://www.youtube.com/watch?v=P1j2CkOjWtM) — Research By Design, tiếng Anh. Tukey HSD sau khi F có ý nghĩa — một trong hai lựa chọn hậu kiểm bài đối chiếu với FDR.
+- [The power of mixed-effects models | Longitudinal 3](https://www.youtube.com/watch?v=MOyjGnjAols) — Very Normal, tiếng Anh. Khi đơn vị đo lồng trong người dùng hoặc truy vấn, thành phần phương sai ngẫu nhiên thay cho một bảng F thuần — mục mô hình hỗn hợp.
+
 ## Bài tập
 
 **Bài 1 (khái niệm).** Một nhóm chạy bốn màu nút và sáu $$t$$-test từng cặp, rồi đưa cặp có $$p$$ nhỏ nhất. Họ đã kết hợp hai sai lầm Chương 08/06 nào? Đối lập đăng ký trước nào sẽ sạch hơn?
