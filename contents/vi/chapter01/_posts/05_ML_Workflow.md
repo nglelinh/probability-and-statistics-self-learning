@@ -10,24 +10,24 @@ categories:
 lesson_type: required
 ---
 
-Sau khi học các kỹ thuật riêng lẻ, bài học cuối cùng này tổng hợp tất cả kiến thức vào một quy trình hoàn chỉnh từ đầu đến cuối. Chúng ta sẽ đi qua toàn bộ pipeline của một dự án machine learning thực tế: từ việc hiểu dữ liệu, preprocessing, feature engineering, model selection, hyperparameter tuning, đến đánh giá và diễn giải kết quả. Đây là bài học quan trọng nhất vì nó cho thấy cách áp dụng lý thuyết vào thực tế.
+Sau khi tìm hiểu từng kỹ thuật riêng lẻ, bài học này tổng hợp chúng vào một quy trình hoàn chỉnh từ đầu đến cuối cho một dự án học máy (machine learning). Chúng ta sẽ đi qua toàn bộ chuỗi xử lý trên một ví dụ thực tế: tìm hiểu dữ liệu, tiền xử lý, kỹ thuật đặc trưng (feature engineering), lựa chọn mô hình, tinh chỉnh siêu tham số, đánh giá cuối cùng và diễn giải kết quả.
 
 ---
 
-## Quy Trình Machine Learning End-to-End
+## Quy trình Machine Learning từ đầu đến cuối
 
-Một dự án ML thực tế thường trải qua các bước sau:
+Một dự án học máy thực tế thường gồm 8 bước chính:
 
-1. **Hiểu vấn đề và dữ liệu** (Problem Understanding & EDA)
-2. **Chuẩn bị dữ liệu** (Data Preprocessing)
-3. **Feature Engineering**
-4. **Chia dữ liệu** (Train/Validation/Test Split)
-5. **Baseline Model**
-6. **Model Selection & Hyperparameter Tuning**
+1. **Hiểu bài toán và khám phá dữ liệu** (Problem Understanding & EDA)
+2. **Tiền xử lý dữ liệu** (Data Preprocessing)
+3. **Kỹ thuật đặc trưng** (Feature Engineering)
+4. **Chia tập dữ liệu** (Train/Validation/Test Split)
+5. **Xây dựng mô hình cơ sở** (Baseline Model)
+6. **Lựa chọn mô hình và tinh chỉnh siêu tham số** (Model Selection & Hyperparameter Tuning)
 7. **Đánh giá cuối cùng** (Final Evaluation)
 8. **Diễn giải mô hình** (Model Interpretation)
 
-Chúng ta sẽ đi qua từng bước với một case study thực tế.
+Dưới đây là phần cài đặt minh họa từng bước trên bộ dữ liệu California Housing.
 
 ```python
 import numpy as np
@@ -49,7 +49,7 @@ sns.set_style('whitegrid')
 plt.rcParams['figure.figsize'] = (10, 6)
 ```
 
-## Bước 1: Hiểu Vấn Đề và Khám Phá Dữ Liệu (EDA)
+## Bước 1: Hiểu bài toán và khám phá dữ liệu (EDA)
 
 ```python
 from sklearn.datasets import fetch_california_housing
@@ -116,7 +116,7 @@ def load_and_explore_data():
 # df = load_and_explore_data()
 ```
 
-## Bước 2: Data Preprocessing
+## Bước 2: Tiền xử lý dữ liệu (Data Preprocessing)
 
 ```python
 def preprocess_data(df):
@@ -151,7 +151,7 @@ def preprocess_data(df):
 # X, y = preprocess_data(df)
 ```
 
-## Bước 3: Feature Engineering
+## Bước 3: Kỹ thuật đặc trưng (Feature Engineering)
 
 ```python
 def create_features(X):
@@ -181,7 +181,7 @@ def create_features(X):
 # X_engineered = create_features(X)
 ```
 
-## Bước 4: Train/Validation/Test Split
+## Bước 4: Chia tập dữ liệu (Train/Validation/Test Split)
 
 ```python
 def split_data(X, y, test_size=0.2, val_size=0.2, random_state=42):
@@ -207,7 +207,7 @@ def split_data(X, y, test_size=0.2, val_size=0.2, random_state=42):
     return X_train, X_val, X_test, y_train, y_val, y_test
 ```
 
-## Bước 5: Baseline Model
+## Bước 5: Mô hình cơ sở (Baseline Model)
 
 ```python
 def build_baseline(X_train, y_train, X_val, y_val):
@@ -246,7 +246,7 @@ def build_baseline(X_train, y_train, X_val, y_val):
 # baseline_mse = build_baseline(X_train, y_train, X_val, y_val)
 ```
 
-## Bước 6: Model Selection & Hyperparameter Tuning
+## Bước 6: Lựa chọn mô hình và tinh chỉnh siêu tham số
 
 ```python
 def model_selection_pipeline(X_train, y_train, X_val, y_val):
@@ -330,7 +330,7 @@ def model_selection_pipeline(X_train, y_train, X_val, y_val):
 # results, best_name, preprocessor = model_selection_pipeline(X_train, y_train, X_val, y_val)
 ```
 
-## Bước 7: Final Evaluation trên Test Set
+## Bước 7: Đánh giá cuối cùng trên tập kiểm tra (Test Set)
 
 ```python
 def final_evaluation(best_model, preprocessor, X_test, y_test):
@@ -381,7 +381,7 @@ def final_evaluation(best_model, preprocessor, X_test, y_test):
 # final_evaluation(results[best_name]['model'], preprocessor, X_test, y_test)
 ```
 
-## Bước 8: Model Interpretation
+## Bước 8: Diễn giải mô hình (Model Interpretation)
 
 ```python
 def interpret_model(model, feature_names):
@@ -421,7 +421,7 @@ def interpret_model(model, feature_names):
 # interpret_model(results[best_name]['model'], X_train.columns.tolist())
 ```
 
-## Complete Workflow Function
+## Hàm tổng hợp toàn bộ quy trình
 
 ```python
 def complete_ml_workflow():
@@ -467,52 +467,49 @@ def complete_ml_workflow():
 # results, best_model_name = complete_ml_workflow()
 ```
 
-## Best Practices Checklist
+## Danh sách kiểm tra thực hành tốt (Best Practices)
 
-✅ **Data Understanding**
-- EDA kỹ lưỡng
-- Kiểm tra missing values, outliers
-- Hiểu distribution của features
+✅ **Hiểu dữ liệu**
+- Khám phá dữ liệu (EDA) kỹ lưỡng trước khi mô hình hóa.
+- Kiểm tra giá trị thiếu (missing values) và giá trị ngoại lai (outliers).
+- Nắm rõ phân phối của từng đặc trưng và biến mục tiêu.
 
-✅ **Data Splitting**
-- Chia train/val/test TRƯỚC khi làm bất cứ gì
-- Không bao giờ nhìn test set cho đến cuối
+✅ **Chia tập dữ liệu**
+- Chia tập train/validation/test trước khi thực hiện các phép biến đổi dựa trên thống kê dữ liệu.
+- Giữ kín tập kiểm tra (test set) cho tới bước đánh giá cuối cùng.
 
-✅ **Preprocessing**
-- Fit trên train, transform trên val/test
-- Sử dụng Pipeline để tránh data leakage
+✅ **Tiền xử lý**
+- Chỉ ước lượng tham số tiền xử lý (`fit`) trên tập huấn luyện, sau đó áp dụng (`transform`) lên tập validation và test.
+- Dùng `Pipeline` để tránh rò rỉ dữ liệu (data leakage).
 
-✅ **Model Selection**
-- Bắt đầu với baseline đơn giản
-- So sánh nhiều models
-- Sử dụng cross-validation
+✅ **Lựa chọn mô hình**
+- Bắt đầu từ một mô hình cơ sở (baseline) đơn giản để làm mốc so sánh.
+- So sánh nhiều họ mô hình khác nhau bằng kiểm định chéo (cross-validation).
 
-✅ **Hyperparameter Tuning**
-- GridSearchCV hoặc RandomizedSearchCV
-- Tune trên validation set, không phải test set
+✅ **Tinh chỉnh siêu tham số**
+- Sử dụng `GridSearchCV` hoặc `RandomizedSearchCV`.
+- Tinh chỉnh dựa trên tập validation hoặc cross-validation, không dùng tập test.
 
-✅ **Final Evaluation**
-- Chỉ evaluate trên test set MỘT LẦN duy nhất
-- Report nhiều metrics (MSE, R², MAE...)
+✅ **Đánh giá cuối cùng**
+- Chỉ đánh giá trên tập test một lần duy nhất sau khi đã chốt mô hình.
+- Báo cáo nhiều chỉ số đánh giá (MSE, RMSE, MAE, $$R^2$$) để có cái nhìn đầy đủ.
 
-✅ **Interpretation**
-- Feature importance
-- Residual analysis
-- Hiểu tại sao model hoạt động
+✅ **Diễn giải mô hình**
+- Kiểm tra mức độ quan trọng của đặc trưng (feature importance) và phân tích phần dư (residual analysis) để hiểu hành vi của mô hình.
 
 ## Video tham khảo
 
-- [Train, Test, & Validation Sets explained](https://www.youtube.com/watch?v=Zi-0rlM4RDs) — deeplizard, tiếng Anh. **xem trước.** Vì sao phải tách train, validation và test — bước chia dữ liệu trong pipeline của bài.
-- [One-Hot, Label, Target and K-Fold Target Encoding, Clearly Explained!!!](https://www.youtube.com/watch?v=589nCGeWG1w) — StatQuest with Josh Starmer, tiếng Anh. Bài dùng OneHotEncoder khi chuẩn bị đặc trưng; video giải thích one-hot trước các kiểu mã hóa khác.
-- [Machine Learning Tutorial Python - 16: Hyper parameter Tuning (GridSearchCV)](https://www.youtube.com/watch?v=HdlDYng8g9s) — codebasics, tiếng Anh. GridSearchCV trên sklearn để chọn siêu tham số, đúng bước tinh chỉnh trong case study.
+- [Train, Test, & Validation Sets explained](https://www.youtube.com/watch?v=Zi-0rlM4RDs) — deeplizard, tiếng Anh. **Xem trước.** Giải thích lý do cần tách riêng ba tập train, validation và test — tương ứng bước chia dữ liệu trong quy trình của bài.
+- [One-Hot, Label, Target and K-Fold Target Encoding, Clearly Explained!!!](https://www.youtube.com/watch?v=589nCGeWG1w) — StatQuest with Josh Starmer, tiếng Anh. Giới thiệu mã hóa one-hot (`OneHotEncoder`) và các phương pháp mã hóa biến phân loại khác trong bước chuẩn bị đặc trưng.
+- [Machine Learning Tutorial Python - 16: Hyper parameter Tuning (GridSearchCV)](https://www.youtube.com/watch?v=HdlDYng8g9s) — codebasics, tiếng Anh. Hướng dẫn sử dụng `GridSearchCV` trong scikit-learn để chọn siêu tham số, tương ứng bước tinh chỉnh trong ví dụ của bài.
 
-## Bài Tập Thực Hành
+## Bài tập thực hành
 
-**Bài 1: End-to-End Project**
-Áp dụng toàn bộ workflow trên dataset Diabetes hoặc Boston Housing. So sánh ít nhất 3 models khác nhau.
+**Bài 1: Dự án end-to-end**
+Áp dụng toàn bộ quy trình trên cho tập dữ liệu Diabetes hoặc Boston Housing và so sánh ít nhất 3 mô hình khác nhau.
 
-**Bài 2: Feature Engineering**
-Tạo ít nhất 5 features mới cho California Housing dataset. Đánh giá xem chúng có cải thiện performance không.
+**Bài 2: Kỹ thuật đặc trưng (Feature Engineering)**
+Tạo thêm ít nhất 5 đặc trưng mới cho tập dữ liệu California Housing và đánh giá xem chúng có cải thiện hiệu suất mô hình hay không.
 
-**Bài 3: Pipeline Automation**
-Viết một sklearn Pipeline hoàn chỉnh bao gồm preprocessing, feature engineering và model training.
+**Bài 3: Tự động hóa bằng Pipeline**
+Xây dựng một `Pipeline` hoàn chỉnh trong scikit-learn kết hợp tiền xử lý, tạo đặc trưng và huấn luyện mô hình.

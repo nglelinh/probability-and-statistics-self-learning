@@ -10,19 +10,17 @@ categories:
 lesson_type: required
 ---
 
-Model selection là một trong những thách thức lớn nhất trong machine learning: Làm thế nào để chọn độ phức tạp mô hình phù hợp? Làm sao biết mô hình sẽ hoạt động tốt trên dữ liệu mới? Cross-validation và các phương pháp resampling cung cấp câu trả lời thực tế cho những câu hỏi này. Thay vì dựa vào các công thức lý thuyết, chúng ta sử dụng chính dữ liệu để ước lượng test error một cách đáng tin cậy.
+Lựa chọn mô hình là một bài toán cốt lõi trong học máy: làm thế nào để chọn mức độ phức tạp phù hợp và ước lượng khả năng dự đoán của mô hình trên dữ liệu mới? Kiểm định chéo (cross-validation) và các phương pháp lấy mẫu lại (resampling) giải quyết câu hỏi này theo hướng thực nghiệm: thay vì phụ thuộc hoàn toàn vào các công thức lý thuyết, ta sử dụng chính dữ liệu hiện có để ước lượng sai số kiểm tra (test error) một cách đáng tin cậy.
 
 ---
 
-## Vấn Đề: Training Error vs Test Error
+## Vấn đề: Sai số huấn luyện và sai số kiểm tra
 
-Chúng ta đã biết training error không phải là thước đo tốt cho hiệu suất thực tế:
-- Training error luôn giảm khi mô hình phức tạp hơn
-- Test error (trên dữ liệu mới) mới là thứ chúng ta quan tâm
+Sai số huấn luyện (training error) không phản ánh chính xác chất lượng dự đoán thực tế của mô hình:
+- Sai số huấn luyện luôn giảm khi mô hình trở nên phức tạp hơn.
+- Đại lượng ta thực sự quan tâm là sai số kiểm tra (test error) trên dữ liệu mới chưa từng xuất hiện khi huấn luyện.
 
-**Vấn đề:** Chúng ta không có test set vô hạn để đánh giá mọi mô hình!
-
-**Giải pháp:** Sử dụng dữ liệu huấn luyện một cách thông minh để **ước lượng** test error.
+Trong thực tế, ta không có một tập kiểm tra vô hạn để đánh giá mọi mô hình ứng viên. Giải pháp là tận dụng dữ liệu huấn luyện hiện có để **ước lượng** sai số kiểm tra thông qua việc chia tách và lấy mẫu lại.
 
 ```python
 import numpy as np
@@ -79,21 +77,17 @@ def demonstrate_train_test_split():
 
 ## K-Fold Cross-Validation
 
-**Ý tưởng:** Thay vì chia một lần, chia dữ liệu thành $$K$$ folds (thường $$K=5$$ hoặc $$K=10$$):
+Thay vì chỉ chia dữ liệu một lần, phương pháp K-Fold chia tập dữ liệu thành $$K$$ phần (fold) có kích thước xấp xỉ bằng nhau (thường chọn $$K=5$$ hoặc $$K=10$$) và thực hiện theo quy trình:
 
-1. Chia dữ liệu thành $$K$$ phần bằng nhau
-2. Lặp $$K$$ lần:
-   - Dùng fold thứ $$k$$ làm validation set
-   - Dùng $$K-1$$ folds còn lại làm training set
-   - Tính validation error
-3. CV error = trung bình của $$K$$ validation errors
+1. Chia ngẫu nhiên tập dữ liệu thành $$K$$ phần bằng nhau.
+2. Lặp $$K$$ lần: ở lần thứ $$k$$, dùng phần thứ $$k$$ làm tập validation, huấn luyện mô hình trên $$K-1$$ phần còn lại và tính sai số validation.
+3. Lấy trung bình cộng của $$K$$ sai số validation để thu được ước lượng sai số CV:
 
 $$\text{CV}_{(K)} = \frac{1}{K}\sum_{k=1}^K \text{MSE}_k$$
 
 **Ưu điểm:**
-- Sử dụng hiệu quả dữ liệu (mỗi điểm được dùng cả train và validation)
-- Ước lượng ổn định hơn single train/test split
-- Giảm variance của ước lượng
+- Sử dụng dữ liệu hiệu quả hơn vì mỗi quan sát đều được dùng cho cả huấn luyện và kiểm định.
+- Cho ước lượng ổn định hơn và có phương sai thấp hơn so với chia train/test một lần.
 
 ```python
 def k_fold_cross_validation_demo():
@@ -150,23 +144,21 @@ def k_fold_cross_validation_demo():
 
 ## Leave-One-Out Cross-Validation (LOOCV)
 
-Trường hợp đặc biệt của K-Fold khi $$K = n$$:
-- Mỗi lần, dùng 1 điểm làm validation, $$n-1$$ điểm làm training
-- Lặp $$n$$ lần
+LOOCV là trường hợp đặc biệt của K-Fold khi $$K = n$$: ở mỗi lần lặp, ta giữ lại đúng 1 quan sát làm tập validation và huấn luyện mô hình trên $$n-1$$ quan sát còn lại, lặp lại đủ $$n$$ lần.
 
 $$\text{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2$$
 
+trong đó $$\hat{y}_i$$ là giá trị dự đoán cho quan sát thứ $$i$$ từ mô hình được huấn luyện khi loại bỏ chính quan sát đó.
+
 **Ưu điểm:**
-- Sử dụng tối đa dữ liệu (training set có $$n-1$$ điểm)
-- Ước lượng gần như unbiased cho test error
+- Tận dụng gần như toàn bộ dữ liệu cho mỗi lần huấn luyện ($$n-1$$ điểm).
+- Cho ước lượng gần như không chệch (nearly unbiased) đối với sai số kiểm tra.
 
 **Nhược điểm:**
-- Tốn kém tính toán (phải train $$n$$ lần)
-- Variance cao (các training sets rất giống nhau)
+- Chi phí tính toán cao vì phải huấn luyện mô hình $$n$$ lần.
+- Phương sai của ước lượng có thể cao do các tập huấn luyện trùng lặp nhau gần như hoàn toàn.
 
-**Khi nào dùng LOOCV?**
-- Khi $$n$$ nhỏ (< 100)
-- Khi training nhanh (linear models)
+**Khi nào nên dùng LOOCV?** Phương pháp này phù hợp khi kích thước mẫu $$n$$ nhỏ (ví dụ $$n < 100$$) hoặc khi thời gian huấn luyện mô hình rất nhanh (như các mô hình tuyến tính).
 
 ```python
 from sklearn.model_selection import LeaveOneOut
@@ -213,11 +205,9 @@ def compare_cv_methods():
 # compare_cv_methods()
 ```
 
-## Stratified K-Fold (Cho Classification)
+## Stratified K-Fold (cho bài toán phân loại)
 
-Khi làm classification với classes imbalanced, cần đảm bảo mỗi fold có tỷ lệ classes giống nhau.
-
-**Stratified K-Fold:** Chia dữ liệu sao cho tỷ lệ classes trong mỗi fold giống với tổng thể.
+Trong bài toán phân loại có dữ liệu mất cân bằng lớp (imbalanced classes), việc chia ngẫu nhiên thông thường có thể khiến một số fold chứa quá ít mẫu của lớp thiểu số. **Stratified K-Fold** khắc phục điều này bằng cách chia dữ liệu sao cho tỷ lệ các lớp trong từng fold xấp xỉ tỷ lệ các lớp trong toàn bộ tập dữ liệu.
 
 ```python
 from sklearn.model_selection import StratifiedKFold
@@ -260,19 +250,19 @@ def stratified_cv_demo():
 
 ## Bootstrap
 
-Bootstrap là phương pháp resampling mạnh mẽ khác, đặc biệt hữu ích để ước lượng uncertainty.
+Bootstrap là một phương pháp lấy mẫu lại phổ biến khác, đặc biệt hữu ích để ước lượng độ bất định của tham số và sai số dự đoán.
 
-**Thuật toán:**
-1. Từ dataset gốc có $$n$$ điểm, lấy mẫu **có hoàn lại** $$n$$ điểm → bootstrap sample
-2. Train mô hình trên bootstrap sample
-3. Test trên các điểm **không** xuất hiện trong bootstrap sample (out-of-bag)
-4. Lặp lại $$B$$ lần (thường $$B = 100$$ hoặc $$1000$$)
+**Quy trình:**
+1. Từ tập dữ liệu gốc gồm $$n$$ quan sát, lấy mẫu **có hoàn lại** $$n$$ quan sát để tạo một mẫu bootstrap.
+2. Huấn luyện mô hình trên mẫu bootstrap vừa tạo.
+3. Đánh giá mô hình trên các quan sát **không** xuất hiện trong mẫu bootstrap đó (tập out-of-bag).
+4. Lặp lại $$B$$ lần (thường $$B = 100$$ hoặc $$B = 1000$$).
 
-**Bootstrap estimate of test error:**
+**Ước lượng sai số kiểm tra bằng Bootstrap (out-of-bag):**
 
 $$\text{Err}_{\text{boot}} = \frac{1}{B}\sum_{b=1}^B \frac{1}{|C^{-b}|}\sum_{i \in C^{-b}} L(y_i, \hat{f}^{*b}(x_i))$$
 
-trong đó $$C^{-b}$$ là tập các điểm không có trong bootstrap sample thứ $$b$$.
+trong đó $$C^{-b}$$ là tập các quan sát không xuất hiện trong mẫu bootstrap thứ $$b$$.
 
 ```python
 def bootstrap_error_estimation(n_bootstrap=100):
@@ -330,30 +320,30 @@ def bootstrap_error_estimation(n_bootstrap=100):
 # bootstrap_error_estimation()
 ```
 
-## Lựa Chọn Phương Pháp CV
+## Lựa chọn phương pháp kiểm định chéo
 
-| Phương pháp | Khi nào dùng | Ưu điểm | Nhược điểm |
-|-------------|--------------|---------|------------|
-| **Train/Test Split** | Quick baseline | Nhanh, đơn giản | Variance cao |
-| **5-Fold CV** | Mặc định cho hầu hết | Cân bằng bias-variance | - |
-| **10-Fold CV** | Dataset trung bình | Bias thấp hơn 5-fold | Chậm hơn |
-| **LOOCV** | Dataset nhỏ (n < 100) | Bias thấp nhất | Variance cao, chậm |
-| **Stratified CV** | Classification imbalanced | Đảm bảo tỷ lệ classes | - |
-| **Bootstrap** | Ước lượng uncertainty | Linh hoạt | Phức tạp hơn |
+| Phương pháp | Khi nào nên dùng | Ưu điểm | Nhược điểm |
+|-------------|------------------|---------|------------|
+| **Train/Test Split** | Tạo mốc cơ sở nhanh | Nhanh, đơn giản | Phương sai ước lượng cao |
+| **5-Fold CV** | Lựa chọn mặc định cho đa số bài toán | Cân bằng tốt giữa độ chệch và phương sai | — |
+| **10-Fold CV** | Tập dữ liệu kích thước trung bình | Độ chệch thấp hơn 5-Fold | Tốn thời gian tính toán hơn |
+| **LOOCV** | Tập dữ liệu nhỏ ($$n < 100$$) | Độ chệch rất thấp | Phương sai cao, tốn chi phí tính toán |
+| **Stratified CV** | Phân loại mất cân bằng lớp | Bảo toàn tỷ lệ các lớp ở mỗi fold | — |
+| **Bootstrap** | Ước lượng độ bất định | Linh hoạt | Cài đặt phức tạp hơn |
 
 ## Video tham khảo
 
-- [Máy Học Ứng Dụng - Bài 11. Phương Pháp Đánh Giá Chéo (Cross-Validation) Trong Máy Học](https://www.youtube.com/watch?v=aKVgXrDBqgk) — OVNE-Giáo Dục Việt, tiếng Việt. **xem trước.** Đánh giá chéo bằng tiếng Việt: xoay fold để ước lượng lỗi trên dữ liệu mới, thay vì tin training error.
-- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, tiếng Anh. Hình khối cho K-fold và leave-one-out, rồi dùng chính CV để chọn tham số tinh chỉnh.
-- [Bootstrapping Main Ideas!!!](https://www.youtube.com/watch?v=Xz0x-8-cgaQ) — StatQuest with Josh Starmer, tiếng Anh. Lấy mẫu có hoàn lại và phần out-of-bag — mục bootstrap ở cuối bài.
+- [Máy Học Ứng Dụng - Bài 11. Phương Pháp Đánh Giá Chéo (Cross-Validation) Trong Máy Học](https://www.youtube.com/watch?v=aKVgXrDBqgk) — OVNE-Giáo Dục Việt, tiếng Việt. **Xem trước.** Giải thích phương pháp đánh giá chéo bằng tiếng Việt: luân phiên các fold để ước lượng sai số trên dữ liệu mới thay vì chỉ dựa vào sai số huấn luyện.
+- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, tiếng Anh. Minh họa trực quan K-Fold và Leave-One-Out, cùng cách dùng cross-validation để chọn siêu tham số.
+- [Bootstrapping Main Ideas!!!](https://www.youtube.com/watch?v=Xz0x-8-cgaQ) — StatQuest with Josh Starmer, tiếng Anh. Trình bày cơ chế lấy mẫu có hoàn lại và tập out-of-bag, tương ứng mục Bootstrap ở cuối bài.
 
-## Bài Tập Thực Hành
+## Bài tập thực hành
 
-**Bài 1: Implement K-Fold từ Đầu**
-Viết hàm `my_kfold_cv(X, y, model, k=5)` không dùng sklearn.
+**Bài 1: Cài đặt K-Fold từ đầu**
+Viết hàm `my_kfold_cv(X, y, model, k=5)` không sử dụng hàm chia fold có sẵn của scikit-learn.
 
-**Bài 2: Nested CV**
-Implement nested cross-validation để chọn hyperparameter và đánh giá mô hình không biased.
+**Bài 2: Kiểm định chéo lồng nhau (Nested CV)**
+Cài đặt nested cross-validation để vừa tinh chỉnh siêu tham số vừa đánh giá mô hình mà tránh bị chệch lạc quan.
 
-**Bài 3: Time Series CV**
-Tìm hiểu về TimeSeriesSplit và áp dụng cho dữ liệu chuỗi thời gian (không thể shuffle!).
+**Bài 3: Kiểm định chéo cho chuỗi thời gian (Time Series CV)**
+Tìm hiểu `TimeSeriesSplit` và áp dụng cho dữ liệu chuỗi thời gian (không được xáo trộn thứ tự thời gian).

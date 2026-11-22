@@ -6,68 +6,68 @@ order: 1
 owner: "nglelinh"
 ---
 
-## 1. Mục Tiêu Bài Học
+## 1. Mục tiêu bài học
 
-Sau khi hoàn thành bài học này, sinh viên sẽ có thể:
-- Phân biệt rõ ràng giữa dữ liệu **định tính** (qualitative) và **định lượng** (quantitative).
-- Nhận diện các thang đo dữ liệu: **Định danh** (Nominal), **Thứ bậc** (Ordinal), **Khoảng** (Interval), và **Tỷ lệ** (Ratio).
-- Hiểu sự khác biệt giữa dữ liệu **rời rạc** (discrete) và **liên tục** (continuous).
-- Sử dụng **Python (Pandas)** để kiểm tra và chuyển đổi các kiểu dữ liệu thực tế.
+Sau khi hoàn thành bài học này, người học có thể:
+- Phân biệt rõ giữa dữ liệu **định tính** (qualitative) và **định lượng** (quantitative).
+- Nhận diện bốn thang đo dữ liệu: **định danh** (Nominal), **thứ bậc** (Ordinal), **khoảng** (Interval) và **tỷ lệ** (Ratio).
+- Phân biệt dữ liệu **rời rạc** (discrete) với dữ liệu **liên tục** (continuous).
+- Sử dụng **Python (Pandas)** để kiểm tra và chuyển đổi kiểu dữ liệu trong thực tế.
 
-## 2. Kiến Thức Tiền Đề
+## 2. Kiến thức tiền đề
 
 - Kiến thức cơ bản về lập trình Python.
-- Thư viện `pandas` cơ bản.
+- Thao tác cơ bản với thư viện `pandas`.
 
-## 3. Động Lực và Giới Thiệu
+## 3. Động lực và giới thiệu
 
-Hãy tưởng tượng bạn là một Data Scientist tại một công ty thương mại điện tử. Bạn nhận được một tập dữ liệu chứa thông tin khách hàng: độ tuổi, thu nhập, xếp hạng sản phẩm (1-5 sao), và loại thẻ thành viên (Vàng, Bạc, Đồng). 
+Hãy xét một tình huống quen thuộc trong thương mại điện tử: bạn nhận được tập dữ liệu khách hàng gồm độ tuổi, thu nhập, điểm đánh giá sản phẩm (1–5 sao) và hạng thẻ thành viên (Vàng, Bạc, Đồng).
 
-Nếu bạn tính trung bình cộng của "loại thẻ thành viên", kết quả sẽ vô nghĩa. Tại sao? Vì đó là dữ liệu định tính có thứ bậc, không phải con số thực sự. Ngược lại, tính trung bình của "thu nhập" lại hoàn toàn hợp lý. Việc hiểu rõ **loại dữ liệu** là bước đầu tiên và quan trọng nhất để chọn đúng phương pháp thống kê và giải thuật Machine Learning sau này. Sai lầm ngay từ bước này sẽ dẫn đến kết quả phân tích vô giá trị ("Garbage In, Garbage Out").
+Nếu tính trung bình cộng của "hạng thẻ thành viên", kết quả sẽ không có ý nghĩa vì đây là dữ liệu định tính có thứ bậc, không phải đại lượng số học. Ngược lại, tính trung bình của "thu nhập" lại hoàn toàn hợp lý. Xác định đúng **loại dữ liệu** là bước nền tảng để chọn phương pháp thống kê và thuật toán học máy phù hợp; sai sót ngay từ bước này sẽ dẫn đến kết quả phân tích sai lệch ("Garbage In, Garbage Out").
 
-## 4. Các Khái Niệm Cốt Lõi và Lý Thuyết
+## 4. Các khái niệm cốt lõi và lý thuyết
 
-### 4.1 Phân Loại Dữ Liệu (Data Types)
+### 4.1 Phân loại dữ liệu (Data Types)
 
 Dữ liệu thống kê thường được chia thành hai nhóm chính:
 
-1.  **Dữ liệu Định tính (Qualitative / Categorical Data)**:
-    -   Mô tả đặc tính, tính chất, không đo lường bằng con số cụ thể theo nghĩa toán học.
-    -   Ví dụ: Giới tính (Nam/Nữ), Màu sắc (Đỏ/Xanh/Vàng), Mã bưu điện.
+1. **Dữ liệu định tính (Qualitative / Categorical Data)**:
+   - Mô tả thuộc tính hoặc nhãn phân loại, không biểu diễn đại lượng đo lường theo nghĩa số học.
+   - Ví dụ: giới tính (Nam/Nữ), màu sắc (Đỏ/Xanh/Vàng), mã bưu điện.
 
-2.  **Dữ liệu Định lượng (Quantitative / Numerical Data)**:
-    -   Đo lường bằng con số, có thể thực hiện các phép toán số học (+, -, *, /).
-    -   Được chia nhỏ thành 2 loại:
-        -   **Rời rạc (Discrete)**: Giá trị đếm được, hữu hạn hoặc vô hạn đếm được (ví dụ: số con cái trong gia đình, số lỗi trong một đoạn code).
-        -   **Liên tục (Continuous)**: Có thể nhận bất kỳ giá trị nào trong một khoảng (ví dụ: chiều cao, cân nặng, nhiệt độ).
+2. **Dữ liệu định lượng (Quantitative / Numerical Data)**:
+   - Biểu diễn bằng giá trị số, cho phép thực hiện các phép toán số học (+, -, *, /).
+   - Gồm hai loại:
+     - **Rời rạc (Discrete)**: Nhận các giá trị đếm được, hữu hạn hoặc vô hạn đếm được (ví dụ: số con trong gia đình, số lỗi trong một đoạn mã).
+     - **Liên tục (Continuous)**: Có thể nhận bất kỳ giá trị nào trong một khoảng số thực (ví dụ: chiều cao, cân nặng, nhiệt độ).
 
-### 4.2 Thang Đo Dữ Liệu (Levels of Measurement)
+### 4.2 Thang đo dữ liệu (Levels of Measurement)
 
-Hiểu thang đo giúp xác định phép toán nào là hợp lệ.
+Xác định đúng thang đo giúp biết phép toán và thước đo thống kê nào hợp lệ:
 
-| Thang Đo (Level) | Đặc Điểm | Ví Dụ | Phép Toán Hợp Lệ |
+| Thang đo (Level) | Đặc điểm | Ví dụ | Phép toán hợp lệ |
 | :--- | :--- | :--- | :--- |
-| **Định danh (Nominal)** | Chỉ dùng để gọi tên, phân loại. Thứ tự không quan trọng. | Giới tính, Tên thành phố, Màu mắt. | Đếm (Frequency), Mode. Không thể so sánh >, <. |
-| **Thứ bậc (Ordinal)** | Có thứ tự rõ ràng, nhưng khoảng cách giữa các bậc không xác định hoặc không đều. | Xếp hạng phim (1-5 sao), Trình độ học vấn (Cử nhân, Thạc sĩ, Tiến sĩ). | So sánh thứ tự (Rank), Median. Không cộng trừ. |
-| **Khoảng (Interval)** | Có thứ tự, khoảng cách đều nhau và có ý nghĩa. Không có điểm 0 tuyệt đối (0 không có nghĩa là "không có gì"). | Nhiệt độ (Độ C, Độ F), Năm lịch. | Cộng, Trừ, Mean. Không thể nói "gấp đôi" (40°C không nóng gấp đôi 20°C). |
-| **Tỷ lệ (Ratio)** | Giống thang đo Khoảng nhưng có điểm 0 tuyệt đối. Tỷ lệ có ý nghĩa. | Chiều cao, Cân nặng, Thu nhập, Thời gian. | Tất cả phép toán (+, -, *, /). 100g nặng gấp đôi 50g. |
+| **Định danh (Nominal)** | Dùng để gọi tên và phân loại; thứ tự giữa các nhãn không có ý nghĩa. | Giới tính, tên thành phố, màu mắt. | Đếm tần số (Frequency), yếu vị (Mode). Không so sánh lớn hơn/nhỏ hơn. |
+| **Thứ bậc (Ordinal)** | Có thứ tự rõ ràng, nhưng khoảng cách giữa các bậc không xác định hoặc không đều nhau. | Xếp hạng phim (1–5 sao), trình độ học vấn (Cử nhân, Thạc sĩ, Tiến sĩ). | So sánh thứ tự (Rank), trung vị (Median). Không cộng trừ trực tiếp. |
+| **Khoảng (Interval)** | Có thứ tự, khoảng cách giữa các giá trị đều nhau và có ý nghĩa, nhưng không có điểm 0 tuyệt đối (giá trị 0 không có nghĩa là "không có gì"). | Nhiệt độ (°C, °F), năm lịch. | Cộng, trừ, tính trung bình (Mean). Không lấy tỷ số (40°C không nóng gấp đôi 20°C). |
+| **Tỷ lệ (Ratio)** | Có đầy đủ tính chất của thang đo khoảng và có điểm 0 tuyệt đối, nên tỷ số có ý nghĩa. | Chiều cao, cân nặng, thu nhập, thời gian. | Mọi phép toán (+, -, *, /); ví dụ 100g nặng gấp đôi 50g. |
 
-## 5. Ví Dụ Minh Họa
+## 5. Ví dụ minh họa
 
 **Ví dụ 1: Phân loại biến số**
 
 Xét các biến số sau trong một khảo sát y tế:
-1.  **Nhóm máu (A, B, AB, O)**: Định tính, Thang đo Định danh.
-2.  **Mức độ đau (Nhẹ, Vừa, Nặng)**: Định tính, Thang đo Thứ bậc.
-3.  **Nhiệt độ cơ thể (°C)**: Định lượng, Liên tục, Thang đo Khoảng.
-4.  **Số nhịp tim mỗi phút**: Định lượng, Rời rạc, Thang đo Tỷ lệ.
+1. **Nhóm máu (A, B, AB, O)**: Định tính, thang đo định danh.
+2. **Mức độ đau (Nhẹ, Vừa, Nặng)**: Định tính, thang đo thứ bậc.
+3. **Nhiệt độ cơ thể (°C)**: Định lượng, liên tục, thang đo khoảng.
+4. **Số nhịp tim mỗi phút**: Định lượng, rời rạc, thang đo tỷ lệ.
 
-## 6. Triển Khai trên Python
+## 6. Triển khai trên Python
 
-Chúng ta sẽ sử dụng thư viện `pandas` để làm việc với các kiểu dữ liệu này. Trong Pandas:
--   `object` hoặc `category`: Thường dùng cho dữ liệu Định tính.
--   `int64`: Dữ liệu Định lượng Rời rạc.
--   `float64`: Dữ liệu Định lượng Liên tục.
+Thư viện `pandas` hỗ trợ quản lý các kiểu dữ liệu tương ứng:
+- `object` hoặc `category`: thường dùng cho dữ liệu định tính.
+- `int64`: thường dùng cho dữ liệu định lượng rời rạc.
+- `float64`: thường dùng cho dữ liệu định lượng liên tục.
 
 ```python
 import pandas as pd
@@ -110,40 +110,40 @@ print(f"Thạc Sĩ > Cử Nhân: {df.iloc[2]['TrinhDo_HocVan'] > df.iloc[0]['Tri
 # nhưng về mặt thống kê chúng ta xử lý khác nhau (ví dụ khi vẽ biểu đồ).
 ```
 
-## 7. Giải Thích và Các Lỗi Thường Gặp
+## 7. Giải thích và các lỗi thường gặp
 
-### Lỗi 1: Xử lý dữ liệu Ordinal như dữ liệu Ratio
--   **Sai lầm**: Tính trung bình cộng của mã bưu điện hoặc xếp hạng sao (trong một số trường hợp khắt khe).
--   **Giải thích**: Khoảng cách giữa "1 sao" và "2 sao" có thể không giống khoảng cách giữa "4 sao" và "5 sao" trong cảm nhận người dùng. Tuy nhiên, trong thực tế Data Science, đôi khi ta vẫn tạm chấp nhận tính trung bình cho thang đo Likert (1-5) để đơn giản hóa, nhưng cần cẩn trọng khi diễn giải.
+### Lỗi 1: Xử lý dữ liệu định danh hoặc thứ bậc như dữ liệu tỷ lệ
+- **Sai lầm**: Tính trung bình cộng cho mã bưu điện (dữ liệu định danh) hoặc xếp hạng sao (dữ liệu thứ bậc) mà không xét đến bản chất thang đo.
+- **Giải thích**: Mã bưu điện chỉ là nhãn định danh nên giá trị trung bình hoàn toàn vô nghĩa. Với xếp hạng sao, khoảng cách cảm nhận giữa "1 sao" và "2 sao" có thể không tương đương khoảng cách giữa "4 sao" và "5 sao". Trong thực tế phân tích dữ liệu, đôi khi thang đo Likert (1–5) vẫn được tính trung bình để tóm tắt nhanh, nhưng cần diễn giải thận trọng.
 
-### Lỗi 2: Nhầm lẫn giữa Rời rạc và Liên tục
--   **Sai lầm**: Cố gắng vẽ biểu đồ đường (line plot) cho dữ liệu danh mục.
--   **Hậu quả**: Biểu đồ vô nghĩa.
+### Lỗi 2: Chọn sai biểu đồ cho kiểu dữ liệu
+- **Sai lầm**: Vẽ biểu đồ đường (line plot) cho dữ liệu danh mục không có thứ tự.
+- **Hậu quả**: Đường nối giữa các nhãn danh mục tạo cảm giác về một xu hướng liên tục không hề tồn tại.
 
 ## Video tham khảo
 
-- [Levels of Measurement - Nominal, Ordinal, Interval and Ratio](https://www.youtube.com/watch?v=8N5IMF-T3pc) — numiqo, tiếng Anh. **xem trước.** Bốn thang đo định danh, thứ bậc, khoảng và tỷ lệ — đúng bảng phân loại bài yêu cầu trước khi chuyển cột trong Pandas.
-- [Scales of Measurement - Nominal, Ordinal, Interval, & Ratio Scale Data](https://www.youtube.com/watch?v=LuBD49SFpWs) — The Organic Chemistry Tutor, tiếng Anh. Thêm ví dụ cho cùng bốn thang, và chỗ dữ liệu số vẫn có thể chỉ là thứ bậc chứ không phải tỷ lệ.
+- [Levels of Measurement - Nominal, Ordinal, Interval and Ratio](https://www.youtube.com/watch?v=8N5IMF-T3pc) — numiqo, tiếng Anh. **Xem trước.** Trình bày bốn thang đo định danh, thứ bậc, khoảng và tỷ lệ, khớp với bảng phân loại trước phần chuyển kiểu cột trong Pandas.
+- [Scales of Measurement - Nominal, Ordinal, Interval, & Ratio Scale Data](https://www.youtube.com/watch?v=LuBD49SFpWs) — The Organic Chemistry Tutor, tiếng Anh. Bổ sung ví dụ cho bốn thang đo và chỉ rõ các trường hợp dữ liệu dạng số nhưng thực chất chỉ thuộc thang đo thứ bậc chứ không phải tỷ lệ.
 
-## 8. Bài Tập
+## 8. Bài tập
 
 ### Bài tập lý thuyết
-1.  Phân loại các biến sau theo **Loại dữ liệu** (Định tính/Định lượng) và **Thang đo**:
-    a. Số điện thoại của khách hàng.
-    b. Khoảng cách từ nhà đến công ty (km).
-    c. IQ score.
-    d. Hạng ghế máy bay (Economy, Business, First Class).
+1. Phân loại các biến sau theo **loại dữ liệu** (định tính/định lượng) và **thang đo**:
+   a. Số điện thoại của khách hàng.
+   b. Khoảng cách từ nhà đến công ty (km).
+   c. Chỉ số IQ (IQ score).
+   d. Hạng ghế máy bay (Economy, Business, First Class).
 
 ### Bài tập Python
-1.  Tạo một DataFrame chứa thông tin về 10 bộ phim bao gồm: Tên phim, Thể loại, Năm sản xuất, Doanh thu, Rating (Rotten Tomatoes).
-2.  Xác định kiểu dữ liệu của từng cột.
-3.  Chuyển đổi cột "Rating" (nếu đang ở dạng chuỗi, ví dụ "85%") sang dạng số.
-4.  Chuyển đổi cột "Thể loại" sang dạng biến phân loại (`category`).
+1. Tạo một DataFrame chứa thông tin về 10 bộ phim gồm: Tên phim, Thể loại, Năm sản xuất, Doanh thu, Điểm đánh giá (Rotten Tomatoes).
+2. Xác định kiểu dữ liệu của từng cột.
+3. Chuyển đổi cột điểm đánh giá (nếu đang ở dạng chuỗi, ví dụ `"85%"`) sang dạng số.
+4. Chuyển đổi cột "Thể loại" sang kiểu biến phân loại (`category`).
 
-## 9. Tài Liệu Tham Khảo
+## 9. Tài liệu tham khảo
 
--   [1] Chapter 1, Sheldon Ross, *A First Course in Probability*, Pearson, 2012.
--   [2] Chapter 1, David Diez et al., *OpenIntro Statistics*.
--   [3] Pandas Documentation: [Categorical Data](https://pandas.pydata.org/pandas-docs/stable/user_guide/categorical.html).
+- [1] Chapter 1, Sheldon Ross, *A First Course in Probability*, Pearson, 2012.
+- [2] Chapter 1, David Diez et al., *OpenIntro Statistics*.
+- [3] Pandas Documentation: [Categorical Data](https://pandas.pydata.org/pandas-docs/stable/user_guide/categorical.html).
 
-Bài tùy chọn sau, [02-04-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter02/04_Modern_Applications %}), nối loại dữ liệu, đặc trưng số và biểu đồ với thực hành ML lấy dữ liệu làm trung tâm (2021–2025).
+Bài tùy chọn tiếp theo, [02-04-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter02/04_Modern_Applications %}), kết nối phân loại dữ liệu, đặc trưng số và trực quan hóa với thực hành học máy lấy dữ liệu làm trung tâm (2021–2025).

@@ -10,43 +10,41 @@ categories:
 lesson_type: required
 ---
 
-Hồi quy tuyến tính là nền tảng của statistical learning. Mặc dù đơn giản, nó chứa đựng hầu hết các ý tưởng quan trọng mà chúng ta sẽ gặp trong các mô hình phức tạp hơn: loss function, optimization, inference, và model diagnostics. Trong bài học này, chúng ta sẽ không chỉ học công thức mà còn hiểu sâu về ý nghĩa hình học, các giả định, và cách đánh giá chất lượng mô hình thông qua phân tích residuals.
+Hồi quy tuyến tính là nền tảng của học thống kê (statistical learning). Dù có cấu trúc đơn giản, mô hình này chứa đựng hầu hết các khái niệm cốt lõi thường gặp ở những mô hình phức tạp hơn như hàm mất mát (loss function), tối ưu hóa, suy diễn thống kê và chẩn đoán mô hình. Trong bài học này, chúng ta sẽ tìm hiểu công thức nghiệm, ý nghĩa hình học, các giả định và cách đánh giá chất lượng mô hình thông qua phân tích phần dư.
 
 ---
 
 ## Mô Hình Hồi Quy Tuyến Tính
 
-Giả sử chúng ta có $$n$$ quan sát với $$p$$ features. Mô hình tuyến tính giả định:
+Giả sử ta có $$n$$ quan sát với $$p$$ đặc trưng (features). Mô hình hồi quy tuyến tính có dạng:
 
 $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \epsilon$$
 
-hoặc dạng ma trận:
+hoặc viết gọn dưới dạng ma trận:
 
 $$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$$
 
 trong đó:
-- $$\mathbf{y}$$: vector $$n \times 1$$ của target values
-- $$\mathbf{X}$$: ma trận $$n \times (p+1)$$ của features (cột đầu tiên là 1 cho intercept)
-- $$\boldsymbol{\beta}$$: vector $$(p+1) \times 1$$ của coefficients
-- $$\boldsymbol{\epsilon}$$: vector $$n \times 1$$ của errors, giả định $$\epsilon_i \sim \mathcal{N}(0, \sigma^2)$$ độc lập
+- $$\mathbf{y}$$: vector $$n \times 1$$ chứa các giá trị biến mục tiêu.
+- $$\mathbf{X}$$: ma trận $$n \times (p+1)$$ chứa các đặc trưng (cột đầu tiên gồm toàn giá trị 1 tương ứng với hệ số chặn).
+- $$\boldsymbol{\beta}$$: vector $$(p+1) \times 1$$ chứa các hệ số hồi quy.
+- $$\boldsymbol{\epsilon}$$: vector $$n \times 1$$ chứa các sai số ngẫu nhiên, giả định $$\epsilon_i \sim \mathcal{N}(0, \sigma^2)$$ độc lập.
 
-## Ordinary Least Squares (OLS)
+## Phương Pháp Bình Phương Tối Thiểu (Ordinary Least Squares - OLS)
 
-**Ý tưởng:** Tìm $$\boldsymbol{\beta}$$ để minimize tổng bình phương residuals (Residual Sum of Squares - RSS):
+**Ý tưởng:** Tìm vector hệ số $$\boldsymbol{\beta}$$ sao cho tổng bình phương phần dư (Residual Sum of Squares - RSS) đạt giá trị nhỏ nhất:
 
 $$\text{RSS}(\boldsymbol{\beta}) = \sum_{i=1}^n (y_i - \mathbf{x}_i^T\boldsymbol{\beta})^2 = ||\mathbf{y} - \mathbf{X}\boldsymbol{\beta}||^2$$
 
 **Lời giải giải tích:**
 
-Đạo hàm theo $$\boldsymbol{\beta}$$ và cho bằng 0:
+Lấy đạo hàm của $$\text{RSS}$$ theo $$\boldsymbol{\beta}$$ và đặt bằng 0:
 
 $$\frac{\partial \text{RSS}}{\partial \boldsymbol{\beta}} = -2\mathbf{X}^T(\mathbf{y} - \mathbf{X}\boldsymbol{\beta}) = 0$$
 
-Giải ra:
+Giải phương trình trên, ta thu được nghiệm dạng đóng (closed-form solution) của OLS từ **phương trình pháp tuyến (normal equation)**:
 
 $$\hat{\boldsymbol{\beta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$$
-
-Đây là **normal equation**, công thức closed-form cho OLS.
 
 ```python
 import numpy as np
@@ -115,32 +113,30 @@ def implement_ols_from_scratch():
 
 ## Ý Nghĩa Hình Học
 
-OLS có thể hiểu theo góc nhìn hình học đẹp đẽ:
+Phương pháp OLS có cách diễn giải hình học trực quan thông qua phép chiếu vuông góc:
 
-**Projection Interpretation:** 
-- $$\mathbf{y}$$ là một vector trong không gian $$\mathbb{R}^n$$
-- $$\mathbf{X}$$ định nghĩa một không gian con (column space) của $$\mathbb{R}^n$$
-- $$\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}}$$ là **hình chiếu vuông góc** của $$\mathbf{y}$$ lên column space của $$\mathbf{X}$$
-- Residual vector $$\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}$$ vuông góc với column space
+- $$\mathbf{y}$$ là một vector trong không gian $$\mathbb{R}^n$$.
+- Các cột của $$\mathbf{X}$$ xác định một không gian con (column space) của $$\mathbb{R}^n$$.
+- Vector dự đoán $$\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}}$$ là **hình chiếu vuông góc** của $$\mathbf{y}$$ lên không gian cột của $$\mathbf{X}$$.
+- Vector phần dư $$\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}$$ vuông góc với không gian cột này.
 
-**Hat Matrix:**
+**Ma trận chiếu (Hat Matrix):**
 
 $$\mathbf{H} = \mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T$$
 
 $$\hat{\mathbf{y}} = \mathbf{H}\mathbf{y}$$
 
-Ma trận $$\mathbf{H}$$ được gọi là "hat matrix" vì nó "đội mũ" lên $$\mathbf{y}$$ để tạo ra $$\hat{\mathbf{y}}$$.
+Ma trận $$\mathbf{H}$$ được gọi là "hat matrix" vì phép nhân với $$\mathbf{H}$$ biến $$\mathbf{y}$$ thành $$\hat{\mathbf{y}}$$ (thêm ký hiệu dấu mũ lên $$\mathbf{y}$$).
 
 ## Định Lý Gauss-Markov
 
 Dưới các giả định:
-1. $$E[\boldsymbol{\epsilon}] = 0$$
-2. $$\text{Var}(\boldsymbol{\epsilon}) = \sigma^2 \mathbf{I}$$ (homoscedasticity)
-3. Errors không tương quan
+1. $$E[\boldsymbol{\epsilon}] = 0$$ (sai số có kỳ vọng bằng 0).
+2. $$\text{Var}(\boldsymbol{\epsilon}) = \sigma^2 \mathbf{I}$$ (phương sai đồng nhất và các sai số không tương quan với nhau).
 
-Thì **OLS estimator là Best Linear Unbiased Estimator (BLUE)**:
-- **Unbiased:** $$E[\hat{\boldsymbol{\beta}}] = \boldsymbol{\beta}$$
-- **Best:** Có variance nhỏ nhất trong tất cả linear unbiased estimators
+khi đó **ước lượng OLS là ước lượng tuyến tính không chệch tốt nhất (Best Linear Unbiased Estimator — BLUE)**:
+- **Không chệch (Unbiased):** $$E[\hat{\boldsymbol{\beta}}] = \boldsymbol{\beta}$$.
+- **Tốt nhất (Best):** Có phương sai nhỏ nhất trong tất cả các ước lượng tuyến tính không chệch.
 
 ```python
 def verify_gauss_markov(n_simulations=1000):
@@ -192,27 +188,27 @@ def verify_gauss_markov(n_simulations=1000):
 
 ## Đánh Giá Mô Hình
 
-### R² (Coefficient of Determination)
+### Hệ Số Xác Định $$R^2$$ (Coefficient of Determination)
 
 $$R^2 = 1 - \frac{\text{RSS}}{\text{TSS}} = 1 - \frac{\sum(y_i - \hat{y}_i)^2}{\sum(y_i - \bar{y})^2}$$
 
-- $$R^2 \in [0, 1]$$
-- $$R^2 = 1$$: Mô hình fit hoàn hảo
-- $$R^2 = 0$$: Mô hình không tốt hơn việc dự đoán bằng mean
+- Với mô hình OLS có hệ số chặn trên tập huấn luyện, $$R^2 \in [0, 1]$$.
+- $$R^2 = 1$$: Mô hình khớp hoàn toàn với dữ liệu.
+- $$R^2 = 0$$: Mô hình không giải thích tốt hơn việc dự đoán bằng trung bình mẫu $$\bar{y}$$.
 
-**Vấn đề:** $$R^2$$ luôn tăng khi thêm features, ngay cả khi features đó vô dụng!
+**Hạn chế:** $$R^2$$ không bao giờ giảm (và thường tăng) khi thêm đặc trưng mới vào mô hình, ngay cả khi đặc trưng đó không liên quan đến biến mục tiêu.
 
-### Adjusted R²
+### $$R^2$$ Hiệu Chỉnh (Adjusted $$R^2$$)
 
 $$R^2_{\text{adj}} = 1 - \frac{\text{RSS}/(n-p-1)}{\text{TSS}/(n-1)}$$
 
-Điều chỉnh cho số lượng parameters, phạt mô hình phức tạp.
+Chỉ số này hiệu chỉnh theo số lượng tham số $$p$$, qua đó phạt mô hình khi thêm biến không mang lại cải thiện tương xứng.
 
-### Residual Standard Error (RSE)
+### Sai Số Chuẩn Phần Dư (Residual Standard Error - RSE)
 
 $$\text{RSE} = \sqrt{\frac{\text{RSS}}{n-p-1}}$$
 
-Ước lượng cho $$\sigma$$ (standard deviation của errors).
+Đại lượng này là ước lượng cho độ lệch chuẩn $$\sigma$$ của sai số ngẫu nhiên.
 
 ```python
 from sklearn.datasets import load_diabetes
@@ -284,33 +280,33 @@ def comprehensive_model_evaluation():
 # comprehensive_model_evaluation()
 ```
 
-## Các Giả Định của Linear Regression
+## Các Giả Định Của Hồi Quy Tuyến Tính
 
-1. **Linearity:** Mối quan hệ giữa $$X$$ và $$Y$$ là tuyến tính
-2. **Independence:** Các quan sát độc lập
-3. **Homoscedasticity:** Variance của errors không đổi
-4. **Normality:** Errors tuân theo phân phối Chuẩn
-5. **No multicollinearity:** Các features không tương quan cao với nhau
+1. **Tính tuyến tính (Linearity):** Mối quan hệ giữa $$X$$ và $$Y$$ là tuyến tính.
+2. **Tính độc lập (Independence):** Các quan sát độc lập với nhau.
+3. **Phương sai đồng nhất (Homoscedasticity):** Phương sai của sai số không đổi.
+4. **Tính chuẩn (Normality):** Sai số tuân theo phân phối chuẩn.
+5. **Không có đa cộng tuyến mạnh (No multicollinearity):** Các đặc trưng không tương quan cao với nhau.
 
-**Kiểm tra giả định:**
-- Linearity: Residual plot
-- Homoscedasticity: Scale-location plot
-- Normality: Q-Q plot, Shapiro-Wilk test
-- Multicollinearity: VIF (Variance Inflation Factor)
+**Cách kiểm tra các giả định:**
+- Tính tuyến tính: Biểu đồ phần dư (Residual plot).
+- Phương sai đồng nhất: Biểu đồ Scale-Location.
+- Tính chuẩn: Biểu đồ Q-Q plot, kiểm định Shapiro-Wilk.
+- Đa cộng tuyến: Hệ số phóng đại phương sai VIF (Variance Inflation Factor).
 
 ## Video tham khảo
 
-- [Linear Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=7ArmBVF2dCs) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Hồi quy tuyến tính từ phần dư đến R² và p-value — trục đánh giá mô hình của bài này.
-- [Simple Linear Regression:  Checking Assumptions with Residual Plots](https://www.youtube.com/watch?v=iMdtTCX2Q70) — jbstatistics, tiếng Anh. Đồ thị phần dư để kiểm tra tuyến tính, phương sai không đổi và điểm lệch — mục giả định bài liệt kê.
-- [R-squared, Clearly Explained!!!](https://www.youtube.com/watch?v=2AQKmw14mHM) — StatQuest with Josh Starmer, tiếng Anh. R² là tỷ lệ tổng bình phương quanh trung bình được đường thẳng giải thích — công thức bài dùng khi chấm điểm fit.
+- [Linear Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=7ArmBVF2dCs) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Trình bày hồi quy tuyến tính từ phần dư đến $$R^2$$ và giá trị $$p$$, tương ứng với nội dung đánh giá mô hình trong bài.
+- [Simple Linear Regression:  Checking Assumptions with Residual Plots](https://www.youtube.com/watch?v=iMdtTCX2Q70) — jbstatistics, tiếng Anh. Hướng dẫn dùng đồ thị phần dư để kiểm tra tính tuyến tính, phương sai đồng nhất và các điểm ngoại lai.
+- [R-squared, Clearly Explained!!!](https://www.youtube.com/watch?v=2AQKmw14mHM) — StatQuest with Josh Starmer, tiếng Anh. Giải thích $$R^2$$ như tỷ lệ phương sai quanh giá trị trung bình được đường hồi quy giải thích.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Implement OLS với QR Decomposition**
-Thay vì dùng $$(X^TX)^{-1}$$, sử dụng QR decomposition để giải OLS (numerically stable hơn).
+**Bài 1: Cài đặt OLS bằng phân rã QR (QR Decomposition)**
+Thay vì tính nghịch đảo trực tiếp $$(X^TX)^{-1}$$, hãy sử dụng phân rã QR để giải bài toán OLS nhằm tăng độ ổn định số học.
 
-**Bài 2: Multicollinearity Detection**
-Tải dataset với features tương quan cao. Tính VIF và quan sát ảnh hưởng lên coefficients.
+**Bài 2: Phát hiện đa cộng tuyến (Multicollinearity Detection)**
+Tải một tập dữ liệu có các đặc trưng tương quan cao, tính chỉ số VIF và quan sát ảnh hưởng của đa cộng tuyến lên các hệ số ước lượng.
 
-**Bài 3: Polynomial Regression**
-Implement polynomial regression bằng cách tạo polynomial features. So sánh với sklearn's PolynomialFeatures.
+**Bài 3: Hồi quy đa thức (Polynomial Regression)**
+Tự cài đặt hồi quy đa thức bằng cách tạo các đặc trưng đa thức và so sánh kết quả với `PolynomialFeatures` của `scikit-learn`.

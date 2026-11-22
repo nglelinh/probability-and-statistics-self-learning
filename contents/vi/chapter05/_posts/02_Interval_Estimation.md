@@ -10,25 +10,23 @@ categories:
 lesson_type: required
 ---
 
-Point estimate cho ta một con số, nhưng không cho biết độ tin cậy. Confidence intervals (CI) giải quyết vấn đề này bằng cách cung cấp một khoảng giá trị có khả năng chứa true parameter. Bài học này sẽ giúp bạn hiểu đúng ý nghĩa của CI (và những hiểu lầm phổ biến), cách tính CI cho mean và proportion, và giới thiệu Bootstrap - công cụ mạnh mẽ để tính CI cho bất kỳ statistic nào.
+Ước lượng điểm cung cấp một giá trị duy nhất nhưng không thể hiện mức độ bất định của ước lượng đó. Khoảng tin cậy (Confidence Interval — CI) giải quyết hạn chế này bằng cách đưa ra một khoảng giá trị gắn với mức độ tin cậy xác định. Bài học này trình bày cách hiểu đúng về khoảng tin cậy (và các nhầm lẫn phổ biến), công thức tính khoảng tin cậy cho trung bình và tỷ lệ, cùng phương pháp Bootstrap — kỹ thuật tái lấy mẫu giúp xây dựng khoảng tin cậy cho nhiều loại thống kê khác nhau.
 
 ---
 
-## Confidence Interval Là Gì?
+## Khoảng Tin Cậy (Confidence Interval) Là Gì?
 
 <div class="textbook-definition" markdown="1">
-**Định nghĩa:** Confidence interval 95% là một khoảng ngẫu nhiên $$[L, U]$$ sao cho:
+**Định nghĩa:** Khoảng tin cậy 95% cho tham số $$\theta$$ là một khoảng ngẫu nhiên $$[L, U]$$ (trong đó $$L$$ và $$U$$ được tính từ dữ liệu mẫu) thỏa mãn:
 
 $$P(L \leq \theta \leq U) = 0.95$$
 </div>
 
-**Ý nghĩa thực sự:**
-Nếu chúng ta lặp lại việc lấy mẫu 100 lần và tính 100 khoảng tin cậy 95%, thì **khoảng 95 khoảng** sẽ chứa tham số thực $$\mu$$.
-*Không phải* là xác suất 95% tham số nằm trong một khoảng cụ thể đã tính (vì tham số là hằng số, khoảng đã tính là cố định).
+**Cách hiểu đúng:**
+Nếu ta lặp lại quá trình lấy mẫu 100 lần độc lập và tính 100 khoảng tin cậy 95% tương ứng, thì **khoảng 95 trong số 100 khoảng đó** sẽ chứa tham số thực $$\mu$$. Cách diễn giải phổ biến rằng "có 95% xác suất tham số thực nằm trong một khoảng cụ thể vừa tính được" là **không chính xác** theo trường phái tần suất, vì tham số $$\theta$$ là hằng số cố định (không phải biến ngẫu nhiên) và khoảng đã tính cũng đã cố định.
 
 ![Confidence Interval Visualization](../img/confidence_interval_viz.png)
-*Minh họa: 20 mẫu thử được rút ra. Các đoạn thẳng màu xanh chứa giá trị thực (Mean = 100), đoạn màu đỏ không chứa. Với 95% CI, hầu hết các đoạn sẽ màu xanh.*
-- SAI vì θ là hằng số, không phải biến ngẫu nhiên!
+*Minh họa: 20 mẫu thử được rút ra. Các đoạn thẳng màu xanh chứa giá trị thực (Mean = 100), còn đoạn màu đỏ không chứa. Với mức tin cậy 95%, phần lớn các khoảng thu được sẽ chứa giá trị thực.*
 
 ```python
 import numpy as np
@@ -113,16 +111,16 @@ def visualize_ci_concept():
 # visualize_ci_concept()
 ```
 
-## CI cho Mean (Biết Variance)
+## Khoảng Tin Cậy Cho Trung Bình (Khi Đã Biết Phương Sai)
 
-Nếu $$X_1, \ldots, X_n \sim N(\mu, \sigma^2)$$ và biết $$\sigma$$:
+Nếu $$X_1, \ldots, X_n \sim N(\mu, \sigma^2)$$ và đã biết độ lệch chuẩn tổng thể $$\sigma$$, khoảng tin cậy mức $$(1 - \alpha)$$ cho $$\mu$$ là:
 
 $$\bar{X} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$
 
-Với $$z_{\alpha/2}$$ là quantile của N(0,1):
-- 90% CI: $$z_{0.05} = 1.645$$
-- 95% CI: $$z_{0.025} = 1.96$$
-- 99% CI: $$z_{0.005} = 2.576$$
+Trong đó $$z_{\alpha/2}$$ là giá trị tới hạn đuôi trên mức $$\alpha/2$$ (tức phân vị mức $$1 - \alpha/2$$) của phân phối chuẩn tắc N(0, 1):
+- Khoảng tin cậy 90%: $$z_{0.05} = 1.645$$
+- Khoảng tin cậy 95%: $$z_{0.025} = 1.96$$
+- Khoảng tin cậy 99%: $$z_{0.005} = 2.576$$
 
 ```python
 def ci_known_variance():
@@ -176,9 +174,9 @@ def ci_known_variance():
 # ci_known_variance()
 ```
 
-## CI cho Mean (Không Biết Variance) - t-Distribution
+## Khoảng Tin Cậy Cho Trung Bình (Khi Chưa Biết Phương Sai) — Phân Phối t
 
-Khi không biết $$\sigma$$, dùng sample standard deviation $$s$$ và t-distribution:
+Khi chưa biết $$\sigma$$, ta thay bằng độ lệch chuẩn mẫu $$s$$ và sử dụng phân phối Student's t với $$n - 1$$ bậc tự do:
 
 $$\bar{X} \pm t_{\alpha/2, n-1} \cdot \frac{s}{\sqrt{n}}$$
 
@@ -252,14 +250,14 @@ def ci_unknown_variance():
 # ci_unknown_variance()
 ```
 
-## CI cho Proportion
+## Khoảng Tin Cậy Cho Tỷ Lệ (Proportion)
 
-Cho $$X \sim \text{Binomial}(n, p)$$, estimate $$\hat{p} = X/n$$:
+Cho $$X \sim \text{Binomial}(n, p)$$ với ước lượng tỷ lệ mẫu $$\hat{p} = X/n$$:
 
-**Wald CI (approximation):**
+**Khoảng tin cậy Wald (xấp xỉ chuẩn):**
 $$\hat{p} \pm z_{\alpha/2} \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
 
-**Wilson CI (better):** Phức tạp hơn nhưng coverage tốt hơn với n nhỏ
+**Khoảng tin cậy Wilson:** Có công thức phức tạp hơn nhưng cho tỷ lệ bao phủ (coverage) chính xác hơn khi cỡ mẫu $$n$$ nhỏ hoặc $$p$$ gần 0 hoặc 1.
 
 ```python
 def ci_proportion():
@@ -329,11 +327,11 @@ def ci_proportion():
 # ci_proportion()
 ```
 
-## Bootstrap Confidence Intervals
+## Khoảng Tin Cậy Bootstrap (Bootstrap Confidence Intervals)
 
-Bootstrap là phương pháp mạnh mẽ để tính CI cho BẤT KỲ statistic nào, không cần giả định về phân phối!
+Bootstrap là kỹ thuật tái lấy mẫu cho phép xây dựng khoảng tin cậy cho nhiều loại thống kê khác nhau mà không cần giả định dạng phân phối gốc của dữ liệu.
 
-**Ý tưởng:** Resample từ dữ liệu với replacement, tính statistic cho mỗi resample.
+**Ý tưởng:** Lặp lại việc lấy mẫu có hoàn lại (resampling with replacement) từ tập dữ liệu ban đầu với cùng cỡ mẫu, sau đó tính thống kê quan tâm trên từng mẫu tái chọn để ước lượng phân phối lấy mẫu của nó.
 
 ```python
 def bootstrap_ci():
@@ -415,33 +413,33 @@ def bootstrap_ci():
 # bootstrap_ci()
 ```
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [Khoảng tin cậy (confidence interval) là gì? | Phân Tích Thống Kê 15 | Learn to do SCIENCE](https://www.youtube.com/watch?v=cr9QjU0yDt0) — Learn to do SCIENCE, tiếng Việt. **xem trước.** Khoảng tin cậy 95% là tính chất của thủ tục trên nhiều mẫu, không phải xác suất tham số nằm trong một khoảng đã tính.
-- [Introduction to the t Distribution (non-technical)](https://www.youtube.com/watch?v=Uv6nGIgZMVw) — jbstatistics, tiếng Anh. Họ t khi chưa biết phương sai — mục khoảng cho trung bình mà bài thay z bằng phân vị t.
-- [Bootstrapping Main Ideas!!!](https://www.youtube.com/watch?v=Xz0x-8-cgaQ) — StatQuest with Josh Starmer, tiếng Anh. Bootstrap lấy phân vị của thống kê trên các mẫu tái chọn — mục khoảng tin cậy bootstrap của bài.
+- [Khoảng tin cậy (confidence interval) là gì? | Phân Tích Thống Kê 15 | Learn to do SCIENCE](https://www.youtube.com/watch?v=cr9QjU0yDt0) — Learn to do SCIENCE, tiếng Việt. **Nên xem trước.** Làm rõ bản chất khoảng tin cậy 95% là tính chất của quy trình lấy mẫu lặp lại, không phải xác suất tham số nằm trong một khoảng cụ thể đã tính.
+- [Introduction to the t Distribution (non-technical)](https://www.youtube.com/watch?v=Uv6nGIgZMVw) — jbstatistics, tiếng Anh. Giới thiệu phân phối t khi chưa biết phương sai tổng thể — bổ trợ cho mục thay thế giá trị tới hạn z bằng phân vị t.
+- [Bootstrapping Main Ideas!!!](https://www.youtube.com/watch?v=Xz0x-8-cgaQ) — StatQuest with Josh Starmer, tiếng Anh. Giải thích phương pháp Bootstrap lấy phân vị của thống kê trên các mẫu tái chọn — tương ứng với mục khoảng tin cậy Bootstrap trong bài.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Coverage Simulation**
-Sinh 1000 mẫu từ N(50, 10²), n=25. Cho mỗi mẫu:
-- Tính 95% CI bằng t-distribution
-- Kiểm tra xem CI có chứa true mean không
-- Tính coverage rate, so sánh với 95%
+**Bài 1: Mô phỏng tỷ lệ bao phủ (Coverage Simulation)**
+Sinh 1,000 mẫu từ phân phối N(50, 10²) với cỡ mẫu n = 25. Với mỗi mẫu:
+- Tính khoảng tin cậy 95% bằng phân phối t.
+- Kiểm tra xem khoảng tin cậy đó có chứa trung bình thực hay không.
+- Tính tỷ lệ bao phủ thực nghiệm và so sánh với mức lý thuyết 95%.
 
-**Bài 2: CI Width vs Sample Size**
-Với fixed confidence level (95%):
-- Tính CI width cho n = 10, 20, 50, 100, 200
-- Vẽ biểu đồ width vs n
-- Verify rằng width ∝ 1/√n
+**Bài 2: Độ rộng khoảng tin cậy theo cỡ mẫu**
+Với mức tin cậy cố định 95%:
+- Tính độ rộng khoảng tin cậy ứng với n = 10, 20, 50, 100, 200.
+- Vẽ biểu đồ độ rộng khoảng tin cậy theo n.
+- Kiểm chứng mối quan hệ tỷ lệ nghịch với √n (độ rộng ∝ 1/√n).
 
-**Bài 3: Bootstrap cho Correlation**
-Sinh dữ liệu (X, Y) với correlation ρ = 0.6.
-- Tính bootstrap CI cho correlation coefficient
-- So sánh với Fisher's z-transformation CI
-- Thử với n = 20, 50, 100
+**Bài 3: Bootstrap cho hệ số tương quan**
+Sinh dữ liệu (X, Y) có hệ số tương quan ρ = 0.6.
+- Tính khoảng tin cậy Bootstrap cho hệ số tương quan.
+- So sánh với khoảng tin cậy dùng phép biến đổi Fisher z (Fisher's z-transformation).
+- Thử nghiệm với các cỡ mẫu n = 20, 50, 100.
 
-**Bài 4: Misinterpretation**
-Tạo visualization minh họa sự khác biệt giữa:
-- "95% CI chứa true parameter" (ĐÚNG)
-- "True parameter có 95% xác suất trong CI" (SAI)
+**Bài 4: Minh họa hiểu lầm phổ biến về khoảng tin cậy**
+Tạo biểu đồ trực quan phân biệt hai phát biểu:
+- Quy trình xây dựng khoảng tin cậy 95% tạo ra các khoảng chứa tham số thực với tỷ lệ 95% khi lặp lại nhiều lần (đúng).
+- Tham số thực có 95% xác suất rơi vào một khoảng tin cậy cụ thể đã tính (sai).

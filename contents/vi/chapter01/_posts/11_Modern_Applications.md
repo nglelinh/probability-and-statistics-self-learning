@@ -10,39 +10,39 @@ categories:
 lesson_type: optional
 ---
 
-Monte Carlo, cross-validation và các tiêu chí thông tin trong chương này không phải bài tập lớp rồi bỏ lại. Đó là ngôn ngữ làm việc của cách hệ thống học máy hiện đại *tự đánh giá* khi không có công thức đóng. Bài tùy chọn này nối những công cụ ấy với ba phát triển khoảng 2022–2024. Các bài bắt buộc không đổi; mục tiêu là thấy *chỗ nào* mô phỏng, lấy mẫu lại và chọn mô hình xuất hiện trong bài báo và thư viện thật.
+Mô phỏng Monte Carlo, kiểm định chéo (cross-validation) và các tiêu chí thông tin trong chương này không chỉ dừng ở bài tập minh họa, mà là công cụ thực tế giúp các hệ thống học máy hiện đại tự đánh giá khi không có công thức dạng đóng. Bài đọc tùy chọn này kết nối các khái niệm đó với ba hướng phát triển giai đoạn 2022–2024, giúp bạn thấy rõ nơi mô phỏng, lấy mẫu lại và lựa chọn mô hình xuất hiện trong các công trình nghiên cứu và thư viện thực tế.
 
-## Conformal prediction như Monte Carlo hold-out
+## Conformal prediction như một quy trình kiểm định tách mẫu
 
-Bộ phân loại hoặc hồi quy $$f$$ thường trả một điểm $$\hat{y}$$. Các bối cảnh rủi ro cao (chẩn đoán, xếp hạng, kiểm duyệt) cần một *tập* $$C(x)$$ phủ nhãn thật với xác suất do người dùng chọn. **Split conformal prediction** làm việc đó bằng đúng ý tưởng tính toán của tập validation. Khớp $$f$$ trên fold huấn luyện; trên fold hiệu chỉnh rời kích thước $$n$$ tính điểm không phù hợp $$s_i = s(x_i, y_i)$$ (ví dụ phần dư tuyệt đối); lấy phân vị thực nghiệm
+Một mô hình phân loại hoặc hồi quy $$f$$ thông thường chỉ trả về một giá trị dự đoán điểm $$\hat{y}$$. Trong các bài toán đòi hỏi kiểm soát rủi ro cao (chẩn đoán y khoa, xếp hạng, kiểm duyệt nội dung), người dùng cần một *tập dự đoán* $$C(x)$$ chứa nhãn thật với mức xác suất đảm bảo cho trước. **Split conformal prediction** thực hiện điều này bằng chính nguyên lý của tập kiểm định tách riêng (hold-out): ta khớp mô hình $$f$$ trên tập huấn luyện; trên tập hiệu chỉnh (calibration fold) độc lập kích thước $$n$$, tính điểm không phù hợp (nonconformity score) $$s_i = s(x_i, y_i)$$ (ví dụ phần dư tuyệt đối); rồi lấy phân vị thực nghiệm
 
 $$
 \hat{q} = \text{Quantile}_{1-\alpha}\bigl(s_1,\ldots,s_n,+\infty\bigr).
 $$
 
-Tập dự đoán $$C(x)=\{y : s(x,y)\le \hat{q}\}$$ khi đó thỏa, dưới giả thiết trao đổi được (exchangeability),
+Khi đó, dưới giả thiết tính trao đổi được (exchangeability) của dữ liệu, tập dự đoán $$C(x)=\{y : s(x,y)\le \hat{q}\}$$ đảm bảo mức độ phủ hữu hạn mẫu:
 
 $$
 P\bigl(Y_{n+1}\in C(X_{n+1})\bigr) \ge 1-\alpha.
 $$
 
-Không cần nhiễu Gauss, không cần mô hình đúng đặc tả—chỉ cần tính trao đổi cũng biện minh cho cross-validation thông thường. Chuyên khảo của Angelopoulos và Bates (*Foundations and Trends in Machine Learning*, 2023; [arXiv:2107.07511](https://arxiv.org/abs/2107.07511)) là công thức mà phần lớn phần mềm 2023–2026 trích dẫn. Thư viện scikit-learn-contrib [MAPIE](https://mapie.readthedocs.io/) (Cordier, Blot, Lacombe, Morzadec, Capitaine, Brunel, COPA 2023) bọc cùng phân vị quanh bất kỳ ước lượng nào. Khi gặp khoảng bootstrap ở các chương sau, hãy đọc lại đoạn này: conformal thay “giả định một phân phối lấy mẫu” bằng “tái sử dụng mẫu hiệu chỉnh”—đúng tư duy Chương 01.
+Kết quả này không yêu cầu nhiễu tuân theo phân phối chuẩn và cũng không đòi hỏi mô hình phải đúng đặc tả — chỉ cần giả thiết trao đổi được, tương tự nền tảng của kiểm định chéo thông thường. Chuyên khảo của Angelopoulos và Bates (*Foundations and Trends in Machine Learning*, 2023; [arXiv:2107.07511](https://arxiv.org/abs/2107.07511)) trình bày công thức được phần lớn thư viện giai đoạn 2023–2026 tham chiếu, còn thư viện thuộc hệ sinh thái scikit-learn-contrib [MAPIE](https://mapie.readthedocs.io/) (Cordier, Blot, Lacombe, Morzadec, Capitaine, Brunel, COPA 2023) cho phép áp dụng quy trình hiệu chỉnh phân vị này lên nhiều bộ ước lượng khác nhau. Khi học đến khoảng tin cậy bootstrap ở các chương sau, có thể đối chiếu lại ý tưởng này: conformal prediction thay việc giả định một phân phối lấy mẫu bằng việc tái sử dụng trực tiếp tập hiệu chỉnh — đúng tinh thần tính toán của Chương 01.
 
-## Mô phỏng để đánh giá LLM
+## Mô phỏng trong đánh giá mô hình ngôn ngữ lớn (LLM)
 
-Không có độ chính xác dạng đóng cho mô hình hội thoại. Liang, Bommasani, Lee và cộng sự (*Holistic Evaluation of Language Models*, [TMLR 2023](https://openreview.net/forum?id=iO4LZibEqW); [arXiv:2211.09110](https://arxiv.org/abs/2211.09110); bộ công cụ [stanford-crfm/helm](https://github.com/stanford-crfm/helm)) coi đánh giá như một thí nghiệm được thiết kế: 16 kịch bản cốt lõi, bảy metric (accuracy, **calibration**, robustness, fairness, bias, toxicity, efficiency), và 30 mô hình chạy dưới một giao thức chung. Luật số lớn ở bài mở đầu chính là thứ khiến trung bình đa kịch bản có nghĩa; một con số headline là Monte Carlo một lần rút.
+Không có công thức dạng đóng nào để đo độ chính xác của một mô hình hội thoại. Liang, Bommasani, Lee và cộng sự (*Holistic Evaluation of Language Models*, [TMLR 2023](https://openreview.net/forum?id=iO4LZibEqW); [arXiv:2211.09110](https://arxiv.org/abs/2211.09110); bộ công cụ [stanford-crfm/helm](https://github.com/stanford-crfm/helm)) xem đánh giá LLM như một thí nghiệm thống kê có thiết kế chặt chẽ: 16 kịch bản cốt lõi, 7 nhóm thước đo (accuracy, **calibration**, robustness, fairness, bias, toxicity, efficiency) áp dụng thống nhất trên 30 mô hình theo cùng một giao thức. Chính Luật số lớn ở bài mở đầu đảm bảo cho giá trị trung bình trên nhiều kịch bản có ý nghĩa thống kê, thay vì chỉ dựa vào một con số đơn lẻ như một lần rút mẫu Monte Carlo.
 
-Sở thích của người dùng còn kém giải tích hơn. Chiang, Zheng, Sheng, Angelopoulos, Li, Li, Zhu, Zhang, Jordan, Gonzalez và Stoica (*Chatbot Arena*, [ICML 2024](https://proceedings.mlr.press/v235/chiang24b.html); [arXiv:2403.04132](https://arxiv.org/abs/2403.04132)) thu phiếu so cặp ẩn danh và ước lượng sức mạnh Bradley–Terry $$\theta_i$$ cho mỗi mô hình. Nếu $$i$$ thắng $$j$$ với xác suất
+Mức độ ưa thích của người dùng thậm chí còn khó mô hình hóa bằng giải tích hơn. Chiang, Zheng, Sheng, Angelopoulos, Li, Li, Zhu, Zhang, Jordan, Gonzalez và Stoica (*Chatbot Arena*, [ICML 2024](https://proceedings.mlr.press/v235/chiang24b.html); [arXiv:2403.04132](https://arxiv.org/abs/2403.04132)) thu thập phiếu so sánh cặp ẩn danh và ước lượng tham số năng lực Bradley–Terry $$\theta_i$$ cho từng mô hình. Với xác suất mô hình $$i$$ thắng mô hình $$j$$ là
 
 $$
 P(i \succ j) = \frac{e^{\theta_i}}{e^{\theta_i}+e^{\theta_j}},
 $$
 
-thì xếp hạng là bài toán ước lượng thống kê, không phải ảnh chụp bảng xếp hạng. Khoảng tin cậy và lấy mẫu cặp thích nghi trong bài đó là cùng trực giác Monte Carlo / resampling như mô phỏng bài toán sinh nhật: bạn không suy ra $$P(i\succ j)$$ từ một likelihood của “trí tuệ”; bạn *đếm các lần so sánh* và lượng hóa bất định.
+việc xếp hạng trở thành một bài toán ước lượng thống kê thay vì một bảng điểm cố định. Các khoảng tin cậy và chiến lược lấy mẫu cặp thích nghi trong nghiên cứu này chia sẻ cùng trực giác Monte Carlo và lấy mẫu lại như bài toán sinh nhật: thay vì suy diễn $$P(i\succ j)$$ từ một giả thuyết giải tích về năng lực mô hình, ta đếm kết quả các lượt so sánh lặp lại và lượng hóa độ bất định của ước lượng.
 
-## Cross-validation thực sự ước lượng cái gì
+## Cross-validation thực sự ước lượng đại lượng nào?
 
-Bài CV Chương 01 coi điểm CV như ước lượng test error của “cái” mô hình đã khớp. Bates, Hastie và Tibshirani (*Journal of the American Statistical Association*, 2023; [PMC11412612](https://pmc.ncbi.nlm.nih.gov/articles/PMC11412612/)) chứng minh rằng, ngay với bình phương tối thiểu, CV $$K$$-fold ước lượng lỗi dự đoán *trung bình* của các mô hình huấn luyện trên những lần rút tập huấn luyện khác—không phải lỗi của đúng $$\hat{f}$$ bạn sẽ đưa vào sản xuất. Lỗi theo fold tương quan (mỗi điểm vừa dùng để train vừa dùng để test), nên sai số chuẩn ngây thơ quá nhỏ và khoảng tin cậy thông thường thiếu phủ. Cách sửa của họ là CV **lồng** chỉ để ước lượng phương sai đó, đúng cảnh báo “dùng dữ liệu hai lần, hãy cẩn thận” trong bài resampling bắt buộc. Trong sklearn đó là `cross_val_score` trong vòng ngoài, hoặc `GridSearchCV` lồng trong một splitter khác—không phải một `best_score_` lạc quan.
+Bài học về cross-validation trong Chương 01 thường xem điểm CV như ước lượng sai số kiểm tra của chính mô hình $$\hat{f}$$ vừa huấn luyện. Tuy nhiên, Bates, Hastie và Tibshirani (*Journal of the American Statistical Association*, 2023; [PMC11412612](https://pmc.ncbi.nlm.nih.gov/articles/PMC11412612/)) chứng minh rằng, ngay cả với hồi quy bình phương tối thiểu, kiểm định chéo $$K$$-fold thực chất ước lượng sai số dự đoán *trung bình* của các mô hình được huấn luyện trên những lần rút tập huấn luyện khác nhau — chứ không phải sai số riêng của mô hình $$\hat{f}$$ cụ thể sẽ được triển khai. Vì sai số giữa các fold có tương quan (mỗi điểm dữ liệu vừa tham gia huấn luyện ở fold này vừa dùng để kiểm định ở fold khác), sai số chuẩn tính theo công thức độc lập thông thường sẽ bị đánh giá thấp, khiến khoảng tin cậy có độ phủ thấp hơn mức danh nghĩa. Hướng khắc phục của nhóm tác giả là dùng kiểm định chéo **lồng nhau (nested CV)** để ước lượng phương sai này — phản ánh cùng nguyên tắc thận trọng khi tái sử dụng dữ liệu nhiều lần trong bài học về resampling. Trong scikit-learn, quy trình này tương ứng với việc đặt `GridSearchCV` bên trong một vòng `cross_val_score` ngoài, thay vì chỉ báo cáo giá trị `best_score_` vốn có xu hướng lạc quan.
 
 ```python
 import numpy as np
@@ -59,17 +59,17 @@ scores = cross_val_score(search, X, y, cv=outer)
 print("nested CV mean:", scores.mean(), "sd:", scores.std(ddof=1))
 ```
 
-Đoạn mã không tuyên bố định lý mới. Đó là sự phân biệt Bates–Hastie–Tibshirani bằng code: đại lượng bạn báo cáo là trung bình trên các mô hình được khớp lại và tinh chỉnh lại.
+Đoạn mã trên minh họa trực tiếp phân biệt của Bates, Hastie và Tibshirani: đại lượng được báo cáo là hiệu suất trung bình của cả quy trình huấn luyện và tinh chỉnh lại mô hình trên các tập dữ liệu khác nhau, không phải của một giá trị `alpha` cố định.
 
-## Điều cần mang đi
+## Tóm lược
 
-Khi một bài báo nói “chúng tôi conformal hóa hộp đen,” “chúng tôi báo điểm Arena kèm khoảng,” hoặc “chúng tôi lồng bộ tinh chỉnh,” đó là ngôn ngữ chương này. Các bài sau thêm biến ngẫu nhiên và kiểm định; chúng không thay thế mô phỏng, resampling, hay thói quen hỏi *loại lỗi nào* mà một tiêu chí đang ước lượng.
+Khi một bài báo trình bày việc hiệu chỉnh tập dự đoán bằng conformal prediction cho mô hình hộp đen, báo cáo bảng xếp hạng Arena kèm khoảng tin cậy, hay dùng kiểm định chéo lồng nhau để đánh giá quy trình tinh chỉnh, đó đều là những ứng dụng trực tiếp của các ý tưởng trong chương này. Các chương tiếp theo sẽ bổ sung lý thuyết biến ngẫu nhiên và kiểm định giả thuyết, nhưng mô phỏng, lấy mẫu lại và thói quen xác định rõ *đại lượng sai số nào đang được ước lượng* vẫn luôn là nền tảng xuyên suốt.
 
 ## Video tham khảo
 
-- [A Tutorial on Conformal Prediction](https://www.youtube.com/watch?v=nql000Lu_iE) — Anastasios Nikolas Angelopoulos, tiếng Anh. **xem trước.** Angelopoulos dạy split conformal: điểm không phù hợp trên tập hiệu chỉnh rồi lấy phân vị — đúng thủ tục bài gắn với arXiv:2107.07511.
-- [Holistic Evaluation of Language Models (HELM) - Yifan Mai, Stanford University](https://www.youtube.com/watch?v=fLoYcXLG6ro) — PyTorch, tiếng Anh. Yifan Mai trình bày HELM, bộ đánh giá nhiều kịch bản mà bài đọc như một thí nghiệm Monte Carlo cho mô hình ngôn ngữ.
-- [11.5 Nested CV for Algorithm Selection (L11 Model Eval. Part 4)](https://www.youtube.com/watch?v=XXFLFWHP9Nc) — Sebastian Raschka, tiếng Anh. Cross-validation lồng để đánh giá cả quy trình chọn mô hình, đúng cảnh báo Bates–Hastie–Tibshirani trong bài.
+- [A Tutorial on Conformal Prediction](https://www.youtube.com/watch?v=nql000Lu_iE) — Anastasios Nikolas Angelopoulos, tiếng Anh. **Xem trước.** Trình bày split conformal prediction từ điểm không phù hợp trên tập hiệu chỉnh đến bước lấy phân vị, tương ứng chuyên khảo arXiv:2107.07511 trong bài.
+- [Holistic Evaluation of Language Models (HELM) - Yifan Mai, Stanford University](https://www.youtube.com/watch?v=fLoYcXLG6ro) — PyTorch, tiếng Anh. Yifan Mai giới thiệu khung đánh giá đa kịch bản HELM, tương ứng góc nhìn thí nghiệm Monte Carlo cho mô hình ngôn ngữ trong bài.
+- [11.5 Nested CV for Algorithm Selection (L11 Model Eval. Part 4)](https://www.youtube.com/watch?v=XXFLFWHP9Nc) — Sebastian Raschka, tiếng Anh. Giải thích kiểm định chéo lồng nhau để đánh giá toàn bộ quy trình chọn mô hình, gắn trực tiếp với kết quả của Bates, Hastie và Tibshirani.
 
 ## Nguồn
 

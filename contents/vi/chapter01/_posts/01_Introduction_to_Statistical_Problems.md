@@ -10,39 +10,39 @@ categories:
 lesson_type: required
 ---
 
-Trong bài học mở đầu này, mục tiêu quan trọng nhất không phải là cung cấp ngay lập tức các công thức phức tạp, mà là định hình lại tư duy của bạn về cách tiếp cận các vấn đề thống kê. Chúng ta sẽ cùng nhau tháo gỡ tư duy "giải bài tập trên giấy" để chuyển sang tư duy "mô phỏng trên máy tính". Sau khi hoàn thành bài học này, bạn sẽ hiểu được sự khác biệt cốt lõi giữa thống kê cổ điển (dựa trên giải tích) và thống kê tính toán (dựa trên thuật toán), đồng thời nắm bắt được sức mạnh của Luật số lớn thông qua thực nghiệm thay vì chứng minh toán học.
+Mục tiêu chính của bài học mở đầu này không phải là giới thiệu ngay các công thức phức tạp, mà là xây dựng cách tiếp cận bài toán thống kê theo hướng tính toán. Thay vì chỉ giải bài tập bằng biến đổi giải tích trên giấy, chúng ta sẽ làm quen với cách mô phỏng trên máy tính. Sau bài học này, bạn sẽ phân biệt được thống kê cổ điển (dựa trên giải tích) với thống kê tính toán (dựa trên thuật toán), đồng thời thấy rõ vai trò của Luật số lớn thông qua thực nghiệm thay vì chứng minh hình thức.
 
 ---
 
-## Giới Thiệu: Tại Sao Phải Là Thống Kê Tính Toán?
+## Giới thiệu: Vì sao cần thống kê tính toán?
 
-Hãy tưởng tượng bạn đang đứng trước một bài toán thực tế: Bạn muốn ước lượng xác suất để tổng số chấm của 10 lần gieo xúc xắc vượt quá 40. Nếu sử dụng phương pháp thống kê cổ điển, bạn sẽ phải vận dụng tổ hợp, hoán vị, hoặc sử dụng xấp xỉ phân phối chuẩn (CLT). Với những người có nền tảng toán học vững chắc, điều này có thể thú vị, nhưng với các bài toán phức tạp hơn—ví dụ như tính xác suất rủi ro của một danh mục đầu tư gồm 50 mã cổ phiếu tương quan với nhau—việc tìm ra một công thức giải tích chính xác (closed-form solution) là điều gần như bất khả thi.
+Hãy xét một bài toán cụ thể: ước lượng xác suất để tổng số chấm của 10 lần gieo xúc xắc vượt quá 40. Nếu dùng thống kê cổ điển, ta cần áp dụng tổ hợp, hoán vị hoặc xấp xỉ bằng phân phối chuẩn (theo Định lý Giới hạn Trung tâm — CLT). Với bài toán nhỏ, cách làm này khả thi; nhưng với các bài toán phức tạp hơn — chẳng hạn tính xác suất rủi ro của một danh mục đầu tư gồm 50 mã cổ phiếu có tương quan với nhau — việc tìm ra công thức giải tích dạng đóng (closed-form solution) gần như không thể thực hiện được.
 
-Đây chính là lúc **Thống kê Tính toán (Computational Statistics)** tỏa sáng. Thay vì cố gắng tìm ra một phương trình toán học hoàn hảo mô tả thế giới, chúng ta sử dụng sức mạnh tính toán của máy tính để "bắt chước" thế giới đó. Chúng ta tạo ra các thế giới giả lập, thực hiện thí nghiệm hàng triệu lần trong vài giây, và đếm kết quả. Cách tiếp cận này biến các bài toán thống kê trừu tượng thành các bài toán kỹ thuật phần mềm cụ thể, cho phép chúng ta giải quyết các vấn đề mà lý thuyết cổ điển phải bó tay.
+Trong những tình huống như vậy, **Thống kê Tính toán (Computational Statistics)** cung cấp một hướng tiếp cận khác. Thay vì tìm một phương trình giải tích mô tả chính xác hệ thống, ta dùng máy tính để mô phỏng quá trình ngẫu nhiên đó: tạo ra các kịch bản giả lập, lặp lại thí nghiệm hàng triệu lần trong vài giây và đếm tần suất kết quả. Cách làm này chuyển các bài toán xác suất trừu tượng thành bài toán lập trình cụ thể, giúp xử lý những bài toán mà phương pháp giải tích cổ điển khó giải trực tiếp.
 
-## Thống Kê Giải Tích vs. Thống Kê Tính Toán
+## Thống kê giải tích và thống kê tính toán
 
-Sự khác biệt cơ bản nằm ở công cụ giải quyết vấn đề. Thống kê giải tích dựa vào các định lý toán học và các giả định đơn giản hóa (như giả định dữ liệu tuân theo phân phối Chuẩn) để đưa ra các kết quả chính xác về mặt lý thuyết. Ví dụ, để tính khoảng tin cậy cho trung bình, ta dùng công thức:
+Sự khác biệt cơ bản giữa hai cách tiếp cận nằm ở công cụ giải quyết vấn đề. Thống kê giải tích dựa vào các định lý toán học và các giả định đơn giản hóa (chẳng hạn giả định dữ liệu tuân theo phân phối chuẩn) để thu được kết quả lý thuyết. Ví dụ, để tính khoảng tin cậy 95% cho trung bình tổng thể khi biết độ lệch chuẩn $$\sigma$$, ta dùng công thức:
 
 $$\bar{x} \pm 1.96 \frac{\sigma}{\sqrt{n}}$$
 
-Ngược lại, thống kê tính toán chấp nhận sử dụng sức mạnh xử lý của CPU để thực hiện các phép thử ngẫu nhiên lặp đi lặp lại. Thay vì giả định phân phối chuẩn, chúng ta có thể dùng phương pháp Bootstrap (lấy mẫu lại) để xây dựng phân phối thực tế từ dữ liệu. Phương pháp tính toán thường linh hoạt hơn, ít phụ thuộc vào giả định hơn, và đặc biệt trực quan hơn đối với những người làm khoa học dữ liệu.
+Ngược lại, thống kê tính toán sử dụng năng lực xử lý của máy tính để thực hiện các phép thử ngẫu nhiên lặp lại. Thay vì giả định phân phối chuẩn, ta có thể dùng phương pháp Bootstrap (lấy mẫu lại) để xây dựng phân phối thực nghiệm trực tiếp từ dữ liệu. Cách tiếp cận này linh hoạt, ít phụ thuộc vào các giả định phân phối chặt chẽ và trực quan hơn khi làm việc với dữ liệu thực tế.
 
-## Mô Phỏng và Luật Số Lớn
+## Mô phỏng và Luật số lớn
 
-Trái tim của thống kê tính toán là **Mô phỏng Monte Carlo**. Ý tưởng cốt lõi cực kỳ đơn giản: Nếu bạn muốn biết xác suất của một biến cố, hãy thực hiện thí nghiệm đó thật nhiều lần và tính tần suất xuất hiện của nó.
+Trọng tâm của thống kê tính toán là **Mô phỏng Monte Carlo**. Nguyên lý của phương pháp này rất rõ ràng: để ước lượng xác suất của một biến cố, ta lặp lại phép thử ngẫu nhiên đó nhiều lần và tính tỷ lệ số lần biến cố xảy ra.
 
-Cơ sở toán học đảm bảo cho phương pháp này là **Luật Số Lớn (Law of Large Numbers)**. Định lý này phát biểu rằng khi số lượng thử nghiệm $$n$$ tiến tới vô cùng, trung bình mẫu quan sát được sẽ hội tụ về giá trị kỳ vọng thực của tổng thể:
+Cơ sở toán học đảm bảo tính hợp lý cho cách làm này là **Luật Số Lớn (Law of Large Numbers)**. Định lý phát biểu rằng khi số lần thử $$n$$ tiến tới vô cùng, trung bình mẫu quan sát được hội tụ theo xác suất về giá trị kỳ vọng thực $$\mu$$ của tổng thể:
 
 $$\lim_{n \to \infty} P\left( \left| \bar{X}_n - \mu \right| < \varepsilon \right) = 1$$
 
-Trong môi trường tính toán, $$n$$ chính là số vòng lặp mà máy tính thực hiện.
+Trong môi trường lập trình, $$n$$ tương ứng với số vòng lặp mô phỏng mà máy tính thực hiện.
 
-## Ví Dụ: Bài Toán Sinh Nhật (The Birthday Problem)
+## Ví dụ: Bài toán Sinh nhật (The Birthday Problem)
 
-Một ví dụ kinh điển để minh họa sức mạnh của mô phỏng là Bài toán Sinh nhật. Câu hỏi đặt ra là: *Trong một phòng có k người, xác suất để có ít nhất hai người có cùng ngày sinh nhật là bao nhiêu?*
+Một ví dụ kinh điển minh họa cho mô phỏng Monte Carlo là Bài toán Sinh nhật: *Trong một phòng có k người, xác suất để có ít nhất hai người trùng ngày sinh là bao nhiêu?*
 
-Về mặt lý thuyết, việc tính toán xác suất này đòi hỏi tư duy về xác suất phần bù và tổ hợp. Hãy xem cách chúng ta giải quyết nó bằng tư duy tính toán với Python:
+Theo hướng lý thuyết, ta cần tính xác suất của biến cố phần bù bằng phép đếm tổ hợp. Với tư duy tính toán, ta có thể giải trực tiếp bằng Python như sau:
 
 ```python
 import numpy as np
@@ -78,23 +78,23 @@ prob = simulate_birthday_problem(n_people)
 print(f"Xác suất trùng ngày sinh với {n_people} người: {prob:.4f}")
 ```
 
-Đoạn code trên không hề sử dụng công thức giai thừa hay lũy thừa phức tạp nào. Nó chỉ đơn giản là mô phỏng lại thực tế một cách chân thực. Kết quả sẽ xấp xỉ 0.507 (hoặc 50.7%), điều này thường gây ngạc nhiên vì trực giác của chúng ta thường đánh giá thấp xác suất trùng lặp.
+Đoạn mã trên không cần dùng công thức giai thừa hay lũy thừa, mà trực tiếp mô phỏng quá trình chọn ngày sinh ngẫu nhiên và đếm số lần có trùng lặp. Kết quả thu được xấp xỉ 0,507 (khoảng 50,7%), thường cao hơn đáng kể so với ước đoán trực giác ban đầu của nhiều người.
 
 ## Video tham khảo
 
-- [Law of Large Numbers - Explained and Visualized](https://www.youtube.com/watch?v=MntX3zWNWec) — Jeremy Blitz-Jones, tiếng Anh. **xem trước.** Trung bình mẫu tiến về kỳ vọng khi số lần thử tăng — đúng luật số lớn mà bài dùng để biện minh cho mô phỏng Monte Carlo.
-- [6. Monte Carlo Simulation](https://www.youtube.com/watch?v=OgO1gpXSUzU) — MIT OpenCourseWare, tiếng Anh. John Guttag kể vì sao Ulam phải mô phỏng thay vì đếm tổ hợp, rồi ước lượng một đại lượng bằng mẫu ngẫu nhiên — cùng logic với bài toán xúc xắc và ước lượng π.
-- [Check your intuition: The birthday problem - David Knuffke](https://www.youtube.com/watch?v=KtT_cgMzHx8) — TED-Ed, tiếng Anh. Bài toán sinh nhật trong thân bài: trực giác đánh giá thấp xác suất trùng, và vì sao một thí nghiệm lặp lại cho kết quả khoảng một nửa với 23 người.
+- [Law of Large Numbers - Explained and Visualized](https://www.youtube.com/watch?v=MntX3zWNWec) — Jeremy Blitz-Jones, tiếng Anh. **Xem trước.** Trực quan hóa cách trung bình mẫu hội tụ về kỳ vọng khi số lần thử tăng, đúng với Luật số lớn làm cơ sở cho mô phỏng Monte Carlo trong bài.
+- [6. Monte Carlo Simulation](https://www.youtube.com/watch?v=OgO1gpXSUzU) — MIT OpenCourseWare, tiếng Anh. John Guttag giải thích lý do Ulam sử dụng mô phỏng thay vì đếm tổ hợp và cách ước lượng đại lượng bằng mẫu ngẫu nhiên, cùng tư duy với bài toán xúc xắc và ước lượng $$\pi$$.
+- [Check your intuition: The birthday problem - David Knuffke](https://www.youtube.com/watch?v=KtT_cgMzHx8) — TED-Ed, tiếng Anh. Phân tích bài toán sinh nhật trong thân bài: vì sao trực giác thường đánh giá thấp xác suất trùng lặp và vì sao với 23 người xác suất này đã vượt quá một nửa.
 
-## Bài Tập Thực Hành
+## Bài tập thực hành
 
-**Bài 1: Mô phỏng Đồng Xu**
-Viết hàm mô phỏng việc tung một đồng xu không đồng chất (xác suất ngửa là $$p=0.6$$) 100 lần. Lặp lại thí nghiệm này 1000 lần và vẽ biểu đồ histogram phân phối số lần mật ngửa thu được.
+**Bài 1: Mô phỏng đồng xu**
+Viết hàm mô phỏng việc tung một đồng xu không đồng chất (xác suất ra mặt ngửa là $$p=0.6$$) 100 lần. Lặp lại thí nghiệm này 1.000 lần và vẽ biểu đồ histogram biểu diễn phân phối số lần xuất hiện mặt ngửa.
 
-**Bài 2: Ước lượng Pi**
-Sử dụng phương pháp Monte Carlo để ước lượng số Pi ($$\pi$$). Gợi ý: Hãy ném ngẫu nhiên các điểm vào một hình vuông đơn vị và đếm xem có bao nhiêu điểm rơi vào hình tròn nội tiếp.
+**Bài 2: Ước lượng số Pi**
+Sử dụng phương pháp Monte Carlo để ước lượng số Pi ($$\pi$$). Gợi ý: sinh ngẫu nhiên các điểm trong hình vuông đơn vị và đếm tỷ lệ các điểm rơi vào hình tròn nội tiếp.
 
-**Bài 3: Monty Hall**
-Lập trình mô phỏng bài toán Monty Hall nổi tiếng để chứng minh rằng việc thay đổi lựa chọn sẽ làm tăng gấp đôi cơ hội chiến thắng.
+**Bài 3: Bài toán Monty Hall**
+Lập trình mô phỏng bài toán Monty Hall để kiểm chứng rằng việc đổi lựa chọn làm tăng gấp đôi xác suất chiến thắng so với giữ nguyên lựa chọn ban đầu.
 
-Bài tùy chọn sau, [01-11-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter01/11_Modern_Applications %}), nối Monte Carlo, cross-validation và chọn mô hình với conformal prediction và đánh giá LLM (2023–2024).
+Bài tùy chọn tiếp theo, [01-11-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter01/11_Modern_Applications %}), kết nối mô phỏng Monte Carlo, cross-validation và lựa chọn mô hình với conformal prediction và đánh giá mô hình ngôn ngữ lớn (LLM) giai đoạn 2023–2024.

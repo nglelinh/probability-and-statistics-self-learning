@@ -10,19 +10,19 @@ categories:
 lesson_type: required
 ---
 
-Chuyển từ regression (dự đoán giá trị liên tục) sang classification (dự đoán nhãn rời rạc) đòi hỏi một cách tiếp cận khác. Logistic regression là cầu nối hoàn hảo: nó sử dụng framework tuyến tính nhưng áp dụng cho bài toán phân loại thông qua một biến đổi thông minh - hàm sigmoid. Trong bài học này, chúng ta sẽ hiểu tại sao không thể dùng linear regression cho classification, cách logistic regression giải quyết vấn đề này, và làm thế nào để ước lượng parameters bằng maximum likelihood.
+Chuyển từ hồi quy (dự đoán giá trị liên tục) sang phân loại (dự đoán nhãn rời rạc) đòi hỏi một cách tiếp cận khác. Hồi quy logistic (logistic regression) mở rộng khung mô hình tuyến tính sang bài toán phân loại thông qua hàm sigmoid. Trong bài học này, chúng ta sẽ tìm hiểu lý do không thể dùng hồi quy tuyến tính cho phân loại, cách hồi quy logistic giải quyết hạn chế đó và phương pháp ước lượng tham số bằng hợp lý cực đại (maximum likelihood).
 
 ---
 
-## Tại Sao Không Dùng Linear Regression Cho Classification?
+## Tại Sao Không Dùng Hồi Quy Tuyến Tính Cho Phân Loại?
 
-Giả sử chúng ta có bài toán phân loại nhị phân: $$Y \in \{0, 1\}$$. Nếu dùng linear regression:
+Xét bài toán phân loại nhị phân với $$Y \in \{0, 1\}$$. Nếu áp dụng trực tiếp hồi quy tuyến tính:
 
 $$P(Y=1|X) = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p$$
 
-**Vấn đề:** Vế phải có thể nhận giá trị ngoài $$[0, 1]$$, không phải xác suất hợp lệ!
+**Vấn đề:** Vế phải có thể nhận giá trị nằm ngoài đoạn $$[0, 1]$$, nên không thể diễn giải như một xác suất hợp lệ.
 
-**Giải pháp:** Cần một hàm biến đổi $$g: \mathbb{R} \to [0,1]$$.
+**Giải pháp:** Cần một hàm biến đổi $$g: \mathbb{R} \to [0,1]$$ để ánh xạ tổ hợp tuyến tính vào khoảng giá trị của xác suất.
 
 ```python
 import numpy as np
@@ -93,25 +93,25 @@ def why_not_linear_for_classification():
 # why_not_linear_for_classification()
 ```
 
-## Mô Hình Logistic Regression
+## Mô Hình Hồi Quy Logistic
 
-Logistic regression mô hình hóa **log-odds** (logit) như một hàm tuyến tính:
+Hồi quy logistic mô hình hóa **log-odds** (logit) dưới dạng một hàm tuyến tính của các đặc trưng:
 
 $$\log\left(\frac{P(Y=1|X)}{1-P(Y=1|X)}\right) = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p$$
 
-Giải ra để tìm $$P(Y=1|X)$$:
+Giải phương trình trên theo $$P(Y=1|X)$$, ta thu được:
 
 $$P(Y=1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p)}} = \frac{1}{1 + e^{-\mathbf{x}^T\boldsymbol{\beta}}}$$
 
-Đây chính là **hàm sigmoid** (hoặc logistic function):
+Đây chính là **hàm sigmoid** (hay hàm logistic):
 
 $$\sigma(z) = \frac{1}{1 + e^{-z}}$$
 
-**Tính chất của sigmoid:**
-- $$\sigma(z) \in (0, 1)$$ với mọi $$z \in \mathbb{R}$$
-- $$\sigma(0) = 0.5$$
-- $$\sigma(-z) = 1 - \sigma(z)$$
-- Đạo hàm: $$\sigma'(z) = \sigma(z)(1-\sigma(z))$$
+**Các tính chất cơ bản của hàm sigmoid:**
+- $$\sigma(z) \in (0, 1)$$ với mọi $$z \in \mathbb{R}$$.
+- $$\sigma(0) = 0.5$$.
+- $$\sigma(-z) = 1 - \sigma(z)$$.
+- Đạo hàm: $$\sigma'(z) = \sigma(z)(1-\sigma(z))$$.
 
 ```python
 def visualize_sigmoid():
@@ -148,23 +148,23 @@ def visualize_sigmoid():
 # visualize_sigmoid()
 ```
 
-## Maximum Likelihood Estimation
+## Ước Lượng Hợp Lý Cực Đại (Maximum Likelihood Estimation)
 
-Không giống OLS (minimize RSS), logistic regression sử dụng **maximum likelihood**.
+Khác với OLS (tối thiểu hóa RSS), hồi quy logistic ước lượng tham số bằng phương pháp **hợp lý cực đại (maximum likelihood)**.
 
-Giả sử có $$n$$ quan sát độc lập. Likelihood function:
+Giả sử có $$n$$ quan sát độc lập, hàm hợp lý (likelihood function) được viết là:
 
 $$L(\boldsymbol{\beta}) = \prod_{i=1}^n P(Y=y_i|X=\mathbf{x}_i) = \prod_{i=1}^n p_i^{y_i}(1-p_i)^{1-y_i}$$
 
 trong đó $$p_i = P(Y=1|\mathbf{x}_i) = \sigma(\mathbf{x}_i^T\boldsymbol{\beta})$$.
 
-**Log-likelihood:**
+**Hàm log-likelihood:**
 
 $$\ell(\boldsymbol{\beta}) = \sum_{i=1}^n [y_i \log p_i + (1-y_i)\log(1-p_i)]$$
 
-**Mục tiêu:** $$\hat{\boldsymbol{\beta}} = \arg\max_{\boldsymbol{\beta}} \ell(\boldsymbol{\beta})$$
+**Mục tiêu:** Tìm $$\hat{\boldsymbol{\beta}} = \arg\max_{\boldsymbol{\beta}} \ell(\boldsymbol{\beta})$$.
 
-**Vấn đề:** Không có closed-form solution! Phải dùng numerical optimization (Newton-Raphson, gradient descent).
+**Lưu ý:** Bài toán tối ưu này không có nghiệm dạng đóng nên cần giải bằng các phương pháp tối ưu số như Newton-Raphson hoặc gradient descent.
 
 ```python
 from scipy.optimize import minimize
@@ -251,15 +251,15 @@ def plot_decision_boundary(X, y, beta):
 # implement_logistic_regression_from_scratch()
 ```
 
-## Regularized Logistic Regression
+## Hồi Quy Logistic Có Điều Chuẩn
 
-Giống như linear regression, logistic regression cũng có thể overfitting. Thêm regularization:
+Tương tự hồi quy tuyến tính, hồi quy logistic cũng có thể gặp hiện tượng quá khớp (overfitting). Ta khắc phục bằng cách thêm số hạng điều chuẩn vào hàm negative log-likelihood:
 
-**Ridge (L2):**
+**Điều chuẩn Ridge (L2):**
 
 $$\min_{\boldsymbol{\beta}} \left[-\ell(\boldsymbol{\beta}) + \lambda \sum_{j=1}^p \beta_j^2\right]$$
 
-**Lasso (L1):**
+**Điều chuẩn Lasso (L1):**
 
 $$\min_{\boldsymbol{\beta}} \left[-\ell(\boldsymbol{\beta}) + \lambda \sum_{j=1}^p |\beta_j|\right]$$
 
@@ -311,13 +311,13 @@ def regularized_logistic_regression():
 # regularized_logistic_regression()
 ```
 
-## Multi-Class Classification
+## Phân Loại Đa Lớp (Multi-Class Classification)
 
-Logistic regression có thể mở rộng cho multi-class ($$K > 2$$ classes) bằng **Softmax Regression**:
+Hồi quy logistic có thể mở rộng cho bài toán đa lớp ($$K > 2$$ lớp) bằng **hồi quy Softmax (Softmax Regression)**:
 
 $$P(Y=k|X) = \frac{e^{\mathbf{x}^T\boldsymbol{\beta}_k}}{\sum_{j=1}^K e^{\mathbf{x}^T\boldsymbol{\beta}_j}}$$
 
-Sklearn tự động xử lý multi-class với `multi_class='multinomial'`.
+Thư viện `scikit-learn` hỗ trợ trực tiếp bài toán đa lớp thông qua tham số `multi_class='multinomial'`.
 
 ```python
 from sklearn.datasets import load_iris
@@ -359,20 +359,21 @@ def multiclass_logistic_regression():
 # multiclass_logistic_regression()
 ```
 
-## Đánh Giá Mô Hình Classification
+## Đánh Giá Mô Hình Phân Loại
 
-### Accuracy
+### Độ Chính Xác (Accuracy)
+
 $$\text{Accuracy} = \frac{\text{Correct Predictions}}{\text{Total Predictions}}$$
 
-**Vấn đề:** Không tốt khi classes imbalanced!
+**Hạn chế:** Chỉ số này dễ gây hiểu nhầm khi dữ liệu mất cân bằng lớp (imbalanced classes).
 
-### Precision, Recall, F1-Score
+### Precision, Recall và F1-Score
 
-- **Precision:** Trong số dự đoán positive, bao nhiêu % đúng?
-- **Recall (Sensitivity):** Trong số thực tế positive, bao nhiêu % được phát hiện?
-- **F1-Score:** Harmonic mean của Precision và Recall
+- **Precision:** Trong số các mẫu được dự đoán là dương tính (positive), tỷ lệ dự đoán đúng là bao nhiêu.
+- **Recall (Sensitivity):** Trong số các mẫu thực sự là dương tính, mô hình phát hiện được bao nhiêu phần trăm.
+- **F1-Score:** Trung bình điều hòa (harmonic mean) giữa Precision và Recall.
 
-### ROC Curve và AUC
+### Đường Cong ROC và Diện Tích AUC
 
 ```python
 from sklearn.metrics import roc_curve, auc, roc_auc_score
@@ -415,17 +416,17 @@ def plot_roc_curve():
 
 ## Video tham khảo
 
-- [StatQuest: Logistic Regression](https://www.youtube.com/watch?v=yIYKR4sgzI8) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Vì sao đường thẳng không dùng để phân loại, rồi sigmoid và log-odds — mở đầu bài.
-- [Logistic Regression Details Pt 2: Maximum Likelihood](https://www.youtube.com/watch?v=BfKanl1aSG0) — StatQuest with Josh Starmer, tiếng Anh. Hợp lý cực đại cho hệ số logistic — mục MLE bài triển khai từ đầu.
-- [ROC and AUC, Clearly Explained!](https://www.youtube.com/watch?v=4jRBRDbJemM) — StatQuest with Josh Starmer, tiếng Anh. Đường ROC và diện tích AUC — mục đánh giá phân loại ở cuối bài.
+- [StatQuest: Logistic Regression](https://www.youtube.com/watch?v=yIYKR4sgzI8) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Giải thích lý do không dùng đường thẳng cho bài toán phân loại, sau đó giới thiệu hàm sigmoid và log-odds.
+- [Logistic Regression Details Pt 2: Maximum Likelihood](https://www.youtube.com/watch?v=BfKanl1aSG0) — StatQuest with Josh Starmer, tiếng Anh. Trình bày phương pháp ước lượng hợp lý cực đại cho các hệ số của hồi quy logistic.
+- [ROC and AUC, Clearly Explained!](https://www.youtube.com/watch?v=4jRBRDbJemM) — StatQuest with Josh Starmer, tiếng Anh. Giải thích đường cong ROC và diện tích AUC trong đánh giá mô hình phân loại.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Implement Gradient Descent**
-Viết thuật toán gradient descent để train logistic regression thay vì dùng BFGS.
+**Bài 1: Cài đặt Gradient Descent**
+Viết thuật toán gradient descent để huấn luyện hồi quy logistic thay vì sử dụng phương pháp BFGS.
 
-**Bài 2: Feature Importance**
-Sử dụng L1 regularization để chọn features quan trọng nhất trong dataset phân loại.
+**Bài 2: Đánh giá tầm quan trọng của đặc trưng (Feature Importance)**
+Sử dụng điều chuẩn L1 để chọn lọc các đặc trưng quan trọng nhất trên một tập dữ liệu phân loại.
 
-**Bài 3: Imbalanced Classification**
-Tạo dataset imbalanced (90% class 0, 10% class 1). So sánh accuracy vs F1-score.
+**Bài 3: Phân loại dữ liệu mất cân bằng (Imbalanced Classification)**
+Tạo tập dữ liệu mất cân bằng (90% lớp 0, 10% lớp 1) và so sánh chỉ số Accuracy với F1-score.

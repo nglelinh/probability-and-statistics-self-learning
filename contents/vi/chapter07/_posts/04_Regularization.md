@@ -10,42 +10,42 @@ categories:
 lesson_type: required
 ---
 
-Regularization là một trong những ý tưởng quan trọng nhất trong machine learning hiện đại. Khi đối mặt với overfitting hoặc multicollinearity, thay vì loại bỏ features, chúng ta "co" (shrink) các coefficients về phía zero. Bài học này giới thiệu hai phương pháp regularization phổ biến nhất - Ridge (L2) và Lasso (L1) - và giải thích tại sao Lasso có khả năng "kỳ diệu" là tự động chọn features quan trọng.
+Điều chuẩn (regularization) là một trong những kỹ thuật quan trọng trong học máy hiện đại. Khi mô hình đối mặt với quá khớp (overfitting) hoặc đa cộng tuyến (multicollinearity), thay vì loại bỏ thủ công các đặc trưng, ta "co" (shrink) các hệ số hồi quy về gần 0. Bài học này giới thiệu hai phương pháp điều chuẩn phổ biến là Ridge (L2) và Lasso (L1), đồng thời giải thích cơ chế giúp Lasso tự động chọn lọc đặc trưng.
 
 ---
 
-## Vấn Đề với OLS
+## Hạn Chế Của OLS
 
-Ordinary Least Squares có hai vấn đề chính:
+Phương pháp bình phương tối thiểu thông thường (OLS) gặp hai vấn đề chính:
 
-**1. Overfitting khi $$p$$ lớn:**
-- Khi số features gần bằng số samples ($$p \approx n$$), mô hình có thể fit noise
-- Khi $$p > n$$, OLS không có nghiệm duy nhất
+**1. Quá khớp khi số đặc trưng $$p$$ lớn:**
+- Khi số đặc trưng xấp xỉ số mẫu ($$p \approx n$$), mô hình dễ khớp cả nhiễu trong dữ liệu huấn luyện.
+- Khi $$p > n$$, bài toán OLS không còn nghiệm duy nhất.
 
-**2. Multicollinearity:**
-- Khi các features tương quan cao, $$\mathbf{X}^T\mathbf{X}$$ gần singular
-- Coefficients có variance rất lớn, không ổn định
+**2. Đa cộng tuyến (Multicollinearity):**
+- Khi các đặc trưng tương quan mạnh với nhau, ma trận $$\mathbf{X}^T\mathbf{X}$$ gần suy biến (near-singular).
+- Các hệ số ước lượng có phương sai rất lớn và kém ổn định.
 
-**Giải pháp:** Thêm penalty term vào loss function để "co" coefficients.
+**Giải pháp:** Bổ sung một số hạng phạt (penalty term) vào hàm mất mát để thu nhỏ độ lớn của các hệ số.
 
-## Ridge Regression (L2 Regularization)
+## Hồi Quy Ridge (Điều Chuẩn L2)
 
-Ridge regression minimize:
+Hồi quy Ridge tối thiểu hóa hàm mất mát:
 
 $$\text{Loss}_{\text{Ridge}} = \sum_{i=1}^n (y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2 + \lambda \sum_{j=1}^p \beta_j^2$$
 
-hoặc dạng ma trận:
+Khi dữ liệu đã được căn giữa (không phạt hệ số chặn $$\beta_0$$), hàm mất mát viết dưới dạng ma trận là:
 
 $$\text{Loss}_{\text{Ridge}} = ||\mathbf{y} - \mathbf{X}\boldsymbol{\beta}||^2 + \lambda ||\boldsymbol{\beta}||^2$$
 
-**Lời giải:**
+**Nghiệm dạng đóng:**
 
 $$\hat{\boldsymbol{\beta}}_{\text{Ridge}} = (\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}$$
 
-**Tham số $$\lambda$$:**
-- $$\lambda = 0$$: OLS thông thường
-- $$\lambda \to \infty$$: Tất cả coefficients $$\to 0$$
-- $$\lambda$$ càng lớn, regularization càng mạnh
+**Vai trò của tham số $$\lambda$$:**
+- $$\lambda = 0$$: Quay về hồi quy OLS thông thường.
+- $$\lambda \to \infty$$: Tất cả các hệ số hồi quy tiến về 0.
+- $$\lambda$$ càng lớn, mức độ điều chuẩn càng mạnh.
 
 ```python
 import numpy as np
@@ -126,20 +126,20 @@ def implement_ridge_from_scratch():
 # implement_ridge_from_scratch()
 ```
 
-## Lasso Regression (L1 Regularization)
+## Hồi Quy Lasso (Điều Chuẩn L1)
 
-Lasso minimize:
+Hồi quy Lasso tối thiểu hóa hàm mất mát:
 
 $$\text{Loss}_{\text{Lasso}} = \sum_{i=1}^n (y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2 + \lambda \sum_{j=1}^p |\beta_j|$$
 
-**Sự khác biệt quan trọng:** L1 penalty ($$|\beta|$$) thay vì L2 ($$\beta^2$$)
+**Điểm khác biệt chính:** Lasso sử dụng chuẩn L1 ($$|\beta_j|$$) thay cho chuẩn L2 ($$\beta_j^2$$).
 
-**Hệ quả kỳ diệu:** Lasso có thể đưa một số coefficients về **chính xác bằng 0**, tức là tự động loại bỏ features không quan trọng (feature selection)!
+**Đặc điểm quan trọng:** Lasso có thể ép một số hệ số về **chính xác bằng 0**, tức là tự động loại bỏ các đặc trưng ít ảnh hưởng (feature selection).
 
-**Lý do hình học:**
-- L1 ball có các góc nhọn tại các trục
-- Khi contour của RSS chạm vào L1 ball, thường chạm tại góc (nơi một số coefficients = 0)
-- L2 ball tròn, ít khi chạm tại trục
+**Giải thích hình học:**
+- Miền ràng buộc L1 có các đỉnh nhọn nằm trên các trục tọa độ.
+- Khi các đường đồng mức của RSS mở rộng và tiếp xúc với miền ràng buộc L1, điểm tiếp xúc thường rơi vào các đỉnh này — nơi một số hệ số bằng 0.
+- Ngược lại, miền ràng buộc L2 có dạng hình tròn (hoặc hình cầu) trơn nên hiếm khi tiếp xúc đúng tại các trục tọa độ.
 
 ```python
 from sklearn.linear_model import Lasso, LassoCV
@@ -214,19 +214,19 @@ def compare_ridge_lasso():
 
 ## Elastic Net
 
-Kết hợp cả L1 và L2:
+Elastic Net kết hợp cả hai thành phần phạt L1 và L2:
 
 $$\text{Loss}_{\text{ElasticNet}} = ||\mathbf{y} - \mathbf{X}\boldsymbol{\beta}||^2 + \lambda_1 ||\boldsymbol{\beta}||_1 + \lambda_2 ||\boldsymbol{\beta}||^2$$
 
-hoặc dạng sklearn:
+hoặc theo quy ước cài đặt trong `scikit-learn`:
 
-$$\text{Loss} = ||\mathbf{y} - \mathbf{X}\boldsymbol{\beta}||^2 + \alpha \rho ||\boldsymbol{\beta}||_1 + \frac{\alpha(1-\rho)}{2} ||\boldsymbol{\beta}||^2$$
+$$\text{Loss} = \frac{1}{2n}||\mathbf{y} - \mathbf{X}\boldsymbol{\beta}||^2 + \alpha \rho ||\boldsymbol{\beta}||_1 + \frac{\alpha(1-\rho)}{2} ||\boldsymbol{\beta}||^2$$
 
 **Ưu điểm:**
-- Kết hợp feature selection của Lasso với stability của Ridge
-- Tốt khi có nhóm features tương quan cao (Lasso chỉ chọn 1, Elastic Net chọn cả nhóm)
+- Kết hợp khả năng chọn lọc đặc trưng của Lasso với tính ổn định của Ridge.
+- Hoạt động hiệu quả khi có các nhóm đặc trưng tương quan cao (Lasso thường chỉ chọn một biến đại diện, trong khi Elastic Net có thể giữ lại cả nhóm).
 
-## Chọn Hyperparameter λ: Cross-Validation
+## Chọn Siêu Tham Số $$\lambda$$ Bằng Kiểm Chứng Chéo (Cross-Validation)
 
 ```python
 def cross_validation_for_lambda():
@@ -268,7 +268,7 @@ def cross_validation_for_lambda():
 # cross_validation_for_lambda()
 ```
 
-## Ứng Dụng Thực Tế: Feature Selection
+## Ứng Dụng Thực Tế: Chọn Lọc Đặc Trưng (Feature Selection)
 
 ```python
 from sklearn.datasets import load_diabetes
@@ -326,34 +326,34 @@ def practical_feature_selection():
 # practical_feature_selection()
 ```
 
-## So Sánh Ridge vs Lasso vs Elastic Net
+## So Sánh Ridge, Lasso và Elastic Net
 
 | Đặc điểm | Ridge (L2) | Lasso (L1) | Elastic Net |
 |----------|------------|------------|-------------|
-| Penalty | $$\sum \beta_j^2$$ | $$\sum \|\beta_j\|$$ | L1 + L2 |
-| Coefficients = 0? | Không | Có | Có |
-| Feature selection? | Không | Có | Có |
-| Grouped features? | Tất cả nhỏ | Chọn 1 | Chọn nhóm |
-| Computational | Closed-form | Iterative | Iterative |
+| Số hạng phạt | $$\sum \beta_j^2$$ | $$\sum \|\beta_j\|$$ | L1 + L2 |
+| Đưa hệ số về đúng 0 | Không | Có | Có |
+| Chọn lọc đặc trưng | Không | Có | Có |
+| Nhóm đặc trưng tương quan | Co đều về gần 0 | Chọn 1 biến | Giữ cả nhóm |
+| Cách tìm nghiệm | Dạng đóng | Lặp (iterative) | Lặp (iterative) |
 
-**Khi nào dùng gì?**
-- **Ridge:** Khi tất cả features đều có ích, chỉ cần giảm overfitting
-- **Lasso:** Khi nghi ngờ nhiều features vô dụng, cần feature selection
-- **Elastic Net:** Khi có nhóm features tương quan cao, hoặc $$p > n$$
+**Gợi ý lựa chọn:**
+- **Ridge:** Phù hợp khi hầu hết các đặc trưng đều đóng góp thông tin và mục tiêu chính là giảm quá khớp.
+- **Lasso:** Phù hợp khi nhiều đặc trưng có thể không hữu ích và cần mô hình thưa để chọn lọc biến.
+- **Elastic Net:** Phù hợp khi có các nhóm đặc trưng tương quan mạnh hoặc khi $$p > n$$.
 
 ## Video tham khảo
 
-- [Regularization Part 1: Ridge (L2) Regression](https://www.youtube.com/watch?v=Q81RR3yKn30) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Ridge cộng λ lần bình phương hệ số vào tổng bình phương phần dư, và chọn λ bằng cross-validation.
-- [Regularization Part 2: Lasso (L1) Regression](https://www.youtube.com/watch?v=NGf0voTMlcs) — StatQuest with Josh Starmer, tiếng Anh. Lasso đổi phạt sang trị tuyệt đối để một số hệ số về đúng không — mục chọn đặc trưng của bài.
-- [Regularization Part 3: Elastic Net Regression](https://www.youtube.com/watch?v=1dKRdX9bfIo) — StatQuest with Josh Starmer, tiếng Anh. Elastic net trộn hai phạt, đúng mục bài đặt giữa ridge và lasso.
+- [Regularization Part 1: Ridge (L2) Regression](https://www.youtube.com/watch?v=Q81RR3yKn30) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Giải thích hồi quy Ridge (cộng $$\lambda$$ lần tổng bình phương hệ số vào tổng bình phương phần dư) và cách chọn $$\lambda$$ bằng kiểm chứng chéo.
+- [Regularization Part 2: Lasso (L1) Regression](https://www.youtube.com/watch?v=NGf0voTMlcs) — StatQuest with Josh Starmer, tiếng Anh. Trình bày cách phạt trị tuyệt đối đưa một số hệ số về đúng 0 để chọn lọc đặc trưng.
+- [Regularization Part 3: Elastic Net Regression](https://www.youtube.com/watch?v=1dKRdX9bfIo) — StatQuest with Josh Starmer, tiếng Anh. Giới thiệu Elastic Net kết hợp đồng thời hai số hạng phạt L1 và L2.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Implement Lasso với Coordinate Descent**
-Lasso không có closed-form solution. Implement coordinate descent algorithm để giải Lasso.
+**Bài 1: Cài đặt Lasso bằng Coordinate Descent**
+Vì Lasso không có nghiệm dạng đóng, hãy cài đặt thuật toán hạ tọa độ (coordinate descent) để giải bài toán tối ưu Lasso.
 
-**Bài 2: Regularization Path**
-Vẽ regularization path cho Ridge và Lasso trên cùng dataset. Quan sát sự khác biệt.
+**Bài 2: Đường điều chuẩn (Regularization Path)**
+Vẽ đường biến thiên hệ số theo $$\lambda$$ của Ridge và Lasso trên cùng một tập dữ liệu, sau đó so sánh sự khác biệt.
 
-**Bài 3: High-Dimensional Regression**
-Tạo dataset với $$p = 100, n = 50$$. So sánh hiệu suất của OLS (sẽ fail), Ridge, Lasso, và Elastic Net.
+**Bài 3: Hồi quy dữ liệu chiều cao (High-Dimensional Regression)**
+Tạo tập dữ liệu với $$p = 100, n = 50$$ rồi so sánh hiệu suất giữa OLS (không có nghiệm duy nhất), Ridge, Lasso và Elastic Net.

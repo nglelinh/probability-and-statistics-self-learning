@@ -10,31 +10,31 @@ categories:
 lesson_type: required
 ---
 
-Trong bài học trước, chúng ta đã tìm hiểu về Bias-Variance Tradeoff. Để hiểu sâu hơn về cách đánh giá mô hình và thực hiện suy diễn thống kê (inference), chúng ta cần nắm vững Định lý Giới hạn Trung tâm (CLT) và phân phối lấy mẫu (sampling distribution).
+Trong các bài học trước, chúng ta đã tìm hiểu về sự đánh đổi giữa độ chệch và phương sai (Bias–Variance Tradeoff). Để đánh giá mô hình một cách có cơ sở và thực hiện suy diễn thống kê (statistical inference), chúng ta cần nắm vững Định lý Giới hạn Trung tâm (CLT) và khái niệm phân phối lấy mẫu (sampling distribution).
 
-> **Lưu ý:** Nếu bạn chưa nắm vững các khái niệm cơ bản về xác suất và các phân phối thông dụng (Bernoulli, Binomial, Normal, Poisson...), hãy xem lại **[Chapter 03: Xác Suất](../../chapter03/_posts/01_Concept_of_Probability.md)** trước khi tiếp tục. Bài học này sẽ giả định bạn đã quen thuộc với các phân phối đó và tập trung vào ứng dụng của chúng trong việc lấy mẫu.
+> **Lưu ý:** Nếu bạn chưa nắm vững các khái niệm xác suất cơ bản và các phân phối thông dụng (Bernoulli, Nhị thức, Chuẩn, Poisson...), hãy xem lại **[Chapter 03: Xác Suất](../../chapter03/_posts/01_Concept_of_Probability.md)** trước khi tiếp tục. Bài học này giả định bạn đã quen thuộc với các phân phối đó và tập trung vào ứng dụng của chúng trong việc lấy mẫu.
 
 ---
 
 ## Ôn Tập Nhanh: Phân Phối Chuẩn (Normal Distribution)
 
-Trong Statistical Learning, phân phối Chuẩn (Gaussian) đóng vai trò trung tâm vì:
-1.  **Central Limit Theorem:** Tổng/trung bình của nhiều biến ngẫu nhiên độc lập hội tụ về phân phối chuẩn.
-2.  **Least Squares:** Phương pháp bình phương tối thiểu (OLS) tương đương với Maximum Likelihood Estimation (MLE) khi nhiễu tuân theo phân phối chuẩn.
+Trong học thống kê (Statistical Learning), phân phối Chuẩn (Gaussian) giữ vai trò trung tâm vì hai lý do chính:
+1. **Định lý Giới hạn Trung tâm (Central Limit Theorem):** Tổng hoặc trung bình của nhiều biến ngẫu nhiên độc lập hội tụ về phân phối chuẩn khi cỡ mẫu đủ lớn.
+2. **Bình phương tối thiểu (Least Squares):** Phương pháp bình phương tối thiểu thông thường (OLS) tương đương với ước lượng hợp lý cực đại (Maximum Likelihood Estimation — MLE) khi nhiễu tuân theo phân phối chuẩn.
 
 $$X \sim \mathcal{N}(\mu, \sigma^2)$$
 
 PDF: $$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
 
-(Xem chi tiết về các phân phối khác như Binomial, Poisson, t-distribution tại [Bài 04-02](02_Discrete_Continuous_Distributions.md))
+*(Xem chi tiết về các phân phối khác như Nhị thức, Poisson, phân phối t tại [Bài 04-02](02_Discrete_Continuous_Distributions.md).)*
 
 ## Định Lý Giới Hạn Trung Tâm (CLT)
 
-**Phát biểu:** Cho $$X_1, \ldots, X_n$$ iid với $$E[X_i] = \mu$$, $$\text{Var}(X_i) = \sigma^2 < \infty$$:
+**Phát biểu:** Cho $$X_1, \ldots, X_n$$ là các biến ngẫu nhiên độc lập và có cùng phân phối (i.i.d.) với kỳ vọng $$E[X_i] = \mu$$ và phương sai hữu hạn $$\text{Var}(X_i) = \sigma^2 < \infty$$ (với $$\sigma > 0$$). Khi đó:
 
 $$\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} \mathcal{N}(0, 1)$$
 
-**Ý nghĩa:** Bất kể phân phối gốc, trung bình mẫu sẽ gần phân phối Chuẩn khi $$n$$ lớn.
+**Ý nghĩa:** Bất kể phân phối gốc của tổng thể có hình dạng ra sao (miễn là có phương sai hữu hạn), phân phối của trung bình mẫu sẽ xấp xỉ phân phối Chuẩn khi cỡ mẫu $$n$$ đủ lớn.
 
 ```python
 def demonstrate_clt(distribution='exponential', n_samples=30, n_simulations=10000):
@@ -73,14 +73,14 @@ def demonstrate_clt(distribution='exponential', n_samples=30, n_simulations=1000
 # demonstrate_clt('exponential', n_samples=30)
 ```
 
-## Sampling Distributions
+## Phân Phối Lấy Mẫu (Sampling Distributions)
 
-**Sampling distribution:** Phân phối của một thống kê (như $$\bar{X}$$) khi lấy mẫu nhiều lần.
+**Phân phối lấy mẫu:** Là phân phối xác suất của một thống kê mẫu (chẳng hạn trung bình mẫu $$\bar{X}$$) khi ta lặp lại quá trình lấy mẫu nhiều lần từ cùng một tổng thể.
 
-**Quan trọng cho:**
-- Xây dựng confidence intervals
-- Hypothesis testing
-- Hiểu uncertainty trong estimates
+**Vai trò trong thống kê:**
+- Xây dựng khoảng tin cậy (confidence intervals).
+- Thực hiện kiểm định giả thuyết (hypothesis testing).
+- Định lượng độ bất định (uncertainty) của các ước lượng.
 
 ```python
 def sampling_distribution_demo():
@@ -132,25 +132,25 @@ def sampling_distribution_demo():
 # sampling_distribution_demo()
 ```
 
-## Ứng Dụng Trong Machine Learning
+## Ứng Dụng Trong Học Máy (Machine Learning)
 
-**1. Confidence Intervals:**
-CLT cho phép xây dựng CI cho model parameters.
+**1. Khoảng tin cậy (Confidence Intervals):**
+Định lý Giới hạn Trung tâm cho phép xây dựng khoảng tin cậy cho các tham số và chỉ số đánh giá của mô hình.
 
 **2. Bootstrap:**
-Resampling để ước lượng sampling distribution.
+Kỹ thuật tái lấy mẫu (resampling) giúp ước lượng phân phối lấy mẫu trực tiếp từ dữ liệu hiện có mà không cần biết dạng phân phối gốc.
 
-**3. Hypothesis Testing:**
-Test xem model có tốt hơn baseline không.
+**3. Kiểm định giả thuyết (Hypothesis Testing):**
+Đánh giá xem một mô hình mới có thực sự cải thiện so với mô hình cơ sở (baseline) hay sự chênh lệch chỉ do nhiễu ngẫu nhiên.
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [But what is the Central Limit Theorem?](https://www.youtube.com/watch?v=zeJD6dqJ5lo) — 3Blue1Brown, tiếng Anh. **xem trước.** Định lý giới hạn trung tâm bằng bảng Galton và tổng các biến: trung bình mẫu về hình chuẩn dù từng quan sát thì không.
-- [The Central Limit Theorem, Clearly Explained!!!](https://www.youtube.com/watch?v=YAlJCEDH2uY) — StatQuest with Josh Starmer, tiếng Anh. Cùng định lý, ngắn hơn, và chỗ nó biện minh cho kiểm định t mà bài nhắc trong ứng dụng.
-- [The Sampling Distribution of the Sample Mean (fast version)](https://www.youtube.com/watch?v=0zqNGDVNKgA) — jbstatistics, tiếng Anh. Phân phối lấy mẫu của trung bình mẫu — đối tượng bài mô phỏng trước khi gọi tên CLT.
+- [But what is the Central Limit Theorem?](https://www.youtube.com/watch?v=zeJD6dqJ5lo) — 3Blue1Brown, tiếng Anh. **Nên xem trước.** Minh họa Định lý Giới hạn Trung tâm qua bảng Galton và tổng các biến ngẫu nhiên: trung bình mẫu hội tụ về dạng phân phối chuẩn ngay cả khi từng quan sát riêng lẻ không có phân phối chuẩn.
+- [The Central Limit Theorem, Clearly Explained!!!](https://www.youtube.com/watch?v=YAlJCEDH2uY) — StatQuest with Josh Starmer, tiếng Anh. Trình bày ngắn gọn hơn về cùng định lý và giải thích cơ sở cho kiểm định t được nhắc đến trong phần ứng dụng.
+- [The Sampling Distribution of the Sample Mean (fast version)](https://www.youtube.com/watch?v=0zqNGDVNKgA) — jbstatistics, tiếng Anh. Giải thích khái niệm phân phối lấy mẫu của trung bình mẫu — đối tượng được mô phỏng trong bài trước khi áp dụng CLT.
 
 ## Bài Tập
 
-**Bài 1:** Mô phỏng CLT với phân phối Chi-squared. Quan sát tốc độ hội tụ.
+**Bài 1:** Mô phỏng Định lý Giới hạn Trung tâm với phân phối Chi-bình phương (Chi-squared) và quan sát tốc độ hội tụ khi tăng cỡ mẫu.
 
-**Bài 2:** Tính confidence interval 95% cho trung bình bằng CLT và Bootstrap. So sánh kết quả.
+**Bài 2:** Tính khoảng tin cậy 95% cho giá trị trung bình bằng hai phương pháp: CLT và Bootstrap, sau đó so sánh hai kết quả.

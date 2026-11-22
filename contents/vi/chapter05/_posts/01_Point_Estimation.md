@@ -10,20 +10,21 @@ categories:
 lesson_type: required
 ---
 
-Ước lượng điểm là cầu nối giữa lý thuyết xác suất và thống kê ứng dụng. Từ một mẫu dữ liệu, làm sao chúng ta ước lượng các tham số của tổng thể? Bài học này giới thiệu các phương pháp ước lượng quan trọng nhất - Maximum Likelihood Estimation (MLE) và Method of Moments - cùng với các tính chất mong muốn của một estimator tốt.
+Ước lượng điểm là cầu nối giữa lý thuyết xác suất và thống kê ứng dụng. Từ một mẫu dữ liệu thu thập được, làm thế nào để ước lượng các tham số chưa biết của tổng thể? Bài học này giới thiệu hai phương pháp ước lượng quan trọng nhất — Ước lượng Hợp lý Cực đại (Maximum Likelihood Estimation — MLE) và Phương pháp Moment (Method of Moments) — cùng các tiêu chí đánh giá chất lượng của một bộ ước lượng.
 
 ---
 
-## Estimator và Estimate
+## Bộ Ước Lượng (Estimator) và Giá Trị Ước Lượng (Estimate)
 
-**Estimator** $$\hat{\theta}$$ là một hàm của dữ liệu mẫu:
+**Bộ ước lượng (Estimator)** $$\hat{\theta}$$ là một hàm số của dữ liệu mẫu (nên bản thân nó là một biến ngẫu nhiên):
+
 $$\hat{\theta} = g(X_1, X_2, \ldots, X_n)$$
 
-**Estimate** là giá trị cụ thể của estimator trên một mẫu cụ thể.
+**Giá trị ước lượng (Estimate)** là giá trị số cụ thể mà bộ ước lượng nhận được trên một mẫu quan sát cụ thể.
 
 **Ví dụ:**
-- Estimator: $$\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$$ (sample mean)
-- Estimate: Nếu data = [2, 4, 6], thì estimate = 4
+- Bộ ước lượng: $$\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$$ (trung bình mẫu).
+- Giá trị ước lượng: Nếu mẫu dữ liệu là `[2, 4, 6]`, thì giá trị ước lượng bằng `4`.
 
 ```python
 import numpy as np
@@ -94,17 +95,18 @@ def illustrate_estimator_vs_estimate():
 # illustrate_estimator_vs_estimate()
 ```
 
-## Tính Chất của Estimator
+## Các Tính Chất Của Bộ Ước Lượng
 
-### 1. Unbiased (Không Chệch)
+### 1. Tính Không Chệch (Unbiasedness)
 
-Estimator $$\hat{\theta}$$ là unbiased nếu:
+Bộ ước lượng $$\hat{\theta}$$ được gọi là không chệch (unbiased) nếu kỳ vọng của nó bằng đúng tham số thực:
+
 $$E[\hat{\theta}] = \theta$$
 
 **Ví dụ:**
-- Sample mean $$\bar{X}$$ là unbiased estimator của $$\mu$$
-- Sample variance $$S^2 = \frac{1}{n-1}\sum(X_i - \bar{X})^2$$ là unbiased estimator của $$\sigma^2$$
-- Nhưng $$\frac{1}{n}\sum(X_i - \bar{X})^2$$ là BIASED!
+- Trung bình mẫu $$\bar{X}$$ là bộ ước lượng không chệch của $$\mu$$.
+- Phương sai mẫu hiệu chỉnh $$S^2 = \frac{1}{n-1}\sum(X_i - \bar{X})^2$$ là bộ ước lượng không chệch của $$\sigma^2$$.
+- Ngược lại, $$\frac{1}{n}\sum(X_i - \bar{X})^2$$ là bộ ước lượng **bị chệch (biased)** (có xu hướng ước lượng thấp hơn $$\sigma^2$$).
 
 ```python
 def demonstrate_bias():
@@ -177,38 +179,38 @@ def demonstrate_bias():
     print(f"Unbiased estimator (÷n-1): E[S²] = {unbiased_estimates.mean():.4f}, Bias = {unbiased_estimates.mean() - true_var:.4f}")
 
 # demonstrate_bias()
-*   **Unbiasedness (Tính không chệch):** $$E(\hat{\theta}) = \theta$$. Trung bình của ước lượng bằng tham số thực.
-*   **Consistency (Tính vững):** Khi $$n \to \infty$$, $$\hat{\theta} \to \theta$$ (theo xác suất).
-*   **Efficiency (Tính hiệu quả):** Var($\hat{\theta}$) nhỏ nhất có thể.
+```
 
-![Bias vs Variance Targets](../img/bias_variance_targets.png)
-*Minh họa Bias và Variance qua ví dụ bắn bia. Mục tiêu của chúng ta là "Low Bias, Low Variance" (Góc trên bên trái).*
+### 2. Tính Nhất Quán (Consistency)
 
-### Trade-off: Bias vs Variance
-Trong Machine Learning, thường có sự đánh đổi này (MSE = Bias^2 + Variance).
+Bộ ước lượng $$\hat{\theta}_n$$ được gọi là nhất quán (hay vững — consistent) nếu nó hội tụ theo xác suất về tham số thực khi cỡ mẫu tăng ra vô cùng:
 
-### 2. Consistency (Nhất Quán)
-
-Estimator $$\hat{\theta}_n$$ là consistent nếu:
 $$\hat{\theta}_n \xrightarrow{P} \theta \quad \text{as } n \to \infty$$
 
-**Ý nghĩa:** Khi có nhiều dữ liệu hơn, estimate sẽ gần với true parameter hơn.
+**Ý nghĩa:** Khi thu thập ngày càng nhiều dữ liệu, giá trị ước lượng sẽ tiến càng sát về tham số thực của tổng thể.
 
-### 3. Efficiency (Hiệu Quả)
+### 3. Tính Hiệu Quả (Efficiency)
 
-Trong các unbiased estimators, estimator nào có variance nhỏ nhất là efficient nhất.
+Trong lớp các bộ ước lượng không chệch, bộ ước lượng có phương sai $$\text{Var}(\hat{\theta})$$ nhỏ nhất được gọi là hiệu quả nhất.
 
-## Maximum Likelihood Estimation (MLE)
+![Bias vs Variance Targets](../img/bias_variance_targets.png)
+*Minh họa độ chệch (Bias) và phương sai (Variance) qua hình ảnh bắn bia. Mục tiêu lý tưởng là "Low Bias, Low Variance" (góc trên bên trái).*
 
-**Ý tưởng:** Chọn tham số sao cho khả năng quan sát được dữ liệu hiện tại là lớn nhất.
+### Sự Đánh Đổi Giữa Độ Chệch và Phương Sai (Bias–Variance Trade-off)
 
-**Likelihood function:**
+Trong thống kê và học máy, sai số bình phương trung bình được phân tách thành $$\text{MSE} = \text{Bias}^2 + \text{Variance}$$. Thực tế thường tồn tại sự đánh đổi giữa hai thành phần này: giảm độ chệch có thể làm tăng phương sai và ngược lại.
+
+## Ước Lượng Hợp Lý Cực Đại (Maximum Likelihood Estimation — MLE)
+
+**Ý tưởng:** Chọn giá trị tham số sao cho xác suất (hoặc mật độ xác suất) quan sát được tập dữ liệu hiện có là lớn nhất.
+
+**Hàm hợp lý (Likelihood function):**
 $$L(\theta | x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i | \theta)$$
 
-**Log-likelihood:**
+**Hàm log-hợp lý (Log-likelihood):**
 $$\ell(\theta) = \log L(\theta) = \sum_{i=1}^n \log f(x_i | \theta)$$
 
-**MLE:**
+**Ước lượng MLE:**
 $$\hat{\theta}_{MLE} = \arg\max_{\theta} \ell(\theta)$$
 
 ```python
@@ -287,7 +289,7 @@ def mle_normal_distribution():
 # mle_normal_distribution()
 ```
 
-### MLE cho Các Phân Phối Khác
+### MLE Cho Một Số Phân Phối Khác
 
 ```python
 def mle_examples():
@@ -334,15 +336,15 @@ def mle_examples():
 # mle_examples()
 ```
 
-## Method of Moments
+## Phương Pháp Moment (Method of Moments)
 
-**Ý tưởng:** Đặt sample moments bằng population moments và giải hệ phương trình.
+**Ý tưởng:** Cân bằng các moment mẫu (sample moments) với các moment lý thuyết của tổng thể (population moments) rồi giải hệ phương trình để tìm tham số.
 
-**Population k-th moment:** $$\mu_k = E[X^k]$$
+**Moment lý thuyết bậc $$k$$:** $$\mu_k = E[X^k]$$
 
-**Sample k-th moment:** $$m_k = \frac{1}{n}\sum_{i=1}^n X_i^k$$
+**Moment mẫu bậc $$k$$:** $$m_k = \frac{1}{n}\sum_{i=1}^n X_i^k$$
 
-**Method of Moments:** Giải $$\mu_k(\theta) = m_k$$
+**Phương pháp Moment:** Giải hệ phương trình $$\mu_k(\theta) = m_k$$.
 
 ```python
 def method_of_moments_example():
@@ -429,32 +431,32 @@ def method_of_moments_example():
 # method_of_moments_example()
 ```
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [Maximum Likelihood, clearly explained!!!](https://www.youtube.com/watch?v=XepXtl9YKwc) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Ước lượng hợp lý cực đại: dịch chuyển trung bình và độ lệch của một họ cho đến khi dữ liệu quan sát được có likelihood lớn nhất.
-- [Unbiasedness vs consistency of estimators - an example](https://www.youtube.com/watch?v=6i7mqDJICzQ) — Ben Lambert, tiếng Anh. Chệch và nhất quán là hai tính chất khác nhau của estimator — mục tính chất bài chứng minh trước khi tới MLE.
-- [The Method of Moments ... Made Easy!](https://www.youtube.com/watch?v=OL8kf-gKcqI) — Stats with Brian, tiếng Anh. Phương pháp moment: đặt moment mẫu bằng moment lý thuyết rồi giải tham số — mục cuối bài.
+- [Maximum Likelihood, clearly explained!!!](https://www.youtube.com/watch?v=XepXtl9YKwc) — StatQuest with Josh Starmer, tiếng Anh. **Nên xem trước.** Giải thích trực quan ước lượng hợp lý cực đại: điều chỉnh trung bình và độ lệch chuẩn của một phân phối sao cho hàm hợp lý của dữ liệu quan sát đạt cực đại.
+- [Unbiasedness vs consistency of estimators - an example](https://www.youtube.com/watch?v=6i7mqDJICzQ) — Ben Lambert, tiếng Anh. Phân biệt tính không chệch và tính nhất quán của bộ ước lượng — tương ứng với phần tính chất trước khi học MLE.
+- [The Method of Moments ... Made Easy!](https://www.youtube.com/watch?v=OL8kf-gKcqI) — Stats with Brian, tiếng Anh. Trình bày phương pháp moment: cân bằng moment mẫu với moment lý thuyết để giải tìm tham số — tương ứng với mục cuối bài.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Verify Unbiasedness**
-Cho X ~ Uniform(0, θ). Estimator $$\hat{\theta} = 2\bar{X}$$ có unbiased không?
-- Tính E[$$\hat{\theta}$$] bằng lý thuyết
-- Verify bằng mô phỏng với θ = 10
+**Bài 1: Kiểm chứng tính không chệch**
+Cho X ~ Uniform(0, θ). Bộ ước lượng $$\hat{\theta} = 2\bar{X}$$ có không chệch hay không?
+- Tính kỳ vọng E[$$\hat{\theta}$$] bằng lý thuyết.
+- Kiểm chứng bằng mô phỏng với θ = 10.
 
-**Bài 2: MLE cho Exponential**
-Sinh 100 mẫu từ Exponential(λ=2).
-- Tính MLE bằng công thức
-- Vẽ log-likelihood function
-- Verify bằng optimization
+**Bài 2: MLE cho phân phối Mũ**
+Sinh 100 mẫu từ phân phối Exponential(λ = 2).
+- Tính ước lượng MLE bằng công thức giải tích.
+- Vẽ đồ thị hàm log-likelihood.
+- Kiểm chứng lại bằng phương pháp tối ưu số.
 
-**Bài 3: Consistency**
-Với X ~ N(μ, σ²), verify rằng sample mean là consistent:
-- Lấy mẫu với n = 10, 50, 100, 500, 1000
-- Tính variance của estimator cho mỗi n
-- Vẽ biểu đồ variance vs n
+**Bài 3: Kiểm chứng tính nhất quán**
+Với X ~ N(μ, σ²), kiểm chứng rằng trung bình mẫu là bộ ước lượng nhất quán:
+- Lấy mẫu với các cỡ mẫu n = 10, 50, 100, 500, 1000.
+- Tính phương sai của bộ ước lượng ứng với mỗi cỡ mẫu n.
+- Vẽ biểu đồ thể hiện phương sai theo n.
 
-**Bài 4: MLE cho Mixture Model**
-Dữ liệu từ mixture: 0.6 × N(0, 1) + 0.4 × N(5, 1).
-- Implement EM algorithm để estimate parameters
-- So sánh với true parameters
+**Bài 4: MLE cho mô hình hỗn hợp (Mixture Model)**
+Sinh dữ liệu từ mô hình hỗn hợp: 0.6 × N(0, 1) + 0.4 × N(5, 1).
+- Cài đặt thuật toán EM để ước lượng các tham số.
+- So sánh kết quả ước lượng với các tham số thực.

@@ -12,33 +12,33 @@ lesson_type: required
 
 ## 1. Mục Tiêu Bài Học
 
-Sau khi hoàn thành bài học này, sinh viên sẽ có thể:
-- Thực hiện các bước **Kiểm định giả thuyết ANOVA một yếu tố (One-Way ANOVA)**.
-- Tính toán và diễn giải **bảng ANOVA** (Degrees of Freedom, Mean Squares, F-statistic, p-value).
-- Thực hiện **Phân tích hậu kiểm (Post-hoc Analysis)** sử dụng kiểm định **Tukey's HSD** để xác định cụ thể các nhóm khác biệt.
-- Sử dụng thư viện `scipy.stats` và `statsmodels` cho quy trình phân tích đầy đủ.
+Sau khi hoàn thành bài học này, sinh viên có thể:
+- Thực hiện đầy đủ các bước **kiểm định giả thuyết ANOVA một yếu tố (One-Way ANOVA)**.
+- Tính toán và diễn giải **bảng ANOVA** gồm bậc tự do (Degrees of Freedom), trung bình bình phương (Mean Squares), thống kê $F$ và giá trị $p$.
+- Thực hiện **phân tích hậu kiểm (Post-hoc Analysis)** bằng kiểm định **Tukey's HSD** để xác định cụ thể các cặp nhóm khác biệt.
+- Sử dụng thư viện `scipy.stats` và `statsmodels` cho quy trình phân tích hoàn chỉnh.
 
 ## 2. Kiến Thức Tiền Đề
 
 - Bài 1: Giới thiệu về ANOVA.
-- Thư viện `statsmodels` (cần cài đặt: `pip install statsmodels`).
+- Thư viện `statsmodels` (cài đặt bằng lệnh `pip install statsmodels`).
 
 ## 3. Động Lực và Giới Thiệu
 
-Ở bài trước, ta đã biết ANOVA dùng F-statistic (tỷ lệ Tín hiệu/Nhiễu) để kiểm tra sự khác biệt. Trong bài này, ta sẽ đi vào chi tiết **cách tính toán** con số đó và quan trọng hơn: **làm gì sau khi biết có sự khác biệt?**.
+Ở bài trước, ta đã biết ANOVA sử dụng thống kê $F$ (tỷ số giữa biến động tín hiệu và biến động nhiễu) để kiểm tra xem có sự khác biệt giữa các nhóm hay không. Trong bài này, ta sẽ đi vào chi tiết **cách tính toán** bảng ANOVA và câu hỏi quan trọng tiếp theo: **cần làm gì sau khi phát hiện có sự khác biệt?**
 
-Nếu Sếp hỏi: "Chiến dịch Marketing nào hiệu quả nhất: Email, Facebook hay TikTok?", và bạn trả lời "Có sự khác biệt giữa chúng" (kết quả ANOVA), Sếp sẽ sa thải bạn. Bạn cần trả lời: "Facebook hiệu quả hơn Email, nhưng ngang bằng TikTok" (kết quả Post-hoc).
+Chẳng hạn, khi cần trả lời câu hỏi chiến dịch marketing nào hiệu quả hơn giữa Email, Facebook và TikTok, kết luận dừng ở mức "có sự khác biệt giữa các kênh" (kết quả ANOVA tổng quát) là chưa đủ để ra quyết định. Ta cần kết luận cụ thể hơn, ví dụ "Facebook hiệu quả hơn Email nhưng không khác biệt đáng kể so với TikTok" — và đó là vai trò của phân tích hậu kiểm (post-hoc).
 
 ## 4. Các Khái Niệm Cốt Lõi và Quy Trình
 
-### 4.1 Giả Thuyết Của One-Way ANOVA
+### 4.1 Giả Thuyết Của ANOVA Một Yếu Tố
 
--   $H_0$: $\mu_1 = \mu_2 = ... = \mu_k$ (Trung bình tất cả các nhóm đều bằng nhau).
+-   $H_0$: $\mu_1 = \mu_2 = ... = \mu_k$ (trung bình tổng thể của tất cả các nhóm bằng nhau).
 -   $H_a$: Có ít nhất một cặp trung bình ($\mu_i, \mu_j$) khác nhau.
 
 ### 4.2 Bảng ANOVA (The ANOVA Table)
 
-Đây là cách tiêu chuẩn để trình bày kết quả:
+Kết quả ANOVA thường được trình bày theo bảng chuẩn sau:
 
 | Nguồn Biến Động (Source) | Bậc Tự Do (DF) | Tổng Bình Phương (SS) | Trung Bình Bình Phương (MS) | F-statistic | p-value |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -46,29 +46,29 @@ Nếu Sếp hỏi: "Chiến dịch Marketing nào hiệu quả nhất: Email, Fa
 | **Within Groups (Error)** | $N - k$ | $SS_{Within}$ | $MS_{W} = SS_{W} / DF_{W}$ | | |
 | **Total** | $N - 1$ | $SS_{Total}$ | | | |
 
+Trong đó:
 -   $k$: Số lượng nhóm.
 -   $N$: Tổng số quan sát.
--   Nếu $p\_value < \alpha$ (thường là 0.05) -> Bác bỏ $H_0$.
+-   Nếu $p\_value < \alpha$ (thường chọn $\alpha = 0.05$), ta bác bỏ $H_0$.
 
 ### 4.3 Phân Tích Hậu Kiểm (Post-hoc Analysis)
 
-Khi bác bỏ $H_0$, ta biết "có sự khác biệt", nhưng chưa biết "đâu là sự khác biệt". Ta dùng Post-hoc tests.
--   **Tukey's HSD (Honest Significant Difference)**: Phổ biến nhất, kiểm soát tốt sai lầm loại I khi so sánh mọi cặp (Pairwise comparisons).
--   **Bonferroni Correction**: Đơn giản nhưng bảo thủ (khó tìm ra khác biệt hơn).
+Khi bác bỏ $H_0$, ta mới biết có sự khác biệt giữa các nhóm nhưng chưa biết cụ thể cặp nhóm nào khác nhau. Các kiểm định hậu kiểm phổ biến gồm:
+-   **Tukey's HSD (Honest Significant Difference):** Kiểm định phổ biến nhất cho so sánh mọi cặp (pairwise comparisons), kiểm soát tốt xác suất sai lầm loại I tổng thể.
+-   **Hiệu chỉnh Bonferroni (Bonferroni Correction):** Cách tính đơn giản nhưng mang tính bảo thủ cao, nên lực kiểm định thấp hơn (khó phát hiện khác biệt thực sự hơn).
 
 ## 5. Ví Dụ Minh Họa
 
-Quay lại ví dụ Phân bón A, B, C.
-Giả sử $F = 5.2$, $p\_value = 0.01$. -> Kết luận: Hiệu quả phân bón có khác nhau.
-Chạy Tukey's HSD:
--   A vs B: $p = 0.5$ (Không khác biệt).
--   B vs C: $p = 0.04$ (Khác biệt).
--   A vs C: $p = 0.02$ (Khác biệt).
--> Kết luận cuối cùng: C tốt hơn A và B; A và B tương đương nhau.
+Quay lại ví dụ so sánh 3 loại phân bón A, B và C. Giả sử kết quả ANOVA cho $F = 5.2$ và $p\_value = 0.01 < 0.05$, nên ta bác bỏ $H_0$ và kết luận hiệu quả của các loại phân bón có sự khác biệt. Tiếp theo, ta chạy kiểm định Tukey's HSD:
+-   A với B: $p = 0.5$ (không có khác biệt có ý nghĩa thống kê).
+-   B với C: $p = 0.04$ (có khác biệt có ý nghĩa thống kê).
+-   A với C: $p = 0.02$ (có khác biệt có ý nghĩa thống kê).
 
-## 6. Triển Khai trên Python
+Nếu trung bình của nhóm C cao hơn A và B, kết luận cuối cùng là phân bón C cho hiệu quả tốt hơn A và B, trong khi A và B không khác biệt đáng kể.
 
-Ta sẽ dùng lại ví dụ giả lập 3 nhóm A, B, C từ bài trước.
+## 6. Triển Khai Trên Python
+
+Ta sử dụng lại bộ dữ liệu giả lập gồm 3 nhóm A, B, C từ bài trước.
 
 ```python
 import pandas as pd
@@ -120,25 +120,24 @@ else:
 
 ## 7. Giải Thích và Các Lỗi Thường Gặp
 
--   **Lỗi**: Dùng t-test thay vì Post-hoc.
-    -   Như đã nói, điều này làm tăng rủi ro sai lầm. Tukey's HSD đã điều chỉnh ("phạt") p-value để giữ cho rủi ro tổng thể luôn ở mức 5%.
--   **Đọc nhầm bảng Tukey**:
-    -   Nhìn vào cột `reject` (True/False). True nghĩa là có sự khác biệt.
-    -   Nhìn `meandiff`: Sự khác biệt trung bình.
+-   **Dùng kiểm định $t$ lặp lại thay cho hậu kiểm:** Như đã phân tích, việc chạy nhiều kiểm định $t$ không hiệu chỉnh sẽ làm tăng xác suất sai lầm loại I tổng thể. Tukey's HSD tự động hiệu chỉnh giá trị $p$ để giữ mức sai lầm loại I tổng thể (family-wise error rate) ở ngưỡng $\alpha$ (thường là 5%).
+-   **Đọc nhầm bảng kết quả Tukey:**
+    -   Cột `reject` (`True`/`False`) cho biết có bác bỏ giả thuyết hai nhóm bằng nhau hay không (`True` nghĩa là có khác biệt có ý nghĩa thống kê).
+    -   Cột `meandiff` thể hiện hiệu trung bình giữa hai nhóm đang so sánh.
 
 ## Video tham khảo
 
-- [Phân tích phương sai một yếu tố (One-Way ANOVA) | Phân Tích Thống Kê 23 | Learn to do SCIENCE](https://www.youtube.com/watch?v=JWiznZZEjBw) — Learn to do SCIENCE, tiếng Việt. **xem trước.** Tính ANOVA một yếu tố bằng tiếng Việt, song song với bảng statsmodels bài in ra.
-- [Using Linear Models for t-tests and ANOVA, Clearly Explained!!!](https://www.youtube.com/watch?v=NF5_btOaCig) — StatQuest with Josh Starmer, tiếng Anh. Cùng kiểm định F viết như mô hình tuyến tính với ma trận thiết kế — cách bài nối ANOVA với hồi quy.
-- [Analysis of Variance (ANOVA) and F statistics .... MADE EASY!!!](https://www.youtube.com/watch?v=YllG5Cy6OFw) — Stats with Brian, tiếng Anh. Thống kê F là tỷ số phương sai giữa nhóm trên phương sai trong nhóm — công thức bài tính trước khi kết luận.
+- [Phân tích phương sai một yếu tố (One-Way ANOVA) | Phân Tích Thống Kê 23 | Learn to do SCIENCE](https://www.youtube.com/watch?v=JWiznZZEjBw) — Learn to do SCIENCE, tiếng Việt. **Xem trước.** Hướng dẫn tính ANOVA một yếu tố bằng tiếng Việt, tương ứng với bảng kết quả `statsmodels` trong bài.
+- [Using Linear Models for t-tests and ANOVA, Clearly Explained!!!](https://www.youtube.com/watch?v=NF5_btOaCig) — StatQuest with Josh Starmer, tiếng Anh. Diễn giải kiểm định $F$ như một trường hợp của mô hình tuyến tính với ma trận thiết kế, kết nối ANOVA với hồi quy.
+- [Analysis of Variance (ANOVA) and F statistics .... MADE EASY!!!](https://www.youtube.com/watch?v=YllG5Cy6OFw) — Stats with Brian, tiếng Anh. Trình bày thống kê $F$ dưới dạng tỷ số giữa phương sai giữa nhóm và phương sai trong nhóm.
 
 ## 8. Bài Tập
 
-1.  (Python) Tải tập dữ liệu `Diet` (hoặc tạo giả lập 3 chế độ ăn kiêng khác nhau).
-    -   Biến phụ thuộc: Số cân giảm được (`weight_loss`).
+1.  (Python) Tải tập dữ liệu `Diet` (hoặc tạo dữ liệu giả lập cho 3 chế độ ăn kiêng khác nhau):
+    -   Biến phụ thuộc: Số cân nặng giảm được (`weight_loss`).
     -   Biến phân loại: Loại chế độ ăn (`diet_type`: 1, 2, 3).
-    -   Thực hiện ANOVA để xem chế độ ăn nào hiệu quả nhất.
-    -   Nếu có khác biệt, dùng Tukey để chỉ ra sự khác biệt đó.
+    -   Thực hiện kiểm định ANOVA để kiểm tra xem có sự khác biệt giữa các chế độ ăn hay không.
+    -   Nếu có khác biệt, sử dụng kiểm định Tukey's HSD để xác định cặp chế độ ăn nào khác nhau.
 
 ## 9. Tài Liệu Tham Khảo
 

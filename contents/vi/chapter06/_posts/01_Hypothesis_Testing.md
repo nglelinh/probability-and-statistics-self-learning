@@ -10,46 +10,45 @@ categories:
 lesson_type: required
 ---
 
-Kiểm định giả thuyết (hypothesis testing) là công cụ để đưa ra quyết định dựa trên dữ liệu: Liệu một drug mới có hiệu quả hơn placebo? Liệu conversion rate đã tăng sau khi thay đổi UI? Bài học này sẽ giúp bạn hiểu framework của hypothesis testing, ý nghĩa của p-value (và những hiểu lầm phổ biến), các loại sai lầm, và các tests phổ biến nhất.
+Kiểm định giả thuyết (hypothesis testing) là công cụ giúp đưa ra quyết định dựa trên dữ liệu: liệu một loại thuốc mới có hiệu quả hơn giả dược hay không, hay tỷ lệ chuyển đổi có thực sự tăng sau khi thay đổi giao diện? Bài học này trình bày khung lý thuyết của kiểm định giả thuyết, ý nghĩa của p-value (cùng các nhầm lẫn thường gặp), hai loại sai lầm trong kiểm định và các phép kiểm định phổ biến nhất.
 
 ---
 
-## Framework của Hypothesis Testing
+## Khung Lý Thuyết Của Kiểm Định Giả Thuyết
 
-**Null Hypothesis (H₀):** Giả thuyết "không có gì xảy ra", status quo
-**Alternative Hypothesis (H₁ hoặc Hₐ):** Giả thuyết chúng ta muốn chứng minh
+**Giả thuyết không (Null Hypothesis — H₀):** Giả thuyết mặc định, thể hiện trạng thái "không có sự khác biệt" hay "không có hiệu ứng" (status quo).
+**Giả thuyết đối (Alternative Hypothesis — H₁ hoặc Hₐ):** Giả thuyết nghiên cứu mà ta muốn tìm bằng chứng để ủng hộ.
 
 **Ví dụ:**
-- H₀: Drug mới không hiệu quả hơn placebo (μ_drug = μ_placebo)
-- H₁: Drug mới hiệu quả hơn (μ_drug > μ_placebo)
+- H₀: Thuốc mới không hiệu quả hơn giả dược (μ_drug = μ_placebo).
+- H₁: Thuốc mới hiệu quả hơn giả dược (μ_drug > μ_placebo).
 
-**Quy trình:**
-1. Đặt H₀ và H₁
-2. Chọn test statistic
-3. Tính p-value
-4. Quyết định: Reject H₀ hoặc Fail to reject H₀
+**Quy trình cơ bản:**
+1. Phát biểu H₀ và H₁.
+2. Chọn thống kê kiểm định (test statistic) phù hợp.
+3. Tính giá trị p-value.
+4. Đưa ra quyết định: bác bỏ H₀ (reject H₀) hoặc chưa đủ bằng chứng bác bỏ H₀ (fail to reject H₀).
 
-### Câu Chuyện Kinh Điển: The Lady Tasting Tea
+### Câu Chuyện Kinh Điển: Quý Cô Nếm Trà (The Lady Tasting Tea)
 > Dựa trên *The Lady Tasting Tea* của David Salsburg.
 
-Vào một buổi chiều hè ở Cambridge năm 1920, một nhóm các nhà khoa học, trong đó có Ronald Fisher, đang uống trà. Một quý cô tuyên bố rằng cô có thể phân biệt được trà được rót vào sữa hay sữa được rót vào trà.
+Vào một buổi chiều hè ở Cambridge năm 1920, một nhóm nhà khoa học, trong đó có Ronald Fisher, đang uống trà. Một quý cô khẳng định bà có thể phân biệt được tách trà được rót trà trước hay rót sữa trước.
 
 ![Lady Tasting Tea](../img/lady_tasting_tea.jpg)
-*Minh họa quý cô nếm trà (Ảnh: Wikimedia Commons).*
+*Minh họa câu chuyện quý cô nếm trà (Ảnh: Wikimedia Commons).*
 
-Fisher đã thiết kế một thí nghiệm:
-- Chuẩn bị 8 tách trà: 4 tách trà trước, 4 tách sữa trước.
-- Thứ tự ngẫu nhiên.
-- Quý cô nếm và gọi tên từng tách.
+Fisher đã thiết kế một thí nghiệm có kiểm soát:
+- Chuẩn bị 8 tách trà: 4 tách rót trà trước, 4 tách rót sữa trước.
+- Sắp xếp theo thứ tự ngẫu nhiên.
+- Quý cô nếm thử và xác định cách pha của từng tách.
 
 **Giả thuyết:**
-- $$H_0$$: Quý cô đoán mò (không có khả năng phân biệt).
-- $$H_1$$: Quý cô có khả năng phân biệt thật sự.
+- $$H_0$$: Quý cô chỉ đoán ngẫu nhiên (không có khả năng phân biệt).
+- $$H_1$$: Quý cô thực sự có khả năng phân biệt.
 
-Nếu cô ấy đoán đúng cả 8 tách, xác suất đoán mò là $$\frac{1}{\binom{8}{4}} = \frac{1}{70} \approx 0.014$$.
-Vì $$0.014 < 0.05$$, Fisher kết luận: Có bằng chứng để bác bỏ $$H_0$$. Quý cô thực sự có tài năng!
+Nếu quý cô đoán đúng cả 8 tách, xác suất xảy ra điều đó chỉ do may mắn là $$\frac{1}{\binom{8}{4}} = \frac{1}{70} \approx 0.014$$. Vì $$0.014 < 0.05$$, Fisher kết luận có đủ bằng chứng thống kê để bác bỏ $$H_0$$.
 
-Đây chính là khởi nguồn của **Randomized Controlled Trial** và kiểm định giả thuyết hiện đại.
+Thí nghiệm này được xem là một trong những khởi nguồn của **thử nghiệm đối chứng ngẫu nhiên (Randomized Controlled Trial)** và kiểm định giả thuyết hiện đại.
 
 ```python
 import numpy as np
@@ -150,14 +149,14 @@ def hypothesis_testing_framework():
 # hypothesis_testing_framework()
 ```
 
-## P-value: Ý Nghĩa và Hiểu Lầm
+## P-value: Ý Nghĩa và Những Hiểu Lầm Phổ Biến
 
-**Định nghĩa ĐÚNG:** P-value là xác suất quan sát được dữ liệu cực đoan như vậy (hoặc cực đoan hơn), GIẢ SỬ H₀ đúng.
+**Định nghĩa đúng:** P-value là xác suất quan sát được một kết quả cực đoan như mẫu hiện tại (hoặc cực đoan hơn), **với giả định rằng H₀ đúng**.
 
-**Hiểu lầm PHỔ BIẾN (SAI):**
-- ❌ "P-value là xác suất H₀ đúng"
-- ❌ "1 - p-value là xác suất H₁ đúng"
-- ❌ "p < 0.05 nghĩa là kết quả quan trọng"
+**Các hiểu lầm phổ biến (sai):**
+- "P-value là xác suất để H₀ đúng."
+- "1 − p-value là xác suất để H₁ đúng."
+- "p < 0.05 đồng nghĩa kết quả có ý nghĩa quan trọng về mặt thực tiễn."
 
 ```python
 def p_value_interpretation():
@@ -248,40 +247,37 @@ def p_value_interpretation():
 # p_value_interpretation()
 ```
 
-# p_value_interpretation()
-```
+## Mặt Tối Của P-value: P-hacking và Data Dredging
 
-## Mặt Tối của P-value: P-hacking và Data Dredging
+> *"If you torture the data long enough, it will confess."* — Ronald Coase
 
-> *"If you torture the data long enough, it will confess."* - Ronald Coase
+Trong thực tế, nhiều nghiên cứu mắc lỗi **p-hacking** (hay data dredging): thử nhiều cách phân tích khác nhau, lọc bỏ dữ liệu hoặc thay đổi thống kê kiểm định cho đến khi thu được một kết quả có $$p < 0.05$$ rồi mới công bố.
 
-Trong thực tế, nhiều nghiên cứu mắc phải lỗi **P-hacking**: Thử hàng trăm phân tích khác nhau, lọc dữ liệu, đổi test statistic... cho đến khi tìm được một kết quả có $$p < 0.05$$ và công bố kết quả đó.
-
-**Nghịch lý:** Nếu bạn thực hiện 20 tests trên dữ liệu hoàn toàn ngẫu nhiên (không có hiệu ứng thật), xác suất có ít nhất một test cho kết quả "significant" (p < 0.05) là:
+**Hệ quả thống kê:** Nếu thực hiện 20 kiểm định độc lập trên dữ liệu hoàn toàn ngẫu nhiên (không có hiệu ứng thực), xác suất xuất hiện ít nhất một kiểm định "có ý nghĩa thống kê" ở mức p < 0.05 lên tới:
 
 $$1 - (1 - 0.05)^{20} \approx 64\%$$
 
-Điều này dẫn đến cuộc **khủng hoảng tái lập (replication crisis)** trong khoa học.
+Hiện tượng này là một trong những nguyên nhân chính dẫn đến **khủng hoảng tái lập (replication crisis)** trong nghiên cứu khoa học.
 
-**Lời khuyên từ *Naked Statistics*:**
-- Hãy trung thực với quy trình phân tích.
-- Xác định trước (preregister) các giả thuyết và phương pháp phân tích.
-- Luôn nghi ngờ những kết quả "vừa đủ" significant (p ≈ 0.049).
+**Khuyến nghị từ *Naked Statistics*:**
+- Minh bạch và trung thực với toàn bộ quy trình phân tích.
+- Đăng ký trước (preregister) các giả thuyết và phương pháp phân tích trước khi xem dữ liệu.
+- Thận trọng trước những kết quả chỉ vừa sát ngưỡng có ý nghĩa thống kê (chẳng hạn p ≈ 0.049).
 
-## Type I và Type II Errors
+## Sai Lầm Loại I và Sai Lầm Loại II
 
-|                | H₀ đúng        | H₀ sai         |
-|----------------|----------------|----------------|
-| **Reject H₀**  | Type I Error (α) | Correct ✓      |
-| **Fail to reject H₀** | Correct ✓      | Type II Error (β) |
+|                       | H₀ đúng           | H₀ sai            |
+|-----------------------|-------------------|-------------------|
+| **Bác bỏ H₀**         | Sai lầm loại I (α) | Quyết định đúng ✓ |
+| **Không bác bỏ H₀**   | Quyết định đúng ✓ | Sai lầm loại II (β) |
 
-**Type I Error (False Positive):** Reject H₀ khi H₀ đúng
-- Significance level α = P(Type I Error)
-- Thường chọn α = 0.05
+**Sai lầm loại I (Type I Error — Dương tính giả / False Positive):** Bác bỏ H₀ khi H₀ thực tế đúng.
+- Mức ý nghĩa α = P(Sai lầm loại I).
+- Thường được chọn ở mức α = 0.05.
 
-**Type II Error (False Negative):** Fail to reject H₀ khi H₀ sai
-- β = P(Type II Error)
-- Power = 1 - β = P(Reject H₀ | H₀ sai)
+**Sai lầm loại II (Type II Error — Âm tính giả / False Negative):** Không bác bỏ H₀ khi H₀ thực tế sai.
+- β = P(Sai lầm loại II).
+- Lực kiểm định (Power) = 1 − β = P(Bác bỏ H₀ | H₀ sai).
 
 ```python
 def type_i_ii_errors():
@@ -362,11 +358,11 @@ def type_i_ii_errors():
 # type_i_ii_errors()
 ```
 
-## Common Tests
+## Các Phép Kiểm Định Phổ Biến
 
-### 1. One-Sample t-test
+### 1. Kiểm Định t Một Mẫu (One-Sample t-test)
 
-Test xem mean có bằng một giá trị cụ thể không.
+Kiểm định xem trung bình tổng thể có bằng một giá trị giả định cụ thể hay không.
 
 ```python
 def one_sample_t_test():
@@ -408,9 +404,9 @@ def one_sample_t_test():
 # one_sample_t_test()
 ```
 
-### 2. Two-Sample t-test
+### 2. Kiểm Định t Hai Mẫu (Two-Sample t-test)
 
-Test xem hai nhóm có mean khác nhau không.
+Kiểm định xem trung bình của hai nhóm độc lập có khác nhau hay không.
 
 ```python
 def two_sample_t_test():
@@ -466,9 +462,9 @@ def two_sample_t_test():
 # two_sample_t_test()
 ```
 
-### 3. Chi-Squared Test
+### 3. Kiểm Định Chi-Bình Phương (Chi-Squared Test)
 
-Test xem phân phối quan sát có khớp với phân phối kỳ vọng không.
+Kiểm định xem phân phối tần suất quan sát được có phù hợp với phân phối kỳ vọng theo giả thuyết hay không.
 
 ```python
 def chi_squared_test():
@@ -542,11 +538,11 @@ def chi_squared_test():
 # chi_squared_test()
 ```
 
-## Multiple Testing Problem
+## Bài Toán Đa Kiểm Định (Multiple Testing Problem)
 
-Khi thực hiện nhiều tests, xác suất ít nhất một False Positive tăng lên!
+Khi thực hiện đồng thời nhiều kiểm định giả thuyết, xác suất mắc ít nhất một sai lầm loại I (dương tính giả) tăng lên đáng kể.
 
-**Bonferroni Correction:** Dùng α/m thay vì α (với m là số tests)
+**Hiệu chỉnh Bonferroni (Bonferroni Correction):** Thay vì dùng ngưỡng α cho mỗi kiểm định, ta điều chỉnh xuống ngưỡng α/m (với m là số lượng kiểm định).
 
 ```python
 def multiple_testing_problem():
@@ -623,34 +619,34 @@ def multiple_testing_problem():
 # multiple_testing_problem()
 ```
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [929. Ý tưởng của kiểm định giả thuyết thống kê | Xác suất và thống kê | Khan Academy](https://www.youtube.com/watch?v=JwlCt6roH6c) — Khan Academy Vietnam, tiếng Việt. **xem trước.** Ý tưởng kiểm định: giả sử H0 đúng rồi hỏi dữ liệu có quá lạ hay không — khung mở đầu bài, bằng tiếng Việt.
-- [p-values: What they are and how to interpret them](https://www.youtube.com/watch?v=vemZtEM63GY) — StatQuest with Josh Starmer, tiếng Anh. p-value là xác suất của dữ liệu cực đoan này nếu H0 đúng, không phải xác suất H0 đúng — mục diễn giải bài cảnh báo.
-- [Type I Errors, Type II Errors, and the Power of the Test](https://www.youtube.com/watch?v=7mE-K_w1v90) — jbstatistics, tiếng Anh. Sai lầm loại I, loại II và lực kiểm định — bảng bài vẽ trước các kiểm định t và chi-bình phương.
+- [929. Ý tưởng của kiểm định giả thuyết thống kê | Xác suất và thống kê | Khan Academy](https://www.youtube.com/watch?v=JwlCt6roH6c) — Khan Academy Vietnam, tiếng Việt. **Nên xem trước.** Giới thiệu tư duy kiểm định giả thuyết: giả sử H₀ đúng rồi đánh giá mức độ bất thường của dữ liệu quan sát.
+- [p-values: What they are and how to interpret them](https://www.youtube.com/watch?v=vemZtEM63GY) — StatQuest with Josh Starmer, tiếng Anh. Làm rõ p-value là xác suất quan sát dữ liệu cực đoan dưới H₀, không phải xác suất H₀ đúng — khớp với phần cảnh báo trong bài.
+- [Type I Errors, Type II Errors, and the Power of the Test](https://www.youtube.com/watch?v=7mE-K_w1v90) — jbstatistics, tiếng Anh. Giải thích sai lầm loại I, sai lầm loại II và lực kiểm định — bổ trợ cho bảng tổng hợp trước các kiểm định t và chi-bình phương.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Power Analysis**
-Với α=0.05, n=25, σ=10:
-- Tính power cho effect sizes: 0.2, 0.5, 0.8, 1.0
-- Vẽ power curve
-- Tìm n cần thiết để đạt power=0.8 với effect size=0.5
+**Bài 1: Phân tích lực kiểm định (Power Analysis)**
+Với α = 0.05, n = 25, σ = 10:
+- Tính lực kiểm định (power) ứng với các mức độ ảnh hưởng (effect size) 0.2, 0.5, 0.8 và 1.0.
+- Vẽ đường cong lực kiểm định (power curve).
+- Tìm cỡ mẫu n tối thiểu để đạt lực kiểm định 0.8 với mức độ ảnh hưởng 0.5.
 
-**Bài 2: A/B Test Simulation**
-Mô phỏng A/B test với:
-- Control: conversion rate = 10%
-- Treatment: conversion rate = 12%
-- n = 1000 mỗi nhóm
-- Chạy 1000 simulations, tính power
+**Bài 2: Mô phỏng thử nghiệm A/B**
+Mô phỏng một thử nghiệm A/B với các thông số:
+- Nhóm đối chứng (Control): tỷ lệ chuyển đổi = 10%.
+- Nhóm thử nghiệm (Treatment): tỷ lệ chuyển đổi = 12%.
+- Cỡ mẫu n = 1,000 cho mỗi nhóm.
+- Chạy 1,000 lần mô phỏng và ước lượng lực kiểm định.
 
-**Bài 3: Multiple Comparisons**
-Có 5 nhóm, muốn test tất cả các cặp (10 comparisons).
-- Không correction: tính family-wise error rate
-- Bonferroni correction
-- Holm-Bonferroni method
+**Bài 3: So sánh bội (Multiple Comparisons)**
+Cho 5 nhóm cần kiểm định so sánh từng cặp (tổng cộng 10 phép so sánh):
+- Tính xác suất sai lầm trên cả họ (family-wise error rate) khi không hiệu chỉnh.
+- Áp dụng hiệu chỉnh Bonferroni.
+- Áp dụng phương pháp Holm–Bonferroni.
 
-**Bài 4: Permutation Test**
-Implement permutation test cho two-sample comparison.
-- So sánh với t-test
-- Thử với non-normal data
+**Bài 4: Kiểm định hoán vị (Permutation Test)**
+Cài đặt kiểm định hoán vị cho bài toán so sánh hai mẫu:
+- So sánh kết quả với kiểm định t (t-test).
+- Thử nghiệm trên dữ liệu không tuân theo phân phối chuẩn.

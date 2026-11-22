@@ -10,7 +10,7 @@ categories:
 lesson_type: required
 ---
 
-Biến ngẫu nhiên là cầu nối giữa thế giới xác suất trừu tượng và thế giới số liệu cụ thể. Thay vì nói về "biến cố", chúng ta bắt đầu nói về "giá trị" - điều này mở ra cánh cửa cho toàn bộ thống kê và machine learning. Trong bài này, chúng ta sẽ hiểu rõ sự khác biệt giữa biến ngẫu nhiên rời rạc và liên tục, và làm quen với các hàm mô tả chúng: PMF, PDF, và CDF.
+Biến ngẫu nhiên là cầu nối giữa xác suất trừu tượng và dữ liệu số cụ thể. Thay vì chỉ xét các "biến cố", chúng ta chuyển sang làm việc với các "giá trị số", tạo nền tảng cho thống kê và học máy (machine learning). Trong bài này, chúng ta sẽ phân biệt biến ngẫu nhiên rời rạc và biến ngẫu nhiên liên tục, đồng thời tìm hiểu ba hàm đặc trưng mô tả chúng: PMF, PDF và CDF.
 
 ---
 
@@ -18,23 +18,21 @@ Biến ngẫu nhiên là cầu nối giữa thế giới xác suất trừu tư�
 
 <div class="textbook-definition" markdown="1">
 **Định nghĩa:**
-Một biến ngẫu nhiên (random variable) $$X$$ là một hàm số ánh xạ từ không gian mẫu $$\Omega$$ sang tập số thực $$\mathbb{R}$$.
+Một biến ngẫu nhiên (random variable) $$X$$ là một hàm số ánh xạ từ không gian mẫu $$\Omega$$ sang tập số thực $$\mathbb{R}$$:
 
 $$X: \Omega \to \mathbb{R}$$
 </div>
 
 ![Random Variable Mapping](../img/random_variable_mapping.png)
-*Minh họa biến ngẫu nhiên là một hàm ánh xạ từ các kết quả (outcomes) sang số thực.*
+*Minh họa biến ngẫu nhiên như một hàm ánh xạ từ các kết quả (outcomes) trong không gian mẫu sang tập số thực.*
 
-Mặc dù có tên là "biến", nhưng thực chất nó là một **hàm số**.
-
-**Ý nghĩa:** Biến ngẫu nhiên gán một giá trị số cho mỗi kết quả của thí nghiệm ngẫu nhiên.
+Mặc dù có tên gọi là "biến", về mặt toán học, biến ngẫu nhiên thực chất là một **hàm số**. Ý nghĩa của nó là gán một giá trị số cụ thể cho mỗi kết quả của phép thử ngẫu nhiên.
 
 ### Ví Dụ Minh Họa
 
-**Thí nghiệm:** Tung 2 đồng xu
+**Phép thử:** Tung 2 đồng xu (ký hiệu H là mặt ngửa, T là mặt sấp).
 - Không gian mẫu: $$\Omega = \{HH, HT, TH, TT\}$$
-- Gọi $$X$$ là số mặt ngửa.
+- Gọi $$X$$ là số mặt ngửa xuất hiện:
   - $$X(HH) = 2$$
   - $$X(HT) = 1$$
   - $$X(TH) = 1$$
@@ -115,18 +113,18 @@ def illustrate_random_variable():
 ## Biến Ngẫu Nhiên Rời Rạc (Discrete Random Variables)
 
 <div class="textbook-definition" markdown="1">
-**Định nghĩa:** Biến ngẫu nhiên $$X$$ là rời rạc nếu nó chỉ nhận hữu hạn hoặc đếm được các giá trị.
+**Định nghĩa:** Biến ngẫu nhiên $$X$$ được gọi là rời rạc nếu tập các giá trị mà nó có thể nhận là hữu hạn hoặc đếm được.
 </div>
 
-### Probability Mass Function (PMF)
+### Hàm Khối Xác Suất (Probability Mass Function — PMF)
 
-PMF của biến ngẫu nhiên rời rạc $$X$$ là:
+Hàm khối xác suất (PMF) của biến ngẫu nhiên rời rạc $$X$$ được định nghĩa là:
 
 $$p_X(x) = P(X = x)$$
 
 **Tính chất:**
-1. $$p_X(x) \geq 0$$ với mọi $$x$$
-2. $$\sum_{x} p_X(x) = 1$$
+1. $$p_X(x) \geq 0$$ với mọi $$x$$.
+2. $$\sum_{x} p_X(x) = 1$$.
 
 ```python
 def visualize_pmf():
@@ -187,21 +185,21 @@ def visualize_pmf():
 ## Biến Ngẫu Nhiên Liên Tục (Continuous Random Variables)
 
 <div class="textbook-definition" markdown="1">
-**Định nghĩa:** Biến ngẫu nhiên $$X$$ là liên tục nếu nó có thể nhận bất kỳ giá trị nào trong một khoảng.
+**Định nghĩa:** Biến ngẫu nhiên $$X$$ được gọi là liên tục nếu nó có thể nhận mọi giá trị trong một khoảng số thực.
 </div>
 
-**Lưu ý quan trọng:** Với biến liên tục, $$P(X = x) = 0$$ với mọi $$x$$! Chúng ta chỉ có thể nói về xác suất trong một khoảng.
+**Lưu ý quan trọng:** Với biến ngẫu nhiên liên tục, xác suất tại một điểm đơn lẻ luôn bằng 0, tức $$P(X = x) = 0$$ với mọi $$x$$. Do đó, ta chỉ xét xác suất để $$X$$ rơi vào một khoảng giá trị.
 
-### Probability Density Function (PDF)
+### Hàm Mật Độ Xác Suất (Probability Density Function — PDF)
 
-PDF của biến ngẫu nhiên liên tục $$X$$ là hàm $$f_X(x)$$ sao cho:
+Hàm mật độ xác suất (PDF) của biến ngẫu nhiên liên tục $$X$$ là hàm $$f_X(x)$$ thỏa mãn:
 
 $$P(a \leq X \leq b) = \int_a^b f_X(x) \, dx$$
 
 **Tính chất:**
-1. $$f_X(x) \geq 0$$ với mọi $$x$$
-2. $$\int_{-\infty}^{\infty} f_X(x) \, dx = 1$$
-3. $$f_X(x)$$ KHÔNG phải là xác suất! Nó có thể lớn hơn 1.
+1. $$f_X(x) \geq 0$$ với mọi $$x$$.
+2. $$\int_{-\infty}^{\infty} f_X(x) \, dx = 1$$.
+3. $$f_X(x)$$ **không phải** là xác suất mà là mật độ xác suất, nên giá trị của nó có thể lớn hơn 1.
 
 ```python
 def visualize_pdf():
@@ -263,7 +261,7 @@ def visualize_pdf():
 # visualize_pdf()
 ```
 
-### Mô Phỏng: Verify Tính Chất của PDF
+### Mô Phỏng: Kiểm Chứng Tính Chất Của PDF
 
 ```python
 def verify_pdf_properties():
@@ -299,21 +297,21 @@ def verify_pdf_properties():
 # verify_pdf_properties()
 ```
 
-## Cumulative Distribution Function (CDF)
+## Hàm Phân Phối Tích Lũy (Cumulative Distribution Function — CDF)
 
-CDF là hàm phân phối tích lũy, định nghĩa cho cả biến rời rạc và liên tục:
+Hàm phân phối tích lũy (CDF) được định nghĩa chung cho cả biến ngẫu nhiên rời rạc và biến ngẫu nhiên liên tục:
 
 $$F_X(x) = P(X \leq x)$$
 
 **Tính chất:**
-1. $$0 \leq F_X(x) \leq 1$$
-2. $$F_X(x)$$ là hàm không giảm
-3. $$\lim_{x \to -\infty} F_X(x) = 0$$ và $$\lim_{x \to \infty} F_X(x) = 1$$
-4. $$F_X(x)$$ liên tục phải
+1. $$0 \leq F_X(x) \leq 1$$ với mọi $$x$$.
+2. $$F_X(x)$$ là hàm không giảm.
+3. $$\lim_{x \to -\infty} F_X(x) = 0$$ và $$\lim_{x \to \infty} F_X(x) = 1$$.
+4. $$F_X(x)$$ liên tục phải.
 
-**Mối quan hệ với PMF/PDF:**
-- Rời rạc: $$F_X(x) = \sum_{t \leq x} p_X(t)$$
-- Liên tục: $$F_X(x) = \int_{-\infty}^x f_X(t) \, dt$$ và $$f_X(x) = \frac{d}{dx} F_X(x)$$
+**Mối liên hệ với PMF và PDF:**
+- Biến rời rạc: $$F_X(x) = \sum_{t \leq x} p_X(t)$$
+- Biến liên tục: $$F_X(x) = \int_{-\infty}^x f_X(t) \, dt$$ và $$f_X(x) = \frac{d}{dx} F_X(x)$$
 
 ```python
 def compare_pmf_pdf_cdf():
@@ -390,9 +388,9 @@ def compare_pmf_pdf_cdf():
 # compare_pmf_pdf_cdf()
 ```
 
-## Ứng Dụng: Tính Xác Suất với CDF
+## Ứng Dụng: Tính Xác Suất Bằng CDF
 
-CDF rất hữu ích để tính xác suất:
+CDF cho phép tính xác suất trên một khoảng một cách trực tiếp:
 
 $$P(a < X \leq b) = F_X(b) - F_X(a)$$
 
@@ -479,42 +477,42 @@ def probability_calculations_with_cdf():
 # probability_calculations_with_cdf()
 ```
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [Probability Distribution Functions (PMF, PDF, CDF)](https://www.youtube.com/watch?v=YXLVjCKVP7U) — zedstatistics, tiếng Anh. **xem trước.** PMF, PDF và CDF trên cùng một hình — ba đối tượng bài định nghĩa cho biến rời rạc rồi biến liên tục.
-- [L05.3 Probability Mass Functions](https://www.youtube.com/watch?v=zW1_iugJvF0) — MIT OpenCourseWare, tiếng Anh. Hàm khối xác suất của MIT cho riêng mục biến ngẫu nhiên rời rạc.
-- [An Introduction to Continuous Probability Distributions](https://www.youtube.com/watch?v=OWSOhpS00_s) — jbstatistics, tiếng Anh. Mật độ của biến liên tục: xác suất là diện tích, không phải chiều cao của đường cong — đúng mục PDF của bài.
+- [Probability Distribution Functions (PMF, PDF, CDF)](https://www.youtube.com/watch?v=YXLVjCKVP7U) — zedstatistics, tiếng Anh. **Nên xem trước.** Trình bày PMF, PDF và CDF trên cùng một trực quan — ba hàm đặc trưng chính của bài cho cả biến rời rạc lẫn biến liên tục.
+- [L05.3 Probability Mass Functions](https://www.youtube.com/watch?v=zW1_iugJvF0) — MIT OpenCourseWare, tiếng Anh. Bài giảng về hàm khối xác suất của MIT, đi sâu vào phần biến ngẫu nhiên rời rạc.
+- [An Introduction to Continuous Probability Distributions](https://www.youtube.com/watch?v=OWSOhpS00_s) — jbstatistics, tiếng Anh. Giải thích mật độ xác suất của biến liên tục: xác suất được tính bằng diện tích dưới đường cong chứ không phải chiều cao tại một điểm.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Tạo Biến Ngẫu Nhiên Tùy Chỉnh**
-Tạo một biến ngẫu nhiên rời rạc với PMF:
+**Bài 1: Tạo biến ngẫu nhiên tùy chỉnh**
+Cho một biến ngẫu nhiên rời rạc có PMF:
 - P(X = 0) = 0.2
 - P(X = 1) = 0.3
 - P(X = 2) = 0.5
 
-Viết hàm để:
-- Sample từ phân phối này
-- Tính CDF
-- Verify bằng mô phỏng
+Viết hàm thực hiện các yêu cầu sau:
+- Lấy mẫu từ phân phối này.
+- Tính hàm phân phối tích lũy CDF.
+- Kiểm chứng lại kết quả bằng mô phỏng.
 
-**Bài 2: Phân Tích PDF**
-Cho PDF: $$f(x) = 2x$$ với $$0 \leq x \leq 1$$
-- Verify rằng $$\int_0^1 f(x) dx = 1$$
-- Tính CDF $$F(x)$$
-- Tính $$P(0.25 < X < 0.75)$$
-- Mô phỏng và so sánh
+**Bài 2: Phân tích PDF**
+Cho hàm mật độ xác suất $$f(x) = 2x$$ với $$0 \leq x \leq 1$$:
+- Kiểm chứng rằng $$\int_0^1 f(x) dx = 1$$.
+- Tìm hàm phân phối tích lũy $$F(x)$$.
+- Tính $$P(0.25 < X < 0.75)$$.
+- Mô phỏng và so sánh với kết quả lý thuyết.
 
-**Bài 3: Quantile Function**
-CDF có hàm nghịch đảo gọi là quantile function: $$F^{-1}(p)$$
-- Tính median (p=0.5), Q1 (p=0.25), Q3 (p=0.75) của N(0,1)
-- Verify bằng mô phỏng
-- Vẽ biểu đồ CDF và đánh dấu các quantiles
+**Bài 3: Hàm phân vị (Quantile Function)**
+Hàm nghịch đảo của CDF được gọi là hàm phân vị: $$F^{-1}(p)$$.
+- Tính trung vị (p = 0.5), tứ phân vị thứ nhất Q1 (p = 0.25) và tứ phân vị thứ ba Q3 (p = 0.75) của phân phối chuẩn tắc N(0, 1).
+- Kiểm chứng bằng mô phỏng.
+- Vẽ đồ thị CDF và đánh dấu các điểm phân vị này.
 
-**Bài 4: Transformation**
-Nếu $$X \sim \text{Uniform}(0, 1)$$, tìm phân phối của $$Y = -\ln(X)$$
-- Tính PDF của Y bằng lý thuyết
-- Verify bằng mô phỏng
-- Hint: Đây là phân phối Exponential!
+**Bài 4: Phép biến đổi biến ngẫu nhiên**
+Nếu $$X \sim \text{Uniform}(0, 1)$$, hãy tìm phân phối của $$Y = -\ln(X)$$:
+- Tìm PDF của Y bằng phương pháp lý thuyết.
+- Kiểm chứng kết quả bằng mô phỏng.
+- Gợi ý: Đây là phân phối mũ (Exponential).
 
-Bài tùy chọn sau, [04-05-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter04/05_Modern_Applications %}), nối biến ngẫu nhiên rời rạc/liên tục và các họ phân phối với mô hình đếm, quá trình Poisson và sinh dữ liệu rời rạc (2020–2024).
+Bài tùy chọn tiếp theo, [04-05-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter04/05_Modern_Applications %}), liên hệ biến ngẫu nhiên rời rạc/liên tục và các họ phân phối với mô hình dữ liệu đếm, quá trình Poisson và mô hình sinh rời rạc (2020–2024).

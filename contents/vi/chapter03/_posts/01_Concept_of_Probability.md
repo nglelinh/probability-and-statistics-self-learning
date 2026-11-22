@@ -10,23 +10,23 @@ categories:
 lesson_type: required
 ---
 
-Xác suất là nền tảng của toàn bộ thống kê và machine learning. Trong bài học này, chúng ta sẽ xây dựng từ những khái niệm cơ bản nhất - không gian mẫu và biến cố - đến những công cụ mạnh mẽ như xác suất có điều kiện và định lý Bayes. Thay vì chỉ học công thức, chúng ta sẽ sử dụng mô phỏng để hiểu sâu sắc ý nghĩa của từng khái niệm.
+Xác suất là nền tảng của thống kê và học máy. Bài học này trình bày có hệ thống từ những khái niệm cơ bản như không gian mẫu và biến cố đến xác suất có điều kiện, định lý Bayes và tính độc lập. Thay vì chỉ dừng ở công thức giải tích, chúng ta kết hợp mô phỏng bằng Python để kiểm chứng và hiểu trực quan từng khái niệm.
 
 ---
 
-## Không Gian Mẫu và Biến Cố
+## Không gian mẫu và biến cố
 
-**Không gian mẫu (Sample Space)** $$\Omega$$ là tập hợp tất cả các kết quả có thể xảy ra của một thí nghiệm ngẫu nhiên.
+**Không gian mẫu (Sample Space)** $$\Omega$$ là tập hợp tất cả các kết quả có thể xảy ra của một phép thử ngẫu nhiên.
 
 **Biến cố (Event)** $$A$$ là một tập con của không gian mẫu, $$A \subseteq \Omega$$.
 
-### Ví Dụ Cơ Bản
+### Ví dụ cơ bản
 
-**Thí nghiệm 1: Tung đồng xu**
+**Phép thử 1: Tung đồng xu**
 - $$\Omega = \{\text{Ngửa}, \text{Sấp}\}$$
-- Biến cố "Ra ngửa": $$A = \{\text{Ngửa}\}$$
+- Biến cố "Ra mặt ngửa": $$A = \{\text{Ngửa}\}$$
 
-**Thí nghiệm 2: Gieo xúc xắc**
+**Phép thử 2: Gieo xúc xắc**
 - $$\Omega = \{1, 2, 3, 4, 5, 6\}$$
 - Biến cố "Ra số chẵn": $$A = \{2, 4, 6\}$$
 - Biến cố "Ra số lớn hơn 4": $$B = \{5, 6\}$$
@@ -90,54 +90,54 @@ def simulate_dice_roll(n_rolls=10000):
 # simulate_dice_roll(10000)
 ```
 
-## Định Nghĩa Xác Suất
+## Định nghĩa xác suất
 
 Có ba cách tiếp cận chính để định nghĩa xác suất:
 
-### 1. Xác Suất Cổ Điển (Classical Probability)
+### 1. Xác suất cổ điển (Classical Probability)
 
-Nếu tất cả các kết quả đều có khả năng xảy ra như nhau:
+Khi mọi kết quả sơ cấp trong không gian mẫu hữu hạn đều đồng khả năng:
 
 $$P(A) = \frac{\text{Số kết quả thuận lợi cho } A}{\text{Tổng số kết quả có thể}}$$
 
-**Ví dụ:** Xác suất ra số chẵn khi gieo xúc xắc = $$\frac{3}{6} = \frac{1}{2}$$
+**Ví dụ:** Xác suất gieo xúc xắc ra số chẵn bằng $$\frac{3}{6} = \frac{1}{2}$$.
 
-### 2. Xác Suất Tần Suất (Frequentist Probability)
+### 2. Xác suất tần suất (Frequentist Probability)
 
 $$P(A) = \lim_{n \to \infty} \frac{\text{Số lần } A \text{ xảy ra}}{n}$$
 
-Đây là cách tiếp cận thực nghiệm - xác suất là giới hạn của tần suất khi số lần thử tiến tới vô cùng.
+Theo cách tiếp cận thực nghiệm này, xác suất là giới hạn của tần suất xuất hiện biến cố khi số lần lặp phép thử tiến tới vô cùng.
 
-### 3. Xác Suất Tiên Nghiệm (Axiomatic Probability - Kolmogorov)
+### 3. Xác suất tiên đề (Axiomatic Probability — Kolmogorov)
 
-Xác suất là một hàm $$P: \mathcal{F} \to [0, 1]$$ thỏa mãn ba tiên đề:
+Xác suất là một hàm $$P: \mathcal{F} \to [0, 1]$$ thỏa mãn ba tiên đề (tính không âm, tính chuẩn hóa và tính cộng tính):
 
-1. **Non-negativity:** $$P(A) \geq 0$$ với mọi biến cố $$A$$
-2. **Normalization:** $$P(\Omega) = 1$$
-3. **Additivity:** Nếu $$A$$ và $$B$$ rời nhau, thì $$P(A \cup B) = P(A) + P(B)$$
+1. **Tính không âm (Non-negativity):** $$P(A) \geq 0$$ với mọi biến cố $$A$$.
+2. **Tính chuẩn hóa (Normalization):** $$P(\Omega) = 1$$.
+3. **Tính cộng tính (Additivity):** Nếu $$A$$ và $$B$$ xung khắc (rời nhau), thì $$P(A \cup B) = P(A) + P(B)$$ (tổng quát hơn là cộng tính đếm được đối với một dãy biến cố đôi một rời nhau).
 
-## Cạm Bẫy Trong Xác Suất: Chọn Mẫu Thiên Kiến (Sampling Bias)
+## Cạm bẫy trong xác suất: Chọn mẫu thiên kiến (Sampling Bias)
 
 > *"The sample with the built-in bias."* - Darrell Huff, *How to Lie with Statistics*
 
-Khi ước lượng xác suất từ dữ liệu thực tế (theo cách tiếp cận tần suất), điều kiện tiên quyết là mẫu phải đại diện cho tổng thể (**representative**). Nếu quy trình chọn mẫu bị thiên kiến, xác suất tính được sẽ hoàn toàn sai lệch, bất kể mẫu lớn đến đâu.
+Khi ước lượng xác suất từ dữ liệu thực tế theo hướng tần suất, điều kiện bắt buộc là mẫu phải đại diện cho tổng thể (**representative**). Nếu quy trình chọn mẫu bị thiên kiến, ước lượng thu được sẽ sai lệch bất kể cỡ mẫu lớn đến đâu.
 
-### Ví Dụ Kinh Điển: Landon vs. Roosevelt (1936)
-Năm 1936, tạp chí *Literary Digest* đã gửi mười triệu lá phiếu thăm dò qua đường bưu điện để dự đoán kết quả bầu cử tổng thống Mỹ. Họ nhận lại 2.4 triệu phản hồi - một con số khổng lồ!
+### Ví dụ kinh điển: Landon và Roosevelt (1936)
 
-*   **Dự đoán của Digest:** Landon thắng áp đảo Roosevelt (57% vs 43%).
-*   **Kết quả thực tế:** Roosevelt thắng áp đảo (62% vs 38%).
+Năm 1936, tạp chí *Literary Digest* gửi 10 triệu phiếu thăm dò qua đường bưu điện để dự đoán kết quả bầu cử tổng thống Mỹ và thu về 2,4 triệu phản hồi — một cỡ mẫu rất lớn.
 
-**Tại sao sai?**
-Tạp chí lấy địa chỉ từ danh bạ điện thoại và danh sách đăng ký ô tô. Năm 1936 là thời kỳ Đại Suy Thoái, chỉ người giàu mới có điện thoại và ô tô. Mẫu của họ, dù cực lớn, chỉ đại diện cho người giàu (những người có xu hướng ủng hộ Landon), bỏ qua hoàn toàn người nghèo (đa số ủng hộ Roosevelt).
+* **Dự đoán của Literary Digest:** Landon thắng áp đảo Roosevelt (57% so với 43%).
+* **Kết quả thực tế:** Roosevelt thắng áp đảo (62% so với 38%).
 
-**Bài học:** *A large biased sample is worse than a small random sample.*
+**Nguyên nhân sai lệch:** Tạp chí lấy danh sách địa chỉ từ danh bạ điện thoại và hồ sơ đăng ký ô tô. Giữa thời kỳ Đại Suy Thoái năm 1936, chủ yếu tầng lớp khá giả mới sở hữu điện thoại và ô tô. Do đó, dù rất lớn, mẫu khảo sát chỉ đại diện cho nhóm cử tri giàu (vốn có xu hướng ủng hộ Landon) và bỏ qua phần đông cử tri thu nhập thấp (đa số ủng hộ Roosevelt).
+
+**Bài học:** *Một mẫu lớn nhưng thiên kiến còn tệ hơn một mẫu nhỏ nhưng ngẫu nhiên (A large biased sample is worse than a small random sample).*
 
 ![Literary Digest 1936 Map](../img/literary_digest_1936.svg)
-*Bản đồ kết quả bầu cử 1936: Roosevelt (Xanh) thắng áp đảo Landon (Đỏ), trái ngược hoàn toàn với dự đoán của Literary Digest.*
+*Bản đồ kết quả bầu cử 1936: Roosevelt (xanh) thắng áp đảo Landon (đỏ), trái ngược với dự đoán của Literary Digest.*
 
 ![Sampling Bias 1936](../img/sampling_bias_1936.png)
-*So sánh dự đoán của Literary Digest và kết quả thực tế.*
+*So sánh dự đoán của Literary Digest và kết quả bầu cử thực tế.*
 
 ```python
 def sampling_bias_demo():
@@ -189,15 +189,15 @@ def sampling_bias_demo():
 # sampling_bias_demo()
 ```
 
-## Các Quy Tắc Xác Suất Cơ Bản
+## Các quy tắc xác suất cơ bản
 
-### Quy Tắc Cộng (Addition Rule)
+### Quy tắc cộng (Addition Rule)
 
-**Cho hai biến cố bất kỳ $$A$$ và $$B$$:**
+Với hai biến cố bất kỳ $$A$$ và $$B$$:
 
 $$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
 
-**Nếu $$A$$ và $$B$$ rời nhau (mutually exclusive):** $$P(A \cap B) = 0$$, nên:
+Nếu $$A$$ và $$B$$ xung khắc (mutually exclusive), tức $$P(A \cap B) = 0$$, thì:
 
 $$P(A \cup B) = P(A) + P(B)$$
 
@@ -229,21 +229,21 @@ def visualize_addition_rule():
 # visualize_addition_rule()
 ```
 
-### Quy Tắc Nhân (Multiplication Rule)
+### Quy tắc nhân (Multiplication Rule)
 
-**Cho hai biến cố bất kỳ $$A$$ và $$B$$:**
+Với hai biến cố bất kỳ $$A$$ và $$B$$:
 
 $$P(A \cap B) = P(A) \cdot P(B|A) = P(B) \cdot P(A|B)$$
 
-**Nếu $$A$$ và $$B$$ độc lập (independent):**
+Nếu $$A$$ và $$B$$ độc lập (independent), công thức rút gọn thành:
 
 $$P(A \cap B) = P(A) \cdot P(B)$$
 
-### Biến Cố Bù (Complement)
+### Biến cố bù (Complement)
 
 $$P(A^c) = 1 - P(A)$$
 
-Đây là một trong những công thức hữu ích nhất trong thực tế!
+Công thức phần bù đặc biệt hữu ích khi việc tính trực tiếp xác suất của biến cố đối dễ hơn nhiều so với biến cố gốc.
 
 ```python
 def birthday_problem_complement():
@@ -303,24 +303,24 @@ def birthday_problem_complement():
 # birthday_problem_complement()
 ```
 
-## Xác Suất Có Điều Kiện (Conditional Probability)
+## Xác suất có điều kiện (Conditional Probability)
 
 <div class="textbook-definition" markdown="1">
-**Định nghĩa:** Xác suất của $$A$$ khi biết $$B$$ đã xảy ra:
+**Định nghĩa:** Xác suất xảy ra của biến cố $$A$$ khi biết biến cố $$B$$ đã xảy ra:
 
 $$P(A|B) = \frac{P(A \cap B)}{P(B)}, \quad P(B) > 0$$
 </div>
 
-**Ý nghĩa:** Khi biết $$B$$ xảy ra, không gian mẫu "thu hẹp" lại chỉ còn $$B$$, và ta tính xác suất của $$A$$ trong không gian mới này.
+**Ý nghĩa:** Khi đã biết $$B$$ xảy ra, không gian mẫu thu hẹp lại chỉ còn tập $$B$$, và ta tính tỷ lệ phần $$A$$ nằm trong không gian thu hẹp đó.
 
-### Ví Dụ: Bài Toán Bệnh Hiếm
+### Ví dụ: Bài toán xét nghiệm bệnh hiếm
 
 Giả sử:
-- 1% dân số mắc bệnh X
-- Test cho kết quả dương tính với 99% người bệnh (sensitivity)
-- Test cho kết quả dương tính với 5% người khỏe (false positive rate)
+- 1% dân số mắc bệnh X.
+- Xét nghiệm cho kết quả dương tính ở 99% người mắc bệnh (độ nhạy — sensitivity).
+- Xét nghiệm cho kết quả dương tính giả ở 5% người khỏe mạnh (false positive rate).
 
-**Câu hỏi:** Nếu test dương tính, xác suất thực sự mắc bệnh là bao nhiêu?
+**Câu hỏi:** Nếu một người có kết quả xét nghiệm dương tính, xác suất người đó thực sự mắc bệnh là bao nhiêu?
 
 ```python
 def rare_disease_simulation(n_population=100000):
@@ -371,22 +371,22 @@ def rare_disease_simulation(n_population=100000):
 # rare_disease_simulation(100000)
 ```
 
-## Định Lý Bayes
+## Định lý Bayes
 
-Định lý Bayes là một trong những công cụ quan trọng nhất trong thống kê và machine learning:
+Định lý Bayes cho phép cập nhật xác suất của một giả thuyết khi có thêm bằng chứng quan sát được:
 
 $$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}$$
 
-Hoặc dạng đầy đủ hơn:
+Ở dạng khai triển đầy đủ theo công thức xác suất toàn phần:
 
 $$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B|A) \cdot P(A) + P(B|A^c) \cdot P(A^c)}$$
 
-**Terminology:**
-- $$P(A)$$: **Prior probability** - xác suất ban đầu
-- $$P(B|A)$$: **Likelihood** - khả năng quan sát $$B$$ khi $$A$$ đúng
-- $$P(A|B)$$: **Posterior probability** - xác suất sau khi quan sát $$B$$
+**Các thuật ngữ chính:**
+- $$P(A)$$: **Xác suất tiên nghiệm (Prior probability)** — xác suất ban đầu trước khi quan sát $$B$$.
+- $$P(B|A)$$: **Hàm hợp lý (Likelihood)** — xác suất quan sát được $$B$$ khi $$A$$ xảy ra.
+- $$P(A|B)$$: **Xác suất hậu nghiệm (Posterior probability)** — xác suất của $$A$$ sau khi đã quan sát $$B$$.
 
-### Ví Dụ: Spam Filter
+### Ví dụ: Bộ lọc thư rác (Spam Filter)
 
 ```python
 def naive_bayes_spam_filter():
@@ -440,17 +440,17 @@ def naive_bayes_spam_filter():
 # naive_bayes_spam_filter()
 ```
 
-## Độc Lập (Independence)
+## Tính độc lập (Independence)
 
 Hai biến cố $$A$$ và $$B$$ được gọi là **độc lập** nếu:
 
 $$P(A \cap B) = P(A) \cdot P(B)$$
 
-Tương đương với:
+Khi $$P(A) > 0$$ và $$P(B) > 0$$, điều kiện này tương đương với:
 
 $$P(A|B) = P(A) \quad \text{và} \quad P(B|A) = P(B)$$
 
-**Ý nghĩa:** Việc biết $$B$$ xảy ra không thay đổi xác suất của $$A$$.
+**Ý nghĩa:** Việc biết biến cố $$B$$ xảy ra không làm thay đổi xác suất xảy ra của biến cố $$A$$.
 
 ```python
 def test_independence():
@@ -511,33 +511,33 @@ def test_independence():
 
 ## Video tham khảo
 
-- [Conditional Probabilities, Clearly Explained!!!](https://www.youtube.com/watch?v=_IgyaD7vOOA) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Xác suất có điều kiện từ đếm trong bảng — cầu nối giữa không gian mẫu và định lý Bayes trong bài.
-- [Bayes theorem, the geometry of changing beliefs](https://www.youtube.com/watch?v=HZGCoVF3YvM) — 3Blue1Brown, tiếng Anh. Định lý Bayes như cách chứng cứ đổi niềm tin, đúng công thức bài suy ra từ xác suất có điều kiện.
-- [L03.5 Conditional Independence](https://www.youtube.com/watch?v=7B3cDe39lwY) — MIT OpenCourseWare, tiếng Anh. Độc lập có điều kiện trên một đồ thị ngắn của MIT — phân biệt với độc lập thường, trước khi bài sang lọc spam.
+- [Conditional Probabilities, Clearly Explained!!!](https://www.youtube.com/watch?v=_IgyaD7vOOA) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Giải thích xác suất có điều kiện từ bảng tần số, kết nối không gian mẫu với định lý Bayes.
+- [Bayes theorem, the geometry of changing beliefs](https://www.youtube.com/watch?v=HZGCoVF3YvM) — 3Blue1Brown, tiếng Anh. Minh họa trực quan định lý Bayes như cách cập nhật xác suất khi có bằng chứng mới, khớp với công thức trong bài.
+- [L03.5 Conditional Independence](https://www.youtube.com/watch?v=7B3cDe39lwY) — MIT OpenCourseWare, tiếng Anh. Phân biệt độc lập có điều kiện với độc lập thông thường trước khi áp dụng cho mô hình lọc thư rác Naive Bayes.
 
-## Bài Tập Thực Hành
+## Bài tập thực hành
 
-**Bài 1: Bài Toán Monty Hall**
-Lập trình mô phỏng bài toán Monty Hall. Tính xác suất thắng khi:
-- Giữ nguyên lựa chọn ban đầu
-- Đổi sang cửa còn lại
+**Bài 1: Bài toán Monty Hall**
+Lập trình mô phỏng bài toán Monty Hall để tính xác suất thắng khi:
+- Giữ nguyên lựa chọn ban đầu.
+- Đổi sang cửa còn lại.
 
-So sánh với xác suất lý thuyết (1/3 vs 2/3).
+So sánh kết quả mô phỏng với xác suất lý thuyết (1/3 và 2/3).
 
-**Bài 2: Định Lý Bayes trong Y Học**
-Một bệnh có tỷ lệ mắc 0.5%. Test có sensitivity 95% và specificity 90%.
-- Tính P(Bệnh | Test +)
-- Tính P(Khỏe | Test -)
-- Mô phỏng với 1 triệu người để verify
+**Bài 2: Định lý Bayes trong y học**
+Một căn bệnh có tỷ lệ mắc trong dân số là 0,5%. Xét nghiệm chẩn đoán có độ nhạy (sensitivity) 95% và độ đặc hiệu (specificity) 90%.
+- Tính xác suất P(Bệnh | Dương tính).
+- Tính xác suất P(Khỏe | Âm tính).
+- Mô phỏng trên 1 triệu người để kiểm chứng kết quả lý thuyết.
 
-**Bài 3: Kiểm Tra Độc Lập**
-Sinh dữ liệu với hai biến:
-- Trường hợp 1: X và Y độc lập
-- Trường hợp 2: Y = f(X) (phụ thuộc)
+**Bài 3: Kiểm tra tính độc lập**
+Sinh dữ liệu cho hai trường hợp:
+- Trường hợp 1: hai biến cố/biến X và Y độc lập.
+- Trường hợp 2: Y = f(X) (phụ thuộc).
 
-Dùng mô phỏng để kiểm tra $$P(X \cap Y) \approx P(X) \cdot P(Y)$$
+Dùng mô phỏng để kiểm tra xem đẳng thức $$P(X \cap Y) \approx P(X) \cdot P(Y)$$ có thỏa mãn trong từng trường hợp hay không.
 
-**Bài 4: Paradox Simpson**
-Tìm hiểu về Simpson's Paradox và tạo một ví dụ mô phỏng minh họa hiện tượng này.
+**Bài 4: Nghịch lý Simpson (Simpson's Paradox)**
+Tìm hiểu về nghịch lý Simpson và xây dựng một ví dụ mô phỏng minh họa hiện tượng này.
 
-Bài tùy chọn sau, [03-02-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter03/02_Modern_Applications %}), nối xác suất có điều kiện, Bayes và độc lập với calibration, LLM và đồ thị nhân quả nhẹ (2021–2023).
+Bài tùy chọn tiếp theo, [03-02-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter03/02_Modern_Applications %}), kết nối xác suất có điều kiện, định lý Bayes và tính độc lập với hiệu chỉnh xác suất (calibration), mô hình ngôn ngữ lớn và đồ thị nhân quả (2021–2023).

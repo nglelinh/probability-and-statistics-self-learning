@@ -10,23 +10,23 @@ categories:
 lesson_type: required
 ---
 
-Hồi quy tuyến tính đơn giản là cầu nối giữa thống kê cổ điển và machine learning. Trong bài học này, chúng ta sẽ tiếp cận linear regression từ góc độ thống kê - không chỉ fit một đường thẳng, mà hiểu được uncertainty trong estimates, kiểm định giả thuyết về coefficients, và đánh giá model fit. Đây là nền tảng để hiểu các mô hình phức tạp hơn trong ML.
+Hồi quy tuyến tính đơn giản là cầu nối giữa thống kê cổ điển và học máy (machine learning). Trong bài học này, chúng ta sẽ tiếp cận hồi quy tuyến tính từ góc độ thống kê: không chỉ khớp một đường thẳng vào dữ liệu, mà còn hiểu độ bất định của các ước lượng, kiểm định giả thuyết cho các hệ số hồi quy và đánh giá mức độ phù hợp của mô hình. Đây là nền tảng để tiếp cận các mô hình phức tạp hơn trong học máy.
 
 ---
 
-## Correlation Coefficient
+## Hệ Số Tương Quan (Correlation Coefficient)
 
-Trước khi đến regression, hãy hiểu về correlation - đo lường mối quan hệ tuyến tính giữa hai biến.
+Trước khi đi vào hồi quy, ta cần nắm vững khái niệm tương quan — đại lượng đo lường mức độ liên hệ tuyến tính giữa hai biến số.
 
-**Pearson Correlation Coefficient:**
+**Hệ số tương quan Pearson (Pearson Correlation Coefficient):**
 
 $$r = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^n (y_i - \bar{y})^2}}$$
 
 **Tính chất:**
 - $$-1 \leq r \leq 1$$
-- $$r = 1$$: Perfect positive linear relationship
-- $$r = -1$$: Perfect negative linear relationship
-- $$r = 0$$: No linear relationship (nhưng có thể có quan hệ phi tuyến!)
+- $$r = 1$$: Mối quan hệ tuyến tính dương hoàn hảo.
+- $$r = -1$$: Mối quan hệ tuyến tính âm hoàn hảo.
+- $$r = 0$$: Không có mối quan hệ tuyến tính (tuy nhiên hai biến vẫn có thể có mối quan hệ phi tuyến).
 
 ```python
 import numpy as np
@@ -102,27 +102,26 @@ def visualize_correlation_examples():
 # visualize_correlation_examples()
 ```
 
-## Cạm Bẫy: Spurious Correlations (Mối Quan Hệ Giả)
+## Cạm Bẫy: Tương Quan Giả (Spurious Correlations)
 
-> *"Correlation does not imply causation."* - Câu thần chú của mọi nhà thống kê.
+> *"Correlation does not imply causation."* (Tương quan không đồng nghĩa với nhân quả) — nguyên tắc cốt lõi trong thống kê.
 
-Trong cuốn **Naked Statistics**, Charles Wheelan đưa ra một ví dụ thú vị: Có một mối tương quan chặt chẽ giữa số lượng bằng tiến sĩ về Xã hội học và số vụ chết đuối trong hồ bơi tại Mỹ.
-- Liệu học Xã hội học khiến người ta dễ chết đuối?
-- Hay việc chết đuối khiến người ta muốn học Xã hội học?
+Trong cuốn **Naked Statistics**, Charles Wheelan nêu một ví dụ đáng chú ý: tại Mỹ, số lượng bằng tiến sĩ ngành Xã hội học có tương quan rất chặt chẽ với số vụ đuối nước trong hồ bơi. Liệu việc học Xã hội học làm tăng nguy cơ đuối nước, hay ngược lại?
 
-Không cái nào cả! Cả hai đều tăng lên theo thời gian (biến ẩn là **Thời gian/Sự phát triển dân số/Kinh tế**). Đây là **Spurious Correlation** (Tương quan giả).
+Cả hai giả thuyết đều sai. Thực chất cả hai đại lượng đều tăng theo thời gian dưới tác động của biến ẩn chung là sự gia tăng dân số và phát triển kinh tế. Hiện tượng này được gọi là **tương quan giả (Spurious Correlation)**.
 
 ### Biến Gây Nhiễu (Confounding Variable)
-Một ví dụ kinh điển khác:
-- **Dữ liệu:** Số lượng kem bán ra tăng $$\rightarrow$$ Số vụ chết đuối tăng (Correlation > 0).
-- **Kết luận SAI:** Ăn kem gây chết đuối.
-- **Sự thật:** **Nhiệt độ (Z)** là biến gây nhiễu. Trời nóng $$\rightarrow$$ Ăn kem nhiều VÀ Đi bơi nhiều $$\rightarrow$$ Chết đuối nhiều.
+
+Một ví dụ kinh điển khác minh họa vai trò của biến gây nhiễu:
+- **Dữ liệu quan sát:** Số lượng kem bán ra tăng đồng thời với số vụ đuối nước tăng (hệ số tương quan dương).
+- **Kết luận sai:** Ăn kem gây ra đuối nước.
+- **Nguyên nhân thực sự:** **Nhiệt độ (Z)** là biến gây nhiễu. Khi trời nóng, người dân vừa ăn kem nhiều hơn vừa đi bơi nhiều hơn, từ đó làm tăng số vụ đuối nước.
 
 ![Spurious Correlation Ice Cream](../img/spurious_correlation_ice_cream.png)
-*Dữ liệu thực tế cho thấy correlation mạnh (đường đỏ), nhưng không có quan hệ nhân quả!*
+*Dữ liệu cho thấy tương quan dương mạnh (đường đỏ), nhưng không tồn tại quan hệ nhân quả trực tiếp.*
 
 ![Ice Cream and Crime](../img/ice_cream_crime.jpg)
-*Sơ đồ minh họa biến ẩn (Nhiệt độ) gây ra sự tăng đồng thời của cả hai yếu tố.*
+*Sơ đồ minh họa biến ẩn (Nhiệt độ) làm tăng đồng thời cả hai yếu tố.*
 
 ```python
 def spurious_correlation_demo():
@@ -172,9 +171,9 @@ def spurious_correlation_demo():
 # spurious_correlation_demo()
 ```
 
-### Spearman Correlation
+### Hệ Số Tương Quan Spearman
 
-Đo lường mối quan hệ **monotonic** (không nhất thiết tuyến tính):
+Hệ số tương quan Spearman đo lường mức độ liên hệ **đơn điệu (monotonic)** giữa hai biến dựa trên thứ hạng, không đòi hỏi quan hệ đó phải tuyến tính:
 
 ```python
 def pearson_vs_spearman():
@@ -221,17 +220,18 @@ def pearson_vs_spearman():
 # pearson_vs_spearman()
 ```
 
-## Simple Linear Regression
+## Hồi Quy Tuyến Tính Đơn Giản (Simple Linear Regression)
 
-**Model:**
+**Mô hình:**
+
 $$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$
 
-Với:
-- $$\beta_0$$: Intercept
-- $$\beta_1$$: Slope
-- $$\epsilon_i \sim N(0, \sigma^2)$$: Error term
+Trong đó:
+- $$\beta_0$$: Hệ số chặn (intercept).
+- $$\beta_1$$: Hệ số góc (slope).
+- $$\epsilon_i \sim N(0, \sigma^2)$$: Sai số ngẫu nhiên (error term).
 
-**Least Squares Estimates:**
+**Ước lượng bình phương tối thiểu (Least Squares Estimates):**
 
 $$\hat{\beta}_1 = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$$
 
@@ -318,15 +318,17 @@ def simple_linear_regression():
 # x, y, beta0_hat, beta1_hat = simple_linear_regression()
 ```
 
-## Statistical Inference for Regression
+## Suy Diễn Thống Kê Trong Hồi Quy
 
-### Standard Errors và Confidence Intervals
+### Sai Số Chuẩn và Khoảng Tin Cậy
 
-**Standard Error của $$\hat{\beta}_1$$:**
+**Sai số chuẩn (Standard Error) của $$\hat{\beta}_1$$:**
 
 $$SE(\hat{\beta}_1) = \frac{\sigma}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2}}$$
 
-**95% CI cho $$\beta_1$$:**
+Trong thực tế, vì $$\sigma$$ chưa biết nên ta thay bằng sai số chuẩn của phần dư $$\text{RSE} = \sqrt{\frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{n - 2}}$$ để tính ước lượng $$\widehat{SE}(\hat{\beta}_1)$$.
+
+**Khoảng tin cậy 95% cho $$\beta_1$$:**
 
 $$\hat{\beta}_1 \pm t_{0.025, n-2} \cdot SE(\hat{\beta}_1)$$
 
@@ -387,15 +389,13 @@ def regression_inference(x, y, beta0_hat, beta1_hat):
 # regression_inference(x, y, beta0_hat, beta1_hat)
 ```
 
-## R-squared và Model Fit
+## Hệ Số Xác Định $$R^2$$ và Mức Độ Phù Hợp Của Mô Hình
 
-**R-squared (Coefficient of Determination):**
+**Hệ số xác định $$R^2$$ (Coefficient of Determination):**
 
 $$R^2 = 1 - \frac{SS_{res}}{SS_{tot}} = 1 - \frac{\sum(y_i - \hat{y}_i)^2}{\sum(y_i - \bar{y})^2}$$
 
-**Ý nghĩa:** Tỷ lệ variance trong Y được giải thích bởi model.
-
-**Lưu ý:** $$R^2 = r^2$$ trong simple linear regression!
+**Ý nghĩa:** Tỷ lệ phương sai của biến phụ thuộc $$Y$$ được mô hình giải thích. Trong hồi quy tuyến tính đơn giản, $$R^2 = r^2$$ (bình phương hệ số tương quan Pearson).
 
 ```python
 def r_squared_analysis():
@@ -452,12 +452,12 @@ def r_squared_analysis():
 # r_squared_analysis()
 ```
 
-## Assumptions của Linear Regression
+## Các Giả Định Của Hồi Quy Tuyến Tính
 
-1. **Linearity**: Quan hệ giữa X và Y là tuyến tính
-2. **Independence**: Các observations độc lập
-3. **Homoscedasticity**: Variance của errors không đổi
-4. **Normality**: Errors tuân theo phân phối chuẩn
+1. **Tính tuyến tính (Linearity):** Mối quan hệ giữa $$X$$ và kỳ vọng của $$Y$$ là tuyến tính.
+2. **Tính độc lập (Independence):** Các quan sát độc lập với nhau.
+3. **Phương sai đồng nhất (Homoscedasticity):** Phương sai của sai số không đổi theo mọi giá trị của $$X$$.
+4. **Tính chuẩn (Normality):** Các sai số tuân theo phân phối chuẩn.
 
 ```python
 def check_assumptions():
@@ -526,11 +526,10 @@ def check_assumptions():
 # check_assumptions()
 ```
 
-## Prediction Intervals
+## Khoảng Dự Báo (Prediction Intervals)
 
-**Confidence Interval cho E[Y|X=x₀]:** Uncertainty về mean response
-
-**Prediction Interval cho Y|X=x₀:** Uncertainty về individual prediction (rộng hơn!)
+- **Khoảng tin cậy (Confidence Interval) cho $$E[Y|X=x_0]$$:** Phản ánh độ bất định của giá trị kỳ vọng (trung bình) của $$Y$$ tại $$X = x_0$$.
+- **Khoảng dự báo (Prediction Interval) cho $$Y|X=x_0$$:** Phản ánh độ bất định của một quan sát riêng lẻ mới tại $$X = x_0$$. Khoảng dự báo luôn rộng hơn khoảng tin cậy vì phải tính thêm cả độ biến thiên ngẫu nhiên của từng quan sát cá biệt.
 
 ```python
 def prediction_intervals():
@@ -598,35 +597,31 @@ def prediction_intervals():
 
 ## Video tham khảo
 
-- [The Main Ideas of Fitting a Line to Data (The Main Ideas of Least Squares and Linear Regression.)](https://www.youtube.com/watch?v=PaFPbb66DxQ) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Bình phương tối thiểu như đường làm tổng bình phương phần dư nhỏ nhất — mục hồi quy đơn của bài.
-- [Pearson's Correlation, Clearly Explained!!!](https://www.youtube.com/watch?v=xZ_z8KWkhXE) — StatQuest with Josh Starmer, tiếng Anh. Hệ số tương quan Pearson, trước khi bài chuyển từ tương quan sang đường thẳng.
-- [Correlation vs Causation Explained: Why Patterns Can Mislead Us](https://www.youtube.com/watch?v=ofweqU0Lz4I) — Sprouts, tiếng Anh. Tương quan giả và tương quan không phải nhân quả — mục cạm bẫy bài minh họa bằng mô phỏng.
+- [The Main Ideas of Fitting a Line to Data (The Main Ideas of Least Squares and Linear Regression.)](https://www.youtube.com/watch?v=PaFPbb66DxQ) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Giải thích trực quan phương pháp bình phương tối thiểu nhằm tìm đường thẳng tối thiểu hóa tổng bình phương phần dư, tương ứng với phần hồi quy đơn của bài.
+- [Pearson's Correlation, Clearly Explained!!!](https://www.youtube.com/watch?v=xZ_z8KWkhXE) — StatQuest with Josh Starmer, tiếng Anh. Trình bày hệ số tương quan Pearson trước khi chuyển từ phân tích tương quan sang hồi quy tuyến tính.
+- [Correlation vs Causation Explained: Why Patterns Can Mislead Us](https://www.youtube.com/watch?v=ofweqU0Lz4I) — Sprouts, tiếng Anh. Phân biệt tương quan và nhân quả, bổ trợ cho phần tương quan giả được minh họa bằng mô phỏng trong bài.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Correlation vs Causation**
-Tạo dữ liệu với confounding variable:
-- Z ảnh hưởng đến cả X và Y
-- X và Y có correlation cao nhưng không có causation
-- Visualize và giải thích
+**Bài 1: Tương quan và Nhân quả**
+Tạo bộ dữ liệu có biến gây nhiễu (confounding variable):
+- Biến $$Z$$ tác động đồng thời lên cả $$X$$ và $$Y$$.
+- $$X$$ và $$Y$$ có hệ số tương quan cao nhưng không có quan hệ nhân quả trực tiếp.
+- Trực quan hóa dữ liệu và giải thích kết quả.
 
-**Bài 2: Regression Diagnostics**
-Sinh dữ liệu vi phạm từng assumption:
-- Non-linearity
-- Heteroscedasticity
-- Outliers
-- Non-normal errors
-Vẽ diagnostic plots cho mỗi trường hợp
+**Bài 2: Chẩn đoán mô hình hồi quy (Regression Diagnostics)**
+Sinh dữ liệu vi phạm từng giả định riêng lẻ:
+- Phi tuyến tính (non-linearity).
+- Phương sai thay đổi (heteroscedasticity).
+- Ngoại lai (outliers).
+- Sai số không chuẩn (non-normal errors).
+Vẽ các biểu đồ chẩn đoán cho từng trường hợp.
 
-**Bài 3: Bootstrap for Regression**
-Implement bootstrap để:
-- Estimate SE của coefficients
-- Tính CI cho coefficients
-- So sánh với analytical results
+**Bài 3: Bootstrap cho hồi quy**
+Cài đặt phương pháp bootstrap để:
+- Ước lượng sai số chuẩn (SE) của các hệ số hồi quy.
+- Tính khoảng tin cậy (CI) cho các hệ số.
+- So sánh với kết quả tính theo công thức giải tích.
 
-**Bài 4: Anscombe's Quartet**
-Recreate Anscombe's Quartet - 4 datasets với:
-- Cùng mean của X và Y
-- Cùng regression line
-- Nhưng hoàn toàn khác nhau!
-Lesson: Luôn visualize data!
+**Bài 4: Bộ tứ Anscombe (Anscombe's Quartet)**
+Tái tạo Anscombe's Quartet gồm 4 bộ dữ liệu có cùng trung bình của $$X$$ và $$Y$$, cùng đường hồi quy tuyến tính nhưng cấu trúc phân bố hoàn toàn khác nhau, qua đó thấy rõ tầm quan trọng của việc trực quan hóa dữ liệu trước khi mô hình hóa.
