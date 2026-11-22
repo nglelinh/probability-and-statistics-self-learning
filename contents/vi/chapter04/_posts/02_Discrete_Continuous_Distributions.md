@@ -10,26 +10,28 @@ categories:
 lesson_type: required
 ---
 
-### 1. Bernoulli Distribution
+## Phân Phối Rời Rạc
 
-**Mô tả:** Thí nghiệm có 2 kết quả (thành công/thất bại)
+### 1. Phân Phối Bernoulli (Bernoulli Distribution)
 
-**Tham số:** $$p$$ (xác suất thành công)
+**Mô tả:** Mô hình hóa một phép thử chỉ có 2 kết quả (thành công hoặc thất bại).
 
-**PMF:** 
+**Tham số:** $$p$$ (xác suất thành công).
+
+**PMF:**
 $$P(X = k) = \begin{cases} p & \text{if } k=1 \\ 1-p & \text{if } k=0 \end{cases}$$
 
 **Kỳ vọng:** $$E[X] = p$$
 
 **Phương sai:** $$\text{Var}(X) = p(1-p)$$
 
-**Ứng dụng:** Tung đồng xu, click/no-click, conversion
+**Ứng dụng:** Tung đồng xu, nhấp chuột hay không nhấp chuột (click/no-click), chuyển đổi (conversion).
 
-### 2. Binomial Distribution
+### 2. Phân Phối Nhị Thức (Binomial Distribution)
 
-**Mô tả:** Số lần thành công trong $$n$$ phép thử Bernoulli độc lập
+**Mô tả:** Đếm số lần thành công trong $$n$$ phép thử Bernoulli độc lập có cùng xác suất thành công.
 
-**Tham số:** $$n$$ (số phép thử), $$p$$ (xác suất thành công)
+**Tham số:** $$n$$ (số phép thử), $$p$$ (xác suất thành công ở mỗi phép thử).
 
 **PMF:**
 $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
@@ -38,13 +40,13 @@ $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
 
 **Phương sai:** $$\text{Var}(X) = np(1-p)$$
 
-**Ứng dụng:** A/B testing, quality control, số người click trong n visitors
+**Ứng dụng:** Thử nghiệm A/B (A/B testing), kiểm soát chất lượng, số người nhấp chuột trong $$n$$ lượt truy cập.
 
-### 3. Poisson Distribution
+### 3. Phân Phối Poisson (Poisson Distribution)
 
-**Mô tả:** Số sự kiện xảy ra trong một khoảng thời gian/không gian cố định
+**Mô tả:** Đếm số sự kiện xảy ra trong một khoảng thời gian hoặc vùng không gian cố định.
 
-**Tham số:** $$\lambda$$ (tỷ lệ trung bình)
+**Tham số:** $$\lambda$$ (tần suất trung bình).
 
 **PMF:**
 $$P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}$$
@@ -53,13 +55,13 @@ $$P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}$$
 
 **Phương sai:** $$\text{Var}(X) = \lambda$$
 
-**Ứng dụng:** Số email nhận được mỗi giờ, số khách hàng đến cửa hàng, rare events
+**Ứng dụng:** Số email nhận được mỗi giờ, số khách hàng đến cửa hàng trong một khung giờ, các sự kiện hiếm gặp.
 
-### 4. Geometric Distribution
+### 4. Phân Phối Hình Học (Geometric Distribution)
 
-**Mô tả:** Số phép thử cần thiết để có thành công đầu tiên
+**Mô tả:** Đếm số phép thử Bernoulli độc lập cần thực hiện để đạt được lần thành công đầu tiên.
 
-**Tham số:** $$p$$ (xác suất thành công)
+**Tham số:** $$p$$ (xác suất thành công ở mỗi phép thử).
 
 **PMF:**
 $$P(X = k) = (1-p)^{k-1} p$$
@@ -68,7 +70,7 @@ $$P(X = k) = (1-p)^{k-1} p$$
 
 **Phương sai:** $$\text{Var}(X) = \frac{1-p}{p^2}$$
 
-**Ứng dụng:** Thời gian chờ đến sự kiện đầu tiên, số lần thử đến khi thành công
+**Ứng dụng:** Số bước chờ đến sự kiện đầu tiên, số lần thử cho đến khi thành công.
 
 ```python
 import numpy as np
@@ -134,11 +136,11 @@ def visualize_discrete_distributions():
 
 ## Phân Phối Liên Tục
 
-### 1. Uniform Distribution
+### 1. Phân Phối Đều (Uniform Distribution)
 
-**Mô tả:** Mọi giá trị trong khoảng $$[a, b]$$ đều có khả năng như nhau
+**Mô tả:** Mọi giá trị trong đoạn $$[a, b]$$ đều có mật độ xác suất như nhau.
 
-**Tham số:** $$a, b$$ (biên dưới và biên trên)
+**Tham số:** $$a, b$$ (cận dưới và cận trên).
 
 **PDF:**
 $$f(x) = \begin{cases} \frac{1}{b-a} & \text{if } a \leq x \leq b \\ 0 & \text{otherwise} \end{cases}$$
@@ -147,13 +149,13 @@ $$f(x) = \begin{cases} \frac{1}{b-a} & \text{if } a \leq x \leq b \\ 0 & \text{o
 
 **Phương sai:** $$\text{Var}(X) = \frac{(b-a)^2}{12}$$
 
-**Ứng dụng:** Random number generation, prior trong Bayesian
+**Ứng dụng:** Sinh số ngẫu nhiên, phân phối tiên nghiệm (prior) trong thống kê Bayes.
 
-### 2. Normal (Gaussian) Distribution
+### 2. Phân Phối Chuẩn (Normal / Gaussian Distribution)
 
-**Mô tả:** Phân phối "chuông", quan trọng nhất trong thống kê
+**Mô tả:** Phân phối dạng hình chuông, giữ vai trò trung tâm trong lý thuyết xác suất và thống kê.
 
-**Tham số:** $$\mu$$ (mean), $$\sigma^2$$ (variance)
+**Tham số:** $$\mu$$ (kỳ vọng), $$\sigma^2$$ (phương sai).
 
 **PDF:**
 $$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
@@ -163,17 +165,17 @@ $$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\righ
 **Phương sai:** $$\text{Var}(X) = \sigma^2$$
 
 **Tính chất đặc biệt:**
-- Symmetric around $$\mu$$
-- 68-95-99.7 rule
-- Tổng các biến chuẩn độc lập vẫn là chuẩn
+- Đối xứng quanh $$\mu$$.
+- Tuân theo quy tắc 68–95–99.7.
+- Tổng các biến ngẫu nhiên chuẩn độc lập vẫn tuân theo phân phối chuẩn.
 
-**Ứng dụng:** CLT, errors, natural phenomena, ML assumptions
+**Ứng dụng:** Định lý Giới hạn Trung tâm (CLT), mô hình hóa sai số đo lường, hiện tượng tự nhiên, các giả định trong học máy.
 
-### 3. Exponential Distribution
+### 3. Phân Phối Mũ (Exponential Distribution)
 
-**Mô tả:** Thời gian chờ đến sự kiện đầu tiên (liên tục của Geometric)
+**Mô tả:** Mô hình hóa thời gian chờ đến khi sự kiện đầu tiên xảy ra (phiên bản liên tục của phân phối Hình học).
 
-**Tham số:** $$\lambda$$ (rate)
+**Tham số:** $$\lambda$$ (tốc độ hay tần suất xảy ra sự kiện).
 
 **PDF:**
 $$f(x) = \lambda e^{-\lambda x}, \quad x \geq 0$$
@@ -182,37 +184,37 @@ $$f(x) = \lambda e^{-\lambda x}, \quad x \geq 0$$
 
 **Phương sai:** $$\text{Var}(X) = \frac{1}{\lambda^2}$$
 
-**Tính chất:** Memoryless property
+**Tính chất:** Có tính chất không nhớ (memoryless property).
 
-**Ứng dụng:** Thời gian giữa các sự kiện, lifetime analysis
+**Ứng dụng:** Thời gian giữa hai sự kiện liên tiếp, phân tích tuổi thọ thiết bị (lifetime analysis).
 
-### 4. Chi-Squared Distribution
+### 4. Phân Phối Chi-Bình Phương (Chi-Squared Distribution)
 
-**Mô tả:** Tổng bình phương của $$k$$ biến chuẩn độc lập
+**Mô tả:** Tổng bình phương của $$k$$ biến ngẫu nhiên chuẩn tắc $$\mathcal{N}(0, 1)$$ độc lập.
 
-**Tham số:** $$k$$ (degrees of freedom)
+**Tham số:** $$k$$ (số bậc tự do — degrees of freedom).
 
-**PDF:** (Phức tạp, không cần nhớ)
+**PDF:** Có dạng giải tích phức tạp (dùng hàm Gamma), thường tra bảng hoặc tính bằng phần mềm.
 
 **Kỳ vọng:** $$E[X] = k$$
 
 **Phương sai:** $$\text{Var}(X) = 2k$$
 
-**Ứng dụng:** Hypothesis testing, goodness-of-fit tests
+**Ứng dụng:** Kiểm định giả thuyết, kiểm định độ phù hợp (goodness-of-fit tests).
 
-### 5. Student's t-Distribution
+### 5. Phân Phối Student's t (Student's t-Distribution)
 
-**Mô tả:** Giống Normal nhưng có "đuôi dày" hơn
+**Mô tả:** Có dạng hình chuông đối xứng tương tự phân phối Chuẩn nhưng có phần "đuôi dày" hơn.
 
-**Tham số:** $$\nu$$ (degrees of freedom)
+**Tham số:** $$\nu$$ (số bậc tự do — degrees of freedom).
 
-**Kỳ vọng:** $$E[X] = 0$$ (nếu $$\nu > 1$$)
+**Kỳ vọng:** $$E[X] = 0$$ (với $$\nu > 1$$)
 
-**Phương sai:** $$\text{Var}(X) = \frac{\nu}{\nu-2}$$ (nếu $$\nu > 2$$)
+**Phương sai:** $$\text{Var}(X) = \frac{\nu}{\nu-2}$$ (với $$\nu > 2$$)
 
-**Tính chất:** Khi $$\nu \to \infty$$, hội tụ về Normal(0,1)
+**Tính chất:** Khi $$\nu \to \infty$$, phân phối t hội tụ về phân phối chuẩn tắc Normal(0, 1).
 
-**Ứng dụng:** t-tests, confidence intervals khi không biết variance
+**Ứng dụng:** Kiểm định t (t-tests), xây dựng khoảng tin cậy khi chưa biết phương sai tổng thể.
 
 ```python
 def visualize_continuous_distributions():
@@ -397,33 +399,33 @@ def demonstrate_distribution_relationships():
 # demonstrate_distribution_relationships()
 ```
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [The Binomial Distribution and Test, Clearly Explained!!!](https://www.youtube.com/watch?v=J8jNoF-K8E8) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Phân phối nhị thức và kiểm định đi kèm — họ rời rạc bài vẽ cùng các họ đếm khác.
-- [The Normal Distribution, Clearly Explained!!!](https://www.youtube.com/watch?v=rzFX5NWojp0) — StatQuest with Josh Starmer, tiếng Anh. Họ chuẩn: hình dạng, trung bình và độ lệch chuẩn, cho mục phân phối liên tục.
-- [An Introduction to the Poisson Distribution](https://www.youtube.com/watch?v=jmqZG6roVqU) — jbstatistics, tiếng Anh. Poisson cho số đếm, và mối liên hệ với nhị thức khi n lớn p nhỏ — đúng mục quan hệ giữa các phân phối.
+- [The Binomial Distribution and Test, Clearly Explained!!!](https://www.youtube.com/watch?v=J8jNoF-K8E8) — StatQuest with Josh Starmer, tiếng Anh. **Nên xem trước.** Giới thiệu phân phối nhị thức và kiểm định đi kèm, thuộc nhóm phân phối rời rạc đã trình bày trong bài.
+- [The Normal Distribution, Clearly Explained!!!](https://www.youtube.com/watch?v=rzFX5NWojp0) — StatQuest with Josh Starmer, tiếng Anh. Trình bày phân phối chuẩn (hình dạng, trung bình và độ lệch chuẩn) cho phần phân phối liên tục.
+- [An Introduction to the Poisson Distribution](https://www.youtube.com/watch?v=jmqZG6roVqU) — jbstatistics, tiếng Anh. Giải thích phân phối Poisson cho dữ liệu đếm và mối liên hệ xấp xỉ từ phân phối nhị thức khi n lớn, p nhỏ — phù hợp với mục mối quan hệ giữa các phân phối.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: So Sánh Binomial và Poisson**
-Khi $$n$$ lớn và $$p$$ nhỏ sao cho $$np = \lambda$$, Binomial(n, p) ≈ Poisson(λ).
-- Thử với n=100, p=0.05 (λ=5)
-- Vẽ cả hai phân phối và so sánh
-- Tính sai số giữa hai phân phối
+**Bài 1: So sánh phân phối Nhị thức và Poisson**
+Khi $$n$$ lớn và $$p$$ nhỏ sao cho $$np = \lambda$$, phân phối Binomial(n, p) có thể xấp xỉ bởi Poisson(λ).
+- Thử nghiệm với n = 100, p = 0.05 (λ = 5).
+- Vẽ đồ thị cả hai phân phối trên cùng hệ trục và so sánh.
+- Tính sai số giữa hai phân phối.
 
-**Bài 2: Memoryless Property**
-Exponential distribution có tính chất memoryless: P(X > s+t | X > s) = P(X > t)
-- Verify bằng mô phỏng
-- So sánh với phân phối không có tính chất này (ví dụ: Uniform)
+**Bài 2: Tính chất không nhớ (Memoryless Property)**
+Phân phối Mũ có tính chất không nhớ: P(X > s + t | X > s) = P(X > t).
+- Kiểm chứng tính chất này bằng mô phỏng.
+- So sánh với một phân phối không có tính chất không nhớ (ví dụ: phân phối Đều — Uniform).
 
-**Bài 3: 68-95-99.7 Rule**
-Với Normal(μ, σ²):
-- Mô phỏng 100,000 mẫu
-- Tính tỷ lệ mẫu trong [μ-σ, μ+σ], [μ-2σ, μ+2σ], [μ-3σ, μ+3σ]
-- So sánh với 68%, 95%, 99.7%
+**Bài 3: Quy tắc 68–95–99.7**
+Với phân phối Normal(μ, σ²):
+- Mô phỏng 100,000 mẫu.
+- Tính tỷ lệ mẫu rơi vào các khoảng [μ - σ, μ + σ], [μ - 2σ, μ + 2σ] và [μ - 3σ, μ + 3σ].
+- So sánh kết quả thực nghiệm với các mức lý thuyết 68%, 95% và 99.7%.
 
-**Bài 4: Central Limit Theorem**
-Sample từ Exponential(λ=1), tính mean của n=30 mẫu. Lặp lại 10,000 lần.
-- Vẽ histogram của sample means
-- So sánh với Normal(1/λ, (1/λ²)/n)
-- Thử với các phân phối khác (Uniform, Poisson)
+**Bài 4: Định lý Giới hạn Trung tâm (Central Limit Theorem)**
+Lấy mẫu từ phân phối Exponential(λ = 1), tính trung bình của n = 30 mẫu, và lặp lại quá trình này 10,000 lần.
+- Vẽ biểu đồ tần suất (histogram) của các trung bình mẫu thu được.
+- So sánh với phân phối Normal(1/λ, (1/λ²)/n).
+- Lặp lại thí nghiệm với các phân phối gốc khác (Uniform, Poisson).

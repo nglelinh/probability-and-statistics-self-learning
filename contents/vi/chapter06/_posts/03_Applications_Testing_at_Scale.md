@@ -10,23 +10,23 @@ categories:
 lesson_type: optional
 ---
 
-Bài tùy chọn này giữ nguyên định nghĩa $$H_0$$, $$p$$-value, sai lầm loại I/II, và suy diễn hệ số. Nó theo các đối tượng đó vào những hệ thống đang chạy chúng hàng nghìn lần mỗi ngày: nền tảng A/B công nghiệp, nghiên cứu tương quan toàn bộ hệ gene, thí nghiệm quảng cáo và xếp hạng, và các kiểm định tuần tự vẫn hợp lệ khi có người “nhìn trộm”.
+Bài đọc tùy chọn này giữ nguyên các định nghĩa về $$H_0$$, $$p$$-value, sai lầm loại I/II và suy diễn hệ số hồi quy, đồng thời theo dõi cách các công cụ đó vận hành trong những hệ thống thực hiện hàng nghìn kiểm định mỗi ngày: nền tảng thử nghiệm A/B công nghiệp, nghiên cứu tương quan toàn hệ gene (GWAS), thí nghiệm quảng cáo — xếp hạng, và các kiểm định tuần tự vẫn giữ nguyên tính hợp lệ khi người phân tích theo dõi kết quả liên tục ("nhìn trộm" — peeking).
 
-Sau bài, bạn viết được kiểm định hai mẫu mà một nền tảng thí nghiệm thực sự tính, giải thích được vì sao peeking làm phình sai lầm loại I, áp dụng Benjamini–Hochberg và nói khi nào Bonferroni hoặc ngưỡng toàn bộ hệ gene được dùng thay thế, và phác được một $$p$$-value luôn hợp lệ.
+Sau bài học này, bạn có thể cài đặt kiểm định hai mẫu thực tế của một nền tảng thí nghiệm, giải thích vì sao việc nhìn trộm kết quả làm phình sai lầm loại I, áp dụng thủ tục Benjamini–Hochberg (đồng thời biết khi nào cần dùng Bonferroni hoặc ngưỡng toàn hệ gene), và trình bày được nguyên lý xây dựng một $$p$$-value luôn hợp lệ (always-valid $$p$$-value).
 
-Các bài bắt buộc Chương 06 (khung kiểm định và suy diễn mô hình tuyến tính) cùng mô hình nhị thức/Bernoulli là đủ. Phần mô phỏng đa kiểm định trong bài kiểm định giả thuyết sẽ hữu ích; ta tái sử dụng trực giác đó chứ không dẫn lại.
+Kiến thức tiên quyết gồm hai bài bắt buộc của Chương 06 (khung kiểm định giả thuyết và suy diễn mô hình tuyến tính) cùng phân phối Bernoulli/Nhị thức. Phần mô phỏng đa kiểm định trong bài kiểm định giả thuyết sẽ được kế thừa trực tiếp mà không chứng minh lại.
 
 ---
 
-## A/B testing là kiểm định giả thuyết có product manager kèm theo
+## Thử Nghiệm A/B: Kiểm Định Giả Thuyết Trong Môi Trường Sản Phẩm
 
-Thí nghiệm kiểm soát trực tuyến hỏi một câu giáo trình. Gọi $$p_C$$ và $$p_T$$ là xác suất chuyển đổi trên đối chứng và xử lý. Nền tảng kiểm định
+Các thử nghiệm có đối chứng trực tuyến (online controlled experiments) thực chất đặt ra một câu hỏi thống kê kinh điển. Gọi $$p_C$$ và $$p_T$$ lần lượt là xác suất chuyển đổi của nhóm đối chứng (control) và nhóm thử nghiệm (treatment). Nền tảng thí nghiệm kiểm định cặp giả thuyết:
 
 $$H_0: p_T = p_C \qquad \text{versus} \qquad H_1: p_T \ne p_C$$
 
-bằng một statistic hai mẫu, thường là $$z$$-test cho hiệu tỷ lệ hoặc $$t$$-test cho metric thực. Kohavi, Tang và Xu (2020) mô tả các nền tảng tại Microsoft, Google và LinkedIn, mỗi nơi chạy hàng chục nghìn kiểm định như vậy mỗi năm. Khung xương suy diễn là thứ bạn đã biết. Phần kỹ thuật là về *độ tin cậy*: định nghĩa metric, nhiễu giữa người dùng, hiệu ứng mang sang, và việc một lift “có ý nghĩa” 0,1% có thể đáng giá hàng triệu đồng thời là lỗi đo.
+bằng một thống kê hai mẫu, thường là kiểm định $$z$$ cho hiệu hai tỷ lệ hoặc kiểm định $$t$$ cho các chỉ số liên tục. Kohavi, Tang và Xu (2020) mô tả các nền tảng thí nghiệm tại Microsoft, Google và LinkedIn, nơi mỗi hệ thống vận hành hàng chục nghìn kiểm định như vậy mỗi năm. Khung suy diễn cốt lõi chính là những gì bạn đã học; thách thức kỹ thuật nằm ở *độ tin cậy* của thí nghiệm: định nghĩa chỉ số đo lường (metric), hiện tượng can nhiễu giữa người dùng (interference), hiệu ứng kéo dài (carryover effect), và thực tế rằng một mức tăng (lift) "có ý nghĩa thống kê" 0,1% có thể mang lại giá trị hàng triệu đô-la nhưng cũng có thể chỉ bắt nguồn từ lỗi đo lường.
 
-Kohavi, Deng và Vermeer (2022) liệt kê các *intuition buster* mà nhà cung cấp vẫn đưa ra: coi khoảng 95% đã tính như một phát biểu xác suất 95% về thí nghiệm hiện tại, dùng power hậu kiểm như power thiết kế, loại outlier sau khi xem kết quả, và chia traffic không đều mà không chỉnh công thức phương sai. Mỗi sai lầm đó là dùng sai khung Chương 06, không phải một khung mới.
+Kohavi, Deng và Vermeer (2022) tổng hợp các *hiểu lầm phản trực giác (intuition busters)* vẫn thường xuất hiện trong thực hành: diễn giải khoảng tin cậy 95% đã tính như xác suất 95% cho thí nghiệm hiện tại, dùng lực kiểm định hậu kiểm (post-hoc power) thay cho lực kiểm định thiết kế, loại bỏ giá trị ngoại lai sau khi đã xem kết quả, và chia lưu lượng không đều mà không hiệu chỉnh công thức phương sai. Mỗi lỗi nêu trên đều xuất phát từ việc áp dụng sai khung kiến thức Chương 06, chứ không phải do một khung lý thuyết mới.
 
 ```python
 import numpy as np
@@ -48,23 +48,23 @@ def two_proportion_ztest(success_c, n_c, success_t, n_t):
     return z, p_value, p_c, p_t, p_t - p_c
 ```
 
-Ở quy mô nền tảng, cùng kiểm định đó được bọc bằng metric bảo vệ, một tiêu chí đánh giá tổng thể đăng ký trước, và kiểm tra Sample Ratio Mismatch—bản thân SRM là một goodness-of-fit test xem cơ chế gán có bị gãy không.
+Ở quy mô nền tảng, phép kiểm định này luôn đi kèm các chỉ số bảo vệ (guardrail metrics), một tiêu chí đánh giá tổng thể được đăng ký trước và bước kiểm tra lệch tỷ lệ mẫu (Sample Ratio Mismatch — SRM); bản thân SRM là một kiểm định độ phù hợp (goodness-of-fit test) giúp phát hiện xem cơ chế phân nhóm ngẫu nhiên có bị lỗi hay không.
 
-## Peeking, dừng tùy ý, và kiểm định tuần tự
+## Nhìn Trộm Kết Quả (Peeking), Dừng Tùy Ý và Kiểm Định Tuần Tự
 
-Một $$p$$-value mẫu cố định hợp lệ tại *một* $$n$$ chọn trước. Nếu nhà phân tích làm mới dashboard mỗi ngày và dừng lần đầu $$p < 0.05$$, sai lầm loại I cao hơn 5% rất nhiều. Đó là optional stopping, và đó là hành vi mặc định trên mọi UI thí nghiệm vẽ $$p$$-value trực tiếp.
+Một $$p$$-value mẫu cố định chỉ hợp lệ tại *một* cỡ mẫu $$n$$ được ấn định trước. Nếu nhà phân tích theo dõi bảng điều khiển mỗi ngày và dừng thí nghiệm ngay lần đầu thấy $$p < 0.05$$, tỷ lệ sai lầm loại I thực tế sẽ cao hơn mức 5% rất nhiều. Hiện tượng này gọi là dừng tùy ý (optional stopping), và lại là hành vi phổ biến trên các giao diện hiển thị $$p$$-value theo thời gian thực.
 
-Johari, Koomen, Pekelis và Walsh (2022) hình thức hóa $$p$$-value *luôn hợp lệ*: một quá trình $$p_n$$ sao cho với mọi thời điểm dừng $$\tau$$,
+Johari, Koomen, Pekelis và Walsh (2022) hình thức hóa khái niệm $$p$$-value *luôn hợp lệ (always-valid $$p$$-value)*: một chuỗi $$p_n$$ sao cho với mọi thời điểm dừng $$\tau$$, ta luôn có:
 
 $$P_{H_0}(p_\tau \le \alpha) \le \alpha.$$
 
-Họ xây dựng bằng mixture sequential probability ratio test (mSPRT). Phương pháp đã được triển khai trên một nền tảng thương mại phân tích hàng trăm nghìn thí nghiệm. Giá thống kê là power: kiểm định luôn hợp lệ thường cần nhiều mẫu hơn kiểm định $$n$$ cố định cùng mức.
+Nhóm tác giả xây dựng kiểm định này thông qua kiểm định tỷ số hợp lý tuần tự hỗn hợp (mixture sequential probability ratio test — mSPRT) và triển khai trên nền tảng thương mại phục vụ hàng trăm nghìn thí nghiệm. Cái giá phải trả về mặt thống kê là lực kiểm định (power): kiểm định luôn hợp lệ thường đòi hỏi cỡ mẫu lớn hơn so với kiểm định cỡ mẫu cố định ở cùng mức ý nghĩa.
 
-Ramdas, Grünwald, Vovk và Shafer (2023) đặt các kiểm định luôn hợp lệ vào *suy diễn an toàn bất kỳ lúc nào*. Đối tượng nguyên thủy là e-value hoặc test martingale $$M_n$$, một quá trình không âm với $$E_{H_0}[M_{n+1} \mid \mathcal{F}_n] \le M_n$$. Bất đẳng thức Ville cho
+Ramdas, Grünwald, Vovk và Shafer (2023) đặt các kiểm định luôn hợp lệ vào khung tổng quát *suy diễn an toàn bất kỳ lúc nào (safe anytime-valid inference)*. Đối tượng cơ sở là e-value hoặc test martingale $$M_n$$ — một quá trình không âm thỏa mãn $$E_{H_0}[M_{n+1} \mid \mathcal{F}_n] \le M_n$$. Theo bất đẳng thức Ville:
 
 $$P_{H_0}\Bigl(\sup_n M_n \ge 1/\alpha\Bigr) \le \alpha,$$
 
-nên $$p_n = \inf_{k \le n} 1/M_k$$ luôn hợp lệ. E-value nhân được giữa các thí nghiệm độc lập, nhờ đó một nền tảng chi tiêu ngân sách sai lầm trên một dòng kiểm định.
+suy ra $$p_n = \inf_{k \le n} 1/M_k$$ luôn hợp lệ tại mọi thời điểm dừng. Ngoài ra, các e-value từ những thí nghiệm độc lập có thể nhân trực tiếp với nhau, cho phép nền tảng quản lý ngân sách sai lầm trên cả một chuỗi kiểm định liên tiếp.
 
 ```python
 import numpy as np
@@ -92,25 +92,25 @@ def peeking_inflation(n_looks=20, n_per_look=200, p=0.1, n_sims=4000, alpha=0.05
     return false_reject / n_sims
 ```
 
-Chạy hàm đó với mặc định cho sai lầm loại I khoảng 20–25%, không phải 5%. Con số đó là lý do phương pháp tuần tự đi từ sổ tay thử nghiệm lâm sàng vào phần mềm tiêu dùng.
+Khi chạy hàm trên với các tham số mặc định, tỷ lệ sai lầm loại I thực tế vào khoảng 20–25% thay vì 5%. Con số này giải thích vì sao các phương pháp kiểm định tuần tự đã bước ra từ thử nghiệm lâm sàng để trở thành tiêu chuẩn trong các nền tảng phần mềm quy mô lớn.
 
-## Đa kiểm định: hệ gene, quảng cáo, và FDR trực tuyến
+## Đa Kiểm Định: Hệ Gene, Quảng Cáo và Kiểm Soát FDR Trực Tuyến
 
-Kiểm định một giả thuyết ở mức $$\alpha$$ thì sai lầm loại I là $$\alpha$$. Kiểm định $$m$$ null đúng độc lập thì xác suất có ít nhất một bác bỏ sai là $$1-(1-\alpha)^m$$. Bài bắt buộc đã mô phỏng sự thật đó. Hai hiệu chỉnh chiếm ưu thế trong thực hành, và chúng không thay thế được nhau.
+Khi kiểm định một giả thuyết đơn lẻ ở mức $$\alpha$$, xác suất sai lầm loại I là $$\alpha$$. Tuy nhiên, khi kiểm định $$m$$ giả thuyết không độc lập (và đều đúng), xác suất mắc ít nhất một bác bỏ sai tăng lên $$1-(1-\alpha)^m$$ — kết quả đã được mô phỏng trong bài bắt buộc. Hai hướng hiệu chỉnh phổ biến nhất trong thực hành phục vụ những mục tiêu khác nhau và không thể thay thế cho nhau.
 
-**Sai lầm trên cả họ.** Bonferroni dùng $$\alpha/m$$. Các nghiên cứu tương quan toàn bộ hệ gene, Uffelmann et al. (2021) tổng quan, thông thường bác bỏ tại $$5 \times 10^{-8}$$, một ngưỡng kiểu Bonferroni cho khoảng một triệu biến thể phổ biến độc lập. Lựa chọn đó ưu tiên tái lập hơn power, và vì thế một “hit” GWAS được coi là sự kiện hiếm.
+**Kiểm soát sai lầm trên cả họ (FWER).** Phương pháp Bonferroni sử dụng ngưỡng $$\alpha/m$$. Trong các nghiên cứu tương quan toàn hệ gene (GWAS) — được Uffelmann và cộng sự (2021) tổng quan — ngưỡng bác bỏ tiêu chuẩn là $$5 \times 10^{-8}$$, tương ứng với hiệu chỉnh kiểu Bonferroni cho khoảng một triệu biến thể di truyền phổ biến độc lập. Lựa chọn nghiêm ngặt này ưu tiên khả năng tái lập hơn lực kiểm định, nên một phát hiện ("hit") trong GWAS được xem là sự kiện có độ tin cậy cao.
 
-**Tỷ lệ phát hiện giả.** Benjamini và Hochberg (1995) kiểm soát kỳ vọng tỷ lệ bác bỏ sai trong tập đã bác bỏ,
+**Kiểm soát tỷ lệ phát hiện giả (FDR).** Benjamini và Hochberg (1995) đề xuất kiểm soát kỳ vọng của tỷ lệ bác bỏ sai trong tổng số các giả thuyết bị bác bỏ:
 
 $$\mathrm{FDR} = E\Bigl[\frac{V}{\max(R,1)}\Bigr].$$
 
-Sắp $$p_{(1)} \le \cdots \le p_{(m)}$$ và bác bỏ $$k$$ giá trị đầu thỏa
+Ta sắp xếp các $$p$$-value theo thứ tự tăng dần $$p_{(1)} \le \cdots \le p_{(m)}$$, tìm chỉ số $$k$$ lớn nhất thỏa mãn:
 
-$$p_{(k)} \le \frac{k}{m}\alpha.$$
+$$p_{(k)} \le \frac{k}{m}\alpha,$$
 
-BH là mặc định trong RNA-seq, ảnh y khoa, và mọi dashboard kiểm định hàng trăm metric hoặc phân khúc. Nó *không* thay thế ngưỡng GWAS: cái giá khoa học của một locus gene giả gần với sai lầm trên cả họ hơn.
+và bác bỏ toàn bộ $$k$$ giả thuyết đầu tiên. Thủ tục Benjamini–Hochberg (BH) là lựa chọn mặc định trong phân tích RNA-seq, chẩn đoán hình ảnh y khoa và các bảng theo dõi kiểm định hàng trăm chỉ số hoặc phân khúc người dùng. Tuy vậy, BH *không* thay thế ngưỡng GWAS vì chi phí khoa học của một locus gene dương tính giả phù hợp hơn với tiêu chí kiểm soát sai lầm trên cả họ.
 
-**FDR trực tuyến.** Nền tảng không nhận mọi $$p$$-value cùng lúc. Thí nghiệm đến thành dòng. Robertson, Wason và Ramdas (2023) khảo sát các thủ tục trực tuyến (LORD, SAFFRON, ADDIS) chi tiêu $$\alpha$$-wealth theo thời gian và lấy lại wealth khi có phát hiện. Đó là mô hình đa tính đúng cho một tổ chức quảng cáo hoặc xếp hạng bắt đầu kiểm định mới mỗi tuần và sẽ không bao giờ có một danh sách giả thuyết đóng.
+**Kiểm soát FDR trực tuyến (Online FDR).** Các nền tảng sản phẩm không nhận toàn bộ $$p$$-value cùng một lúc mà các thí nghiệm diễn ra liên tục theo dòng thời gian. Robertson, Wason và Ramdas (2023) tổng quan các thủ tục trực tuyến (như LORD, SAFFRON, ADDIS) phân bổ "ngân sách $$\alpha$$" ($$\alpha$$-wealth) theo thời gian và bổ sung lại một phần ngân sách mỗi khi có phát hiện mới. Đây là mô hình đa kiểm định phù hợp cho các nhóm quảng cáo hoặc xếp hạng triển khai thí nghiệm mới mỗi tuần và không bao giờ có một danh sách giả thuyết cố định.
 
 ```python
 import numpy as np
@@ -132,41 +132,41 @@ def benjamini_hochberg(p_values, alpha=0.05):
     return rejected
 ```
 
-## Suy diễn cho nhiều hệ số là cùng một bài toán
+## Suy Diễn Cho Nhiều Hệ Số Cũng Là Bài Toán Đa Kiểm Định
 
-Bài bắt buộc thứ hai xây khoảng tin cậy và $$p$$-value cho hệ số hồi quy. Trong mô hình xếp hạng hoặc quảng cáo, các hệ số đếm đến hàng nghìn. Báo cáo mọi $$p < 0.05$$ như một “feature có ý nghĩa” là lỗi đa kiểm định. Thực hành sản xuất hoặc (i) coi hệ số là công cụ dự đoán và không kiểm định chúng, (ii) áp dụng BH hoặc knockoffs để chọn biến, hoặc (iii) regularise và báo cáo metric dự đoán. Công thức mô hình tuyến tính không trở thành sai; chúng trở thành thiếu khi bạn tìm kiếm trên nhiều công thức.
+Bài bắt buộc thứ hai đã xây dựng khoảng tin cậy và $$p$$-value cho từng hệ số hồi quy. Trong các mô hình xếp hạng hoặc quảng cáo, số lượng hệ số có thể lên đến hàng nghìn. Việc báo cáo mọi hệ số có $$p < 0.05$$ như một "đặc trưng có ý nghĩa" thực chất là mắc lỗi đa kiểm định. Trong thực tế triển khai, các nhóm kỹ thuật thường chọn một trong ba hướng: (i) coi hệ số chỉ là thành phần phục vụ dự đoán và không tiến hành kiểm định từng hệ số, (ii) áp dụng thủ tục BH hoặc phương pháp knockoffs để chọn biến có kiểm soát sai lầm, hoặc (iii) dùng điều chuẩn (regularisation) và đánh giá bằng các chỉ số dự đoán. Bản thân công thức suy diễn của mô hình tuyến tính không sai, nhưng chúng trở nên thiếu đầy đủ khi ta kiểm định đồng thời trên rất nhiều hệ số.
 
-## Thách thức và mở rộng
+## Thách Thức và Hướng Mở Rộng
 
-Peeking không phải mối đe dọa hợp lệ duy nhất. Nhiễu (xử lý của một người dùng đổi kết cục của người khác), hiệu ứng mới lạ, và Sample Ratio Mismatch đều tạo ra kết quả *có ý nghĩa* mà không phải hiệu ứng xử lý. Kiểm định luôn hợp lệ đổi validity bằng cỡ mẫu; các nhóm không chờ được đôi khi thích giới hạn cứng số lần nhìn (thiết kế tuần tự theo nhóm) hơn một e-process tuần tự đầy đủ. FDR trực tuyến cần một dòng xác định rõ; lặng lẽ bỏ các kiểm định thất bại khỏi dòng sẽ phá chứng minh.
+Nhìn trộm kết quả không phải mối đe dọa duy nhất đối với tính hợp lệ của thí nghiệm. Hiện tượng can nhiễu (interference — khi tác động lên một người dùng làm thay đổi kết quả của người dùng khác), hiệu ứng mới lạ (novelty effect) và lệch tỷ lệ mẫu (Sample Ratio Mismatch) đều có thể tạo ra kết quả "có ý nghĩa thống kê" dù không có hiệu ứng xử lý thực sự. Kiểm định luôn hợp lệ đánh đổi cỡ mẫu để đảm bảo tính hợp lệ ở mọi thời điểm dừng; vì thế, các nhóm cần kết quả sớm đôi khi ưu tiên giới hạn trước số lần xem (thiết kế tuần tự theo nhóm — group sequential design) thay vì dùng e-process tuần tự liên tục. Với FDR trực tuyến, quy trình đòi hỏi một dòng thí nghiệm được ghi nhận đầy đủ; việc âm thầm loại bỏ các kiểm định không thành công khỏi dòng sẽ làm mất hiệu lực của chứng minh toán học.
 
-Các mở rộng nằm trên chương này gồm kiểm định giảm phương sai (CUPED, Chương 07 sẽ lấy lại), suy diễn nhân quả khi gán không phải Bernoulli sạch, và gộp e-value cho meta-analysis sống.
+Các hướng mở rộng tiếp nối chương này gồm kỹ thuật giảm phương sai trong kiểm định (như CUPED, sẽ đề cập ở Chương 07), suy diễn nhân quả khi cơ chế gán nhóm không phải phân phối Bernoulli thuần túy, và kết hợp e-value cho phân tích tổng hợp liên tục (living meta-analysis).
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [Trustworthy Online Controlled Experiments at Large Scale w/ Ronny Kohavi | DECISIONS/Replay by Split](https://www.youtube.com/watch?v=kTAFOCynWIg) — Split, tiếng Anh. **xem trước.** Ronny Kohavi nói thí nghiệm trực tuyến là kiểm định hai mẫu ở quy mô công nghiệp — khung A/B mở đầu bài.
-- [Peeking at A/B Tests: Why it matters, and what to do about it](https://www.youtube.com/watch?v=6G8F22NSCxk) — KDD2017 video, tiếng Anh. Báo cáo KDD về peeking: nhìn p-value rồi dừng sớm làm phình sai lầm loại I — mục kiểm định tuần tự của bài.
-- [False Discovery Rates, FDR, clearly explained](https://www.youtube.com/watch?v=K8LQSvtjcEo) — StatQuest with Josh Starmer, tiếng Anh. FDR và Benjamini–Hochberg khi có hàng nghìn giả thuyết — mục đa kiểm định bài đối chiếu với Bonferroni.
+- [Trustworthy Online Controlled Experiments at Large Scale w/ Ronny Kohavi | DECISIONS/Replay by Split](https://www.youtube.com/watch?v=kTAFOCynWIg) — Split, tiếng Anh. **Nên xem trước.** Ronny Kohavi trình bày bản chất của thử nghiệm trực tuyến như kiểm định hai mẫu ở quy mô công nghiệp — tương ứng với phần A/B testing mở đầu bài.
+- [Peeking at A/B Tests: Why it matters, and what to do about it](https://www.youtube.com/watch?v=6G8F22NSCxk) — KDD2017 video, tiếng Anh. Báo cáo tại hội nghị KDD về hiện tượng peeking: theo dõi p-value và dừng sớm làm tăng vọt sai lầm loại I — tương ứng với mục kiểm định tuần tự.
+- [False Discovery Rates, FDR, clearly explained](https://www.youtube.com/watch?v=K8LQSvtjcEo) — StatQuest with Josh Starmer, tiếng Anh. Giải thích trực quan về FDR và thủ tục Benjamini–Hochberg khi kiểm định hàng nghìn giả thuyết, đối chiếu với phương pháp Bonferroni.
 
-## Bài tập
+## Bài Tập
 
-**Bài 1 (khái niệm).** Dashboard của một nhà cung cấp cập nhật $$p$$-value mỗi giờ và tô thẻ xanh ở 0,05. Giả định nào của kiểm định mẫu cố định bị vi phạm? Nêu một thay thế luôn hợp lệ và một thay thế vận hành không đổi kiểm định.
+**Bài 1 (khái niệm).** Bảng theo dõi của một nhà cung cấp cập nhật $$p$$-value mỗi giờ và tô xanh khi giá trị xuống dưới 0,05. Giả định nào của kiểm định mẫu cố định đã bị vi phạm? Hãy nêu một giải pháp thay thế luôn hợp lệ về mặt thống kê và một giải pháp vận hành mà không cần thay đổi phép kiểm định.
 
-**Bài 2 (tính toán).** Dùng `peeking_inflation`, vẽ sai lầm loại I theo số lần nhìn với $$L \in \{1, 2, 5, 10, 20, 50\}$$. Chồng đường Bonferroni $$\alpha / L$$ áp dụng cho mỗi lần nhìn. Bạn mất bao nhiêu power nếu Bonferroni-hiệu chỉnh 20 lần nhìn trên lift thật 2% với $$n = 5{,}000$$ mỗi nhánh?
+**Bài 2 (tính toán).** Sử dụng hàm `peeking_inflation`, vẽ biểu đồ tỷ lệ sai lầm loại I theo số lần xem kết quả với $$L \in \{1, 2, 5, 10, 20, 50\}$$. Vẽ chồng đường hiệu chỉnh Bonferroni $$\alpha / L$$ áp dụng cho mỗi lần xem. Lực kiểm định giảm đi bao nhiêu nếu áp dụng hiệu chỉnh Bonferroni cho 20 lần xem với mức tăng thực (lift) 2% và cỡ mẫu $$n = 5{,}000$$ mỗi nhánh?
 
-**Bài 3 (tính toán).** Mô phỏng $$m = 1{,}000$$ $$p$$-value trong đó 100 đến từ $$z$$-score $$N(3,1)$$ và phần còn lại đều. So sánh số phát hiện đúng và sai dưới $$\alpha = 0.05$$ không hiệu chỉnh, Bonferroni, và BH. Liên hệ số Bonferroni với tư duy GWAS và số BH với dashboard metric quảng cáo.
+**Bài 3 (tính toán).** Mô phỏng $$m = 1{,}000$$ giá trị $$p$$-value, trong đó 100 giá trị sinh từ $$z$$-score theo phân phối $$N(3,1)$$ và 900 giá trị còn lại có phân phối đều trên $$[0, 1]$$. So sánh số phát hiện đúng và phát hiện sai ở mức $$\alpha = 0.05$$ khi không hiệu chỉnh, khi dùng Bonferroni và khi dùng BH. Liên hệ kết quả Bonferroni với tư duy GWAS và kết quả BH với bảng theo dõi chỉ số quảng cáo.
 
-**Bài 4 (mở).** Đọc Kohavi, Deng và Vermeer (2022). Chọn một intuition buster và tái hiện bằng mô phỏng nhỏ. Rồi đề xuất một thay đổi UI nền tảng—copy, nút bị tắt, máy tính cỡ mẫu bắt buộc—khiến sai lầm đó khó hơn.
+**Bài 4 (mở).** Đọc bài báo của Kohavi, Deng và Vermeer (2022), chọn một hiểu lầm phản trực giác (intuition buster) và tái hiện bằng một mô phỏng nhỏ. Từ đó, đề xuất một thay đổi giao diện trên nền tảng thí nghiệm (chẳng hạn văn bản cảnh báo, vô hiệu hóa nút dừng sớm, hoặc công cụ bắt buộc tính cỡ mẫu) để hạn chế sai lầm đó.
 
-## Tài liệu tham khảo
+## Tài Liệu Tham Khảo
 
-Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B, 57*(1), 289–300. Thủ tục FDR vẫn được trích dẫn.
+Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B, 57*(1), 289–300. Thủ tục kiểm soát FDR kinh điển vẫn được trích dẫn rộng rãi.
 
 Johari, R., Koomen, P., Pekelis, L., & Walsh, D. (2022). Always valid inference: Continuous monitoring of A/B tests. *Operations Research, 70*(3), 1806–1821. [https://doi.org/10.1287/opre.2021.2135](https://doi.org/10.1287/opre.2021.2135)
 
 Kohavi, R., Deng, A., & Vermeer, L. (2022). A/B testing intuition busters: Common misunderstandings in online controlled experiments. Trong *Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining* (tr. 3168–3177). [https://doi.org/10.1145/3534678.3539160](https://doi.org/10.1145/3534678.3539160)
 
-Kohavi, R., Tang, D., & Xu, Y. (2020). *Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing*. Cambridge University Press. Tham chiếu công nghiệp cho nền tảng thí nghiệm.
+Kohavi, R., Tang, D., & Xu, Y. (2020). *Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing*. Cambridge University Press. Tài liệu tham chiếu chuẩn mực trong công nghiệp cho các nền tảng thí nghiệm trực tuyến.
 
 Ramdas, A., Grünwald, P., Vovk, V., & Shafer, G. (2023). Game-theoretic statistics and safe anytime-valid inference. *Statistical Science, 38*(4), 576–601. [https://doi.org/10.1214/23-STS894](https://doi.org/10.1214/23-STS894)
 

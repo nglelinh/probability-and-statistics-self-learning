@@ -10,21 +10,21 @@ categories:
 lesson_type: required
 ---
 
-Sau khi train mô hình, chúng ta thường muốn trả lời các câu hỏi: "Feature này có thực sự quan trọng không?", "Khoảng tin cậy của coefficient là bao nhiêu?", "Dự đoán cho điểm mới có độ tin cậy như thế nào?". Đây là lĩnh vực của statistical inference - không chỉ dự đoán mà còn định lượng uncertainty.
+Sau khi huấn luyện một mô hình hồi quy tuyến tính, chúng ta thường muốn trả lời các câu hỏi suy diễn như: đặc trưng này có thực sự có ý nghĩa thống kê không, khoảng tin cậy của từng hệ số hồi quy là bao nhiêu, và dự đoán cho một quan sát mới có độ bất định ra sao? Đây là trọng tâm của suy diễn thống kê (statistical inference) — không chỉ đưa ra giá trị dự đoán mà còn định lượng độ bất định đi kèm.
 
 ---
 
-## Confidence Intervals cho Coefficients
+## Khoảng Tin Cậy Cho Các Hệ Số Hồi Quy
 
-Trong linear regression, giả định $$\epsilon \sim \mathcal{N}(0, \sigma^2)$$:
+Trong mô hình hồi quy tuyến tính với giả định nhiễu chuẩn $$\epsilon \sim \mathcal{N}(0, \sigma^2)$$, phân phối của hệ số ước lượng thỏa mãn:
 
 $$\hat{\beta}_j \sim \mathcal{N}\left(\beta_j, \sigma^2 (X^TX)^{-1}_{jj}\right)$$
 
-**Confidence interval 95%:**
+**Khoảng tin cậy 95% cho $$\beta_j$$:**
 
 $$\hat{\beta}_j \pm t_{0.025, n-p-1} \cdot \text{SE}(\hat{\beta}_j)$$
 
-trong đó $$\text{SE}(\hat{\beta}_j) = \hat{\sigma}\sqrt{(X^TX)^{-1}_{jj}}$$
+trong đó sai số chuẩn là $$\text{SE}(\hat{\beta}_j) = \hat{\sigma}\sqrt{(X^TX)^{-1}_{jj}}$$, với $$p$$ là số biến đặc trưng (không tính hệ số chặn) và bậc tự do là $$n - p - 1$$.
 
 ```python
 import numpy as np
@@ -42,9 +42,9 @@ def coefficient_inference(X, y, alpha=0.05):
     model.fit(X, y)
     y_pred = model.predict(X)
     
-    # Estimate sigma
+    # Estimate sigma (n - p - 1 bậc tự do vì mô hình có thêm hệ số chặn)
     residuals = y - y_pred
-    sigma_squared = np.sum(residuals**2) / (n - p)
+    sigma_squared = np.sum(residuals**2) / (n - p - 1)
     
     # Variance-covariance matrix
     X_with_intercept = np.column_stack([np.ones(n), X])
@@ -58,10 +58,10 @@ def coefficient_inference(X, y, alpha=0.05):
     t_stats = coefs / se
     
     # p-values
-    p_values = 2 * (1 - stats.t.cdf(np.abs(t_stats), df=n-p))
+    p_values = 2 * (1 - stats.t.cdf(np.abs(t_stats), df=n-p-1))
     
     # Confidence intervals
-    t_critical = stats.t.ppf(1 - alpha/2, df=n-p)
+    t_critical = stats.t.ppf(1 - alpha/2, df=n-p-1)
     ci_lower = coefs - t_critical * se
     ci_upper = coefs + t_critical * se
     
@@ -71,7 +71,7 @@ def coefficient_inference(X, y, alpha=0.05):
     print(f"{'Variable':<15} {'Coef':>10} {'SE':>10} {'t-stat':>10} {'p-value':>10}")
     print("-" * 70)
     
-    names = ['Intercept'] + [f'X{i+1}' for i in range(p-1)]
+    names = ['Intercept'] + [f'X{i+1}' for i in range(p)]
     for i, name in enumerate(names):
         print(f"{name:<15} {coefs[i]:>10.4f} {se[i]:>10.4f} {t_stats[i]:>10.4f} {p_values[i]:>10.4f}")
     
@@ -85,23 +85,23 @@ def coefficient_inference(X, y, alpha=0.05):
 # coefficient_inference(X, y)
 ```
 
-## Hypothesis Testing
+## Kiểm Định Giả Thuyết Cho Từng Hệ Số
 
-**Null hypothesis:** $$H_0: \beta_j = 0$$ (feature không có ảnh hưởng)
+**Giả thuyết không:** $$H_0: \beta_j = 0$$ (biến đặc trưng thứ $$j$$ không có tác động tuyến tính lên biến mục tiêu khi giữ cố định các biến khác).
 
-**Test statistic:**
+**Thống kê kiểm định:**
 
 $$t = \frac{\hat{\beta}_j}{\text{SE}(\hat{\beta}_j)} \sim t_{n-p-1}$$
 
-**Decision:** Reject $$H_0$$ nếu $$|t| > t_{\alpha/2, n-p-1}$$ hoặc p-value $$< \alpha$$.
+**Quy tắc quyết định:** Bác bỏ $$H_0$$ nếu $$|t| > t_{\alpha/2, n-p-1}$$ hoặc p-value $$< \alpha$$.
 
-## F-test cho Overall Significance
+## Kiểm Định F Cho Ý Nghĩa Tổng Thể (Overall Significance)
 
-Test xem **tất cả** coefficients có bằng 0 không:
+Kiểm định đồng thời xem **tất cả** các hệ số độ dốc có cùng bằng 0 hay không:
 
 $$H_0: \beta_1 = \beta_2 = \cdots = \beta_p = 0$$
 
-**F-statistic:**
+**Thống kê F:**
 
 $$F = \frac{(\text{TSS} - \text{RSS})/p}{\text{RSS}/(n-p-1)} \sim F_{p, n-p-1}$$
 
@@ -120,11 +120,11 @@ def f_test(X, y):
     tss = np.sum((y - y.mean())**2)
     rss = np.sum((y - y_pred)**2)
     
-    # F-statistic
-    f_stat = ((tss - rss) / p) / (rss / (n - p))
+    # F-statistic (n - p - 1 bậc tự do cho phần dư khi có hệ số chặn)
+    f_stat = ((tss - rss) / p) / (rss / (n - p - 1))
     
     # p-value
-    p_value = 1 - stats.f.cdf(f_stat, p, n - p)
+    p_value = 1 - stats.f.cdf(f_stat, p, n - p - 1)
     
     print(f"F-statistic: {f_stat:.4f}")
     print(f"p-value: {p_value:.6f}")
@@ -137,21 +137,22 @@ def f_test(X, y):
 # f_test(X, y)
 ```
 
-## Prediction Intervals
+## Khoảng Dự Báo (Prediction Intervals)
 
-**Confidence interval cho E[Y|X]:** Uncertainty về mean prediction
-**Prediction interval cho Y|X:** Uncertainty về individual prediction (rộng hơn)
+Cần phân biệt hai loại khoảng bất định khi dự đoán tại điểm mới:
+- **Khoảng tin cậy cho E[Y|X]:** Đo lường độ bất định của giá trị dự đoán trung bình.
+- **Khoảng dự báo cho Y|X:** Đo lường độ bất định cho một quan sát cá lẻ mới, do đó luôn rộng hơn khoảng tin cậy vì phải tính thêm phương sai nhiễu $$\sigma^2$$ của quan sát mới.
 
 $$\hat{y} \pm t_{\alpha/2, n-p-1} \cdot \hat{\sigma}\sqrt{1 + \mathbf{x}_0^T(X^TX)^{-1}\mathbf{x}_0}$$
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [Linear Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=7ArmBVF2dCs) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Suy diễn cho hệ số hồi quy: khoảng và p-value của độ dốc, đúng mục khoảng tin cậy cho coefficients.
-- [Multiple Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=zITIFTsivN8) — StatQuest with Josh Starmer, tiếng Anh. So sánh mô hình bằng F khi thêm biến — mục F-test cho ý nghĩa tổng thể.
-- [Prediction Intervals vs. Confidence Intervals](https://www.youtube.com/watch?v=nA0BnTm_bU0) — Stats with Brian, tiếng Anh. Khoảng tin cậy của trung bình có điều kiện khác khoảng dự báo cho một quan sát mới — mục prediction intervals.
+- [Linear Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=7ArmBVF2dCs) — StatQuest with Josh Starmer, tiếng Anh. **Nên xem trước.** Trình bày suy diễn cho hệ số hồi quy: khoảng tin cậy và p-value của hệ số góc, tương ứng với phần đầu của bài.
+- [Multiple Regression, Clearly Explained!!!](https://www.youtube.com/watch?v=zITIFTsivN8) — StatQuest with Josh Starmer, tiếng Anh. Giải thích kiểm định F để đánh giá ý nghĩa tổng thể khi bổ sung biến vào mô hình.
+- [Prediction Intervals vs. Confidence Intervals](https://www.youtube.com/watch?v=nA0BnTm_bU0) — Stats with Brian, tiếng Anh. Phân biệt khoảng tin cậy cho giá trị trung bình có điều kiện và khoảng dự báo cho một quan sát mới.
 
 ## Bài Tập
 
-**Bài 1:** Implement prediction intervals và visualize chúng.
+**Bài 1:** Cài đặt hàm tính khoảng dự báo (prediction intervals) cho mô hình hồi quy tuyến tính và vẽ biểu đồ minh họa so sánh với khoảng tin cậy.
 
-**Bài 2:** Multiple testing correction (Bonferroni) khi test nhiều coefficients.
+**Bài 2:** Áp dụng hiệu chỉnh đa kiểm định (Bonferroni) khi thực hiện kiểm định đồng thời nhiều hệ số hồi quy.

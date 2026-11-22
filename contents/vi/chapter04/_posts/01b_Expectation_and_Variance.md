@@ -10,27 +10,27 @@ categories:
 lesson_type: required
 ---
 
-Nếu biến ngẫu nhiên mô tả "những gì có thể xảy ra", thì kỳ vọng và phương sai mô tả "trung bình sẽ như thế nào" và "mức độ biến động ra sao". Hai khái niệm này là nền tảng cho toàn bộ thống kê - từ ước lượng tham số đến kiểm định giả thuyết. Trong bài này, chúng ta không chỉ học công thức mà còn hiểu sâu ý nghĩa và các tính chất quan trọng thông qua mô phỏng.
+Nếu biến ngẫu nhiên mô tả những giá trị có thể xảy ra, thì kỳ vọng và phương sai cho biết giá trị trung bình dự kiến và mức độ phân tán quanh mức trung bình đó. Hai đại lượng này là nền tảng của thống kê, từ ước lượng tham số đến kiểm định giả thuyết. Trong bài này, chúng ta sẽ tìm hiểu công thức, ý nghĩa trực quan và các tính chất quan trọng của chúng kết hợp với minh họa mô phỏng.
 
 ---
 
 ## Kỳ Vọng (Expected Value)
 
 <div class="textbook-definition" markdown="1">
-**Định nghĩa:** Kỳ vọng (hay giá trị trung bình) của biến ngẫu nhiên $$X$$ là:
+**Định nghĩa:** Kỳ vọng (hay giá trị trung bình lý thuyết) của biến ngẫu nhiên $$X$$ được định nghĩa như sau:
 </div>
 
-**Rời rạc:**
+**Trường hợp rời rạc:**
 $$E[X] = \sum_x x \cdot P(X = x) = \sum_x x \cdot p_X(x)$$
 
-**Liên tục:**
+**Trường hợp liên tục:**
 $$E[X] = \int_{-\infty}^{\infty} x \cdot f_X(x) \, dx$$
 
 **Ký hiệu:** $$E[X] = \mu = \mu_X$$
 
 ### Ý Nghĩa Trực Quan
 
-Kỳ vọng là "trung tâm khối lượng" của phân phối - điểm cân bằng nếu ta đặt phân phối lên một thanh gỗ.
+Kỳ vọng có thể được hình dung như **trọng tâm** của phân phối — điểm tựa giúp phân phối giữ thăng bằng nếu ta đặt toàn bộ khối lượng xác suất lên một thanh ngang.
 
 ```python
 import numpy as np
@@ -80,27 +80,25 @@ def visualize_expectation():
 
 ## Cạm Bẫy Trung Bình (The Average Trap)
 
-> *"The well-wrapped average."* - Darrell Huff, *How to Lie with Statistics*
+> *"The well-wrapped average."* — Darrell Huff, *How to Lie with Statistics*
 
-Kỳ vọng (Mean) là thước đo quan trọng, nhưng đôi khi nó **đánh lừa** chúng ta, đặc biệt khi dữ liệu có phân phối lệch (skewed) hoặc có outliers.
+Giá trị trung bình (Mean) là thước đo vị trí quan trọng, nhưng đôi khi có thể gây hiểu nhầm, đặc biệt khi dữ liệu có phân phối lệch (skewed) hoặc chứa các giá trị ngoại lai (outliers).
 
 ### Ví Dụ: Mức Lương "Trung Bình"
-Sếp tuyên bố: "Lương trung bình ở công ty ta là $5,000/tháng! Rất cao!"
-Nhân viên thắc mắc: "Sao tôi và mọi người chỉ nhận được $2,000?"
 
-Sự thật:
-- Sếp: $100,000 (1 người)
+Giả sử người quản lý tuyên bố mức lương trung bình tại công ty là $5,000/tháng, trong khi hầu hết nhân viên chỉ nhận được $2,000/tháng. Xét cơ cấu lương thực tế:
+- Quản lý: $100,000 (1 người)
 - Nhân viên: $2,000 (30 người)
 
 $$Mean = \frac{100,000 + 30 \times 2,000}{31} \approx 5,161$$
 
-Trong trường hợp này, **Median** (Trung vị) phản ánh đúng thực tế hơn ($2,000).
+Trong trường hợp này, **trung vị (Median)** phản ánh sát thực tế hơn ($2,000).
 
-*   **Mean:** Nhạy cảm với outliers (kéo về phía đuôi dài).
-*   **Median:** Ít bị ảnh hưởng bởi outliers (robust).
+*   **Trung bình (Mean):** Nhạy cảm với giá trị ngoại lai và dễ bị kéo về phía đuôi dài của phân phối.
+*   **Trung vị (Median):** Ít chịu ảnh hưởng bởi giá trị ngoại lai (có tính vững — robust).
 
 ![Average Trap Income](../img/average_trap_income.png)
-*Phân phối thu nhập lệch phải (Right-skewed): Mean bị kéo về phía các giá trị cực lớn (lương sếp), trong khi Median phản ánh tốt hơn thu nhập của đa số.*
+*Phân phối thu nhập lệch phải (right-skewed): giá trị trung bình bị kéo về phía các mức thu nhập cực lớn, trong khi trung vị phản ánh sát hơn thu nhập của đa số.*
 
 ```python
 def average_trap_demo():
@@ -142,7 +140,7 @@ def average_trap_demo():
 # average_trap_demo()
 ```
 
-### Verify Bằng Mô Phỏng
+### Kiểm Chứng Bằng Mô Phỏng
 
 ```python
 def verify_expectation_by_simulation():
@@ -199,13 +197,13 @@ def verify_expectation_by_simulation():
 # verify_expectation_by_simulation()
 ```
 
-## Tính Chất của Kỳ Vọng
+## Tính Chất Của Kỳ Vọng
 
 ### 1. Tính Tuyến Tính (Linearity)
 
 $$E[aX + b] = aE[X] + b$$
 
-$$E[X + Y] = E[X] + E[Y]$$ (luôn đúng, không cần độc lập!)
+$$E[X + Y] = E[X] + E[Y]$$ (luôn đúng, không đòi hỏi hai biến phải độc lập).
 
 ```python
 def verify_linearity():
@@ -246,15 +244,15 @@ def verify_linearity():
 # verify_linearity()
 ```
 
-### 2. Law of the Unconscious Statistician (LOTUS)
+### 2. Định Lý LOTUS (Law of the Unconscious Statistician)
 
-Nếu $$Y = g(X)$$, thì:
+Nếu $$Y = g(X)$$, thì kỳ vọng của $$g(X)$$ có thể tính trực tiếp từ phân phối của $$X$$:
 
-**Rời rạc:** $$E[g(X)] = \sum_x g(x) \cdot p_X(x)$$
+**Trường hợp rời rạc:** $$E[g(X)] = \sum_x g(x) \cdot p_X(x)$$
 
-**Liên tục:** $$E[g(X)] = \int_{-\infty}^{\infty} g(x) \cdot f_X(x) \, dx$$
+**Trường hợp liên tục:** $$E[g(X)] = \int_{-\infty}^{\infty} g(x) \cdot f_X(x) \, dx$$
 
-**Ý nghĩa:** Không cần tìm phân phối của $$Y$$, chỉ cần dùng phân phối của $$X$$!
+**Ý nghĩa:** Ta không cần tìm phân phối của $$Y$$ mà chỉ cần sử dụng trực tiếp phân phối của $$X$$.
 
 ```python
 def demonstrate_lotus():
@@ -319,7 +317,7 @@ def demonstrate_lotus():
 ## Phương Sai (Variance)
 
 <div class="textbook-definition" markdown="1">
-**Định nghĩa:** Phương sai đo lường mức độ phân tán của biến ngẫu nhiên xung quanh kỳ vọng:
+**Định nghĩa:** Phương sai đo lường mức độ phân tán của biến ngẫu nhiên xung quanh kỳ vọng của nó:
 
 $$\text{Var}(X) = E[(X - \mu)^2] = E[X^2] - (E[X])^2$$
 </div>
@@ -379,27 +377,27 @@ def visualize_variance():
 # visualize_variance()
 ```
 
-## Tính Chất của Phương Sai
+## Tính Chất Của Phương Sai
 
 ### 1. Công Thức Tính Nhanh
 
 $$\text{Var}(X) = E[X^2] - (E[X])^2$$
 
-Công thức này thường dễ tính hơn định nghĩa!
+Trong thực hành, công thức này thường thuận tiện để tính toán hơn so với định nghĩa gốc.
 
 ### 2. Biến Đổi Tuyến Tính
 
 $$\text{Var}(aX + b) = a^2 \text{Var}(X)$$
 
-**Lưu ý:** Hằng số $$b$$ không ảnh hưởng đến phương sai!
+**Lưu ý:** Hằng số cộng thêm $$b$$ chỉ dịch chuyển phân phối chứ không làm thay đổi mức độ phân tán, nên không ảnh hưởng đến phương sai.
 
 ### 3. Tổng Các Biến Độc Lập
 
-Nếu $$X$$ và $$Y$$ **độc lập**:
+Nếu $$X$$ và $$Y$$ **độc lập**, thì:
 
 $$\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)$$
 
-**Cảnh báo:** Điều này KHÔNG đúng nếu $$X$$ và $$Y$$ phụ thuộc!
+**Lưu ý:** Hệ thức này nói chung **không đúng** nếu $$X$$ và $$Y$$ phụ thuộc vào nhau.
 
 ```python
 def verify_variance_properties():
@@ -450,20 +448,20 @@ def verify_variance_properties():
 # verify_variance_properties()
 ```
 
-## Covariance và Correlation
+## Hiệp Phương Sai (Covariance) và Hệ Số Tương Quan (Correlation)
 
-### Covariance
+### Hiệp Phương Sai (Covariance)
 
 $$\text{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X]E[Y]$$
 
 **Ý nghĩa:**
-- $$\text{Cov}(X, Y) > 0$$: X và Y cùng tăng/giảm
-- $$\text{Cov}(X, Y) < 0$$: X tăng thì Y giảm và ngược lại
-- $$\text{Cov}(X, Y) = 0$$: Không có mối quan hệ tuyến tính (nhưng có thể có quan hệ phi tuyến!)
+- $$\text{Cov}(X, Y) > 0$$: $$X$$ và $$Y$$ có xu hướng cùng tăng hoặc cùng giảm.
+- $$\text{Cov}(X, Y) < 0$$: $$X$$ tăng thì $$Y$$ có xu hướng giảm và ngược lại.
+- $$\text{Cov}(X, Y) = 0$$: Hai biến không có mối quan hệ tuyến tính (tuy nhiên vẫn có thể tồn tại quan hệ phi tuyến).
 
-**Tính chất:** Nếu $$X$$ và $$Y$$ độc lập, thì $$\text{Cov}(X, Y) = 0$$ (nhưng chiều ngược lại KHÔNG đúng!)
+**Tính chất:** Nếu $$X$$ và $$Y$$ độc lập, thì $$\text{Cov}(X, Y) = 0$$; chiều ngược lại nhìn chung **không đúng**.
 
-### Correlation
+### Hệ Số Tương Quan (Correlation)
 
 $$\rho_{X,Y} = \text{Corr}(X, Y) = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y}$$
 
@@ -504,7 +502,7 @@ def visualize_correlation():
 # visualize_correlation()
 ```
 
-### Cảnh Báo: Correlation ≠ Causation
+### Cảnh Báo: Tương Quan Không Đồng Nghĩa Với Nhân Quả (Correlation ≠ Causation)
 
 ```python
 def correlation_not_causation():
@@ -561,33 +559,32 @@ def correlation_not_causation():
 # correlation_not_causation()
 ```
 
-## Video tham khảo
+## Video Tham Khảo
 
-- [Expected Values, Main Ideas!!!](https://www.youtube.com/watch?v=KLs_7b7SKi4) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Kỳ vọng của biến rời rạc như trung bình có trọng số xác suất — định nghĩa mở đầu bài.
-- [Covariance, Clearly Explained!!!](https://www.youtube.com/watch?v=qtaqvPAeEJY) — StatQuest with Josh Starmer, tiếng Anh. Hiệp phương sai rồi tương quan, cho mục cuối bài trước khi nói tương quan không phải nhân quả.
-- [Correlation vs Causation Explained: Why Patterns Can Mislead Us](https://www.youtube.com/watch?v=ofweqU0Lz4I) — Sprouts, tiếng Anh. Vì sao một hệ số tương quan cao chưa cho phép kết luận nguyên nhân — đúng cảnh báo trong bài.
+- [Expected Values, Main Ideas!!!](https://www.youtube.com/watch?v=KLs_7b7SKi4) — StatQuest with Josh Starmer, tiếng Anh. **Nên xem trước.** Giới thiệu kỳ vọng của biến rời rạc như trung bình có trọng số theo xác suất, tương ứng với phần định nghĩa mở đầu bài.
+- [Covariance, Clearly Explained!!!](https://www.youtube.com/watch?v=qtaqvPAeEJY) — StatQuest with Josh Starmer, tiếng Anh. Giải thích hiệp phương sai và hệ số tương quan, bổ trợ cho mục cuối bài trước khi bàn về quan hệ nhân quả.
+- [Correlation vs Causation Explained: Why Patterns Can Mislead Us](https://www.youtube.com/watch?v=ofweqU0Lz4I) — Sprouts, tiếng Anh. Giải thích vì sao hệ số tương quan cao không đủ để kết luận quan hệ nguyên nhân — kết quả, khớp với cảnh báo trong bài.
 
 ## Bài Tập Thực Hành
 
-**Bài 1: Tính Kỳ Vọng và Phương Sai**
-Cho biến ngẫu nhiên rời rạc với PMF:
+**Bài 1: Tính kỳ vọng và phương sai**
+Cho biến ngẫu nhiên rời rạc có PMF:
 - P(X = -1) = 0.2
 - P(X = 0) = 0.5
 - P(X = 2) = 0.3
 
-Tính E[X], Var(X), E[X²], E[3X + 5]. Verify bằng mô phỏng.
+Tính E[X], Var(X), E[X²], E[3X + 5] và kiểm chứng bằng mô phỏng.
 
-**Bài 2: LOTUS**
-Cho X ~ Uniform(0, 2). Tính E[X³] bằng:
-- LOTUS (tích phân)
-- Mô phỏng
-- So sánh kết quả
+**Bài 2: Ứng dụng LOTUS**
+Cho X ~ Uniform(0, 2). Tính E[X³] bằng hai cách và so sánh kết quả:
+- Dùng định lý LOTUS (tích phân).
+- Dùng mô phỏng.
 
-**Bài 3: Portfolio Variance**
-Bạn đầu tư 50% vào cổ phiếu A (σ_A = 20%) và 50% vào cổ phiếu B (σ_B = 30%).
-- Nếu A và B độc lập, tính phương sai của portfolio
-- Nếu Corr(A, B) = 0.5, tính lại
-- Mô phỏng để verify
+**Bài 3: Phương sai danh mục đầu tư (Portfolio Variance)**
+Bạn phân bổ 50% vốn vào cổ phiếu A (độ lệch chuẩn σ_A = 20%) và 50% vào cổ phiếu B (độ lệch chuẩn σ_B = 30%).
+- Nếu A và B độc lập, hãy tính phương sai của danh mục đầu tư.
+- Nếu hệ số tương quan Corr(A, B) = 0.5, hãy tính lại phương sai của danh mục.
+- Kiểm chứng cả hai trường hợp bằng mô phỏng.
 
-**Bài 4: Anscombe's Quartet**
-Tìm hiểu về Anscombe's Quartet - 4 datasets có cùng mean, variance, và correlation nhưng hoàn toàn khác nhau khi visualize. Tạo lại và vẽ biểu đồ.
+**Bài 4: Bộ tứ Anscombe (Anscombe's Quartet)**
+Tìm hiểu về Anscombe's Quartet — 4 tập dữ liệu có cùng trung bình, phương sai và hệ số tương quan nhưng hình dạng phân bố hoàn toàn khác nhau khi trực quan hóa. Hãy tái tạo 4 tập dữ liệu này và vẽ biểu đồ minh họa.

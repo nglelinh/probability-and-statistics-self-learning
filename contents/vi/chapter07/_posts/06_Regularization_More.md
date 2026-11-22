@@ -11,66 +11,71 @@ order: 6
 lesson_type: required
 ---
 
-Trong bài trước, chúng ta đã thần thánh hóa OLS. Tuy nhiên, OLS có điểm yếu chí tử: nó cố gắng **không chệch (unbiased)**, nhưng đôi khi cái giá phải trả là **phương sai (variance) quá lớn**, dẫn đến Overfitting.
+Ở các bài trước, chúng ta đã thấy nhiều tính chất tối ưu của OLS. Tuy nhiên, OLS vẫn có một hạn chế đáng kể: việc đòi hỏi ước lượng phải hoàn toàn **không chệch (unbiased)** đôi khi khiến **phương sai (variance)** của ước lượng tăng quá cao, dẫn đến quá khớp (overfitting).
 
-**Regularization** là kỹ thuật thêm một thành phần "phạt" (penalty term) vào hàm mất mát, chấp nhận một chút **bias** để giảm mạnh **variance**, từ đó giảm tổng lỗi dự báo (MSE).
-
----
-
-## 1. Vấn Đề Của OLS
-Hãy tưởng tượng bạn có $p=100$ biến nhưng chỉ có $N=50$ dòng dữ liệu (hoặc các biến tương quan rất mạnh).
-Khi đó ma trận $\mathbf{X}^T\mathbf{X}$ gần như suy biến (singular).
-Hệ số $\hat{\beta}$ của OLS sẽ cực kỳ lớn và dao động mạnh. Một thay đổi nhỏ trong dữ liệu train sẽ làm $\hat{\beta}$ thay đổi hoàn toàn -> Overfitting.
-
-Giải pháp: Đừng cho phép $\beta$ quá lớn. Hãy co nó lại (Shrinkage).
+**Điều chuẩn (Regularization)** giải quyết vấn đề này bằng cách thêm một số hạng phạt (penalty term) vào hàm mất mát. Mô hình chấp nhận tăng nhẹ **độ chệch (bias)** để giảm mạnh **phương sai (variance)**, nhờ đó giảm tổng sai số dự báo (MSE).
 
 ---
 
-## 2. Ridge Regression ($L_2$ Regularization)
+## 1. Hạn Chế Của OLS
 
-Ridge thay đổi hàm mục tiêu bằng cách thêm tổng bình phương các hệ số:
+Giả sử bạn có $p = 100$ biến độc lập nhưng chỉ có $N = 50$ quan sát (hoặc các biến độc lập tương quan rất mạnh với nhau). Khi đó ma trận $\mathbf{X}^T\mathbf{X}$ bị suy biến hoặc gần suy biến (singular), khiến các hệ số $\hat{\beta}$ của OLS có độ lớn rất cao và dao động mạnh. Chỉ một thay đổi nhỏ trong tập huấn luyện cũng làm $\hat{\beta}$ biến động đáng kể, dẫn đến quá khớp.
+
+Giải pháp là kiểm soát độ lớn của các hệ số $\beta$ thông qua kỹ thuật co hệ số (shrinkage).
+
+---
+
+## 2. Hồi Quy Ridge (Điều Chuẩn $L_2$)
+
+Hồi quy Ridge bổ sung tổng bình phương các hệ số vào hàm mục tiêu:
 
 $$ \hat{\boldsymbol{\beta}}^{ridge} = \arg\min_{\beta} \left\{ \sum_{i=1}^N (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^p \beta_j^2 \right\} $$
 
 Trong đó:
-*   $\lambda \ge 0$ là tham số điều chỉnh (tuning parameter / hyperparameter).
-    *   $\lambda = 0$: Trở về OLS.
-    *   $\lambda \to \infty$: Tất cả $\beta_j \to 0$ (trừ $\beta_0$).
-*   Thành phần phạt: $\lambda ||\beta||_2^2$.
+*   $\lambda \ge 0$ là siêu tham số điều chuẩn (tuning parameter / hyperparameter):
+    *   Khi $\lambda = 0$, mô hình quay về OLS thông thường.
+    *   Khi $\lambda \to \infty$, tất cả các hệ số $\beta_j \to 0$ (trừ hệ số chặn $\beta_0$).
+*   Số hạng phạt có dạng $\lambda ||\beta||_2^2$.
 
-### Tại sao Ridge tốt hơn?
-Về mặt toán học:
+### Cơ Sở Toán Học Của Tính Ổn Định Trong Ridge
+
+Với dữ liệu đã căn giữa (không phạt hệ số chặn $\beta_0$), nghiệm dạng đóng của Ridge là:
+
 $$ \hat{\boldsymbol{\beta}}^{ridge} = (\mathbf{X}^T \mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^T \mathbf{Y} $$
-Việc cộng thêm $\lambda \mathbf{I}$ vào đường chéo chính giúp ma trận luôn khả nghịch và ổn định số học (numerically stable).
+
+Việc cộng thêm $\lambda \mathbf{I}$ vào đường chéo chính giúp ma trận luôn khả nghịch và ổn định hơn về mặt số học (numerically stable).
 
 ---
 
-## 3. Lasso Regression ($L_1$ Regularization)
+## 3. Hồi Quy Lasso (Điều Chuẩn $L_1$)
 
-Lasso (Least Absolute Shrinkage and Selection Operator) sử dụng trị tuyệt đối thay vì bình phương:
+Lasso (Least Absolute Shrinkage and Selection Operator) thay tổng bình phương bằng tổng giá trị tuyệt đối của các hệ số:
 
 $$ \hat{\boldsymbol{\beta}}^{lasso} = \arg\min_{\beta} \left\{ \sum_{i=1}^N (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^p |\beta_j| \right\} $$
 
-### Điều kỳ diệu của Lasso: Feature Selection
-Khác với Ridge (chỉ làm $\beta$ nhỏ đi tiệm cận 0), Lasso có khả năng ép một số hệ số $\beta_j$ về **đúng bằng 0**.
--> Lasso thực hiện **lựa chọn biến (Feature Selection)** tự động. Nó tạo ra các mô hình thưa (sparse models), rất hữu ích khi $p$ rất lớn.
+### Khả Năng Chọn Lọc Biến Của Lasso (Feature Selection)
 
-> **Trực giác hình học:** Miền ràng buộc của Ridge là hình tròn (cầu), của Lasso là hình thoi (đa diện). Hình thoi có các "đỉnh" nhọn nằm trên các trục tọa độ. Khi elip của RSS tiếp xúc với miền ràng buộc, nó dễ chạm vào các đỉnh này hơn -> $\beta_j = 0$.
+Khác với Ridge (chỉ co $\beta_j$ tiến gần về 0), Lasso có thể ép một số hệ số $\beta_j$ về **đúng bằng 0**. Nhờ đó, Lasso tự động thực hiện **lựa chọn biến (feature selection)** và tạo ra các mô hình thưa (sparse models), đặc biệt hữu ích khi số biến $p$ rất lớn.
+
+> **Trực giác hình học:** Trong không gian tham số 2 chiều, miền ràng buộc của Ridge là hình tròn (tổng quát là hình cầu), còn của Lasso là hình thoi (tổng quát là đa diện). Hình thoi có các đỉnh nhọn nằm trên các trục tọa độ; khi các đường elip đồng mức của RSS tiếp xúc với miền ràng buộc, điểm tiếp xúc dễ rơi vào các đỉnh này hơn, làm cho một số hệ số $\beta_j = 0$.
 
 ---
 
 ## 4. Elastic Net
-Là sự kết hợp của cả hai:
+
+Elastic Net kết hợp đồng thời cả hai số hạng phạt của Lasso và Ridge:
+
 $$ \lambda_1 \sum |\beta_j| + \lambda_2 \sum \beta_j^2 $$
-Dùng khi muốn tận dụng ưu điểm của cả hai: vừa chọn biến (Lasso), vừa xử lý đa cộng tuyến tốt (Ridge).
+
+Phương pháp này phù hợp khi ta muốn kết hợp ưu điểm của cả hai: vừa chọn lọc biến (như Lasso), vừa xử lý tốt các nhóm biến có đa cộng tuyến cao (như Ridge).
 
 ---
 
-## 5. Chọn $\lambda$ như thế nào?
-Không thể đoán mò. Chúng ta dùng **Cross-Validation (CV)**.
-Thường dùng `RidgeCV` hoặc `LassoCV` trong Scikit-Learn để tự động thử một dải các giá trị $\lambda$ (alpha) và chọn giá trị có sai số kiểm định thấp nhất.
+## 5. Cách Chọn Tham Số $\lambda$
 
-### Code Example: Ridge vs Lasso
+Trong thực hành, ta không chọn $\lambda$ một cách tùy ý mà sử dụng **kiểm chứng chéo (Cross-Validation - CV)**. Với thư viện `scikit-learn`, các lớp `RidgeCV` và `LassoCV` tự động thử nghiệm một dải giá trị $\lambda$ (tham số `alpha`) và chọn giá trị cho sai số kiểm định thấp nhất.
+
+### Ví Dụ Minh Họa: So Sánh Ridge và Lasso
 
 ```python
 import numpy as np
@@ -112,14 +117,15 @@ print(f"Số biến Lasso giữ lại: {np.sum(lasso.coef_ != 0)}")
 
 ## Video tham khảo
 
-- [Ridge vs Lasso Regression, Visualized!!!](https://www.youtube.com/watch?v=Xm2C_gTAl8c) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Hình phạt L2 co hệ số còn L1 cắt đúng về không — khác biệt bài muốn thấy khi so sánh ridge và lasso.
-- [Regularization Part 3: Elastic Net Regression](https://www.youtube.com/watch?v=1dKRdX9bfIo) — StatQuest with Josh Starmer, tiếng Anh. Elastic net khi muốn cả co lẫn thưa, mục bài đặt sau hai phạt riêng.
-- [Elastic Net Regularization : Data Science Concepts](https://www.youtube.com/watch?v=t6E0Dt5rg9U) — ritvikmath, tiếng Anh. Cùng elastic net từ một góc phạt toán, bổ sung cho đoạn chọn λ của bài.
+- [Ridge vs Lasso Regression, Visualized!!!](https://www.youtube.com/watch?v=Xm2C_gTAl8c) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Minh họa trực quan sự khác biệt giữa phạt L2 (co hệ số) và phạt L1 (đưa hệ số về đúng 0).
+- [Regularization Part 3: Elastic Net Regression](https://www.youtube.com/watch?v=1dKRdX9bfIo) — StatQuest with Josh Starmer, tiếng Anh. Giới thiệu Elastic Net khi cần kết hợp đồng thời tính ổn định của Ridge và tính thưa của Lasso.
+- [Elastic Net Regularization : Data Science Concepts](https://www.youtube.com/watch?v=t6E0Dt5rg9U) — ritvikmath, tiếng Anh. Phân tích toán học bổ sung về Elastic Net và vai trò của tham số điều chuẩn.
 
 ### Bài Tập
-1. Sinh một tập dữ liệu có đa cộng tuyến cao (các cột X tương quan mạnh).
-2. So sánh MSE của OLS, Ridge và Lasso trên tập test.
-3. Quan sát hệ số của Ridge xem chúng có ổn định hơn OLS không?
+
+1. Sinh một tập dữ liệu có mức độ đa cộng tuyến cao (các cột của ma trận $X$ tương quan mạnh với nhau).
+2. So sánh MSE của OLS, Ridge và Lasso trên tập kiểm tra (test set).
+3. Quan sát và nhận xét mức độ ổn định của các hệ số Ridge so với OLS.
 
 ---
-**Tiếp theo:** Chúng ta đã xử lý bài toán hồi quy (dự đoán số). Nhưng làm sao để **phân loại** (ví dụ: Email là Spam hay Not Spam)? Bài tới: **Logistic Regression**.
+**Tiếp theo:** Các bài vừa qua tập trung vào bài toán hồi quy (dự đoán giá trị liên tục). Để xử lý bài toán **phân loại** (chẳng hạn phân loại email là Spam hay Không phải Spam), chúng ta sẽ chuyển sang **Hồi quy Logistic (Logistic Regression)** ở bài tiếp theo.

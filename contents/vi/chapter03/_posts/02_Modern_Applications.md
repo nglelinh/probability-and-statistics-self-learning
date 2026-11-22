@@ -10,45 +10,45 @@ categories:
 lesson_type: optional
 ---
 
-Không gian mẫu, xác suất có điều kiện, Bayes và độc lập trong chương này chính là những đối tượng mà hệ thống sản xuất dùng sai khi coi điểm softmax như một khả năng, likelihood token như một niềm tin, hoặc tương quan như nguyên nhân. Bài tùy chọn này giữ nguyên các suy diễn bắt buộc và chỉ chỉ ra bốn chỗ các đối tượng đó xuất hiện trong thực hành khoa học máy tính 2021–2023.
+Không gian mẫu, xác suất có điều kiện, định lý Bayes và tính độc lập trong chương này chính là những khái niệm thường bị dùng sai trong các hệ thống thực tế — khi nhầm lẫn điểm softmax với xác suất được hiệu chỉnh, nhầm likelihood của token với mức độ tin cậy, hoặc nhầm tương quan với quan hệ nhân quả. Bài đọc tùy chọn này giữ nguyên phần lý thuyết cốt lõi và chỉ ra bốn bối cảnh cụ thể nơi các khái niệm đó xuất hiện trong thực hành khoa học máy tính giai đoạn 2021–2023.
 
-## Calibration: khi $$P(Y=1\mid X=x)$$ là một tần suất
+## Hiệu chỉnh xác suất (Calibration): khi $$P(Y=1\mid X=x)$$ là một tần suất
 
-Một mô hình được gọi là **hiệu chỉnh (calibrated)** nếu, trong mọi $$x$$ có xác suất dự đoán $$p$$, khoảng một tỷ lệ $$p$$ là dương:
+Một mô hình được gọi là **hiệu chỉnh tốt (calibrated)** nếu trong số các quan sát $$x$$ được mô hình dự đoán xác suất dương bằng $$p$$, tỷ lệ thực sự thuộc lớp dương xấp xỉ đúng bằng $$p$$:
 
 $$
 P\bigl(Y=1 \mid \hat{p}(X)=p\bigr) \approx p.
 $$
 
-Expected calibration error (ECE) chia $$\hat{p}$$ thành các bin và so tần suất trong bin với điểm trung bình của bin—ví dụ bệnh hiếm ở bài bắt buộc dưới dạng histogram. Guo, Pleiss, Sun và Weinberger (*On Calibration of Modern Neural Networks*, [ICML 2017](https://proceedings.mlr.press/v70/guo17a.html)) cho thấy mạng sâu có thể vừa chính xác vừa hiệu chỉnh kém; một **nhiệt độ** $$T$$ trên logit, $$\mathrm{softmax}(z/T)$$, thường sửa sơ đồ tin cậy. Minderer, Djolonga, Romijnders, Hubis, Zhai, Houlsby, Tran và Lucic (*Revisiting the Calibration of Modern Neural Networks*, [NeurIPS 2021](https://proceedings.neurips.cc/paper/2021/hash/8420d359404024567b5aefda1231af24-Abstract.html); [arXiv:2106.07998](https://arxiv.org/abs/2106.07998)) thấy câu chuyện phụ thuộc kiến trúc: Vision Transformer gần đây có thể hiệu chỉnh *tốt hơn* CNN cũ. [`CalibratedClassifierCV`](https://scikit-learn.org/stable/modules/calibration.html) của sklearn (Platt hoặc hồi quy isotonic trên hold-out) là bản bảng. Xác suất có điều kiện không phải điểm cảm tính; đó là một khẳng định về tần suất dài hạn.
+Sai số hiệu chỉnh kỳ vọng (Expected Calibration Error — ECE) chia các giá trị $$\hat{p}$$ thành các khoảng (bin) và so sánh tần suất dương thực tế trong từng khoảng với xác suất dự đoán trung bình của khoảng đó — cùng logic với ví dụ bệnh hiếm ở bài bắt buộc nhưng trình bày dưới dạng histogram. Guo, Pleiss, Sun và Weinberger (*On Calibration of Modern Neural Networks*, [ICML 2017](https://proceedings.mlr.press/v70/guo17a.html)) chỉ ra rằng mạng nơ-ron sâu có thể đạt độ chính xác cao nhưng hiệu chỉnh kém; việc điều chỉnh một tham số **nhiệt độ** $$T$$ trên logit theo công thức $$\mathrm{softmax}(z/T)$$ thường cải thiện đáng kể biểu đồ độ tin cậy (reliability diagram). Minderer, Djolonga, Romijnders, Hubis, Zhai, Houlsby, Tran và Lucic (*Revisiting the Calibration of Modern Neural Networks*, [NeurIPS 2021](https://proceedings.neurips.cc/paper/2021/hash/8420d359404024567b5aefda1231af24-Abstract.html); [arXiv:2106.07998](https://arxiv.org/abs/2106.07998)) bổ sung rằng kết quả này phụ thuộc vào kiến trúc: các mô hình Vision Transformer gần đây có thể hiệu chỉnh *tốt hơn* so với các kiến trúc CNN cũ. Với dữ liệu dạng bảng, [`CalibratedClassifierCV`](https://scikit-learn.org/stable/modules/calibration.html) trong scikit-learn (áp dụng hiệu chỉnh Platt hoặc hồi quy isotonic trên tập tách riêng) là công cụ phổ biến. Xác suất có điều kiện không phải điểm số cảm tính, mà là một phát biểu định lượng về tần suất dài hạn.
 
-## LLM muốn nói gì khi nói “xác suất”
+## Mô hình ngôn ngữ lớn (LLM) nói gì khi đưa ra "xác suất"?
 
-Mô hình ngôn ngữ định nghĩa phân phối có điều kiện trên token tiếp theo, $$P(x_t\mid x_{<t})$$, tức quy tắc Bayes cộng quy tắc chuỗi trên một không gian rời rạc khổng lồ. Sau RLHF, điều kiện đó là độ tin kém: Tian, Mitchell, Zhou, Sharma, Rafailov, Yao, Finn và Manning (*Just Ask for Calibration*, [EMNLP 2023](https://aclanthology.org/2023.emnlp-main.330/)) cho thấy độ tin *nói ra* (“Tôi chắc 70%”) từ ChatGPT / GPT-4 / Claude thường hiệu chỉnh tốt hơn xác suất token của chính mô hình, giảm ECE khoảng một nửa trên TriviaQA, SciQ và TruthfulQA. Phân biệt Chương 03 là chính xác: $$P(\text{token}\mid\text{prompt})$$ là likelihood trong một câu chuyện sinh; $$P(\text{đúng}\mid\text{câu trả lời})$$ là posterior bạn muốn. Chúng trùng nhau chỉ khi bạn đã đặc tả đúng thí nghiệm.
+Mô hình ngôn ngữ định nghĩa phân phối có điều kiện trên token kế tiếp, $$P(x_t\mid x_{<t})$$, tức là sự kết hợp của quy tắc nhân xác suất trên một không gian rời rạc rất lớn. Sau giai đoạn tinh chỉnh bằng RLHF, phân phối có điều kiện này thường hiệu chỉnh kém. Tian, Mitchell, Zhou, Sharma, Rafailov, Yao, Finn và Manning (*Just Ask for Calibration*, [EMNLP 2023](https://aclanthology.org/2023.emnlp-main.330/)) cho thấy mức độ tự tin được diễn đạt bằng lời (*verbalized confidence*, chẳng hạn "Tôi chắc 70%") từ ChatGPT, GPT-4 và Claude thường hiệu chỉnh tốt hơn xác suất token nội bộ của chính mô hình, giúp giảm ECE khoảng một nửa trên TriviaQA, SciQ và TruthfulQA. Sự phân biệt trong Chương 03 lý giải chính xác hiện tượng này: $$P(\text{token}\mid\text{prompt})$$ là hàm hợp lý (likelihood) trong mô hình sinh văn bản, còn $$P(\text{đúng}\mid\text{câu trả lời})$$ mới là xác suất hậu nghiệm (posterior) mà người dùng cần; hai đại lượng này chỉ trùng nhau khi mô hình xác suất được đặc tả đúng với bài toán.
 
-## Naive Bayes vẫn đang chạy
+## Naive Bayes vẫn được dùng rộng rãi trong thực tế
 
-Phép tính lọc spam ở bài bắt buộc không phải đồ chơi. [`MultinomialNB`](https://scikit-learn.org/stable/modules/naive_bayes.html) của sklearn vẫn lọc thư và gắn thẻ tài liệu vì, dưới giả thiết **độc lập có điều kiện**
+Ví dụ lọc thư rác trong bài học bắt buộc không chỉ là bài tập minh họa. [`MultinomialNB`](https://scikit-learn.org/stable/modules/naive_bayes.html) trong scikit-learn vẫn được sử dụng để lọc thư và gắn nhãn tài liệu vì dưới giả thiết **độc lập có điều kiện**
 
 $$
 P(x_1,\ldots,x_d\mid y) = \prod_{j=1}^d P(x_j\mid y),
 $$
 
-posterior $$P(y\mid x)$$ chỉ là vài lần đếm và một phép nhân. Cách dùng sản xuất thành thật về lời nói dối: các token *không* độc lập khi biết lớp, nhưng biên quyết định vẫn có thể chạy. Khi Transformer thắng Naive Bayes, đó là vì nó mô hình $$P(x_j\mid x_{-j},y)$$ thay vì $$P(x_j\mid y)$$. Đó là phần độc lập của chương này, không phải một nhánh toán mới.
+xác suất hậu nghiệm $$P(y\mid x)$$ có thể tính nhanh chỉ bằng vài phép đếm và phép nhân. Trong thực tế, người dùng hiểu rõ giới hạn của giả thiết đơn giản hóa này: các token *không* thực sự độc lập khi biết nhãn lớp, nhưng biên quyết định thu được vẫn đủ hiệu quả cho nhiều bài toán. Khi Transformer vượt trội hơn Naive Bayes, nguyên nhân cốt lõi là nó mô hình hóa được sự phụ thuộc có điều kiện $$P(x_j\mid x_{-j},y)$$ thay vì giả định $$P(x_j\mid y)$$ độc lập — tức vẫn nằm trong khung khái niệm về tính độc lập của chương này.
 
-## Đồ thị nhân quả nhẹ: $$P(Y\mid X)$$ không phải $$P(Y\mid \mathrm{do}(X))$$
+## Nhập môn đồ thị nhân quả: $$P(Y\mid X)$$ khác $$P(Y\mid \mathrm{do}(X))$$
 
-Nghịch lý Simpson trong bài tập là lời cảnh báo rằng điều kiện hóa không phải can thiệp. Sharma và Kiciman (*DoWhy*, [arXiv:2011.04216](https://arxiv.org/abs/2011.04216); [pywhy.org/dowhy](https://www.pywhy.org/dowhy/)) biến cảnh báo đó thành phần mềm: bạn vẽ đồ thị cơ chế giả định, *identify* xem $$P(Y\mid\mathrm{do}(T))$$ có phải hàm của các điều kiện quan sát được không, *estimate*, rồi *refute* (placebo, kiểm tra nhiễu không quan sát). Thư viện không thay định lý Bayes. Nó từ chối giả vờ rằng $$P(\text{hồi phục}\mid\text{thuốc})$$ tính trên dữ liệu bệnh viện là hiệu ứng của việc chỉ định thuốc. Một hình một cạnh—can thiệp $$T$$, kết cục $$Y$$, nhiễu $$Z$$—đủ để thấy vì sao đồng nhất thức bắt buộc $$P(A\mid B)=P(A\cap B)/P(B)$$ là nút sai cho chính sách.
+Nghịch lý Simpson trong phần bài tập là lời nhắc rằng điều kiện hóa (conditioning) không đồng nghĩa với can thiệp (intervention). Sharma và Kiciman (*DoWhy*, [arXiv:2011.04216](https://arxiv.org/abs/2011.04216); [pywhy.org/dowhy](https://www.pywhy.org/dowhy/)) chuyển nguyên tắc này thành một quy trình phần mềm gồm bốn bước: mô hình hóa đồ thị nhân quả giả định, *nhận diện* (*identify*) xem hiệu ứng can thiệp $$P(Y\mid\mathrm{do}(T))$$ có biểu diễn được theo các xác suất quan sát hay không, *ước lượng* (*estimate*), và *kiểm chứng bác bỏ* (*refute*, bằng biến giả dược hoặc kiểm tra nhiễu chưa quan sát). Thư viện này không thay thế định lý Bayes, mà ngăn việc đồng nhất xác suất quan sát $$P(\text{hồi phục}\mid\text{thuốc})$$ từ dữ liệu bệnh viện với hiệu ứng nhân quả của việc chỉ định thuốc. Chỉ cần một đồ thị đơn giản gồm can thiệp $$T$$, kết cục $$Y$$ và biến nhiễu $$Z$$ cũng đủ thấy vì sao công thức xác suất có điều kiện thuần túy $$P(A\mid B)=P(A\cap B)/P(B)$$ không đủ để đưa ra quyết định chính sách.
 
-## Điều cần mang đi
+## Tóm lược
 
-Khi một bài báo nói “chúng tôi báo ECE,” “chúng tôi hỏi mô hình một xác suất nói ra,” “chúng tôi đưa MultinomialNB vào sản xuất,” hoặc “chúng tôi identify hiệu ứng trong DoWhy,” đó là ngôn ngữ chương này. Các bài biến ngẫu nhiên ở chương sau tinh chỉnh *cách* ta gán số cho biến cố, không thay ý nghĩa của $$P(\,\cdot\mid\,\cdot\,)$$.
+Khi một công trình nghiên cứu báo cáo chỉ số ECE, yêu cầu mô hình ngôn ngữ nêu xác suất bằng lời, triển khai `MultinomialNB` trong hệ thống thực tế hay nhận diện hiệu ứng nhân quả bằng DoWhy, đó đều là những ứng dụng trực tiếp của các khái niệm trong chương này. Các chương tiếp theo về biến ngẫu nhiên sẽ cụ thể hóa *cách* gán giá trị số cho biến cố, nhưng không làm thay đổi ý nghĩa nền tảng của xác suất có điều kiện $$P(\,\cdot\mid\,\cdot\,)$$.
 
 ## Video tham khảo
 
-- [Probability Calibration : Data Science Concepts](https://www.youtube.com/watch?v=AunotauS5yI) — ritvikmath, tiếng Anh. **xem trước.** Hiệu chỉnh xác suất: tần suất trong từng bin phải gần điểm dự đoán — định nghĩa ECE và reliability diagram của bài.
-- [Naive Bayes, Clearly Explained!!!](https://www.youtube.com/watch?v=O2L2Uv9pdDA) — StatQuest with Josh Starmer, tiếng Anh. Naive Bayes nhân các xác suất có điều kiện — giả thiết độc lập mà bài nói vẫn đang chạy trong bộ lọc thư.
-- [Simpson's Paradox](https://www.youtube.com/watch?v=ebEkn-BiW5k) — minutephysics, tiếng Anh. Nghịch lý Simpson: điều kiện hóa một nhóm có thể đảo chiều kết luận — lý do bài tách P(Y|X) khỏi P(Y|do(X)).
+- [Probability Calibration : Data Science Concepts](https://www.youtube.com/watch?v=AunotauS5yI) — ritvikmath, tiếng Anh. **Xem trước.** Giải thích khái niệm hiệu chỉnh xác suất — tần suất thực tế trong từng khoảng phải khớp với xác suất dự đoán — tương ứng định nghĩa ECE và biểu đồ độ tin cậy trong bài.
+- [Naive Bayes, Clearly Explained!!!](https://www.youtube.com/watch?v=O2L2Uv9pdDA) — StatQuest with Josh Starmer, tiếng Anh. Trình bày cách Naive Bayes nhân các xác suất có điều kiện dưới giả thiết độc lập, gắn với mục ứng dụng lọc thư rác.
+- [Simpson's Paradox](https://www.youtube.com/watch?v=ebEkn-BiW5k) — minutephysics, tiếng Anh. Minh họa nghịch lý Simpson khi việc điều kiện hóa theo nhóm làm đảo chiều kết luận, giải thích lý do cần tách biệt $$P(Y\mid X)$$ và $$P(Y\mid \mathrm{do}(X))$$.
 
 ## Nguồn
 

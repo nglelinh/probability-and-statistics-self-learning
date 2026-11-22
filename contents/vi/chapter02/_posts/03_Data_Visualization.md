@@ -6,57 +6,56 @@ order: 3
 owner: "nglelinh"
 ---
 
-## 1. Mục Tiêu Bài Học
+## 1. Mục tiêu bài học
 
-Sau khi hoàn thành bài học này, sinh viên sẽ có thể:
-- Hiểu vai trò của Trực quan hóa dữ liệu trong Exploratory Data Analysis (EDA).
-- Tạo và giải thích các biểu đồ cơ bản: **Histogram** (Phân phối), **Boxplot** (Phát hiện outlier), **Scatter plot** (Tương quan).
-- Nhận biết các biểu đồ gây hiểu lầm (Misleading Graphs).
-- Sử dụng **Matplotlib** và **Seaborn** để vẽ biểu đồ đẹp và đúng chuẩn trong Python.
+Sau khi hoàn thành bài học này, người học có thể:
+- Hiểu vai trò của trực quan hóa dữ liệu trong quá trình khám phá dữ liệu (Exploratory Data Analysis — EDA).
+- Vẽ và diễn giải các biểu đồ cơ bản: **Histogram** (phân phối), **Boxplot** (so sánh và phát hiện giá trị ngoại lai), **Scatter plot** (mối quan hệ giữa hai biến).
+- Nhận diện các dạng biểu đồ gây hiểu lầm (Misleading Graphs).
+- Sử dụng **Matplotlib** và **Seaborn** để tạo biểu đồ rõ ràng và đúng chuẩn trong Python.
 
-## 2. Kiến Thức Tiền Đề
+## 2. Kiến thức tiền đề
 
-- Bài 1 & 2 (Dữ liệu và Các đặc trưng số).
+- Bài 1 và Bài 2 (Các loại dữ liệu và Các đặc trưng số).
 - Thư viện `matplotlib` và `seaborn`.
 
-## 3. Động Lực và Giới Thiệu
+## 3. Động lực và giới thiệu
 
-"Một bức tranh đáng giá ngàn lời nói". Trong dữ liệu, một biểu đồ tốt đáng giá ngàn con số.
-Các chỉ số như Mean hay Variance chỉ cho ta cái nhìn tổng quát, nhưng đôi khi chúng che giấu bản chất thực sự của dữ liệu (ví dụ: **Anscombe's Quartet** - 4 tập dữ liệu có cùng Mean, Variance, Correlation nhưng hình dáng hoàn toàn khác nhau).
-Trực quan hóa giúp ta "nhìn thấy" dữ liệu, phát hiện xu hướng, patterns, và các điểm bất thường mà các con số đơn lẻ không thể hiện được.
+Các chỉ số tóm tắt như trung bình cộng hay phương sai cung cấp cái nhìn khái quát, nhưng đôi khi không thể hiện được cấu trúc thực sự của dữ liệu. Một ví dụ kinh điển là **Bộ tứ Anscombe (Anscombe's Quartet)**: bốn tập dữ liệu có cùng trung bình, phương sai và hệ số tương quan nhưng hình dạng phân bố hoàn toàn khác nhau.
 
-## 4. Các Khái Niệm Cốt Lõi và Biểu Đồ Quan Trọng
+Trực quan hóa giúp ta quan sát trực tiếp hình dạng dữ liệu, phát hiện xu hướng, quy luật (patterns) và các điểm bất thường mà con số tóm tắt đơn lẻ dễ bỏ sót.
 
-### 4.1 Biểu Đồ Phân Phối (Distribution)
+## 4. Các khái niệm cốt lõi và các loại biểu đồ cơ bản
 
-1.  **Histogram (Biểu đồ tần suất)**:
-    -   Chia dữ liệu liên tục thành các khoảng (bins) và đếm số lượng điểm dữ liệu trong mỗi khoảng.
-    -   Giúp hình dung: Dữ liệu có đối xứng không? Có lệch (skewed) không? Đỉnh ở đâu?
-    
-2.  **Kernel Density Estimation (KDE)**:
-    -   Làm trơn histogram để ước lượng hàm mật độ xác suất.
+### 4.1 Biểu đồ phân phối (Distribution)
 
-### 4.2 Biểu Đồ So Sánh và Outlier
+1. **Biểu đồ tần suất (Histogram)**:
+   - Chia miền giá trị của biến liên tục thành các khoảng (bins) và đếm số quan sát rơi vào mỗi khoảng.
+   - Giúp nhận biết hình dạng phân phối: đối xứng hay lệch (skewed), có một đỉnh hay nhiều đỉnh.
 
-1.  **Boxplot (Biểu đồ hộp)**:
-    -   Dựa trên 5 con số tóm tắt: Min, Q1, Median, Q3, Max.
-    -   Rất mạnh để phát hiện **Outliers** (các điểm nằm ngoài hai "râu" của hộp).
-    -   So sánh phân phối giữa các nhóm (ví dụ: Lương theo Giới tính).
+2. **Ước lượng mật độ hạt nhân (Kernel Density Estimation — KDE)**:
+   - Làm trơn histogram để ước lượng đường cong hàm mật độ xác suất liên tục.
 
-### 4.3 Biểu Đồ Mối Quan Hệ (Relationship)
+### 4.2 Biểu đồ so sánh và phát hiện ngoại lai
 
-1.  **Scatter Plot (Biểu đồ tán xạ)**:
-    -   Biểu diễn mối quan hệ giữa 2 biến liên tục (trục X và Y).
-    -   Giúp nhận diện tương quan: Tích cực (cùng tăng), Tiêu cực (ngược chiều), hay Không tương quan.
+1. **Biểu đồ hộp (Boxplot)**:
+   - Tóm tắt phân phối qua các mốc chính: giá trị nhỏ nhất (trong phạm vi râu), $Q_1$, trung vị (Median), $Q_3$ và giá trị lớn nhất (trong phạm vi râu).
+   - Hữu ích để phát hiện **giá trị ngoại lai (outliers)** — các điểm nằm ngoài hai "râu" (whiskers) của hộp — và so sánh nhanh phân phối giữa các nhóm (chẳng hạn thu nhập theo giới tính).
 
-## 5. Ví Dụ Minh Họa
+### 4.3 Biểu đồ mối quan hệ (Relationship)
 
--   **Histogram**: Cho thấy chiều cao người trưởng thành tuân theo phân phối chuẩn (hình chuông).
--   **Scatter Plot**: Vẽ Giá nhà (Y) theo Diện tích (X). Thường thấy xu hướng đi lên (Diện tích tăng -> Giá tăng).
+1. **Biểu đồ tán xạ (Scatter Plot)**:
+   - Biểu diễn đồng thời hai biến liên tục trên trục hoành (X) và trục tung (Y).
+   - Giúp quan sát chiều hướng và mức độ tương quan: tương quan dương (cùng tăng), tương quan âm (ngược chiều) hoặc không có tương quan rõ rệt.
 
-## 6. Triển Khai trên Python
+## 5. Ví dụ minh họa
 
-Chúng ta sẽ sử dụng bộ dữ liệu kinh điển `Iris` hoặc tạo dữ liệu giả lập.
+- **Histogram**: Biểu diễn phân phối chiều cao người trưởng thành thường có dạng hình chuông đối xứng (phân phối chuẩn).
+- **Scatter Plot**: Biểu diễn giá nhà (Y) theo diện tích (X) thường cho thấy xu hướng đồng biến (diện tích tăng thì giá tăng).
+
+## 6. Triển khai trên Python
+
+Dưới đây là ví dụ minh họa ba loại biểu đồ trên tập dữ liệu giả lập gồm điểm hai môn Toán và Văn (tương tự cách thực hành trên bộ dữ liệu kinh điển `Iris`).
 
 ```python
 import matplotlib.pyplot as plt
@@ -100,35 +99,33 @@ plt.title("Mối quan hệ giữa điểm Toán và Văn")
 plt.show()
 ```
 
-## 7. Giải Thích và Các Lỗi Thường Gặp (Misleading Graphs)
+## 7. Các lỗi thường gặp và biểu đồ gây hiểu lầm (Misleading Graphs)
 
-1.  **Trục Y không bắt đầu từ 0**:
-    -   Làm phóng đại sự khác biệt nhỏ. Truyền thông thường dùng chiêu này để tạo scandal.
-    -   *Lời khuyên*: Luôn kiểm tra trục tung (Y-axis).
-    
-2.  **Dùng biểu đồ tròn (Pie Chart) quá nhiều**:
-    -   Mắt người rất tệ trong việc so sánh diện tích/góc.
-    -   *Lời khuyên*: Dùng Bar Chart thay thế Pie Chart trong hầu hết trường hợp.
+1. **Cắt trục tung (trục Y không bắt đầu từ 0)**:
+   - Việc cắt bớt gốc 0 trên biểu đồ cột dễ phóng đại một chênh lệch nhỏ thành sự khác biệt lớn. Cần luôn kiểm tra phạm vi trục tung khi đọc biểu đồ.
 
-3.  **Spurious Correlations (Tương quan giả)**:
-    -   Vẽ biểu đồ thấy hai đường đi cùng nhau không có nghĩa là cái này gây ra cái kia (Correlation $\neq$ Causation). Ví dụ: Doanh số bán kem và Số vụ chết đuối cùng tăng vào mùa hè (biến ẩn là Nhiệt độ).
+2. **Lạm dụng biểu đồ tròn (Pie Chart)**:
+   - Mắt người khó so sánh chính xác góc và diện tích, đặc biệt khi có nhiều nhóm có tỷ lệ gần nhau. Trong hầu hết trường hợp, biểu đồ cột (Bar Chart) truyền tải thông tin rõ ràng hơn.
+
+3. **Tương quan giả (Spurious Correlations)**:
+   - Hai đại lượng biến thiên cùng chiều trên biểu đồ không đồng nghĩa với quan hệ nhân quả (Correlation $\neq$ Causation). Ví dụ: doanh số bán kem và số vụ đuối nước cùng tăng vào mùa hè do cùng chịu tác động của biến ẩn là nhiệt độ.
 
 ## Video tham khảo
 
-- [StatQuest: Histograms, Clearly Explained](https://www.youtube.com/watch?v=qBigTkBLU6g) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Histogram nói gì về hình dạng phân phối — biểu đồ đầu tiên trong ví dụ điểm Toán.
-- [Boxplots are Awesome!!!](https://www.youtube.com/watch?v=fHLhBnmwUM0) — StatQuest with Josh Starmer, tiếng Anh. Boxplot so sánh hai nhóm và chỉ outlier, đúng hình bài vẽ cho điểm Toán và Văn.
-- [How to spot a misleading graph - Lea Gaslowitz](https://www.youtube.com/watch?v=E91bGT9BjYk) — TED-Ed, tiếng Anh. Các cách một trục hoặc một hình cắt làm sai thông điệp — mục biểu đồ gây hiểu lầm của bài.
+- [StatQuest: Histograms, Clearly Explained](https://www.youtube.com/watch?v=qBigTkBLU6g) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Giải thích cách histogram phản ánh hình dạng phân phối, tương ứng biểu đồ đầu tiên trong ví dụ điểm Toán.
+- [Boxplots are Awesome!!!](https://www.youtube.com/watch?v=fHLhBnmwUM0) — StatQuest with Josh Starmer, tiếng Anh. Trình bày cách dùng boxplot để so sánh nhóm và nhận diện giá trị ngoại lai, khớp với ví dụ so sánh điểm Toán và Văn.
+- [How to spot a misleading graph - Lea Gaslowitz](https://www.youtube.com/watch?v=E91bGT9BjYk) — TED-Ed, tiếng Anh. Phân tích các cách cắt trục hoặc chọn tỷ lệ làm sai lệch thông điệp, liên quan trực tiếp đến mục biểu đồ gây hiểu lầm.
 
-## 8. Bài Tập
+## 8. Bài tập
 
-1.  (Python) Tải tập dữ liệu `Tips` từ seaborn (`df = sns.load_dataset('tips')`).
-    -   Vẽ Histogram của cột `total_bill`. Phân phối có lệch không?
-    -   Vẽ Boxplot của `total_bill` phân nhóm theo `day` (Thứ trong tuần). Ngày nào khách chi tiêu nhiều nhất? Có nhiều outliers không?
-    -   Vẽ Scatter plot giữa `total_bill` và `tip`. Có mối quan hệ gì không?
-    -   (Nâng cao) Dùng `hue="smoker"` trong scatter plot để xem người hút thuốc có tip hào phóng hơn không.
+1. (Python) Tải tập dữ liệu `Tips` từ seaborn (`df = sns.load_dataset('tips')`) và thực hiện các yêu cầu sau:
+   - Vẽ Histogram của cột `total_bill` và nhận xét phân phối có bị lệch hay không.
+   - Vẽ Boxplot của `total_bill` phân nhóm theo `day` (thứ trong tuần). Xác định ngày có mức chi tiêu cao nhất và kiểm tra xem có nhiều giá trị ngoại lai không.
+   - Vẽ Scatter plot giữa `total_bill` và `tip` để quan sát mối quan hệ giữa hai biến.
+   - (Nâng cao) Thêm tham số `hue="smoker"` vào scatter plot để so sánh xu hướng tiền tip giữa nhóm có hút thuốc và không hút thuốc.
 
-## 9. Tài Liệu Tham Khảo
+## 9. Tài liệu tham khảo
 
--   [1] Chapter 2, *OpenIntro Statistics*.
--   [2] *Data Visualization: A Practical Introduction* (Kieran Healy).
--   [3] Edward Tufte, *The Visual Display of Quantitative Information* (Sách kinh điển về Data Viz).
+- [1] Chapter 2, *OpenIntro Statistics*.
+- [2] *Data Visualization: A Practical Introduction* (Kieran Healy).
+- [3] Edward Tufte, *The Visual Display of Quantitative Information*.

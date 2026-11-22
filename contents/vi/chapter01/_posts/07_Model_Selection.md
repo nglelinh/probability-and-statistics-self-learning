@@ -10,33 +10,33 @@ categories:
 lesson_type: required
 ---
 
-Làm thế nào để chọn giữa mô hình đơn giản và mô hình phức tạp? Cross-validation cho câu trả lời thực nghiệm, nhưng các tiêu chí thống kê như AIC và BIC cung cấp framework lý thuyết để cân bằng giữa goodness-of-fit và complexity. Bài học này giới thiệu các công cụ quan trọng để model selection một cách có nguyên tắc.
+Làm thế nào để chọn giữa một mô hình đơn giản và một mô hình phức tạp? Trong khi kiểm định chéo (cross-validation) đưa ra câu trả lời bằng thực nghiệm, các tiêu chí thống kê như AIC và BIC cung cấp khung lý thuyết để cân bằng giữa mức độ khớp dữ liệu (goodness-of-fit) và độ phức tạp của mô hình. Bài học này giới thiệu các tiêu chí phổ biến dùng cho việc lựa chọn mô hình một cách có nguyên tắc.
 
 ---
 
-## Vấn Đề Model Selection
+## Bài toán lựa chọn mô hình
 
-**Trade-off cơ bản:**
-- Mô hình phức tạp: fit tốt training data nhưng có thể overfit
-- Mô hình đơn giản: underfitting nhưng generalize tốt hơn
+Khi so sánh các mô hình ứng viên, ta luôn đối mặt với sự đánh đổi cơ bản:
+- **Mô hình phức tạp** khớp sát dữ liệu huấn luyện nhưng dễ bị quá khớp (overfitting).
+- **Mô hình đơn giản** dễ bị thiếu khớp (underfitting) nhưng thường có khả năng tổng quát hóa ổn định hơn.
 
-**Cần:** Một tiêu chí cân bằng giữa fit và complexity.
+Do đó, ta cần một tiêu chí định lượng cân bằng giữa độ khớp dữ liệu và độ phức tạp mô hình.
 
-## Akaike Information Criterion (AIC)
+## Tiêu chí thông tin Akaike (AIC)
 
-AIC ước lượng expected prediction error:
+AIC (Akaike Information Criterion) ước lượng sai số dự đoán kỳ vọng của mô hình theo công thức:
 
 $$\text{AIC} = -2\log L(\hat{\theta}) + 2k$$
 
 trong đó:
-- $$L(\hat{\theta})$$: Maximum likelihood
-- $$k$$: Số parameters
+- $$L(\hat{\theta})$$: giá trị hàm hợp lý cực đại (maximum likelihood).
+- $$k$$: số lượng tham số được ước lượng của mô hình.
 
-**Nguyên tắc:** Chọn model có AIC **nhỏ nhất**.
+**Nguyên tắc:** Chọn mô hình có giá trị AIC **nhỏ nhất**.
 
-**Ý nghĩa:**
-- Term 1: Đo goodness-of-fit (càng nhỏ càng tốt)
-- Term 2: Penalty cho complexity
+**Ý nghĩa hai thành phần:**
+- Thành phần thứ nhất $$-2\log L(\hat{\theta})$$ đo mức độ khớp dữ liệu (giá trị càng nhỏ nghĩa là mô hình khớp dữ liệu huấn luyện càng sát).
+- Thành phần thứ hai $$2k$$ là đại lượng phạt cho độ phức tạp, tăng tuyến tính theo số tham số $$k$$.
 
 ```python
 import numpy as np
@@ -109,40 +109,41 @@ def model_selection_with_aic():
 # model_selection_with_aic()
 ```
 
-## Bayesian Information Criterion (BIC)
+## Tiêu chí thông tin Bayes (BIC)
 
-BIC tương tự AIC nhưng penalty mạnh hơn:
+BIC (Bayesian Information Criterion) có cấu trúc tương tự AIC nhưng áp dụng mức phạt độ phức tạp phụ thuộc vào cỡ mẫu $$n$$:
 
 $$\text{BIC} = -2\log L(\hat{\theta}) + k\log(n)$$
 
-**So sánh AIC vs BIC:**
-- BIC penalty mạnh hơn khi $$n > 7$$ (vì $$\log n > 2$$)
-- BIC xu hướng chọn mô hình đơn giản hơn
-- AIC tốt hơn cho prediction
-- BIC tốt hơn cho model selection (tìm "true model")
+**So sánh AIC và BIC:**
+- Khi $$n > 7$$ (tức $$\log n > 2$$), BIC phạt độ phức tạp mạnh hơn AIC.
+- Do mức phạt lớn hơn, BIC có xu hướng chọn mô hình đơn giản hơn.
+- AIC thường phù hợp hơn khi mục tiêu chính là dự đoán; BIC thường phù hợp hơn khi mục tiêu là xác định đúng mô hình sinh dữ liệu ("true model").
 
-## Adjusted R²
+## Hệ số xác định hiệu chỉnh (Adjusted $$R^2$$)
 
 $$R^2_{\text{adj}} = 1 - \frac{(1-R^2)(n-1)}{n-p-1}$$
 
-**Ưu điểm:** Đơn giản, dễ hiểu
-**Nhược điểm:** Chỉ áp dụng cho linear models
+trong đó $$n$$ là cỡ mẫu và $$p$$ là số biến giải thích của mô hình.
 
-## Mallows' Cp
+- **Ưu điểm:** Công thức đơn giản, dễ tính toán và trực quan.
+- **Nhược điểm:** Chỉ áp dụng trực tiếp cho các mô hình hồi quy tuyến tính.
+
+## Tiêu chí Mallows' $$C_p$$
 
 $$C_p = \frac{\text{RSS}_p}{\hat{\sigma}^2} - n + 2p$$
 
-trong đó $$\hat{\sigma}^2$$ từ full model.
+trong đó $$\text{RSS}_p$$ là tổng bình phương phần dư của mô hình con có $$p$$ tham số và $$\hat{\sigma}^2$$ là ước lượng phương sai nhiễu lấy từ mô hình đầy đủ (full model).
 
-**Nguyên tắc:** Chọn model có $$C_p \approx p$$.
+**Nguyên tắc:** Chọn mô hình có $$C_p$$ nhỏ và xấp xỉ $$p$$ ($$C_p \approx p$$).
 
 ## Video tham khảo
 
-- [Model selection with AIC and AICc](https://www.youtube.com/watch?v=HOqHI53x9Go) — TileStats, tiếng Anh. **xem trước.** AIC phạt độ lệch bằng số tham số và chọn mô hình có tiêu chí nhỏ nhất — đúng công thức và quy tắc trong bài.
-- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, tiếng Anh. Đối chiếu thực nghiệm mà bài nhắc trước khi đưa AIC/BIC: ước lượng lỗi dự đoán bằng cross-validation thay vì một phạt giải tích.
+- [Model selection with AIC and AICc](https://www.youtube.com/watch?v=HOqHI53x9Go) — TileStats, tiếng Anh. **Xem trước.** Giải thích cách AIC cộng thêm thành phần phạt theo số tham số và chọn mô hình có tiêu chí nhỏ nhất, khớp với công thức và quy tắc trong bài.
+- [Machine Learning Fundamentals: Cross Validation](https://www.youtube.com/watch?v=fSytzGwwBVw) — StatQuest with Josh Starmer, tiếng Anh. Trình bày cách tiếp cận thực nghiệm được nhắc ở đầu bài: ước lượng sai số dự đoán bằng cross-validation thay vì tiêu chí phạt giải tích.
 
-## Bài Tập
+## Bài tập
 
-**Bài 1:** Implement BIC từ đầu và so sánh với AIC trên polynomial regression.
+**Bài 1:** Cài đặt hàm tính BIC từ đầu và so sánh kết quả chọn bậc đa thức giữa BIC và AIC trên bài toán hồi quy đa thức.
 
-**Bài 2:** Sử dụng AIC để chọn features trong linear regression (forward/backward selection).
+**Bài 2:** Sử dụng tiêu chí AIC để lựa chọn tập đặc trưng trong hồi quy tuyến tính theo phương pháp chọn tiến (forward selection) hoặc loại lùi (backward selection).

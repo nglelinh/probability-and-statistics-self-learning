@@ -10,25 +10,22 @@ categories:
 lesson_type: required
 ---
 
-Supervised learning là trái tim của machine learning hiện đại, nơi chúng ta học từ dữ liệu có nhãn để dự đoán kết quả cho dữ liệu mới. Trong bài học này, chúng ta sẽ xây dựng khung sườn tư duy về statistical learning, hiểu rõ sự khác biệt giữa regression và classification, và đặc biệt quan trọng - nắm vững khái niệm bias-variance tradeoff, chìa khóa để hiểu tại sao mô hình phức tạp không phải lúc nào cũng tốt hơn.
+Học có giám sát (supervised learning) là nền tảng của nhiều bài toán học máy hiện đại, trong đó mô hình học từ dữ liệu đã gắn nhãn để dự đoán kết quả cho dữ liệu mới. Bài học này trình bày khung tư duy cơ bản của học thống kê (statistical learning), phân biệt hồi quy (regression) với phân loại (classification), và phân tích sự đánh đổi giữa độ chệch và phương sai (bias–variance tradeoff) — yếu tố lý giải vì sao mô hình phức tạp hơn không phải lúc nào cũng dự đoán tốt hơn.
 
 ---
 
-## Supervised Learning Là Gì?
+## Học có giám sát (Supervised Learning) là gì?
 
-Trong supervised learning, chúng ta có một tập dữ liệu huấn luyện gồm các cặp $$(X, Y)$$:
-- $$X = (X_1, X_2, \ldots, X_p)$$: Vector đặc trưng (features/predictors)
-- $$Y$$: Biến mục tiêu (target/response)
+Trong học có giám sát, ta có một tập dữ liệu huấn luyện gồm các cặp quan sát $$(X, Y)$$:
+- $$X = (X_1, X_2, \ldots, X_p)$$: vector đặc trưng (features/predictors).
+- $$Y$$: biến mục tiêu (target/response).
 
-**Mục tiêu:** Học một hàm $$f$$ sao cho $$Y \approx f(X)$$, để có thể dự đoán $$Y$$ cho các giá trị $$X$$ mới chưa từng thấy.
+**Mục tiêu:** Học một hàm $$f$$ sao cho $$Y \approx f(X)$$ để dự đoán $$Y$$ cho các giá trị $$X$$ mới chưa từng quan sát.
 
-### Hai Loại Bài Toán Chính
+### Hai loại bài toán chính
 
-**1. Regression (Hồi quy):** $$Y$$ là biến liên tục
-- Ví dụ: Dự đoán giá nhà, nhiệt độ, doanh số bán hàng
-
-**2. Classification (Phân loại):** $$Y$$ là biến rời rạc (categorical)
-- Ví dụ: Phân loại email spam/không spam, nhận diện chữ số viết tay
+1. **Hồi quy (Regression):** $$Y$$ là biến liên tục. Ví dụ: dự đoán giá nhà, nhiệt độ hoặc doanh số bán hàng.
+2. **Phân loại (Classification):** $$Y$$ là biến rời rạc (biến phân loại/categorical). Ví dụ: phân loại thư rác (spam/không spam) hoặc nhận diện chữ số viết tay.
 
 ```python
 import numpy as np
@@ -67,33 +64,33 @@ def visualize_supervised_learning():
 # visualize_supervised_learning()
 ```
 
-## Loss Function và Training Error
+## Hàm mất mát (Loss Function) và sai số huấn luyện
 
-Để đánh giá mô hình, chúng ta cần định nghĩa **loss function** $$L(Y, f(X))$$ đo lường sai số giữa giá trị thực $$Y$$ và dự đoán $$f(X)$$.
+Để đánh giá chất lượng dự đoán của mô hình, ta định nghĩa **hàm mất mát (loss function)** $$L(Y, f(X))$$ nhằm đo độ sai lệch giữa giá trị thực $$Y$$ và giá trị dự đoán $$f(X)$$.
 
-### Loss Functions Phổ Biến
+### Các hàm mất mát phổ biến
 
-**Regression:**
-- **Squared Error Loss (L2):** $$L(Y, f(X)) = (Y - f(X))^2$$
-- **Absolute Error Loss (L1):** $$L(Y, f(X)) = |Y - f(X)|$$
+**Bài toán hồi quy:**
+- **Sai số bình phương (Squared Error Loss — L2):** $$L(Y, f(X)) = (Y - f(X))^2$$
+- **Sai số tuyệt đối (Absolute Error Loss — L1):** $$L(Y, f(X)) = |Y - f(X)|$$
 
-**Classification:**
-- **0-1 Loss:** $$L(Y, f(X)) = \mathbb{1}_{Y \neq f(X)}$$
-- **Cross-Entropy Loss:** $$L(Y, f(X)) = -\sum_k y_k \log f_k(X)$$
+**Bài toán phân loại:**
+- **Hàm mất mát 0–1 (0-1 Loss):** $$L(Y, f(X)) = \mathbb{1}_{Y \neq f(X)}$$
+- **Hàm mất mát Cross-Entropy:** $$L(Y, f(X)) = -\sum_k y_k \log f_k(X)$$
 
-**Training Error (Empirical Risk):**
+**Sai số huấn luyện (Training Error / Empirical Risk):**
 
 $$\text{Err}_{\text{train}} = \frac{1}{n} \sum_{i=1}^n L(y_i, f(x_i))$$
 
-Đây là sai số trên dữ liệu huấn luyện - dữ liệu mà mô hình đã "nhìn thấy".
+Đây là sai số trung bình trên tập dữ liệu huấn luyện — dữ liệu mà mô hình đã được dùng để ước lượng tham số.
 
-**Test Error (Expected Prediction Error):**
+**Sai số kiểm tra (Test Error / Expected Prediction Error):**
 
 $$\text{Err}_{\text{test}} = E[L(Y, f(X))]$$
 
-Đây là sai số kỳ vọng trên dữ liệu mới - thước đo thực sự về hiệu suất mô hình.
+Đây là sai số kỳ vọng trên dữ liệu mới và là thước đo thực sự cho khả năng tổng quát hóa của mô hình.
 
-**Vấn đề cốt lõi:** Training error luôn giảm khi mô hình phức tạp hơn, nhưng test error có thể tăng (overfitting)!
+**Vấn đề cốt lõi:** Khi mô hình càng phức tạp, sai số huấn luyện luôn có xu hướng giảm, nhưng sai số kiểm tra có thể tăng lên do hiện tượng quá khớp (overfitting).
 
 ```python
 from sklearn.linear_model import LinearRegression
@@ -180,28 +177,19 @@ def demonstrate_overfitting(degree_max=15):
 # demonstrate_overfitting()
 ```
 
-## Bias-Variance Tradeoff
+## Đánh đổi giữa độ chệch và phương sai (Bias–Variance Tradeoff)
 
-Đây là một trong những khái niệm quan trọng nhất trong machine learning. Test error có thể phân tích thành ba thành phần:
+Với sai số bình phương, sai số kiểm tra kỳ vọng có thể được phân tách thành ba thành phần:
 
 $$\text{Expected Test Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}$$
 
-### Giải Thích Các Thành Phần
+### Ý nghĩa của từng thành phần
 
-**1. Bias (Độ chệch):**
-- Sai số do mô hình quá đơn giản, không thể nắm bắt được mối quan hệ thực trong dữ liệu
-- Mô hình có bias cao: **underfitting**
-- Ví dụ: Dùng đường thẳng để fit dữ liệu phi tuyến
+1. **Độ chệch (Bias):** Sai số phát sinh khi mô hình quá đơn giản, không đủ khả năng nắm bắt quy luật thực của dữ liệu. Mô hình có độ chệch cao thường rơi vào tình trạng **thiếu khớp (underfitting)** — ví dụ dùng đường thẳng để khớp dữ liệu có quan hệ phi tuyến.
+2. **Phương sai (Variance):** Sai số phát sinh khi mô hình quá nhạy với nhiễu trong tập huấn luyện, khiến dự đoán biến động mạnh nếu thay đổi tập dữ liệu huấn luyện. Mô hình có phương sai cao thường rơi vào tình trạng **quá khớp (overfitting)** — ví dụ dùng đa thức bậc cao khớp rất sát tập huấn luyện nhưng dự đoán kém trên tập kiểm tra.
+3. **Sai số không thể khử (Irreducible Error):** Phần nhiễu vốn có trong dữ liệu, không thể giảm xuống bằng cách thay đổi mô hình.
 
-**2. Variance (Phương sai):**
-- Sai số do mô hình quá nhạy cảm với nhiễu trong dữ liệu huấn luyện
-- Mô hình có variance cao: **overfitting**
-- Ví dụ: Polynomial bậc cao fit hoàn hảo training data nhưng dự đoán kém trên test data
-
-**3. Irreducible Error:**
-- Nhiễu vốn có trong dữ liệu, không thể giảm bằng mô hình tốt hơn
-
-**Tradeoff:** Khi giảm bias (mô hình phức tạp hơn), variance tăng. Khi giảm variance (mô hình đơn giản hơn), bias tăng.
+**Sự đánh đổi:** Tăng độ phức tạp của mô hình thường làm giảm độ chệch nhưng lại làm tăng phương sai; ngược lại, đơn giản hóa mô hình giúp giảm phương sai nhưng làm tăng độ chệch. Mục tiêu của lựa chọn mô hình là tìm điểm cân bằng để tổng sai số kiểm tra đạt mức thấp nhất.
 
 ```python
 def bias_variance_decomposition(n_simulations=100):
@@ -290,13 +278,13 @@ def bias_variance_decomposition(n_simulations=100):
 # bias_variance_decomposition()
 ```
 
-## Curse of Dimensionality
+## Lời nguyền số chiều (Curse of Dimensionality)
 
-Khi số lượng features $$p$$ tăng lên, không gian dữ liệu trở nên "thưa thớt" (sparse). Điều này gây ra nhiều vấn đề:
+Khi số đặc trưng $$p$$ tăng lên, không gian dữ liệu trở nên ngày càng thưa thớt (sparse), kéo theo ba hệ quả chính:
 
-1. **Cần nhiều dữ liệu hơn:** Để có cùng mật độ dữ liệu trong không gian $$p$$ chiều, cần $$n \propto 2^p$$ mẫu
-2. **Khoảng cách mất ý nghĩa:** Trong không gian cao chiều, hầu hết các điểm đều xa nhau như nhau
-3. **Overfitting dễ xảy ra:** Mô hình có thể fit noise thay vì signal
+1. **Nhu cầu dữ liệu tăng theo hàm mũ:** Để duy trì cùng mật độ điểm trong không gian $$p$$ chiều, số lượng mẫu cần thiết tăng theo tỷ lệ $$n \propto 2^p$$.
+2. **Khoảng cách kém phân biệt:** Trong không gian nhiều chiều, khoảng cách giữa các cặp điểm có xu hướng trở nên xấp xỉ nhau, làm giảm hiệu quả của các phương pháp dựa trên khoảng cách.
+3. **Dễ xảy ra quá khớp:** Khi có quá nhiều đặc trưng so với số mẫu, mô hình dễ khớp vào nhiễu thay vì tín hiệu thực.
 
 ```python
 def demonstrate_curse_of_dimensionality():
@@ -338,17 +326,17 @@ def demonstrate_curse_of_dimensionality():
 
 ## Video tham khảo
 
-- [A Gentle Introduction to Machine Learning](https://www.youtube.com/watch?v=Gv9_4yMHFhI) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Khung học có nhãn: hồi quy khi Y liên tục và phân loại khi Y rời rạc, trước phần bias–variance.
-- [Machine Learning Fundamentals: Bias and Variance](https://www.youtube.com/watch?v=EuBBz3bI-aA) — StatQuest with Josh Starmer, tiếng Anh. Bias và variance trên một đường khớp dữ liệu — lý do mô hình phức tạp hơn không luôn dự đoán tốt hơn.
-- [Statistical Learning: 2.3 Model Selection and Bias Variance Tradeoff](https://www.youtube.com/watch?v=pvcEQfcO3pk) — Stanford Online, tiếng Anh. Cùng đánh đổi đó trong statistical learning, nối sang bài chọn mô hình phía sau.
+- [A Gentle Introduction to Machine Learning](https://www.youtube.com/watch?v=Gv9_4yMHFhI) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Giới thiệu khung học có giám sát — hồi quy khi $$Y$$ liên tục và phân loại khi $$Y$$ rời rạc — trước khi đi vào phần bias–variance.
+- [Machine Learning Fundamentals: Bias and Variance](https://www.youtube.com/watch?v=EuBBz3bI-aA) — StatQuest with Josh Starmer, tiếng Anh. Trực quan hóa độ chệch và phương sai trên đường khớp dữ liệu, giải thích vì sao mô hình phức tạp hơn không phải lúc nào cũng dự đoán tốt hơn.
+- [Statistical Learning: 2.3 Model Selection and Bias Variance Tradeoff](https://www.youtube.com/watch?v=pvcEQfcO3pk) — Stanford Online, tiếng Anh. Trình bày sự đánh đổi bias–variance trong bối cảnh học thống kê, kết nối trực tiếp với bài chọn mô hình ở phần sau.
 
-## Bài Tập Thực Hành
+## Bài tập thực hành
 
-**Bài 1: Phân Tích Overfitting**
-Sử dụng dataset Boston Housing (có sẵn trong sklearn). Thử polynomial regression với các degree khác nhau và vẽ đồ thị training/test error.
+**Bài 1: Phân tích hiện tượng quá khớp (Overfitting)**
+Sử dụng tập dữ liệu Boston Housing (trong scikit-learn). Thử hồi quy đa thức với các bậc khác nhau và vẽ đồ thị so sánh sai số huấn luyện và sai số kiểm tra.
 
-**Bài 2: Bias-Variance Tradeoff**
-Tạo dữ liệu synthetic với hàm thực $$f(x) = x^2$$. Mô phỏng bias-variance decomposition cho linear regression và polynomial regression degree 2.
+**Bài 2: Phân tích đánh đổi Bias–Variance**
+Tạo dữ liệu mô phỏng từ hàm thực $$f(x) = x^2$$. Thực hiện mô phỏng phân rã bias–variance cho mô hình hồi quy tuyến tính và hồi quy đa thức bậc 2.
 
-**Bài 3: High-Dimensional Data**
-Sinh dữ liệu ngẫu nhiên với $$p = 100$$ features nhưng chỉ 5 features thực sự có ích. Huấn luyện mô hình và quan sát hiện tượng overfitting.
+**Bài 3: Dữ liệu nhiều chiều (High-Dimensional Data)**
+Sinh dữ liệu ngẫu nhiên gồm $$p = 100$$ đặc trưng nhưng chỉ có 5 đặc trưng thực sự liên quan đến biến mục tiêu. Huấn luyện mô hình và quan sát hiện tượng quá khớp.

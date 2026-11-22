@@ -11,62 +11,59 @@ order: 7
 lesson_type: required
 ---
 
-Đừng để cái tên đánh lừa: **Logistic Regression** là một thuật toán **Phân loại (Classification)**, không phải Hồi quy (Regression). Nó dùng để dự đoán xác suất thuộc về một lớp nào đó (ví dụ: Có bệnh/Không bệnh).
-
-Tại sao không dùng Linear Regression cho bài toán này?
-Vì Linear Regression trả về giá trị liên tục $(-\infty, +\infty)$, trong khi xác suất $P$ phải nằm trong $[0, 1]$.
+Mặc dù mang tên gọi có từ "Regression", **Hồi quy Logistic (Logistic Regression)** là một thuật toán **phân loại (classification)**, dùng để dự đoán xác suất một quan sát thuộc về một lớp cụ thể (chẳng hạn có bệnh hay không có bệnh). Ta không thể áp dụng trực tiếp hồi quy tuyến tính cho bài toán này vì hồi quy tuyến tính trả về giá trị thực trên toàn bộ khoảng $(-\infty, +\infty)$, trong khi xác suất $P$ phải nằm trong đoạn $[0, 1]$.
 
 ---
 
 ## 1. Hàm Sigmoid và Log-Odds
 
-Để ép đầu ra của mô hình tuyến tính $z = \beta_0 + \beta_1 X$ vào khoảng $(0, 1)$, ta dùng **hàm Sigmoid** (hay Logistic function):
+Để ánh xạ đầu ra của mô hình tuyến tính $z = \beta_0 + \beta_1 X$ vào khoảng $(0, 1)$, ta sử dụng **hàm Sigmoid** (hay hàm Logistic):
 
 $$ \sigma(z) = \frac{1}{1 + e^{-z}} $$
 
-Khi đó, mô hình Logistic Regression dự đoán xác suất $P(Y=1|X)$:
+Khi đó, mô hình hồi quy logistic dự đoán xác suất $P(Y=1|X)$ theo công thức:
 
 $$ P(Y=1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X)}} $$
 
 ### Log-Odds (Logit)
-Nếu biến đổi ngược lại:
-$$ \ln \left( \frac{P}{1-P} \right) = \beta_0 + \beta_1 X $$
-Đại lượng $\frac{P}{1-P}$ gọi là **Odds** (tỷ lệ cược).
-Đại lượng $\ln(\text{Odds})$ gọi là **Log-odds** hay **Logit**.
 
-> **Ý nghĩa hệ số $\beta$:** Nếu $\beta_1 = 0.5$, nghĩa là khi $X$ tăng 1 đơn vị, log-odds của việc $Y=1$ tăng 0.5 đơn vị (hay Odds tăng $e^{0.5}$ lần).
+Biến đổi ngược phương trình trên, ta thu được:
+
+$$ \ln \left( \frac{P}{1-P} \right) = \beta_0 + \beta_1 X $$
+
+Trong đó, tỷ số $\frac{P}{1-P}$ gọi là **Odds** (tỷ lệ chênh), còn $\ln(\text{Odds})$ gọi là **Log-odds** hay **Logit**.
+
+> **Diễn giải hệ số $\beta$:** Nếu $\beta_1 = 0.5$, thì khi $X$ tăng thêm 1 đơn vị, log-odds của biến cố $Y=1$ tăng thêm 0.5 đơn vị (tương đương với Odds tăng $e^{0.5}$ lần).
 
 ---
 
-## 2. Ước Lượng Tham Số: MLE (Maximum Likelihood)
+## 2. Ước Lượng Tham Số Bằng Hợp Lý Cực Đại (MLE)
 
-Không thể dùng OLS (Bình phương tối thiểu) cho Logistic Regression vì hàm lỗi không lồi (non-convex), dễ bị kẹt ở cực trị địa phương.
-Thay vào đó, ta dùng **Maximum Likelihood Estimation (MLE)**.
+Ta không dùng hàm mất mát bình phương tối thiểu (OLS) kết hợp với đầu ra sigmoid vì hàm mục tiêu thu được không lồi (non-convex), dễ gặp khó khăn bởi cực trị địa phương khi tối ưu. Thay vào đó, hồi quy logistic sử dụng phương pháp **ước lượng hợp lý cực đại (Maximum Likelihood Estimation - MLE)**.
 
-Ta muốn tìm $\beta$ sao cho xác suất quan sát được bộ dữ liệu là lớn nhất (Likelihood max).
-Trong thực tế, ta tối thiểu hóa **Negative Log-Likelihood**, hay còn gọi là **Log Loss** (Cross-Entropy Loss):
+Mục tiêu của MLE là tìm $\beta$ để cực đại hóa xác suất quan sát được tập dữ liệu huấn luyện. Trong thực hành, điều này tương đương với việc cực tiểu hóa hàm **Negative Log-Likelihood**, còn gọi là **Log Loss** (hay **Cross-Entropy Loss**):
 
 $$ J(\beta) = - \sum_{i=1}^N \left[ y_i \log(\hat{y}_i) + (1-y_i) \log(1-\hat{y}_i) \right] $$
 
-*   Nếu $y=1$: Loss muốn $\hat{y}$ càng gần 1 càng tốt (để $\log(\hat{y}) \to 0$).
-*   Nếu $y=0$: Loss muốn $\hat{y}$ càng gần 0 càng tốt (để $\log(1-\hat{y}) \to 0$).
+*   Khi $y_i = 1$: Hàm mất mát nhỏ khi $\hat{y}_i$ tiến gần 1 (lúc đó $\log(\hat{y}_i) \to 0$).
+*   Khi $y_i = 0$: Hàm mất mát nhỏ khi $\hat{y}_i$ tiến gần 0 (lúc đó $\log(1-\hat{y}_i) \to 0$).
 
-Hàm này lồi (convex), đảm bảo Gradient Descent sẽ tìm được cực trị toàn cục.
+Hàm mục tiêu này là hàm lồi (convex), đảm bảo các thuật toán tối ưu như Gradient Descent hội tụ về cực trị toàn cục.
 
 ---
 
 ## 3. Đường Ranh Giới Quyết Định (Decision Boundary)
 
-Mặc dù hàm dự đoán là phi tuyến (đường cong Sigmoid), nhưng Logistic Regression là một **bộ phân loại tuyến tính (Linear Classifier)**.
+Dù hàm dự đoán xác suất là đường cong Sigmoid phi tuyến, hồi quy logistic vẫn là một **bộ phân loại tuyến tính (linear classifier)**. Lý do là với ngưỡng phân loại mặc định $P = 0.5$, ranh giới quyết định thỏa mãn:
 
-Tại sao? Vì ranh giới quyết định (nơi $P=0.5$) xảy ra khi:
 $$ \sigma(z) = 0.5 \iff z = 0 $$
 $$ \iff \beta_0 + \beta_1 X_1 + ... + \beta_p X_p = 0 $$
-Đây là phương trình của một siêu phẳng (hyperplane) - một đường thẳng trong 2D hoặc mặt phẳng trong 3D.
+
+Đây là phương trình của một siêu phẳng (hyperplane) — tương ứng với đường thẳng trong không gian 2 chiều hoặc mặt phẳng trong không gian 3 chiều.
 
 ---
 
-## 4. Code Example
+## 4. Ví Dụ Minh Họa Bằng Python
 
 ```python
 import numpy as np
@@ -114,19 +111,18 @@ plt.show()
 
 ## Video tham khảo
 
-- [Odds and Log(Odds), Clearly Explained!!!](https://www.youtube.com/watch?v=ARfXDSkQf1Y) — StatQuest with Josh Starmer, tiếng Anh. **xem trước.** Odds và log-odds, đúng biến đổi bài đặt trước hàm sigmoid.
-- [Logistic Regression (and why it's different from Linear Regression)](https://www.youtube.com/watch?v=3bvM3NyMiE0) — Visually Explained, tiếng Anh. Logistic khác hồi quy tuyến tính ở chỗ đầu ra là xác suất qua sigmoid, không phải một đường không chặn.
-- [What is a Decision Boundary?](https://www.youtube.com/watch?v=KJJFfRXFbuc) — Nicholas Leonhard, tiếng Anh. Đường ranh giới là tập điểm mà logit bằng không — mục decision boundary bài vẽ sau khi khớp hệ số.
+- [Odds and Log(Odds), Clearly Explained!!!](https://www.youtube.com/watch?v=ARfXDSkQf1Y) — StatQuest with Josh Starmer, tiếng Anh. **Xem trước.** Giải thích khái niệm odds và log-odds, bước biến đổi cốt lõi dẫn tới hàm sigmoid.
+- [Logistic Regression (and why it's different from Linear Regression)](https://www.youtube.com/watch?v=3bvM3NyMiE0) — Visually Explained, tiếng Anh. Làm rõ sự khác biệt giữa hồi quy logistic (đầu ra là xác suất qua hàm sigmoid) và hồi quy tuyến tính.
+- [What is a Decision Boundary?](https://www.youtube.com/watch?v=KJJFfRXFbuc) — Nicholas Leonhard, tiếng Anh. Minh họa ranh giới quyết định tương ứng với tập điểm tại đó giá trị logit bằng 0.
 
 ### Bài Tập
-1. Thử dùng Logistic Regression cho dữ liệu không phân tách tuyến tính (ví dụ dạng hình tròn `make_circles`). Quan sát kết quả.
-2. Làm thế nào để Logistic Regression phân loại được biên giới cong? (Gợi ý: Feature Engineering, thêm $x_1^2, x_2^2$).
+
+1. Áp dụng hồi quy logistic cho dữ liệu không phân tách tuyến tính (chẳng hạn dữ liệu dạng vòng tròn đồng tâm từ `make_circles`) và quan sát kết quả.
+2. Làm thế nào để hồi quy logistic tạo ra ranh giới quyết định dạng đường cong? (Gợi ý: tạo thêm các đặc trưng phi tuyến như $x_1^2, x_2^2$).
 
 ---
-**Tổng kết Chương 03:**
-Chúng ta đã nắm vững các mô hình tuyến tính cơ bản:
-- **Linear Regression**: Dự báo số thực.
-- **Regularization**: Kiểm soát overfitting.
-- **Logistic Regression**: Phân loại.
-
-Ở chương sau, chúng ta sẽ học cách đánh giá xem các mô hình này tốt xấu ra sao bằng các phương pháp Resampling.
+**Tổng kết các mô hình tuyến tính cơ bản:**
+Qua các bài học trong chương này, chúng ta đã tìm hiểu ba nhóm mô hình tuyến tính nền tảng:
+- **Hồi quy tuyến tính (Linear Regression):** Dự báo biến mục tiêu liên tục.
+- **Điều chuẩn (Regularization):** Kiểm soát quá khớp và đa cộng tuyến.
+- **Hồi quy Logistic (Logistic Regression):** Phân loại dựa trên xác suất.
