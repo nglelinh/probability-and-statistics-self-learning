@@ -56,6 +56,15 @@ Output nằm trong `_site/` (thư mục này không commit).
 contents/
 ├── en/
 │   ├── chapter00/          # Ghi chú English track (WIP)
+│   └── chapter01/          # Bản tiếng Anh Chương 01
+│       └── _posts/
+│           ├── 01_Introduction_to_Statistical_Problems.md
+│           ├── 02_Math_Reference_Continuity.md
+│           ├── 03_Math_Reference_Derivatives.md
+│           ├── 04_Supervised_Learning.md
+│           ├── 05_ML_Workflow.md
+│           ├── 06_Cross_Validation.md
+│           └── 07_Model_Selection.md
 │   ├── chapter01/          # Lý thuyết EN + bài ứng dụng tùy chọn
 │   └── chapter02/ … chapter08/  # Bài ứng dụng tùy chọn (lý thuyết 02–08 vẫn VI)
 └── vi/
