@@ -16,7 +16,9 @@ Nếu biến ngẫu nhiên mô tả "những gì có thể xảy ra", thì kỳ 
 
 ## Kỳ Vọng (Expected Value)
 
+<div class="textbook-definition" markdown="1">
 **Định nghĩa:** Kỳ vọng (hay giá trị trung bình) của biến ngẫu nhiên $$X$$ là:
+</div>
 
 **Rời rạc:**
 $$E[X] = \sum_x x \cdot P(X = x) = \sum_x x \cdot p_X(x)$$
@@ -316,9 +318,11 @@ def demonstrate_lotus():
 
 ## Phương Sai (Variance)
 
+<div class="textbook-definition" markdown="1">
 **Định nghĩa:** Phương sai đo lường mức độ phân tán của biến ngẫu nhiên xung quanh kỳ vọng:
 
 $$\text{Var}(X) = E[(X - \mu)^2] = E[X^2] - (E[X])^2$$
+</div>
 
 **Độ lệch chuẩn:** $$\sigma = \sqrt{\text{Var}(X)}$$
 

@@ -16,9 +16,11 @@ Point estimate cho ta một con số, nhưng không cho biết độ tin cậy. 
 
 ## Confidence Interval Là Gì?
 
+<div class="textbook-definition" markdown="1">
 **Định nghĩa:** Confidence interval 95% là một khoảng ngẫu nhiên $$[L, U]$$ sao cho:
 
 $$P(L \leq \theta \leq U) = 0.95$$
+</div>
 
 **Ý nghĩa thực sự:**
 Nếu chúng ta lặp lại việc lấy mẫu 100 lần và tính 100 khoảng tin cậy 95%, thì **khoảng 95 khoảng** sẽ chứa tham số thực $$\mu$$.

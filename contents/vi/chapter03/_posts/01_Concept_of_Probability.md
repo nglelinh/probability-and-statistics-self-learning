@@ -305,9 +305,11 @@ def birthday_problem_complement():
 
 ## Xác Suất Có Điều Kiện (Conditional Probability)
 
+<div class="textbook-definition" markdown="1">
 **Định nghĩa:** Xác suất của $$A$$ khi biết $$B$$ đã xảy ra:
 
 $$P(A|B) = \frac{P(A \cap B)}{P(B)}, \quad P(B) > 0$$
+</div>
 
 **Ý nghĩa:** Khi biết $$B$$ xảy ra, không gian mẫu "thu hẹp" lại chỉ còn $$B$$, và ta tính xác suất của $$A$$ trong không gian mới này.
 

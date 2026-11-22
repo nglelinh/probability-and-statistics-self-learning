@@ -16,10 +16,12 @@ Biến ngẫu nhiên là cầu nối giữa thế giới xác suất trừu tư�
 
 ## Biến Ngẫu Nhiên Là Gì?
 
+<div class="textbook-definition" markdown="1">
 **Định nghĩa:**
 Một biến ngẫu nhiên (random variable) $$X$$ là một hàm số ánh xạ từ không gian mẫu $$\Omega$$ sang tập số thực $$\mathbb{R}$$.
 
 $$X: \Omega \to \mathbb{R}$$
+</div>
 
 ![Random Variable Mapping](../img/random_variable_mapping.png)
 *Minh họa biến ngẫu nhiên là một hàm ánh xạ từ các kết quả (outcomes) sang số thực.*
@@ -112,7 +114,9 @@ def illustrate_random_variable():
 
 ## Biến Ngẫu Nhiên Rời Rạc (Discrete Random Variables)
 
+<div class="textbook-definition" markdown="1">
 **Định nghĩa:** Biến ngẫu nhiên $$X$$ là rời rạc nếu nó chỉ nhận hữu hạn hoặc đếm được các giá trị.
+</div>
 
 ### Probability Mass Function (PMF)
 
@@ -182,7 +186,9 @@ def visualize_pmf():
 
 ## Biến Ngẫu Nhiên Liên Tục (Continuous Random Variables)
 
+<div class="textbook-definition" markdown="1">
 **Định nghĩa:** Biến ngẫu nhiên $$X$$ là liên tục nếu nó có thể nhận bất kỳ giá trị nào trong một khoảng.
+</div>
 
 **Lưu ý quan trọng:** Với biến liên tục, $$P(X = x) = 0$$ với mọi $$x$$! Chúng ta chỉ có thể nói về xác suất trong một khoảng.
 
