@@ -10,11 +10,20 @@ categories:
 lesson_type: optional
 ---
 
-Bài đọc tùy chọn này không thay thế lý thuyết ước lượng điểm và ước lượng khoảng trong chương, mà minh họa cách các bộ ước lượng cổ điển vận hành bên trong các hệ thống khoa học máy tính và khoa học dữ liệu hiện đại: ước lượng hợp lý cực đại (MLE) trong mạng học sâu, phương pháp moment cho mô hình hỗn hợp, Empirical Bayes trong hệ thống xếp hạng thực tế, và các phương pháp ước lượng khoảng khi không tồn tại công thức sai số chuẩn dạng đóng.
+Hãy thử đặt mình vào vị trí kỹ sư hệ thống gợi ý tại một sàn thương mại điện tử. Hôm nay có hai sản phẩm cạnh tranh vị trí hiển thị đầu tiên: **Sản phẩm A** vừa mới đăng bán 5 phút trước, có đúng **1 lượt xem và 1 lượt mua** (tỷ lệ chuyển đổi thô $$1/1 = 100\%$$); **Sản phẩm B** đã bán nhiều tháng với **1.000 lượt xem và 120 lượt mua** (tỷ lệ $$12\%$$). Nếu bạn tin tưởng tuyệt đối vào bộ ước lượng hợp lý cực đại (MLE) thô $$\hat{p} = k/n$$, Sản phẩm A sẽ lập tức hất cẳng Sản phẩm B khỏi vị trí top 1 chỉ vì một cú click may mắn!
 
-Sau bài học này, bạn có thể nhận diện huấn luyện bằng hàm mất mát cross-entropy chính là MLE, giải thích vì sao phương pháp khớp moment vẫn hữu ích cho mô hình hỗn hợp Gauss, cài đặt bộ ước lượng co (shrinkage estimator) Beta–Binomial theo Empirical Bayes như trong hệ thống tìm kiếm thương mại điện tử, và phân biệt khoảng tin cậy Bootstrap với tập dự đoán conformal.
+Bài đọc tùy chọn này cho thấy những khái niệm tưởng chừng chỉ nằm trong giáo trình xác suất cổ điển — MLE, Phương pháp Moment, độ đánh đổi chệch–phương sai và Bootstrap — đang trực tiếp vận hành bên trong mọi hệ thống AI hiện đại: từ hàm mất mát cross-entropy của mô hình ngôn ngữ lớn (LLM), thuật toán xếp hạng **Empirical Bayes** chống nhiễu khởi động lạnh, cho đến **dự đoán bảo giác (Conformal Prediction)** đảm bảo độ phủ toán học cho mạng nơ-ron hộp đen.
 
-Kiến thức tiên quyết gồm các bài bắt buộc về ước lượng điểm (độ chệch, phương sai, MLE, phương pháp moment) và ước lượng khoảng (khoảng tin cậy, Bootstrap), cùng kỹ năng Python/NumPy cơ bản. Bài học không đưa thêm tiên đề xác suất mới.
+---
+
+## Bản đồ kiến thức nền: Bốn cây cầu nối ước lượng cổ điển với Học máy hiện đại
+
+Khi bước từ giáo trình thống kê sang kỹ thuật học máy (ML/AI), bốn khái niệm cốt lõi đổi tên nhưng giữ nguyên bản chất toán học:
+
+1. **Cross-Entropy & Dự đoán token tiếp theo = MLE ở quy mô tỷ tham số:** Huấn luyện bộ phân loại softmax hay mô hình ngôn ngữ tự hồi quy bằng cực tiểu hóa cross-entropy hoàn toàn tương đương với cực đại hóa hàm log-likelihood $$\sum \log p(x_i \mid \theta)$$. Tối ưu bằng SGD/Adam chỉ là phiên bản tính số của phương trình đạo hàm hợp lý bằng 0.
+2. **Khớp Moment (Method of Moments) & Phân rã Tensor:** Khi hàm hợp lý của mô hình biến ẩn (như hỗn hợp Gauss — GMM) có vô số cực trị địa phương khiến EM dễ mắc kẹt, việc khớp moment bậc 1, 2, 3 giúp phục hồi tham số nhất quán mà không bị bẫy cực trị cục bộ.
+3. **Empirical Bayes & Co ước lượng (Shrinkage):** Thay vì để mỗi sản phẩm (hoặc quảng cáo) tự ước lượng tỷ lệ riêng đầy phương sai, Empirical Bayes ước lượng một phân phối tiên nghiệm chung từ *toàn bộ hàng triệu sản phẩm khác*, rồi kéo các mẫu nhỏ về gần mức trung bình toàn cục — chấp nhận một chút độ chệch để triệt tiêu phương sai cực đoan.
+4. **Bootstrap vs. Conformal Prediction:** Bootstrap định lượng bất định cho *tham số mô hình* $$\hat{\theta}$$ hoặc sai số tổng quát hóa; còn **Conformal Prediction** xây dựng *tập dự đoán* cho quan sát mới $$Y_{n+1}$$ với bảo chứng độ phủ hữu hạn mẫu $$\ge 1-\alpha$$ chỉ cần giả định dữ liệu trao đổi được (exchangeable), bất kể mô hình bên trong phức tạp đến đâu.
 
 ---
 
@@ -174,6 +183,35 @@ Hãy chọn bộ ước lượng phù hợp với *cấu trúc* bài toán thay 
 MLE trong mạng học sâu rất hiệu quả về mặt tối ưu tính toán nhưng lại mong manh về mặt suy diễn thống kê: việc tính sai số chuẩn, nguy cơ sai đặc tả mô hình và độ lệch giữa huấn luyện và triển khai (train–serve skew) đều làm phá vỡ các kết quả tiệm cận cổ điển. Bộ ước lượng theo phương pháp moment dù nhất quán nhưng có thể có phương sai lớn trên mẫu hữu hạn; kỹ thuật tensor ẩn giúp giảm chi phí tính toán chứ không làm giảm nhiễu thống kê. Empirical Bayes dựa trên giả định các mục có thể hoán vị với nhau, nên một biến động đột ngột trong danh mục sản phẩm có thể làm ước lượng $$(\alpha,\beta)$$ bị lệch. Trong khi đó, bảo đảm độ phủ của conformal prediction là độ phủ biên (marginal coverage), không phải độ phủ có điều kiện trên từng nhóm người dùng hiếm gặp.
 
 Các hướng nghiên cứu mở tiếp nối chương này bao gồm ước lượng không cần hàm hợp lý tường minh (suy diễn dựa trên mô phỏng, score matching), Empirical Bayes phân cấp cho nhiều thị trường xếp hạng liên quan, và conformal prediction dưới điều kiện dịch chuyển phân phối.
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Empirical Bayes cứu hệ thống xếp hạng khỏi bẫy "1/1 = 100%"
+
+Quay lại bài toán xếp hạng hai sản phẩm A và B ở đầu bài. Giả sử tỷ lệ mua trung bình trên toàn sàn là $$5\%$$, và từ dữ liệu lịch sử của hàng nghìn mặt hàng, hệ thống khớp được phân phối tiên nghiệm $$\mathrm{Beta}(\alpha = 5,\; \beta = 95)$$ (có thể hình dung như "100 lượt xem ảo với 5 lượt mua ảo"). Với mỗi sản phẩm có $$k$$ lượt mua trên $$n$$ lượt xem, ước lượng hậu nghiệm (Empirical Bayes) có công thức đóng cực gọn:
+
+$$\hat{p}_{\text{EB}} = \frac{k + \alpha}{n + \alpha + \beta} = \frac{k + 5}{n + 100}.$$
+
+Hãy tự tính tay và so sánh MLE thô với Empirical Bayes:
+
+| Sản phẩm | Dữ liệu $$(k / n)$$ | Ước lượng MLE thô $$k/n$$ | Ước lượng Empirical Bayes $$\frac{k+5}{n+100}$$ | Tác động thực tế |
+| :--- | :--- | :--- | :--- | :--- |
+| **Sản phẩm A** (mới đăng) | $$1 / 1$$ | $$100{,}0\%$$ | $$\frac{6}{101} \approx 5{,}94\%$$ | Co mạnh về mức nền $$5\%$$, chặn nhiễu |
+| **Sản phẩm B** (lâu năm) | $$120 / 1000$$ | $$12{,}0\%$$ | $$\frac{125}{1100} \approx 11{,}36\%$$ | Dữ liệu áp đảo tiên nghiệm, giữ vững top |
+| **Sản phẩm C** (trung bình) | $$8 / 100$$ | $$8{,}0\%$$ | $$\frac{13}{200} = 6{,}50\%$$ | Dung hòa 50–50 giữa dữ liệu riêng và nền |
+
+Nhìn bảng trên, bạn thấy ngay vẻ đẹp của **trọng số thích nghi**: viết lại $$\hat{p}_{\text{EB}} = \frac{n}{n+100}\cdot\frac{k}{n} + \frac{100}{n+100}\cdot 0{,}05$$. Khi $$n=1$$, hệ thống tin 99% vào mức nền toàn sàn; khi $$n=1000$$, hệ thống tin 91% vào chính dữ liệu của sản phẩm đó!
+
+### Khung giải thích: Chọn công cụ ước lượng nào khi triển khai hệ thống thực? (nên đọc chậm)
+
+1. **Hỏi trước về cỡ mẫu trên từng thực thể:** Nếu toàn bộ dữ liệu lớn nhưng *mỗi nhóm nhỏ* (mỗi người dùng, mỗi mặt hàng, mỗi khu vực) lại rất thưa dữ liệu, MLE thuần sẽ có phương sai khổng lồ — hãy dùng shrinkage (Empirical Bayes hoặc chính quy hóa).
+2. **Tách tối ưu hàm mất mát khỏi bài toán hiệu chuẩn (calibration):** Một mạng nơ-ron tối thiểu hóa cross-entropy (MLE) nhưng quá nhiều tham số vẫn có thể bị *quá tự tin* (overconfident) trên tập kiểm tra; cần thêm bước hiệu chuẩn nhiệt độ (temperature scaling) hoặc dự đoán bảo giác.
+3. **Phân biệt bất định tham số và bất định dự đoán:** Khi sếp hỏi *"tỷ lệ chuyển đổi trung bình của tính năng mới nằm trong khoảng nào?"*, dùng khoảng tin cậy / Bootstrap. Khi bác sĩ hỏi *"tập chẩn đoán nào chắc chắn chứa bệnh thật của bệnh nhân này với xác suất 90%?"*, dùng Conformal Prediction.
+4. **Luôn giữ mô hình thống kê đơn giản làm đường cơ sở:** Công thức $$\frac{k+\alpha}{n+\alpha+\beta}$$ chạy trong nano-giây, không cần GPU, dễ giải thích và thường thắng áp đảo các mô hình phức tạp khi dữ liệu thưa.
+
+**Kiểm tra nhanh.** Trong ví dụ Beta(5, 95) ở trên, nếu một sản phẩm mới tinh chưa có lượt xem nào ($$k=0, n=0$$), ước lượng Empirical Bayes gán cho nó tỷ lệ chuyển đổi ban đầu bằng bao nhiêu?
+
+---
 
 ## Video Tham Khảo
 

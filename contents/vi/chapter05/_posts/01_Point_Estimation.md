@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Ước lượng điểm là cầu nối giữa lý thuyết xác suất và thống kê ứng dụng. Từ một mẫu dữ liệu thu thập được, làm thế nào để ước lượng các tham số chưa biết của tổng thể? Bài học này giới thiệu hai phương pháp ước lượng quan trọng nhất — Ước lượng Hợp lý Cực đại (Maximum Likelihood Estimation — MLE) và Phương pháp Moment (Method of Moments) — cùng các tiêu chí đánh giá chất lượng của một bộ ước lượng.
+Trong Thế chiến II, tình báo quân Đồng minh đối mặt với một câu hỏi sống còn: nhà máy Đức đang sản xuất tổng cộng bao nhiêu chiếc xe tăng mỗi tháng? Những nguồn tin gián điệp truyền thống ước tính con số khoảng 1.400 chiếc/tháng, nhưng một nhóm nhà thống kê lại chọn cách nhìn vào những chi tiết nhỏ bé hơn nhiều: **số sê-ri nối tiếp nhau** (1, 2, ..., $$N$$) khắc trên hộp số của những chiếc xe tăng bị thu giữ. Giả sử bạn chỉ bắt được 4 chiếc mang số sê-ri `19, 40, 42, 60`. Rõ ràng tổng số xe $$N$$ ít nhất phải là 60 — nhưng ước lượng $$\hat{N} = 60$$ (chính là MLE thô!) chắc chắn luôn đánh giá *thấp hơn* sự thật vì rất hiếm khi bạn bắt trúng chiếc xe cuối cùng vừa xuất xưởng. Chỉ cần cộng thêm khoảng trống trung bình ở đầu kia ($$\hat{N} = \max X_i + \frac{\max X_i}{n} - 1 \approx 74$$), các nhà thống kê đã ước lượng sản lượng thực là 246 chiếc/tháng — và hồ sơ Đức thu được sau chiến tranh ghi nhận con số thật là **245**!
+
+Câu chuyện *German Tank Problem* đó là trái tim của **ước lượng điểm (point estimation)**: từ một mẫu dữ liệu hữu hạn đầy nhiễu, làm sao thiết kế một công thức (bộ ước lượng) vừa chính xác, vừa ổn định để đoán tham số ẩn của cả tổng thể? Bài học này dẫn bạn qua hai trụ cột chế tạo bộ ước lượng — **Ước lượng Hợp lý Cực đại (MLE)** và **Phương pháp Moment (MoM)** — cùng ba thước đo chất lượng kinh điển: độ chệch, phương sai và tính nhất quán.
+
+---
+
+## Bản đồ kiến thức nền: Lý thuyết ước lượng điểm nghiên cứu điều gì?
+
+Nếu xác suất đi theo chiều thuận — *biết tham số $$\theta$$ của mô hình, tính xác suất sinh ra dữ liệu $$X$$* — thì **thống kê suy diễn (statistical inference)** lật ngược mũi tên: *quan sát dữ liệu $$X$$, truy ngược lại tham số $$\theta$$*. Bốn trụ cột định hình toàn bộ ngành này:
+
+1. **Phân phối lấy mẫu của bộ ước lượng:** Trước khi thu thập dữ liệu, công thức $$\hat{\theta} = g(X_1,\ldots,X_n)$$ là một **biến ngẫu nhiên**. Nếu lặp lại thí nghiệm hàng nghìn lần, $$\hat{\theta}$$ sẽ tạo thành một phân phối xung quanh giá trị thật $$\theta$$ — toàn bộ chất lượng của bộ ước lượng được đo qua hình dáng phân phối này.
+2. **Đánh đổi Độ chệch – Phương sai (Bias–Variance Trade-off):** Sai số toàn phương trung bình phân tách chính xác thành $$\mathrm{MSE}(\hat{\theta}) = \mathrm{Bias}(\hat{\theta})^2 + \mathrm{Var}(\hat{\theta})$$. Một bộ ước lượng không chệch nhưng phương sai quá lớn đôi khi còn tệ hơn một bộ ước lượng hơi chệch nhưng cực kỳ ổn định (nền tảng của chính quy hóa Ridge/Lasso và Empirical Bayes).
+3. **Ước lượng Hợp lý Cực đại (MLE):** Chọn $$\theta$$ làm cho xác suất (hoặc mật độ) quan sát thấy chính mẫu dữ liệu đang có đạt giá trị lớn nhất. Nhờ tính nhất quán và tiệm cận chuẩn hiệu quả (đạt cận dưới Cramér–Rao khi $$n$$ lớn), MLE trở thành xương sống của cả thống kê cổ điển lẫn hàm mất mát cross-entropy trong học sâu.
+4. **Phương pháp Moment (MoM):** Khớp các moment lý thuyết ($$\mathbb{E}[X], \mathbb{E}[X^2],\ldots$$) với moment mẫu. Thường dễ tính dạng đóng hơn MLE và làm điểm khởi tạo tuyệt vời cho các thuật toán tối ưu lặp.
 
 ---
 
@@ -430,6 +443,43 @@ def method_of_moments_example():
 
 # method_of_moments_example()
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Tính MLE cho phân phối mũ và soi độ chệch của phương sai mẫu
+
+Giả sử bạn đo thời gian chờ (tính bằng phút) giữa 5 cuộc gọi liên tiếp đến tổng đài và thu được mẫu số liệu nhỏ:
+
+$$x = (2,\; 5,\; 3,\; 6,\; 4).$$
+
+**Phần A — Tìm tốc độ cuộc gọi $$\lambda$$ bằng MLE (giả sử $$X_i \stackrel{\text{i.i.d.}}{\sim} \mathrm{Exp}(\lambda)$$):**
+1. Hàm mật độ của một quan sát là $$f(x_i \mid \lambda) = \lambda e^{-\lambda x_i}$$. Hàm hợp lý của cả 5 quan sát:
+   $$L(\lambda) = \prod_{i=1}^5 \lambda e^{-\lambda x_i} = \lambda^5 e^{-\lambda(2+5+3+6+4)} = \lambda^5 e^{-20\lambda}.$$
+2. Lấy logarit tự nhiên để biến tích thành tổng (hàm log-likelihood):
+   $$\ell(\lambda) = 5\ln\lambda - 20\lambda.$$
+3. Đặt đạo hàm bằng 0:
+   $$\ell'(\lambda) = \frac{5}{\lambda} - 20 = 0 \implies \hat{\lambda}_{\text{MLE}} = \frac{5}{20} = 0{,}25\text{ cuộc gọi/phút}.$$
+   Kiểm tra đạo hàm cấp hai: $$\ell''(\lambda) = -5/\lambda^2 < 0$$, xác nhận đây là cực đại toàn cục!
+
+**Phần B — Soi trực tiếp vì sao phương sai MLE bị chệch xuống trên cùng mẫu $$x = (2, 5, 3, 6, 4)$$:**
+- Trung bình mẫu: $$\bar{x} = \frac{2+5+3+6+4}{5} = 4$$.
+- Tổng bình phương độ lệch quanh $$\bar{x}$$:
+  $$\sum_{i=1}^5 (x_i - \bar{x})^2 = (-2)^2 + 1^2 + (-1)^2 + 2^2 + 0^2 = 4 + 1 + 1 + 4 + 0 = 10.$$
+- Nếu chia cho $$n = 5$$ (công thức MLE cho phân phối chuẩn): $$\hat{\sigma}^2_{\text{MLE}} = \frac{10}{5} = 2{,}0$$.
+- Nếu chia cho $$n - 1 = 4$$ (hiệu chỉnh Bessel): $$s^2 = \frac{10}{4} = 2{,}5$$.
+
+Tại sao chia cho 5 lại chệch xuống? Vì $$\bar{x}$$ được chọn để **cực tiểu hóa** tổng bình phương độ lệch của chính 5 điểm đó, nên $$\sum(x_i - \bar{x})^2$$ luôn nhỏ hơn $$\sum(x_i - \mu)^2$$ một lượng trung bình đúng bằng $$\sigma^2$$ (mất 1 bậc tự do). Do đó $$\mathbb{E}[\hat{\sigma}^2_{\text{MLE}}] = \frac{4}{5}\sigma^2$$ — thiếu hụt 20% khi $$n=5$$!
+
+### Khung giải thích: Mạch suy luận khi thiết kế một bộ ước lượng (nên đọc chậm)
+
+1. **Phân biệt rạch ròi bộ ước lượng (biến ngẫu nhiên) và giá trị ước lượng (con số cụ thể):** Khi nói "$$\bar{X}$$ không chệch", ta đang nói về trung bình của vô số lần lấy mẫu lặp lại, không phải nói con số $$4$$ trong lần đo duy nhất này bằng đúng $$\mu$$.
+2. **Dùng log-likelihood để chuyển bài toán xác suất thành giải tích:** Lấy log giữ nguyên vị trí cực đại nhưng đổi tích $$n$$ nhân tử thành tổng $$n$$ số hạng, tránh tràn số dấu phẩy động và giúp đạo hàm cực kỳ gọn gàng.
+3. **Đừng tôn sùng tính không chệch một cách mù quáng:** Cả $$\hat{\sigma}^2_{\text{MLE}}$$ và $$s^2$$ đều nhất quán (tiến về $$\sigma^2$$ khi $$n\to\infty$$). Với mẫu nhỏ, $$s^2$$ khử được độ chệch, nhưng trong nhiều bài toán nhiều chiều, chấp nhận một chút độ chệch để kéo mạnh phương sai xuống mới cho MSE nhỏ nhất.
+4. **Kiểm tra độ nhạy với giả định mô hình:** Công thức $$\hat{\lambda}_{\text{MLE}} = 1/\bar{x}$$ tối ưu nếu dữ liệu thật sự tuân theo phân phối mũ; nếu dữ liệu có ngoại lệ cực lớn, trung bình mẫu bị kéo lệch và cần chuyển sang các bộ ước lượng bền vững (robust).
+
+**Kiểm tra nhanh.** Trên mẫu $$x = (2, 5, 3, 6, 4)$$, nếu bạn áp dụng Phương pháp Moment cho phân phối mũ (đặt kỳ vọng lý thuyết $$\mathbb{E}[X] = 1/\lambda$$ bằng trung bình mẫu $$\bar{x} = 4$$), bạn thu được $$\hat{\lambda}_{\text{MoM}}$$ bằng bao nhiêu — có trùng với $$\hat{\lambda}_{\text{MLE}} = 0{,}25$$ không?
+
+---
 
 ## Video Tham Khảo
 

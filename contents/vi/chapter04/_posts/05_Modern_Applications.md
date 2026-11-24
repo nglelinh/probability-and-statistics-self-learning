@@ -10,7 +10,21 @@ categories:
 lesson_type: optional
 ---
 
-Các họ phân phối cơ bản trong chương này — Bernoulli, Poisson, nhị thức âm, Gauss và phân phối lấy mẫu — vẫn là nền tảng của nhiều bài toán thực tế như dự báo nhu cầu, phân tích nhật ký máy chủ và mô hình sinh rời rạc. Bài đọc tùy chọn này không chứng minh lại công thức PMF, mà chỉ ra ba hướng ứng dụng thực tiễn của các họ phân phối này (ở dạng nguyên bản hoặc mở rộng nhẹ) trong giai đoạn 2020–2024.
+Một kỹ sư dữ liệu tại sàn thương mại điện tử xây dựng hệ thống dự báo số đơn hàng bán ra mỗi ngày cho 10.000 mã sản phẩm. Anh chọn mô hình Poisson quen thuộc với trung bình $$\lambda = 10$$ đơn/ngày. Kết quả? Kho hàng liên tục rơi vào hai thái cực: tuần thì tồn kho chất đống, tuần lại cháy hàng giữa chừng. Thủ phạm không phải mạng nơ-ron hay thuật toán tối ưu, mà là một giả định âm thầm của phân phối Poisson: kỳ vọng và phương sai buộc phải bằng nhau ($$\mathrm{Var}(N) = \mathbb{E}[N] = \lambda$$), trong khi nhu cầu thực tế luôn có hiện tượng **phân tán quá mức (overdispersion)** — những ngày bình thường bán 2 đơn, ngày khuyến mãi vọt lên 25 đơn.
+
+Bài đọc tùy chọn này nối thẳng các họ phân phối kinh điển của Chương 04 — Bernoulli, Poisson, nhị thức âm (Negative Binomial), Gauss — với ba bài toán kỹ thuật sống động giai đoạn 2020–2024: dự báo chuỗi thời gian xác suất (DeepAR), mô hình hóa sự kiện đến trong hệ thống phân tán, và mô hình sinh rời rạc. Công thức PMF trên bảng phấn không hề cũ đi; nó đang nằm ngay ở lớp đầu ra (output head) của các hệ thống học máy sản xuất.
+
+---
+
+## Bản đồ kiến thức nền: Các họ phân phối xác suất đóng vai trò gì trong hệ thống hiện đại?
+
+Với người đã tốt nghiệp đại học, giá trị lớn nhất của việc học các họ phân phối không nằm ở việc thuộc lòng bảng công thức, mà ở việc hiểu **ba trụ cột mô hình hóa** sau:
+
+1. **Họ phân phối đếm & Hiện tượng phân tán quá mức (Overdispersion):** Poisson là điểm khởi đầu lý tưởng cho các sự kiện độc lập xảy ra với tốc độ không đổi. Khi tốc độ thay đổi ngẫu nhiên theo ngữ cảnh (nhu cầu mua sắm, lưu lượng máy chủ), trộn Poisson với phân phối Gamma sinh ra **phân phối nhị thức âm (Negative Binomial)** — giữ nguyên kỳ vọng nhưng mở rộng phương sai theo tham số phân tán $$\alpha$$.
+2. **Mô hình tuyến tính tổng quát (GLM) & Dự báo xác suất (Probabilistic Forecasting):** Thay vì dự báo một con số duy nhất (như hồi quy bình phương tối thiểu), các hệ thống hiện đại (từ `PoissonRegressor` đến *DeepAR*) dùng mô hình học máy để dự báo **tham số của cả một phân phối xác suất**, từ đó tính trực tiếp phân vị tồn kho hay rủi ro đuôi.
+3. **Quá trình điểm (Point Processes) & Mô hình sinh rời rạc (Discrete Generative Models):** Quá trình Poisson không đồng nhất và quá trình Hawkes mô tả các dòng sự kiện có tính "tự kích thích" (lệnh giao dịch, lan truyền tin tức); trong khi đó, các mô hình ngôn ngữ và sinh ảnh rời rạc thực chất đang học phân phối xác suất có điều kiện (PMF) trên tập từ vựng hữu hạn.
+
+---
 
 ## Mô Hình Đếm: Khi Kỳ Vọng Chưa Đủ
 
@@ -49,6 +63,36 @@ Ngoài ra, kiến thức về phân phối lấy mẫu trong bài trước cũng
 ## Điểm Cốt Lõi Cần Ghi Nhớ
 
 Khi một bài báo nghiên cứu đề cập đến "hàm hợp lý nhị thức âm", "cường độ Hawkes nơ-ron" hay "score entropy trên token", chúng đều sử dụng trực tiếp ngôn ngữ xác suất của chương này. Các bước ước lượng tham số và kiểm định giả thuyết ở các chương sau cũng sẽ vận hành trên chính những họ phân phối này.
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Vì sao Poisson đánh giá quá thấp rủi ro "ngày 0 đơn"?
+
+Xét một mặt hàng có số đơn trung bình mỗi ngày là $$\mu = 10$$. Ta so sánh hai giả định phân phối cho số đơn hàng $$N$$ trong ngày:
+
+- **Mô hình 1 — Poisson($$\lambda = 10$$):**
+  - Kỳ vọng $$\mathbb{E}[N] = 10$$, phương sai $$\mathrm{Var}(N) = 10$$, độ lệch chuẩn $$\sigma = \sqrt{10} \approx 3{,}16$$ đơn.
+  - Xác suất xảy ra một ngày không bán được đơn nào ($$N = 0$$):
+    $$P_{\text{Pois}}(N = 0) = e^{-10} \approx 0{,}0000454 \approx 0{,}0045\%.$$
+- **Mô hình 2 — Negative Binomial** với cùng kỳ vọng $$\mu = 10$$ nhưng hệ số phân tán $$\alpha = 0{,}5$$ (tức tham số hình dạng $$r = 1/\alpha = 2$$ và $$p = \frac{r}{r+\mu} = \frac{2}{12} = \frac{1}{6}$$):
+  - Kỳ vọng vẫn là $$\mathbb{E}[N] = 10$$, nhưng phương sai tăng vọt lên
+    $$\mathrm{Var}(N) = \mu + \alpha \mu^2 = 10 + 0{,}5 \times 10^2 = 60 \implies \sigma = \sqrt{60} \approx 7{,}75\text{ đơn}$$
+    (độ lệch chuẩn rộng gấp gần **2,5 lần** Poisson!).
+  - Xác suất xảy ra ngày 0 đơn:
+    $$P_{\text{NB}}(N = 0) = p^r = \left(\frac{1}{6}\right)^2 = \frac{1}{36} \approx 2{,}78\%!$$
+
+Cùng một giá trị trung bình 10 đơn/ngày, nhưng mô hình nhị thức âm dự báo xác suất bán 0 đơn cao gấp hơn **600 lần** Poisson (và tương tự, xác suất ngày bùng nổ trên 25 đơn cũng cao hơn hẳn).
+
+### Khung giải thích: Từ công thức PMF đến hệ thống sản xuất (nên đọc chậm)
+
+1. **Nhận diện bản chất biến mục tiêu:** Dữ liệu đếm luôn không âm và rời rạc; áp hồi quy Gauss trực tiếp có thể dự báo ra số đơn âm và bỏ qua phương sai phụ thuộc vào mức độ lớn của kỳ vọng.
+2. **Kiểm tra tỷ số phương sai / kỳ vọng:** Nếu phương sai thực nghiệm vượt xa trung bình ($$\mathrm{Var} \gg \mathbb{E}$$), Poisson sẽ bóp nghẹt đuôi phân phối — cần nâng cấp lên Negative Binomial hoặc Tweedie.
+3. **Tách kiến trúc mạng khỏi lớp xác suất:** Trong DeepAR hay GLM, mạng nơ-ron chỉ làm nhiệm vụ nén lịch sử thành các tham số $$(\mu_t, \alpha_t)$$; mọi phép tính rủi ro, khoảng dự báo và tối ưu tồn kho đều dựa trên chính PMF đã học ở Chương 04.
+4. **Đánh giá bằng toàn bộ phân phối thay vì chỉ sai số điểm:** Hai mô hình có cùng sai số trung bình tuyệt đối (MAE) vẫn có thể chênh nhau hàng trăm lần ở xác suất đuôi — nơi quyết định chi phí cháy hàng thực tế.
+
+**Kiểm tra nhanh.** Nếu hệ số phân tán $$\alpha \to 0$$ trong công thức phương sai $$\mathrm{Var}(N) = \mu + \alpha\mu^2$$ của phân phối nhị thức âm, phương sai hội tụ về giá trị nào và phân phối tiến về họ nào?
+
+---
 
 ## Video Tham Khảo
 

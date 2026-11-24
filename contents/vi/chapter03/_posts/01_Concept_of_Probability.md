@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Xác suất là nền tảng của thống kê và học máy. Bài học này trình bày có hệ thống từ những khái niệm cơ bản như không gian mẫu và biến cố đến xác suất có điều kiện, định lý Bayes và tính độc lập. Thay vì chỉ dừng ở công thức giải tích, chúng ta kết hợp mô phỏng bằng Python để kiểm chứng và hiểu trực quan từng khái niệm.
+Trong Thế chiến II, quân đội Mỹ thống kê vị trí lỗ đạn trên những chiếc máy bay chiến đấu trở về căn cứ và định bọc thêm giáp thép vào đúng những chỗ chi chít lỗ đạn nhất (cánh và thân giữa). Nhà thống kê Abraham Wald lập tức ngăn lại: *"Các anh đang nhìn nhầm mẫu dữ liệu! Những chiếc máy bay bị trúng đạn vào động cơ và buồng lái đã rơi ngoài biển và không bao giờ bay về để các anh đếm!"* Hãy bọc giáp vào đúng những chỗ **không có lỗ đạn** trên các máy bay sống sót!
+
+Câu chuyện kinh điển về thiên lệch sống sót ấy cho thấy **xác suất** không chỉ là chuyện tung đồng xu hay rút bài tây. Đó là bộ khung toán học kỷ luật để đo lường sự bất định, tránh những cạm bẫy trực giác nguy hiểm, và cập nhật niềm tin một cách chính xác mỗi khi có bằng chứng mới (Định lý Bayes).
+
+---
+
+## Bản đồ kiến thức nền: Lý thuyết xác suất cơ bản đứng trên những trụ cột nào?
+
+Ở bậc đại học, xác suất hiện đại (theo hệ tiên đề Kolmogorov) được dựng trên **bốn viên gạch cốt lõi**:
+
+1. **Không gian mẫu $$\Omega$$ & Hệ tiên đề Kolmogorov:** Mọi phép thử ngẫu nhiên gắn với tập mọi kết quả có thể $$\Omega$$ và độ đo xác suất thỏa $$P(A) \ge 0$$, $$P(\Omega)=1$$ và tính cộng cho các biến cố xung khắc.
+2. **Xác suất có điều kiện $$P(A\mid B)$$:** Khi biết biến cố $$B$$ đã xảy ra, toàn bộ vũ trụ thu hẹp lại từ $$\Omega$$ về đúng $$B$$ — mọi tỷ lệ xác suất phải được chia lại cho $$P(B)$$.
+3. **Định lý Bayes:** Công thức "lật ngược điều kiện" từ $$P(\text{Bằng chứng}\mid \text{Giả thuyết})$$ sang $$P(\text{Giả thuyết}\mid \text{Bằng chứng})$$, là xương sống của chẩn đoán y khoa, lọc thư rác và học máy Bayes.
+4. **Độc lập vs. Xung khắc:** Hai khái niệm cực dễ bị nhầm lẫn — xung khắc nghĩa là *không thể cùng xảy ra* ($$A\cap B = \emptyset$$), còn độc lập nghĩa là *biết $$B$$ xảy ra không làm đổi xác suất của $$A$$* ($$P(A\cap B) = P(A)P(B)$$).
 
 ---
 
@@ -508,6 +521,24 @@ def test_independence():
 
 # test_independence()
 ```
+
+### Khung giải thích: tự tay kiểm tra Định lý Bayes và phân biệt Độc lập với Xung khắc (nên đọc chậm)
+
+Hãy cầm bút kiểm chứng hai tình huống cốt lõi nhất của xác suất cơ bản:
+
+1. **Lọc thư rác bằng Định lý Bayes:** Giả sử $$20\%$$ email đến hộp thư là thư rác ($$P(S)=0.2,\ P(\neg S)=0.8$$). Cụm từ `"miễn phí"` xuất hiện trong $$80\%$$ thư rác ($$P(F\mid S)=0.8$$) nhưng chỉ xuất hiện trong $$5\%$$ thư thường ($$P(F\mid \neg S)=0.05$$). Khi nhận được một email có chữ `"miễn phí"`, xác suất đó là thư rác là bao nhiêu?
+   - Xác suất toàn phần gặp từ `"miễn phí"`:
+     $$P(F) = P(F\mid S)P(S) + P(F\mid \neg S)P(\neg S) = (0.8)(0.2) + (0.05)(0.8) = 0.16 + 0.04 = 0.20.$$
+   - Lật ngược bằng Định lý Bayes:
+     $$P(S\mid F) = \frac{0.16}{0.20} = 0.80 = 80\%!$$
+   Chỉ một bằng chứng duy nhất đã đẩy niềm tin từ tiên nghiệm $$20\%$$ lên hậu nghiệm $$80\%$$.
+
+2. **Tại sao hai biến cố xung khắc (có xác suất dương) KHÔNG BAO GIỜ độc lập?**
+   Tung 1 viên xúc xắc cân đối $$\Omega = \{1, 2, 3, 4, 5, 6\}$$:
+   - Xét $$A = \{2, 4, 6\}$$ (số chẵn, $$P(A) = 1/2$$) và $$B = \{1, 2\}$$ ($$P(B) = 1/3$$):
+     Giao $$A \cap B = \{2\}$$ có $$P(A\cap B) = \frac{1}{6} = \frac{1}{2}\cdot\frac{1}{3} = P(A)P(B)$$ → **$$A$$ và $$B$$ ĐỘC LẬP** (dù chúng vẫn giao nhau tại mặt 2!).
+   - Xét $$A = \{2, 4, 6\}$$ và $$C = \{1, 3, 5\}$$ (số lẻ, $$P(C) = 1/2$$):
+     Giao $$A \cap C = \emptyset \Rightarrow P(A\cap C) = 0 \neq \frac{1}{4} = P(A)P(C)$$ → **$$A$$ và $$C$$ XUNG KHẮC nên PHỤ THUỘC TUYỆT ĐỐI** (biết ra chẵn lập tức loại sạch khả năng ra lẻ!).
 
 ## Video tham khảo
 

@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Hồi quy tuyến tính là nền tảng của học thống kê (statistical learning). Dù có cấu trúc đơn giản, mô hình này chứa đựng hầu hết các khái niệm cốt lõi thường gặp ở những mô hình phức tạp hơn như hàm mất mát (loss function), tối ưu hóa, suy diễn thống kê và chẩn đoán mô hình. Trong bài học này, chúng ta sẽ tìm hiểu công thức nghiệm, ý nghĩa hình học, các giả định và cách đánh giá chất lượng mô hình thông qua phân tích phần dư.
+Một nhà phân tích dữ liệu hào hứng khoe với sếp: *"Sau khi thêm 15 biến mới vào mô hình dự báo doanh thu, hệ số $$R^2$$ đã tăng vọt từ 0,80 lên 0,94!"* Nhưng khi đưa mô hình lên dữ liệu tháng sau, sai số dự báo lại tệ hơn cả mô hình ban đầu. Lý do nằm ở một tính chất toán học bị nhiều người quên mất: **cứ thêm bất kỳ biến nào — kể cả cột số ngẫu nhiên từ bảng xổ số — vào mô hình OLS, $$R^2$$ trên tập huấn luyện không bao giờ giảm!**
+
+Bài học này đào sâu vào nền tảng đánh giá và kiểm chứng mô hình hồi quy tuyến tính: chứng minh trực giác **Định lý Gauss–Markov**, so sánh **$$R^2$$ thô**, **$$R^2$$ hiệu chỉnh (Adjusted $$R^2$$)** và **Sai số chuẩn phần dư (RSE)**, đồng thời hệ thống hóa trọn bộ giả định để bạn biết chính xác khi nào OLS đáng tin và khi nào nó đang đánh lừa bạn.
+
+---
+
+## Bản đồ kiến thức nền: Bốn thước đo và giả định quyết định chất lượng mô hình OLS
+
+Để đánh giá một mô hình hồi quy đa biến một cách trưởng thành, hãy nắm chắc bốn trụ cột sau:
+
+1. **Tính tối ưu Gauss–Markov (BLUE):** Dưới 4 giả định tuyến tính, lấy mẫu ngẫu nhiên, không đa cộng tuyến hoàn toàn, và nhiễu đồng phương sai có kỳ vọng 0, OLS đạt phương sai nhỏ nhất trong mọi bộ ước lượng tuyến tính không chệch. Khi một giả định vỡ (ví dụ phương sai nhiễu thay đổi — heteroscedasticity), OLS vẫn *không chệch* nhưng không còn hiệu quả nhất và sai số chuẩn cổ điển bị sai lệch.
+2. **$$R^2$$ vs. Adjusted $$R^2$$:** $$R^2 = 1 - \mathrm{RSS}/\mathrm{TSS}$$ chỉ đo mức khớp trên dữ liệu đã thấy nên luôn ưu ái mô hình càng nhiều biến càng tốt. **Adjusted $$R^2$$** thay tổng bình phương bằng phương sai trung bình chia cho bậc tự do ($$\mathrm{RSS}/(n-p-1)$$ và $$\mathrm{TSS}/(n-1)$$) — nó chỉ tăng khi biến mới cải thiện mô hình *nhiều hơn mức may rủi ngẫu nhiên*.
+3. **Sai số chuẩn phần dư (RSE):** $$\mathrm{RSE} = \sqrt{\frac{\mathrm{RSS}}{n-p-1}}$$ đo sai số điển hình của mô hình theo **đúng đơn vị gốc của $$Y$$** (triệu đồng, giây, kg) — giúp đánh giá trực tiếp ý nghĩa thực tiễn thay vì chỉ nhìn con số không đơn vị $$R^2$$.
+4. **Chẩn đoán giả định & Ngoại lệ có đòn bẩy (Leverage):** Một điểm dữ liệu có giá trị $$X$$ nằm xa trung tâm có **đòn bẩy cao** — chỉ riêng một điểm đó có thể xoay nghiêng cả đường hồi quy. Kiểm tra phần dư chuẩn hóa và khoảng cách Cook là bước không thể thiếu.
 
 ---
 
@@ -293,6 +306,35 @@ def comprehensive_model_evaluation():
 - Phương sai đồng nhất: Biểu đồ Scale-Location.
 - Tính chuẩn: Biểu đồ Q-Q plot, kiểm định Shapiro-Wilk.
 - Đa cộng tuyến: Hệ số phóng đại phương sai VIF (Variance Inflation Factor).
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Khi một biến "rác" đánh lừa $$R^2$$ nhưng bị Adjusted $$R^2$$ vạch mặt
+
+Giả sử bạn xây dựng mô hình hồi quy trên $$n = 12$$ quan sát với tổng biến thiên $$\mathrm{TSS} = 100$$:
+
+- **Mô hình 1 (chỉ dùng $$p = 1$$ biến thực sự có ý nghĩa):** Tổng bình phương phần dư $$\mathrm{RSS}_1 = 20{,}0$$.
+  - $$R^2_1 = 1 - \frac{20{,}0}{100} = 0{,}8000.$$
+  - $$R^2_{\text{adj},1} = 1 - \frac{\mathrm{RSS}_1 / (n - p - 1)}{\mathrm{TSS} / (n - 1)} = 1 - \frac{20{,}0 / 10}{100 / 11} = 1 - \frac{2{,}000}{9{,}091} = 0{,}7800.$$
+  - $$\mathrm{RSE}_1 = \sqrt{20{,}0 / 10} = \sqrt{2{,}0} \approx 1{,}414.$$
+
+- **Mô hình 2 (nhồi thêm 1 biến nhiễu ngẫu nhiên $$\implies p = 2$$):** Nhờ tình cờ khớp chút nhiễu trên 12 điểm, $$\mathrm{RSS}_2$$ nhích nhẹ xuống $$19{,}2$$.
+  - $$R^2_2 = 1 - \frac{19{,}2}{100} = 0{,}8080$$ (**tăng** thêm $$+0{,}008$$ — nhìn tưởng tốt hơn!).
+  - $$R^2_{\text{adj},2} = 1 - \frac{19{,}2 / (12 - 2 - 1)}{100 / 11} = 1 - \frac{19{,}2 / 9}{9{,}091} = 1 - \frac{2{,}133}{9{,}091} = 0{,}7653$$ (**GIẢM** mạnh!).
+  - $$\mathrm{RSE}_2 = \sqrt{19{,}2 / 9} = \sqrt{2{,}133} \approx 1{,}461$$ (**tăng**, tức sai số dự báo ước lượng *xấu đi*!).
+
+Chỉ một phép chia đơn giản cho bậc tự do $$n - p - 1$$ (từ 10 xuống 9) đã phơi bày ngay sự thật: biến thứ hai không tạo đủ giảm RSS để bù đắp 1 bậc tự do bị tiêu tốn!
+
+### Khung giải thích: Bốn nguyên tắc vàng khi đánh giá mô hình hồi quy đa biến (nên đọc chậm)
+
+1. **Không bao giờ dùng $$R^2$$ trên tập train để so sánh mô hình có số biến $$p$$ khác nhau:** Hãy dùng **Adjusted $$R^2$$**, **AIC/BIC**, hoặc tốt nhất là **Cross-Validation (kiểm chứng chéo)** trên dữ liệu chưa từng nhìn thấy.
+2. **Đọc RSE song song với $$R^2$$:** Một mô hình dự đoán giá nhà có $$R^2 = 0{,}85$$ nghe rất cao, nhưng nếu $$\mathrm{RSE} = 1{,}5$$ tỷ đồng thì vẫn quá thô cho giao dịch thực tế.
+3. **Hiểu rõ hậu quả khi từng giả định bị vi phạm:** Thiếu biến phi tuyến làm hệ số **chệch**; phương sai thay đổi hay tự tương quan không làm hệ số chệch nhưng làm **p-value và khoảng tin cậy sai lệch**.
+4. **Kiểm tra đa cộng tuyến bằng VIF:** Khi hai biến giải thích tương quan quá sát, dự báo $$\hat{y}$$ tổng thể vẫn có thể ổn nhưng từng hệ số $$\hat{\beta}_j$$ riêng lẻ lại nhảy loạn xạ — lúc đó cần chuyển sang Ridge/Lasso ở bài tiếp theo.
+
+**Kiểm tra nhanh.** Trong ví dụ $$n = 12$$ ở trên, biến thứ hai cần kéo $$\mathrm{RSS}_2$$ xuống dưới mức bao nhiêu (so với $$\mathrm{RSS}_1 = 20{,}0$$) để $$R^2_{\text{adj},2}$$ thực sự *tăng* cao hơn $$0{,}7800$$? *(Gợi ý: cần $$\mathrm{RSS}_2 / 9 < 20{,}0 / 10 = 2{,}0$$.)*
+
+---
 
 ## Video tham khảo
 

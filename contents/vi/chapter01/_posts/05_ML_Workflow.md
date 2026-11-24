@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Sau khi tìm hiểu từng kỹ thuật riêng lẻ, bài học này tổng hợp chúng vào một quy trình hoàn chỉnh từ đầu đến cuối cho một dự án học máy (machine learning). Chúng ta sẽ đi qua toàn bộ chuỗi xử lý trên một ví dụ thực tế: tìm hiểu dữ liệu, tiền xử lý, kỹ thuật đặc trưng (feature engineering), lựa chọn mô hình, tinh chỉnh siêu tham số, đánh giá cuối cùng và diễn giải kết quả.
+Trong thực tế công nghiệp, phần lớn các dự án học máy thất bại **không phải vì chọn nhầm thuật toán** — mà vì một lỗi thầm lặng chết người trong quy trình dữ liệu: **rò rỉ dữ liệu (data leakage)**, chuẩn hóa trước khi chia tập kiểm tra, hay quên mất một mô hình cơ sở đơn giản để đối chứng. Một thuật toán bình thường chạy trên một quy trình sạch sẽ luôn đánh bại một mô hình tối tân chạy trên một quy trình cẩu thả.
+
+Bài học này ghép nối mọi kỹ thuật rời rạc thành một **quy trình thực hành Machine Learning chuẩn mực từ đầu đến cuối**, giúp bạn đi từ bảng dữ liệu thô đầy lỗ hổng đến một mô hình đáng tin cậy, giải thích được và sẵn sàng kiểm chứng ngoài đời thực.
+
+---
+
+## Bản đồ kiến thức nền: Quy trình Machine Learning chuẩn khoa học gồm những trụ cột nào?
+
+Một quy trình ML nghiêm túc thực chất là một **thí nghiệm thống kê có kiểm soát**, đứng trên **bốn trụ cột kỷ luật**:
+
+1. **Khám phá & Làm sạch (EDA & Preprocessing):** Hiểu phân phối, phát hiện giá trị thiếu, ngoại lai và thiên lệch dữ liệu trước khi đụng đến bất kỳ mô hình nào.
+2. **Cách ly tuyệt đối tập kiểm tra (Leakage-Free Split & Pipeline):** Mọi phép biến đổi học từ dữ liệu (điền trung vị, chuẩn hóa trung bình/độ lệch chuẩn, mã hóa nhãn, chọn đặc trưng) chỉ được phép *khớp* (`fit`) trên tập huấn luyện rồi *áp dụng* (`transform`) sang tập kiểm định/kiểm tra.
+3. **Đi từ Baseline đến Tinh chỉnh:** Luôn bắt đầu bằng mô hình đơn giản nhất (hồi quy tuyến tính, logistic, cây nông) để đặt chuẩn so sánh, rồi mới tăng độ phức tạp và tinh chỉnh siêu tham số trên tập Validation.
+4. **Đánh giá cuối cùng & Diễn giải:** Tập Test chỉ được mở khóa **đúng một lần duy nhất** ở bước cuối cùng; sau đó kiểm tra mức độ quan trọng đặc trưng và lỗi trên từng nhóm con để chắc chắn mô hình học đúng quy luật chứ không học mẹo.
 
 ---
 
@@ -496,6 +509,20 @@ def complete_ml_workflow():
 
 ✅ **Diễn giải mô hình**
 - Kiểm tra mức độ quan trọng của đặc trưng (feature importance) và phân tích phần dư (residual analysis) để hiểu hành vi của mô hình.
+
+### Khung giải thích: tự tay tính để thấy rò rỉ dữ liệu (Data Leakage) làm méo chuẩn hóa như thế nào (nên đọc chậm)
+
+Nhiều người nghĩ "chuẩn hóa z-score toàn bộ bảng dữ liệu trước rồi mới chia Train/Test có sao đâu?". Hãy thử ngay trên 5 con số thu nhập (triệu đồng): tập **Train** gồm $$\{10, 12, 14\}$$, còn tập **Test** tương lai bị dịch chuyển lên $$\{100, 104\}$$.
+
+1. **Cách LÀM SAI (chuẩn hóa gộp cả 5 điểm trước khi chia):**
+   - Trung bình gộp: $$\bar x_{\text{gộp}} = \frac{10 + 12 + 14 + 100 + 104}{5} = 48$$, độ lệch chuẩn $$s_{\text{gộp}} \approx 44.1$$.
+   - Sau chuẩn hóa, tập Train biến thành $$\{-0.86,\, -0.82,\, -0.77\}$$, còn tập Test nằm ở $$\{+1.18,\, +1.27\}$$.
+   **Lỗi nghiêm trọng:** Chỉ bằng việc chuẩn hóa, thông tin rằng "tương lai có những giá trị cực lớn quanh 100" đã **rò rỉ ngược vào tập Train** (kéo trung bình từ $$12$$ lên $$48$$), làm điểm số trên Test trông ảo giác đẹp hơn hẳn thực tế triển khai!
+
+2. **Cách LÀM ĐÚNG (dùng `Pipeline` chỉ `fit` trên Train):**
+   - Tính tham số chỉ từ Train $$\{10, 12, 14\}$$: $$\bar x_{\text{train}} = 12$$, $$s_{\text{train}} = \sqrt{\frac{4+0+4}{3}} \approx 1.63$$.
+   - Biến đổi Train thành $$\{-1.22,\, 0,\, +1.22\}$$; sau đó dùng **đúng** $$\bar x_{\text{train}} = 12,\ s_{\text{train}} = 1.63$$ để biến đổi Test thành $$\{+54.0,\, +56.4\}$$!
+   Lúc này, giá trị z-score khổng lồ $$+54$$ lập tức **báo động đỏ** rằng dữ liệu kiểm tra đã dịch chuyển phân phối nghiêm trọng so với lúc huấn luyện — đúng điều một kỹ sư ML cần phát hiện trước khi đưa mô hình ra thực tế!
 
 ## Video tham khảo
 

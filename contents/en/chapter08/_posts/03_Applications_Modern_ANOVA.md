@@ -10,31 +10,66 @@ categories:
 lesson_type: optional
 ---
 
-This optional lesson does not rewrite one-way ANOVA, the $$F$$-test, or Tukey’s HSD. It shows how those objects are the analysis of multi-variant product experiments, why a two-way layout is the right model for a factorial launch, and how the ANOVA table becomes a mixed model once users or queries are nested—the form Gelman argued for in 2005 and that 2022–2026 applied papers still recommend.
+A growth team designs four new checkout buttons—Control, Green, Large, and Express—and runs all $$\binom{4}{2} = 6$$ pairwise $$t$$-tests at $$\alpha = 0.05$. One pair flashes $$p = 0.03$$, so they celebrate and ship it—unaware that under a completely true null hypothesis, six unadjusted comparisons carry roughly a **26% false-alarm rate**! Meanwhile, down the hall, another team launches a new ranking model *and* a new snippet UI in two separate A/B tests—completely missing the fact that the new ranking model only lifts clicks *when paired* with the new snippet layout!
 
-You should finish able to write an A/B/n experiment as a one-way ANOVA, add a second factor without running a handful of unadjusted $$t$$-tests, choose between Tukey and FDR for the post-hoc step, and say when the $$F$$-table should be replaced by a random-effect variance component.
+This optional lesson takes classical Chapter 08 **one-way ANOVA**, **two-way factorial layouts**, and **Tukey’s HSD** directly into modern multi-variant product experiments, showing how the classical variance decomposition $$SS_{\mathrm{Total}} = SS_{\mathrm{Between}} + SS_{\mathrm{Within}}$$ evolves naturally into **variance-component mixed models** when users or queries are clustered (Gelman, 2005; Yu et al., 2022).
 
-The two required Chapter 08 lessons, plus the multiple-testing ideas from Chapter 06, are the prerequisites. The decomposition
+---
 
-$$SS_{\mathrm{Total}} = SS_{\mathrm{Between}} + SS_{\mathrm{Within}}$$
+## Background Knowledge Map: How ANOVA Powers Multi-Variant Experimentation
 
-is assumed known.
+Three classical ideas from experimental design anchor modern A/B/n and factorial platforms.
+
+### 1. Omnibus Variance Decomposition (One-Way ANOVA & $$F$$-Test)
+Instead of spraying unadjusted pairwise $$t$$-tests across $$k$$ variants, **one-way ANOVA** compares **between-group signal** ($$MS_{\mathrm{Between}}$$) against **within-group noise** ($$MS_{\mathrm{Within}}$$) via a single omnibus $$F$$-ratio—acting as a clean statistical gate before post-hoc pairwise inspection (**Tukey HSD** or **Benjamini–Hochberg FDR**).
+- **Core questions:** Do the $$k$$ variants differ more than random sampling noise predicts? Which post-hoc rule fits a small pre-registered family versus 50 exploratory slices?
+- **Real-world reach:** A/B/n landing-page tests, multi-arm pricing tests, and clinical dose-response comparisons.
+
+### 2. Factorial Designs & Interaction Effects (Two-Way ANOVA)
+When two product changes launch together (Factor A × Factor B), testing them in a single **2×2 factorial layout** reuses 100% of your traffic for *both* main effects while explicitly measuring the **interaction term** $$(\alpha\beta)_{ij}$$—revealing synergy or conflict that separate A/B tests are mathematically blind to.
+- **Core questions:** Does Feature A help only when Feature B is turned on? How do Type II vs. Type III sums of squares handle unbalanced cells?
+- **Real-world reach:** Search ranking + UI snippet co-launches, industrial design of experiments (DoE), and combination drug therapies.
+
+### 3. Hierarchical ANOVA & Variance Components (Mixed Models)
+Following Andrew Gelman (2005), every row of an ANOVA table can be viewed as a **variance component** ($$\sigma^2_{\text{treatment}}, \sigma^2_{\text{user}}, \sigma^2_{\varepsilon}$$). When each user contributes dozens of repeated sessions, moving from plain `f_oneway` to a **random-intercept mixed model** fixes the denominator so clustered noise is never mistaken for treatment signal.
+- **Core questions:** How much variation comes from user-to-user differences versus within-user randomness?
+- **Real-world reach:** Repeated-measures UX studies, longitudinal app telemetry, and multi-market geo experiments.
 
 ---
 
 ## A/B/n is one-way ANOVA in a product coat
 
-A platform that ships three checkout buttons is not running two A/B tests. It is comparing $$k \ge 3$$ means. The model is exactly the required one-way layout
+A platform testing $$k \ge 3$$ checkout buttons is fitting the one-way layout
 
 $$Y_{ij} = \mu + \tau_i + \varepsilon_{ij}, \qquad \varepsilon_{ij} \sim \mathcal{N}(0,\sigma^2),$$
 
-and the omnibus question is $$H_0: \tau_1 = \cdots = \tau_k = 0$$. The $$F$$-statistic
+testing $$H_0: \tau_1 = \cdots = \tau_k = 0$$ via the omnibus $$F$$-statistic
 
-$$F = \frac{MS_{\mathrm{Between}}}{MS_{\mathrm{Within}}}$$
+$$F = \frac{MS_{\mathrm{Between}}}{MS_{\mathrm{Within}}}.$$
 
-is the right first gate. Pairwise $$t$$-tests without a family correction are the mistake the required lesson already names: the Type I error grows as $$\binom{k}{2}$$.
+Pairwise $$t$$-tests without family correction inflate Type I error across all $$\binom{k}{2}$$ pairs. In industrial practice, assignment happens at the **user level**—analyzing raw session events as if they were i.i.d. rows understates $$MS_{\mathrm{Within}}$$ and manufactures fake significance.
 
-What changed in industrial use is the *metric* and the *assignment unit*, not the algebra. Conversion is Bernoulli, so the Gaussian ANOVA is an approximation justified by the same CLT the interval chapter used, or one switches to a GLM (Chapter 07) and reads a likelihood-ratio test that is an ANOVA in the exponential family. Assignment is at the user level; analysing events as if they were i.i.d. rows understates $$MS_{\mathrm{Within}}$$ and manufactures significance.
+---
+
+### Worked Example 1: Computing a Complete One-Way ANOVA $$F$$-Test by Hand
+
+Suppose three checkout variants each have $$n = 3$$ users with order values ($):
+- **Variant A:** $$\{4,\; 5,\; 6\}$$ (mean $$\bar{y}_A = 5$$)
+- **Variant B:** $$\{6,\; 7,\; 8\}$$ (mean $$\bar{y}_B = 7$$)
+- **Variant C:** $$\{8,\; 9,\; 10\}$$ (mean $$\bar{y}_C = 9$$)
+
+Grand mean across all $$N = 9$$ users: $$\bar{y} = 7$$. Compute every row of the ANOVA table directly:
+1. **Between-group Sum of Squares ($$SS_B$$):**
+   $$SS_B = 3(5-7)^2 + 3(7-7)^2 + 3(9-7)^2 = 12 + 0 + 12 = \mathbf{24}, \qquad df_B = k - 1 = 2 \implies MS_B = \frac{24}{2} = \mathbf{12.0}.$$
+2. **Within-group Sum of Squares ($$SS_W$$):**
+   Each group has sum of squared deviations $$(-1)^2 + 0^2 + 1^2 = 2$$, so
+   $$SS_W = 2 + 2 + 2 = \mathbf{6}, \qquad df_W = N - k = 6 \implies MS_W = \frac{6}{6} = \mathbf{1.0}.$$
+3. **Omnibus $$F$$-statistic:**
+   $$F = \frac{MS_B}{MS_W} = \frac{12.0}{1.0} = \mathbf{12.0} \qquad (F_{2,6} \text{ critical value at } \alpha=0.05 \text{ is } 5.14 \implies p = \mathbf{0.008}!).$$
+
+Verify the decomposition: $$SS_{\mathrm{Total}} = 24 + 6 = 30$$. Because between-group variance ($$12.0$$) is **12× larger** than within-group noise ($$1.0$$), the omnibus gate passes decisively—now you may safely run **Tukey’s HSD** to see which specific pairs differ!
+
+---
 
 ```python
 import numpy as np
@@ -58,17 +93,35 @@ def oneway_anova(groups):
     return F, p, ss_b, ss_w
 ```
 
-Tukey’s HSD, already computed in the second required lesson, remains the default post-hoc when every pair is interesting and the design is balanced. When a team inspects twenty segments *after* seeing the data, they are no longer in Tukey’s world; they are in the Chapter 06 FDR world.
+Tukey’s HSD remains the default post-hoc when every pair is interesting in a balanced design; when exploring twenty ad-hoc segments after seeing the data, switch to Chapter 06 **Benjamini–Hochberg FDR**.
 
 ## Factorial launches are two-way ANOVA
 
-Product teams rarely change one factor. A launch may cross a new ranking model (old / new) with a new snippet layout (control / variant). That is a two-way layout
+Product teams rarely change one factor at a time. Crossing a new ranking model (Old / New) with a new snippet layout (Control / Variant) yields the two-way layout
 
 $$Y_{ijk} = \mu + \alpha_i + \beta_j + (\alpha\beta)_{ij} + \varepsilon_{ijk}.$$
 
-The interaction $$(\alpha\beta)_{ij}$$ is the scientifically interesting term: the new model may help only when the snippet changes. Running two separate A/B tests hides that term and wastes sample. The ANOVA table splits $$SS$$ into main effects and interaction; each row is an $$F$$-test with its own degrees of freedom.
+The **interaction term** $$(\alpha\beta)_{ij}$$ captures whether two features amplify or cancel each other. Running two isolated A/B tests hides that interaction completely and wastes half your traffic.
 
-Reluga, Ye, and Zhao (2022), writing about regression adjustment, remind us that the one-way difference-in-means *is* the ANOVA estimator, and that adding covariates (ANCOVA) or interactions (ANHECOVA) changes the variance, not the causal identification, when treatment is randomised. A factorial experiment is the same reminder with two treatment factors instead of one treatment and a covariate.
+---
+
+### Worked Example 2: Spotting a Pure Interaction in a 2×2 Factorial Launch
+
+Suppose average user clicks in a 2×2 launch (Model × Layout) have the following cell means:
+
+| Ranking Model | Old Layout | New Layout | Row Mean |
+|---------------|------------|------------|----------|
+| **Old Model** | $$10$$ | $$10$$ | $$10$$ |
+| **New Model** | $$10$$ | **$$18$$** | $$14$$ |
+| **Column Mean** | $$10$$ | $$14$$ | Grand Mean $$= 12$$ |
+
+Look what happens if you run two separate one-factor A/B tests:
+- Test New Model *only* on Old Layout: $$10$$ vs. $$10$$ → **0 lift! Team kills the New Model!**
+- Test New Layout *only* on Old Model: $$10$$ vs. $$10$$ → **0 lift! Team kills the New Layout!**
+
+Both isolated A/B tests fail completely—yet inside a **2×2 factorial ANOVA**, the interaction contrast $$(18 - 10) - (10 - 10) = \mathbf{+8}$$ clicks lights up immediately, revealing that the New Model and New Layout unlock **+80% lift** together!
+
+---
 
 ```python
 import statsmodels.api as sm
@@ -84,21 +137,18 @@ def two_way_anova_table(df):
     return sm.stats.anova_lm(fit, typ=2)
 ```
 
-Type II versus Type III sums of squares matter once the design is unbalanced—the usual state of an online experiment that did not hit its sample-size target on every cell. Report the type you pre-registered; do not shop.
+Type II versus Type III sums of squares matter once cells are unbalanced—pre-register your choice rather than shopping after seeing $$p$$-values.
 
 ## From the ANOVA table to mixed models
 
-Gelman (2005) argued that ANOVA is *more* important once we treat every row of the table as a variance component, including the ones classically called fixed. A hierarchical model
+Gelman (2005) reframed ANOVA as a hierarchical **variance-component model**:
 
 $$Y_{ij} = \mu + \tau_{a[i]} + u_{b[i]} + \varepsilon_i$$
 
-is an ANOVA in which batch $$b$$ (users, queries, markets, days) is a random effect. The $$F$$-table is then a summary of estimated $$\sigma^2$$s, not a ritual of stars.
-
-That view is what modern applied papers operationalise. Yu et al. (2022) show how default ANOVA in laboratory science ignores the animal or cell as a cluster; the same paragraph applies to a user who contributes 40 sessions. Bates et al. (2015) is the computational reference. For a product experiment the practical translation is:
-
-1. If you have one aggregated outcome per assigned unit, classical one-way or two-way ANOVA (or the equivalent OLS) is enough.
-2. If you must keep repeated observations, put a random intercept on the assignment unit and read the treatment test from the mixed model, not from `scipy.stats.f_oneway` on the raw events.
-3. Use the ANOVA *decomposition* to explain the mixed-model output: how much variance sits between users versus within users.
+where batch $$b$$ (users, queries, markets, days) is a random effect with variance $$\sigma_u^2$$. As Yu et al. (2022) emphasize, running plain ANOVA on repeated observations from the same user ignores clustering. Follow three crisp rules:
+1. One aggregated metric per assigned user → classical one-way/two-way ANOVA (or OLS) is valid.
+2. Multiple repeated sessions per user → fit a **mixed model** with a user random intercept.
+3. Read the variance components $$\sigma_u^2$$ vs. $$\sigma_\varepsilon^2$$ to understand how much noise is user-level vs. session-level.
 
 ```python
 import numpy as np
@@ -114,7 +164,25 @@ def mixed_treatment_test(df):
     return model.fit()
 ```
 
-The fixed-effect $$p$$-value on `treatment` is then comparable to the ANOVA $$F$$-test, but the denominator uses the correct clustering.
+---
+
+### Deep-Dive Explanation: Why ANOVA, Regression, and Mixed Models Are One Unified Machine (Read Slowly)
+
+Students often learn $$t$$-tests, ANOVA, linear regression, and mixed models in separate chapters as if they were unrelated recipes. Walk through these four steps to see that they are all the *exact same* linear model.
+
+#### Step 1: One-way ANOVA IS linear regression with dummy indicators
+Coding $$k$$ variants with $$k-1$$ binary indicators $$D_2,\ldots,D_k$$ turns $$Y_{ij} = \mu + \tau_i + \varepsilon_{ij}$$ into ordinary OLS! The overall regression $$F$$-test is numerically identical to `f_oneway`.
+
+#### Step 2: Two-way ANOVA simply adds product interaction columns
+Adding $$C(\text{model}) \times C(\text{layout})$$ creates one extra product column whose regression coefficient tests whether the two features combine additively or synergistically.
+
+#### Step 3: Why clustering breaks the classical $$F$$ denominator
+Classical ANOVA divides by $$MS_{\mathrm{Within}}$$ assuming all $$N$$ rows are independent. If 100 users each contribute 50 sessions ($$N = 5{,}000$$), treating those 5,000 rows as independent fools the $$F$$-test into thinking you have $$50\times$$ more independent units than you actually do!
+
+#### Step 4: Mixed models repair the denominator by splitting variance into two layers
+Adding $$u_i \sim \mathcal{N}(0, \sigma_u^2)$$ separates within-user noise ($$\sigma_\varepsilon^2$$) from between-user noise ($$\sigma_u^2$$), restoring honest degrees of freedom and valid $$p$$-values on the treatment effect.
+
+---
 
 ## Post-hoc choices that match the decision
 

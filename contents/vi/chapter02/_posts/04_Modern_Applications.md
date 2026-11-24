@@ -10,7 +10,20 @@ categories:
 lesson_type: optional
 ---
 
-Phân loại dữ liệu, đặc trưng số và trực quan hóa trong chương này tưởng chừng sơ đẳng, nhưng các hệ thống thị giác máy tính và dữ liệu bảng hiện đại thường gặp sự cố trước hết từ chính những khâu đó: *đại lượng nào được đo*, *nó được tóm tắt ra sao* và *biểu đồ đang che khuất điều gì*. Bài đọc tùy chọn này kết nối ba kỹ năng cốt lõi của Chương 02 với thực hành học máy lấy dữ liệu làm trung tâm (data-centric ML) giai đoạn 2021–2025, cụ thể là trong thiết kế tập dữ liệu, làm sạch nhãn và diễn giải biểu đồ embedding.
+Ở kỷ nguyên của những kho dữ liệu hàng tỷ dòng và các bản đồ embedding hàng nghìn chiều, có người cho rằng thống kê mô tả của Chương 2 đã trở nên "quá sơ đẳng". Thực tế tại các phòng thí nghiệm AI hàng đầu lại chứng minh điều ngược lại: ngay cả những bộ dữ liệu danh tiếng nhất như ImageNet hay các tập huấn luyện LLM cũng chứa tỷ lệ lỗi nhãn đáng kể, và hàng loạt hình ảnh t-SNE / UMAP đẹp mắt trên báo chí lại thường tạo ra những "cụm ảo" không hề tồn tại trong không gian gốc!
+
+Bài học này nối thẳng thống kê mô tả cổ điển với thực hành khoa học dữ liệu hiện đại: từ kiểm toán tập dữ liệu quy mô lớn, các thước đo thống kê vững (robust statistics) chống lỗi nhãn, cho đến cạm bẫy hình học khi trực quan hóa không gian embedding.
+
+---
+
+## Bản đồ kiến thức nền: Thống kê mô tả hiện đại ở quy mô dữ liệu lớn gồm những trụ cột nào?
+
+1. **Kiểm toán & Thiết kế tập dữ liệu (Data-Centric AI):** Dùng bảng chéo, phân phối nhóm con và kiểm tra trùng lặp để phát hiện thiên lệch và rò rỉ dữ liệu ngay trước khi huấn luyện mô hình.
+2. **Thống kê vững trước lỗi nhãn (Robust Summary Statistics):** Thay Mean/SD bằng Median, Trimmed Mean, hàm mất mát Huber và **MAD (Median Absolute Deviation)** để điểm nhiễu cực đoan không phá hỏng kết quả đo.
+3. **Giới hạn của trực quan hóa phi tuyến (t-SNE, UMAP):** Các thuật toán giảm chiều xuống 2D chỉ giữ *láng giềng cục bộ*, thường làm méo khoảng cách toàn cục và kích thước cụm — không bao giờ dùng hình UMAP để kết luận "cụm A xa cụm B gấp đôi cụm C".
+4. **Dữ liệu bảng hỗn hợp (Mixed-Type Tabular Data):** Kết hợp biến liên tục, biến phân loại nhiều mức và cấu trúc phân phối tiên nghiệm trong các mô hình hiện đại (như TabPFN hay Gradient Boosted Trees).
+
+---
 
 ## Thiết kế tập dữ liệu như thống kê mô tả ở quy mô lớn
 
@@ -44,6 +57,31 @@ Hollmann, Müller, Eggensperger và Hutter (*TabPFN*, [ICLR 2023](https://iclr.c
 ## Tóm lược
 
 Khi các công trình hiện đại đề cập đến việc lọc Common Crawl theo điểm CLIP, phát hiện nhãn lỗi bằng cleanlab, hay thận trọng khi gom cụm trên UMAP, đó đều là những ứng dụng trực tiếp của tư duy Chương 02. Các chương xác suất tiếp theo sẽ bổ sung mô hình sinh dữ liệu và lấy mẫu, nhưng không thay thế kỷ luật nền tảng về kiểu dữ liệu, đặc trưng tóm tắt và trực quan hóa.
+
+### Khung giải thích: tự tay tính MAD để phát hiện điểm ngoại lai mà Z-score cổ điển bỏ sót (nên đọc chậm)
+
+Tại sao trong dữ liệu lớn có lỗi nhãn, quy tắc quen thuộc "gắn cờ ngoại lai khi $$\lvert Z\rvert > 3$$" lại hay thất bại (hiện tượng *masking*)? Hãy thử ngay trên 6 điểm dữ liệu có **1 điểm nhập sai nhãn cực lớn**:
+
+$$
+x = \{10,\; 11,\; 12,\; 12,\; 13,\; 100\}.
+$$
+
+1. **Thử bằng Z-score cổ điển (Mean & SD):**
+   - Trung bình $$\bar x = \frac{158}{6} \approx 26.33$$; độ lệch chuẩn mẫu $$s \approx 36.12$$.
+   - Tính Z-score của chính kẻ phá rối $$x = 100$$:
+     $$
+     Z = \frac{100 - 26.33}{36.12} \approx 2.04 < 3!
+     $$
+   **Bất ngờ chưa?** Quy tắc $$\lvert Z\rvert > 3$$ **bỏ lọt hoàn toàn** giá trị $$100$$ — bởi chính số $$100$$ đã kéo phình cả trung bình lẫn độ lệch chuẩn lên để tự "ngụy trang" cho mình!
+
+2. **Thử bằng Modified Z-score dựa trên Median & MAD:**
+   - Trung vị: $$\tilde x = \frac{12 + 12}{2} = 12$$.
+   - Độ lệch tuyệt đối so với trung vị $$\lvert x_i - 12\rvert$$: $$\{2,\; 1,\; 0,\; 0,\; 1,\; 88\}$$. Sắp xếp lại: $$\{0, 0, 1, 1, 2, 88\} \;\Longrightarrow\; \mathrm{MAD} = \text{Median} = 1.0$$.
+   - Tính Modified Z-score cho $$x = 100$$ (hệ số $$0.6745$$ chuẩn hóa khớp phân phối chuẩn):
+     $$
+     M = 0.6745 \times \frac{100 - 12}{1.0} \approx 59.4 \gg 3.5!
+     $$
+   **Bắt sống ngay lập tức!** Đây là lý do trong các pipeline kiểm toán dữ liệu hiện đại, **Median + MAD** luôn là tuyến phòng thủ đầu tiên trước lỗi nhãn và cảm biến.
 
 ## Video tham khảo
 

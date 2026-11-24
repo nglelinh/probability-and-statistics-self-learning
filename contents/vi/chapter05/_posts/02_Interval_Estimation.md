@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Ước lượng điểm cung cấp một giá trị duy nhất nhưng không thể hiện mức độ bất định của ước lượng đó. Khoảng tin cậy (Confidence Interval — CI) giải quyết hạn chế này bằng cách đưa ra một khoảng giá trị gắn với mức độ tin cậy xác định. Bài học này trình bày cách hiểu đúng về khoảng tin cậy (và các nhầm lẫn phổ biến), công thức tính khoảng tin cậy cho trung bình và tỷ lệ, cùng phương pháp Bootstrap — kỹ thuật tái lấy mẫu giúp xây dựng khoảng tin cậy cho nhiều loại thống kê khác nhau.
+Giả sử hai công ty khảo sát độc lập cùng công bố một dòng tiêu đề giống hệt nhau: *"52% khách hàng ưa thích giao diện mới."* Thoạt nghe, cả hai đều đưa ra cùng một ước lượng điểm. Nhưng nhìn xuống dòng chú thích nhỏ ở cuối trang, bạn giật mình: Công ty A chỉ hỏi **40 người**, còn Công ty B hỏi **4.000 người**. Con số 52% của Công ty A có thể nhảy từ 36% đến 68% chỉ vì may rủi ngẫu nhiên, trong khi con số 52% của Công ty B ổn định trong khoảng hẹp 50,5% đến 53,5%. Một ước lượng điểm mà thiếu thước đo bất định chẳng khác nào một phép đo vật lý không ghi sai số!
+
+**Ước lượng khoảng (interval estimation)** và **khoảng tin cậy (Confidence Interval — CI)** sinh ra để trả lại sự trung thực cho mọi con số thống kê. Bài học này tháo gỡ hiểu lầm kinh điển nhất về ý nghĩa của "độ tin cậy 95%", hướng dẫn cách tính chính xác khoảng tin cậy cho trung bình (dùng $$z$$ và $$t$$) và tỷ lệ, rồi giới thiệu vũ khí hiện đại **Bootstrap** — phương pháp tái lấy mẫu bằng máy tính giúp bạn dựng khoảng tin cậy cho cả những thống kê phức tạp không hề có công thức giải tích.
+
+---
+
+## Bản đồ kiến thức nền: Khoảng tin cậy đứng ở đâu trong suy diễn thống kê?
+
+Để không bao giờ diễn giải sai một khoảng tin cậy trong báo cáo hay bài báo khoa học, hãy nắm vững bốn trụ cột sau:
+
+1. **Lượng xoay trục (Pivotal Quantity):** Bí quyết dựng khoảng tin cậy cổ điển là tìm một đại lượng kết hợp dữ liệu với tham số chưa biết — như $$Z = \frac{\bar{X}-\mu}{\sigma/\sqrt{n}}$$ hay $$T = \frac{\bar{X}-\mu}{S/\sqrt{n}}$$ — sao cho phân phối của nó **không phụ thuộc vào tham số ẩn**. Từ đó ta đảo bất đẳng thức để "giam" tham số vào giữa hai đầu mút ngẫu nhiên.
+2. **Phân phối Student-$$t$$ và cái giá của việc không biết $$\sigma$$:** Khi phải thay độ lệch chuẩn tổng thể $$\sigma$$ bằng độ lệch chuẩn mẫu $$S$$, ta đưa thêm một nguồn bất định mới vào mẫu số. Phân phối $$t$$ có đuôi dày hơn phân phối chuẩn (đặc biệt khi bậc tự do $$n-1$$ nhỏ) để bù đắp đúng phần bất định này.
+3. **Diễn giải tần suất (Frequentist) vs. Bayes:** Trong trường phái tần suất, tham số thật $$\theta$$ là một **hằng số cố định**, còn chiếc lưới $$[L, U]$$ mới là thứ nhảy ngẫu nhiên mỗi lần lấy mẫu. Mức 95% là tỷ lệ thành công dài hạn của *quy trình tung lưới*, không phải xác suất $$\theta$$ rơi vào một chiếc lưới đã tung xong (khái niệm đó thuộc về *khoảng khả tín — Credible Interval* trong thống kê Bayes).
+4. **Tái lấy mẫu phi tham số (Bootstrap):** Khi thống kê quan tâm là trung vị, phân vị 95%, hay hệ số AUC của mô hình học máy, không có công thức $$t$$ nào dùng được. Bootstrap dùng chính phân phối thực nghiệm của mẫu để mô phỏng hàng nghìn lần lấy mẫu lại có hoàn lại, ước lượng trực tiếp phân phối lấy mẫu mà không cần giả định phân phối chuẩn.
 
 ---
 
@@ -412,6 +425,33 @@ def bootstrap_ci():
 
 # bootstrap_ci()
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Dựng khoảng tin cậy 95% cho thời gian tải trang web
+
+Một kỹ sư hiệu năng đo thời gian tải trang trên $$n = 9$$ lượt truy cập độc lập (giả sử xấp xỉ chuẩn, chưa biết phương sai tổng thể $$\sigma^2$$), thu được trung bình mẫu $$\bar{x} = 2{,}40\text{ giây}$$ và độ lệch chuẩn mẫu $$s = 0{,}60\text{ giây}$$. Hãy tự tay tính khoảng tin cậy 95% cho thời gian tải trung bình thật $$\mu$$:
+
+1. **Tính sai số chuẩn (Standard Error):**
+   $$\mathrm{SE} = \frac{s}{\sqrt{n}} = \frac{0{,}60}{\sqrt{9}} = 0{,}20\text{ giây}.$$
+2. **Xác định giá trị tới hạn $$t$$:** Với bậc tự do $$df = n - 1 = 8$$ và mức tin cậy 95% (mỗi đuôi $$\alpha/2 = 0{,}025$$), tra bảng phân phối $$t$$ ta được:
+   $$t_{0{,}025;\,8} \approx 2{,}306$$
+   *(lưu ý: lớn hơn đáng kể so với $$z_{0{,}025} = 1{,}960$$ vì cỡ mẫu nhỏ $$n=9$$ làm đuôi $$t$$ dày hơn)*.
+3. **Tính biên sai số (Margin of Error) và hai đầu mút:**
+   $$\mathrm{ME} = 2{,}306 \times 0{,}20 = 0{,}461\text{ giây},$$
+   $$\mathrm{CI}_{95\%} = [2{,}40 - 0{,}461,\; 2{,}40 + 0{,}461] = [1{,}939,\; 2{,}861]\text{ giây}.$$
+4. **Thử nghiệm tư duy — Tăng cỡ mẫu lên gấp 4 lần ($$n = 36$$):** Nếu vẫn thu được $$\bar{x} = 2{,}40$$ và $$s = 0{,}60$$, khi đó $$\mathrm{SE} = 0{,}60/\sqrt{36} = 0{,}10$$ và $$t_{0{,}025;\,35} \approx 2{,}030$$, nên biên sai số thu hẹp xuống còn $$\mathrm{ME} = 0{,}203\text{ giây}$$ (khoảng $$[2{,}197,\; 2{,}603]$$). Muốn giảm một nửa độ rộng khoảng tin cậy, bạn phải trả giá bằng **gấp 4 lần dữ liệu** (quy luật $$1/\sqrt{n}$$)!
+
+### Khung giải thích: Ba câu hỏi cần tự kiểm trước khi đọc một khoảng tin cậy (nên đọc chậm)
+
+1. **Khoảng này đo bất định của cái gì?** Sai số chuẩn $$s/\sqrt{n}$$ đo độ dao động của *trung bình mẫu*, KHÔNG phải độ trải rộng của từng cá thể dữ liệu (độ lệch chuẩn $$s$$). Đừng nhầm khoảng tin cậy 95% của trung bình với khoảng chứa 95% dữ liệu!
+2. **Độ tin cậy và độ rộng luôn đánh đổi nhau:** Với cùng một bộ dữ liệu, muốn tăng độ tin cậy từ 95% lên 99% ($$t_{0{,}005;\,8} \approx 3{,}355$$), khoảng bắt buộc phải phình rộng thêm gần 45%. Con đường duy nhất vừa tin cậy cao vừa hẹp là thu thập thêm mẫu hoặc giảm nhiễu đo lường.
+3. **Diễn giải đúng tinh thần tần suất:** Khoảng $$[1{,}939,\; 2{,}861]$$ được sinh ra bởi một quy trình mà nếu lặp lại vô số lần, 95% số khoảng sẽ phủ trúng $$\mu$$. Hãy coi nó là tập hợp những giá trị $$\mu$$ "tương thích hợp lý" với dữ liệu hiện tại.
+4. **Khi nào chuyển sang Bootstrap?** Khi dữ liệu lệch mạnh, mẫu vừa phải, hoặc thống kê bạn quan tâm không phải trung bình (ví dụ: trung vị thời gian phản hồi p50 hay p99), hãy dùng Bootstrap thay vì ép công thức $$t$$ đối xứng.
+
+**Kiểm tra nhanh.** Nếu mục tiêu SLA của trang web là thời gian tải trung bình phải nhỏ hơn $$2{,}0\text{ giây}$$, nhìn vào khoảng tin cậy 95% ở trên ($$[1{,}939,\; 2{,}861]$$ khi $$n=9$$ so với $$[2{,}197,\; 2{,}603]$$ khi $$n=36$$), trong trường hợp nào ta đã đủ bằng chứng khẳng định trang web đang *vi phạm* SLA ở mức ý nghĩa 5%?
+
+---
 
 ## Video Tham Khảo
 

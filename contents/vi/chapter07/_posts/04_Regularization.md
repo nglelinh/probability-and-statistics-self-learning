@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Điều chuẩn (regularization) là một trong những kỹ thuật quan trọng trong học máy hiện đại. Khi mô hình đối mặt với quá khớp (overfitting) hoặc đa cộng tuyến (multicollinearity), thay vì loại bỏ thủ công các đặc trưng, ta "co" (shrink) các hệ số hồi quy về gần 0. Bài học này giới thiệu hai phương pháp điều chuẩn phổ biến là Ridge (L2) và Lasso (L1), đồng thời giải thích cơ chế giúp Lasso tự động chọn lọc đặc trưng.
+Hãy tưởng tượng bạn xây mô hình dự đoán giá nhà bằng OLS và vô tình đưa vào đồng thời hai biến đo gần như cùng một thứ: diện tích sàn tính bằng $$\text{m}^2$$ ($$X_1$$) và diện tích sàn tính bằng $$\text{ft}^2$$ cộng thêm chút sai số đo ($$X_2$$). Khi giải phương trình OLS, ma trận $$\mathbf{X}^T\mathbf{X}$$ trở nên gần suy biến và các hệ số bỗng nổ tung theo hai hướng ngược nhau: chẳng hạn $$\hat{\beta}_1 = +5{,}000$$ và $$\hat{\beta}_2 = -464$$! Trên tập huấn luyện chúng triệt tiêu nhau rất khéo, nhưng chỉ cần một sai số đo nhỏ trên căn nhà mới, dự báo sẽ văng lệch hàng tỷ đồng.
+
+**Điều chuẩn (Regularization) — Ridge (L2), Lasso (L1) và Elastic Net** giải quyết triệt để hiện tượng quá khớp và đa cộng tuyến bằng một ý tưởng kinh tế cực kỳ sâu sắc: **đánh thuế lên độ lớn của các hệ số**. Chấp nhận hy sinh một chút độ chệch (bias) để kéo tụt phương sai (variance) xuống — đó là minh họa sống động nhất cho nguyên lý *Bias–Variance Trade-off* trong học máy hiện đại.
+
+---
+
+## Bản đồ kiến thức nền: Bốn góc nhìn giúp hiểu thấu Ridge, Lasso và Elastic Net
+
+Tại sao chỉ đổi bình phương $$\beta_j^2$$ (L2) thành trị tuyệt đối $$\lvert\beta_j\rvert$$ (L1) lại tạo ra khác biệt một trời một vực về khả năng chọn lọc đặc trưng? Hãy nhìn qua bốn lăng kính:
+
+1. **Tối ưu có ràng buộc & Hình học hình cầu L2 vs. Hình thoi L1:** Thêm hình phạt $$\lambda\|\boldsymbol{\beta}\|_2^2$$ tương đương ràng buộc $$\boldsymbol{\beta}$$ nằm trong một **hình cầu tròn trơn**; đường đồng mức hình elip của hàm mất mát OLS thường tiếp xúc tại điểm có các tọa độ *khác 0*. Ngược lại, hình phạt $$\lambda\|\boldsymbol{\beta}\|_1$$ tương đương ràng buộc trong một **hình thoi có góc nhọn nằm đúng trên các trục tọa độ** — nơi các hệ số bị ép về **đúng bằng 0**!
+2. **Nghịch đảo ổn định ma trận trong Ridge:** Nghiệm dạng đóng của Ridge là $$\hat{\boldsymbol{\beta}}_{\text{Ridge}} = (\mathbf{X}^T\mathbf{X} + \lambda I)^{-1}\mathbf{X}^T\mathbf{y}$$. Cộng thêm $$\lambda I$$ đẩy mọi giá trị riêng của $$\mathbf{X}^T\mathbf{X}$$ tăng thêm $$\lambda > 0$$, giúp ma trận luôn khả nghịch kể cả khi $$p > n$$ hay đa cộng tuyến hoàn toàn.
+3. **Diễn giải Bayes (MAP Estimation):** Ridge hoàn toàn tương đương với ước lượng hậu nghiệm cực đại (MAP) khi đặt tiên nghiệm **Gauss** $$\beta_j \sim \mathcal{N}(0, \tau^2)$$; còn Lasso tương đương với tiên nghiệm **Laplace** (đỉnh nhọn tại 0, đuôi dày hơn Gauss).
+4. **Chuẩn hóa đặc trưng (Scaling) & Cross-Validation:** Vì hình phạt đánh trực tiếp lên độ lớn số học của $$\beta_j$$, bạn **bắt buộc phải chuẩn hóa** mọi biến về cùng thang đo (trung bình 0, độ lệch chuẩn 1) trước khi chạy Ridge/Lasso (và không phạt hệ số chặn $$\beta_0$$); siêu tham số $$\lambda$$ được chọn bằng kiểm chứng chéo.
 
 ---
 
@@ -330,7 +343,7 @@ def practical_feature_selection():
 
 | Đặc điểm | Ridge (L2) | Lasso (L1) | Elastic Net |
 |----------|------------|------------|-------------|
-| Số hạng phạt | $$\sum \beta_j^2$$ | $$\sum \|\beta_j\|$$ | L1 + L2 |
+| Số hạng phạt | $$\sum \beta_j^2$$ | $$\sum \vert\beta_j\vert$$ | L1 + L2 |
 | Đưa hệ số về đúng 0 | Không | Có | Có |
 | Chọn lọc đặc trưng | Không | Có | Có |
 | Nhóm đặc trưng tương quan | Co đều về gần 0 | Chọn 1 biến | Giữ cả nhóm |
@@ -340,6 +353,38 @@ def practical_feature_selection():
 - **Ridge:** Phù hợp khi hầu hết các đặc trưng đều đóng góp thông tin và mục tiêu chính là giảm quá khớp.
 - **Lasso:** Phù hợp khi nhiều đặc trưng có thể không hữu ích và cần mô hình thưa để chọn lọc biến.
 - **Elastic Net:** Phù hợp khi có các nhóm đặc trưng tương quan mạnh hoặc khi $$p > n$$.
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Tận mắt thấy Lasso ép nhiễu về 0 còn Ridge thì không
+
+Xét trường hợp trực giao chuẩn hóa ($$\mathbf{X}^T\mathbf{X} = I$$) với 2 đặc trưng độc lập:
+- Đặc trưng 1 là **tín hiệu mạnh** có ước lượng OLS $$\hat{\beta}_1^{\text{OLS}} = 3{,}0$$.
+- Đặc trưng 2 là **nhiễu yếu** có ước lượng OLS $$\hat{\beta}_2^{\text{OLS}} = 0{,}4$$.
+
+Với hàm mục tiêu chuẩn hóa $$\frac{1}{2}\|\mathbf{y} - \mathbf{X}\boldsymbol{\beta}\|_2^2 + \text{phạt}$$ và chọn $$\lambda = 1{,}0$$:
+
+1. **Hồi quy Ridge** (phạt $$\frac{\lambda}{2}\sum \beta_j^2$$, đạo hàm bằng 0 cho nghiệm đóng $$\hat{\beta}_j^{\text{Ridge}} = \frac{\hat{\beta}_j^{\text{OLS}}}{1 + \lambda}$$):
+   - $$\hat{\beta}_1^{\text{Ridge}} = \frac{3{,}0}{1 + 1} = 1{,}50.$$
+   - $$\hat{\beta}_2^{\text{Ridge}} = \frac{0{,}4}{1 + 1} = 0{,}20 \neq 0.$$
+   *(Ridge co tỷ lệ tất cả hệ số xuống 50%, nhưng không bao giờ loại bỏ hẳn biến nhiễu!)*
+
+2. **Hồi quy Lasso** (phạt $$\lambda\sum \lvert\beta_j\rvert$$, nghiệm ngưỡng mềm *soft-thresholding* $$\hat{\beta}_j^{\text{Lasso}} = \mathrm{sign}(z_j)\max(\lvert z_j\rvert - \lambda,\, 0)$$ với $$z_j = \hat{\beta}_j^{\text{OLS}}$$):
+   - $$\hat{\beta}_1^{\text{Lasso}} = \max(3{,}0 - 1{,}0,\, 0) = 2{,}00.$$
+   - $$\hat{\beta}_2^{\text{Lasso}} = \max(0{,}4 - 1{,}0,\, 0) = \mathbf{0}!$$
+
+Chỉ một dòng phép trừ đã lột tả trọn vẹn sự khác biệt: **Ridge co theo tỷ lệ** (chia cho $$1+\lambda$$), còn **Lasso trừ đi một lượng cố định $$\lambda$$ và cắt phẳng về 0** mọi hệ số yếu hơn ngưỡng $$\lambda$$!
+
+### Khung giải thích: Bốn câu hỏi giúp chọn đúng giữa OLS, Ridge, Lasso và Elastic Net (nên đọc chậm)
+
+1. **Đã chuẩn hóa đặc trưng chưa?** Nếu biến $$X_1$$ đo bằng km còn $$X_2$$ đo bằng mét, hệ số $$\beta_1$$ sẽ lớn gấp 1.000 lần $$\beta_2$$ và bị Ridge/Lasso phạt oan nặng gấp triệu lần. Luôn đưa bước `StandardScaler` vào bên trong *Pipeline* (chỉ fit trên tập train!).
+2. **Bài toán của bạn là *thưa* (sparse) hay *dày* (dense)?** Nếu tin rằng chỉ có một nhóm nhỏ đặc trưng thực sự quan trọng trong hàng trăm biến (ví dụ chọn gene), dùng **Lasso**. Nếu hầu hết các biến đều đóng góp một chút và có tương quan chặt với nhau, **Ridge** thường dự báo tốt hơn.
+3. **Khi nhiều biến quan trọng tương quan mạnh với nhau:** Lasso có xu hướng chọn ngẫu nhiên 1 biến và đẩy các biến anh em về 0. **Elastic Net** (trộn cả L1 và L2) vừa giữ được tính thưa, vừa giữ trọn nhóm biến tương quan cùng nhau.
+4. **Cẩn thận khi suy diễn p-value sau Lasso:** Chọn biến bằng Lasso rồi chạy lại OLS lấy p-value trên cùng dữ liệu sẽ tạo ra p-value quá lạc quan (lỗi *post-selection inference*). Hãy dùng tập kiểm tra tách biệt để đánh giá công bằng.
+
+**Kiểm tra nhanh.** Trong ví dụ trực giao trên ($$\hat{\beta}_1^{\text{OLS}} = 3{,}0$$, $$\hat{\beta}_2^{\text{OLS}} = 0{,}4$$), nếu ta tăng hệ số phạt lên $$\lambda = 4{,}0$$, hai hệ số của **Ridge** và **Lasso** sẽ lần lượt bằng bao nhiêu?
+
+---
 
 ## Video tham khảo
 

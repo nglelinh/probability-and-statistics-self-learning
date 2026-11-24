@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Hồi quy tuyến tính đơn giản là cầu nối giữa thống kê cổ điển và học máy (machine learning). Trong bài học này, chúng ta sẽ tiếp cận hồi quy tuyến tính từ góc độ thống kê: không chỉ khớp một đường thẳng vào dữ liệu, mà còn hiểu độ bất định của các ước lượng, kiểm định giả thuyết cho các hệ số hồi quy và đánh giá mức độ phù hợp của mô hình. Đây là nền tảng để tiếp cận các mô hình phức tạp hơn trong học máy.
+Vào thế kỷ 19, nhà bác học người Anh Francis Galton cẩn thận đo chiều cao của hàng trăm cặp cha–con và nhận ra một quy luật khiến ông kinh ngạc: con trai của những người cha rất cao thường vẫn cao hơn mức trung bình, nhưng lại *thấp hơn cha mình*; ngược lại, con của những người cha rất thấp lại có xu hướng cao hơn cha. Galton gọi xu hướng kéo về giữa đó là *"hồi quy về trung bình" (regression toward the mean)* — và cái tên **hồi quy (regression)** ra đời từ đó!
+
+Ngày nay, **tương quan và hồi quy tuyến tính đơn giản** là viên gạch đầu tiên nối thống kê cổ điển với học máy hiện đại. Bài học này không chỉ giúp bạn vẽ một đường thẳng đi qua đám mây điểm, mà còn trang bị đầy đủ bộ công cụ phản biện dữ liệu: phân biệt **tương quan với nhân quả** (tránh bẫy tương quan giả và biến gây nhiễu), hiểu **Pearson vs. Spearman**, giải mã **$$R^2$$**, và xây dựng khoảng tin cậy lẫn khoảng dự báo.
+
+---
+
+## Bản đồ kiến thức nền: Bốn mảnh ghép cốt lõi của Tương quan và Hồi quy đơn
+
+Trước khi chạy hồi quy trên dữ liệu thật, người làm khoa học dữ liệu cần phân biệt rạch ròi bốn khái niệm thường bị trộn lẫn:
+
+1. **Tương quan tuyến tính (Pearson) vs. Đơn điệu (Spearman):** Hệ số Pearson $$r$$ chỉ đo độ thẳng hàng tuyến tính và rất nhạy với điểm ngoại lệ; Spearman tính Pearson trên *thứ hạng* nên bắt được cả quan hệ cong đơn điệu (như hàm mũ hay logarit). Và quy tắc bất di bất dịch: **tương quan không đồng nghĩa với nhân quả** (hai biến có thể cùng tăng chỉ vì chung một biến gây nhiễu $$Z$$).
+2. **Tiêu chuẩn Bình phương Tối thiểu (OLS):** Hồi quy đơn tìm đường thẳng $$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x$$ tối thiểu hóa tổng bình phương sai số theo phương thẳng đứng $$\sum (y_i - \hat{y}_i)^2$$. Hệ số góc liên hệ trực tiếp với tương quan qua công thức đẹp mắt: $$\hat{\beta}_1 = r \frac{s_y}{s_x}$$.
+3. **Phân rã phương sai & Hệ số xác định $$R^2$$:** Tổng biến thiên của $$Y$$ (TSS) tách gọn thành phần mô hình giải thích được (ESS) cộng phần dư chưa giải thích (RSS). Trong hồi quy đơn, $$R^2 = r^2$$ đúng bằng tỷ lệ phương sai của $$Y$$ được giải thích bởi đường thẳng.
+4. **Kiểm tra giả định phần dư (LINE):** Đường hồi quy chỉ đáng tin về mặt suy diễn khi quan hệ là **L**inear (tuyến tính), sai số **I**ndependent (độc lập), **N**ormal (xấp xỉ chuẩn), và **E**qual variance (phương sai đồng nhất).
 
 ---
 
@@ -594,6 +607,44 @@ def prediction_intervals():
 
 # prediction_intervals()
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Khớp đường hồi quy OLS, tính $$r$$ và $$R^2$$ trên 4 điểm dữ liệu
+
+Giả sử ta quan sát 4 sinh viên với số giờ ôn tập $$x_i$$ và điểm bài kiểm tra $$y_i$$:
+
+$$(1, 3),\quad (2, 5),\quad (3, 5),\quad (4, 7).$$
+
+Hãy tính mọi đại lượng bằng tay trong chưa đầy 1 phút:
+1. **Trung bình mẫu:** $$\bar{x} = \frac{1+2+3+4}{4} = 2{,}5$$ và $$\bar{y} = \frac{3+5+5+7}{4} = 5{,}0$$.
+2. **Lập bảng độ lệch quanh trung bình:**
+
+| $$x_i$$ | $$y_i$$ | $$x_i - \bar{x}$$ | $$y_i - \bar{y}$$ | $$(x_i-\bar{x})^2$$ | $$(x_i-\bar{x})(y_i-\bar{y})$$ | $$(y_i-\bar{y})^2$$ |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| $$1$$ | $$3$$ | $$-1{,}5$$ | $$-2{,}0$$ | $$2{,}25$$ | $$+3{,}0$$ | $$4{,}0$$ |
+| $$2$$ | $$5$$ | $$-0{,}5$$ | $$0{,}0$$ | $$0{,}25$$ | $$0{,}0$$ | $$0{,}0$$ |
+| $$3$$ | $$5$$ | $$+0{,}5$$ | $$0{,}0$$ | $$0{,}25$$ | $$0{,}0$$ | $$0{,}0$$ |
+| $$4$$ | $$7$$ | $$+1{,}5$$ | $$+2{,}0$$ | $$2{,}25$$ | $$+3{,}0$$ | $$4{,}0$$ |
+| **Tổng** | — | $$0$$ | $$0$$ | $$S_{xx} = 5{,}0$$ | $$S_{xy} = 6{,}0$$ | $$S_{yy} = 8{,}0$$ |
+
+3. **Tính hệ số hồi quy OLS:**
+   $$\hat{\beta}_1 = \frac{S_{xy}}{S_{xx}} = \frac{6{,}0}{5{,}0} = 1{,}2,\qquad \hat{\beta}_0 = \bar{y} - \hat{\beta}_1\bar{x} = 5{,}0 - 1{,}2(2{,}5) = 2{,}0.$$
+   Đường hồi quy là $$\hat{y} = 2{,}0 + 1{,}2x$$ (mỗi giờ ôn tăng thêm tương ứng tăng trung bình $$1{,}2$$ điểm).
+4. **Tính tương quan $$r$$, $$R^2$$ và kiểm tra phần dư:**
+   $$r = \frac{S_{xy}}{\sqrt{S_{xx} S_{yy}}} = \frac{6{,}0}{\sqrt{5{,}0 \times 8{,}0}} = \frac{6}{\sqrt{40}} \approx 0{,}9487, \qquad R^2 = r^2 = \frac{36}{40} = 0{,}90.$$
+   Các giá trị dự báo là $$\hat{y} = (3{,}2;\; 4{,}4;\; 5{,}6;\; 6{,}8)$$, phần dư $$e = (-0{,}2;\; +0{,}6;\; -0{,}6;\; +0{,}2)$$ có tổng đúng bằng $$0$$ và tổng bình phương $$\mathrm{RSS} = 0{,}04+0{,}36+0{,}36+0{,}04 = 0{,}80$$ — khớp khít với $$\mathrm{TSS}(1 - R^2) = 8{,}0 \times 0{,}10 = 0{,}80$$!
+
+### Khung giải thích: Bốn bước đọc hiểu một mô hình hồi quy đơn không rơi vào bẫy (nên đọc chậm)
+
+1. **Vẽ biểu đồ phân tán (scatter plot) trước khi tính $$r$$:** Bộ tứ Anscombe nổi tiếng gồm 4 tập dữ liệu có *cùng* $$\bar{x}, \bar{y}, r = 0{,}816$$ và *cùng* đường hồi quy, nhưng hình dáng hoàn toàn khác nhau (một đường cong parabol, một đường thẳng bị một điểm ngoại lệ kéo lệch). Không bao giờ tin $$r$$ hay $$R^2$$ mà chưa nhìn đồ thị!
+2. **Đừng nhầm tương quan mạnh với quan hệ nhân quả:** Số kem bán ra và số vụ đuối nước có $$r > 0{,}9$$ chỉ vì cả hai cùng bị chi phối bởi nhiệt độ mùa hè (biến gây nhiễu). Muốn kết luận nhân quả cần thử nghiệm ngẫu nhiên (A/B) hoặc thiết kế suy diễn nhân quả.
+3. **Tránh ngoại suy quá xa miền dữ liệu:** Phương trình $$\hat{y} = 2{,}0 + 1{,}2x$$ hợp lý cho $$x \in [1, 4]$$ giờ, nhưng thay $$x = 20$$ giờ sẽ cho $$\hat{y} = 26$$ điểm — vượt khỏi thang điểm 10!
+4. **Nhìn biểu đồ phần dư để chẩn đoán:** Nếu phần dư vẽ theo $$\hat{y}$$ tạo hình chữ U (phi tuyến) hoặc hình cái phễu (phương sai thay đổi), mô hình tuyến tính đơn đang bỏ sót cấu trúc quan trọng.
+
+**Kiểm tra nhanh.** Trong ví dụ 4 điểm ở trên, nếu bạn tăng tất cả điểm thi $$y_i$$ lên gấp đôi (nhân 2) còn giữ nguyên số giờ ôn $$x_i$$, thì hệ số góc $$\hat{\beta}_1$$ và hệ số tương quan $$r$$ sẽ thay đổi ra sao?
+
+---
 
 ## Video tham khảo
 

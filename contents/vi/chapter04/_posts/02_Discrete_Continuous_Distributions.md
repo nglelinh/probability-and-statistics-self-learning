@@ -10,6 +10,28 @@ categories:
 lesson_type: required
 ---
 
+Khi mới mở sách giáo khoa xác suất, nhiều người thấy choáng ngợp trước một "rừng" tên gọi: Bernoulli, Nhị thức, Poisson, Hình học, Đều, Mũ, Chuẩn… cùng hàng tá công thức hàm mật độ phức tạp. Bí quyết để không bao giờ phải học vẹt chúng là: **mỗi phân phối xác suất thực chất chỉ là một câu chuyện kể về cách tự nhiên sinh ra sự ngẫu nhiên**.
+
+Tung một đồng xu có tỷ lệ thành công $$p$$ là Bernoulli; đếm số lần ngửa trong $$n$$ lần tung là Nhị thức; đếm số email đến trong một giờ là Poisson; đo thời gian ngồi chờ tới chiếc email kế tiếp là phân phối Mũ; và cộng dồn vô số tác động nhỏ độc lập lại luôn dẫn về chiếc chuông phân phối Chuẩn. Nắm được "gia phả" kể chuyện này, bạn sẽ chọn đúng mô hình chỉ trong vài giây.
+
+---
+
+## Bản đồ kiến thức nền: Gia phả các phân phối xác suất rời rạc và liên tục
+
+Thay vì học rời rạc từng công thức, hãy nhìn cả hai họ phân phối như hai nhánh cây có quan hệ họ hàng chặt chẽ:
+
+1. **Nhánh Rời rạc (Đếm số lần xảy ra):**
+   - **Bernoulli($$p$$):** 1 phép thử Có/Không.
+   - **Nhị thức — Binomial($$n, p$$):** Tổng của $$n$$ phép thử Bernoulli độc lập.
+   - **Hình học — Geometric($$p$$):** Số lần thử cho tới khi gặp thành công *đầu tiên*.
+   - **Poisson($$\lambda$$):** Giới hạn của Nhị thức khi $$n$$ rất lớn, $$p$$ rất nhỏ và $$\lambda = np$$ cố định — đếm số biến cố hiếm trong một khoảng thời gian/không gian.
+2. **Nhánh Liên tục (Đo thời gian, độ dài, sai số):**
+   - **Đều — Uniform($$a, b$$):** Mọi điểm trong $$[a, b]$$ bình đẳng như nhau.
+   - **Mũ — Exponential($$\lambda$$):** Thời gian chờ giữa hai sự kiện liên tiếp trong quá trình Poisson — phân phối liên tục duy nhất có tính chất *không nhớ*.
+   - **Chuẩn — Normal($$\mu, \sigma^2$$):** Giới hạn phổ quát khi cộng dồn nhiều biến ngẫu nhiên độc lập (Định lý Giới hạn Trung tâm).
+
+---
+
 ## Phân Phối Rời Rạc
 
 ### 1. Phân Phối Bernoulli (Bernoulli Distribution)
@@ -398,6 +420,23 @@ def demonstrate_distribution_relationships():
 
 # demonstrate_distribution_relationships()
 ```
+
+### Khung giải thích: tự tay kiểm tra xấp xỉ Nhị thức → Poisson và tính chất "không nhớ" của phân phối Mũ (nên đọc chậm)
+
+1. **Kiểm tra cầu nối Nhị thức → Poisson bằng số cụ thể:**
+   Một dây chuyền sản xuất $$n = 100$$ vi mạch mỗi giờ, xác suất mỗi chip lỗi là $$p = 0.02$$ (kỳ vọng số chip lỗi $$\lambda = np = 2$$). Tính xác suất **không có chip nào lỗi** ($$X = 0$$):
+   - **Công thức Nhị thức chính xác:**
+     $$P_{\text{Bin}}(X = 0) = \binom{100}{0}(0.02)^0(0.98)^{100} = 0.98^{100} \approx 0.1326.$$
+   - **Công thức xấp xỉ Poisson ($$\lambda = 2$$):**
+     $$P_{\text{Pois}}(X = 0) = \frac{e^{-2}\cdot 2^0}{0!} = e^{-2} \approx 0.1353.$$
+   Chỉ mất một nút bấm $$e^{-2}$$ thay vì tính tổ hợp khổng lồ, kết quả đã khớp sát tới $$0.0027$$!
+
+2. **Kiểm tra tính chất không nhớ (Memoryless) của phân phối Mũ:**
+   Giả sử thời gian chờ xe buýt $$T \sim \mathrm{Exp}(\lambda = 0.1)$$ (trung bình chờ $$1/\lambda = 10$$ phút), nên $$P(T > t) = e^{-0.1 t}$$. Bạn đã đứng chờ suốt 5 phút mà xe chưa tới — hỏi xác suất phải chờ *thêm ít nhất 10 phút nữa* (tức tổng thời gian $$T > 15$$) là bao nhiêu?
+   $$
+   P(T > 15 \mid T > 5) = \frac{P(T > 15)}{P(T > 5)} = \frac{e^{-0.1(15)}}{e^{-0.1(5)}} = \frac{e^{-1.5}}{e^{-0.5}} = e^{-1.0} = P(T > 10) \approx 36.8\%!
+   $$
+   Xác suất chờ thêm 10 phút hoàn toàn **y hệt như lúc bạn mới bước ra bến xe** — phân phối Mũ quên sạch quá khứ!
 
 ## Video Tham Khảo
 

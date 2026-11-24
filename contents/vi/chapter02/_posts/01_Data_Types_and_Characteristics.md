@@ -6,6 +6,23 @@ order: 1
 owner: "nglelinh"
 ---
 
+Nếu ai đó cộng mã bưu điện của TP. Hồ Chí Minh (`70000`) với Hà Nội (`10000`) rồi chia đôi để kết luận "mã bưu điện trung bình của hai thành phố là `40000`", hẳn bạn sẽ bật cười vì sự vô nghĩa đó. Thế nhưng trong phân tích dữ liệu thực tế, rất nhiều lỗi ngớ ngẩn lại xảy ra theo đúng kiểu ấy — chỉ tinh vi hơn một chút: lấy trung bình số sao đánh giá 1–5 rồi xem khoảng cách từ 1 lên 2 sao bằng hệt khoảng cách từ 4 lên 5 sao, hay tuyên bố hôm nay $$40^\circ\mathrm{C}$$ "nóng gấp đôi" hôm qua $$20^\circ\mathrm{C}$$!
+
+Mọi công cụ thống kê — từ trung bình, trung vị, biểu đồ cột đến mô hình học máy — đều chỉ có ý nghĩa khi ta tôn trọng **bản chất và thang đo của dữ liệu**. Bài học mở đầu Chương 2 giúp bạn phân loại rạch ròi từng kiểu dữ liệu trước khi thực hiện bất kỳ phép tính nào.
+
+---
+
+## Bản đồ kiến thức nền: Thang đo dữ liệu (NOIR) là gì và nghiên cứu những gì?
+
+Trong thống kê mô tả, dữ liệu được tổ chức theo hai trục: **Định tính vs. Định lượng** (rời rạc/liên tục) và **4 thang đo kinh điển của Stevens (NOIR)** — mỗi nấc mở khóa thêm một nhóm phép toán hợp lệ:
+
+1. **Định danh (Nominal):** Chỉ phân loại nhãn không có thứ tự (màu mắt, tỉnh thành, mã sản phẩm) → chỉ hợp lệ phép **đếm tần suất và Mode**.
+2. **Thứ bậc (Ordinal):** Có thứ tự rõ ràng nhưng khoảng cách giữa các bậc không nhất thiết bằng nhau (xếp hạng 1–5 sao, mức độ hài lòng) → thêm được **Trung vị (Median) và phân vị**.
+3. **Khoảng (Interval):** Hiệu số giữa hai giá trị có ý nghĩa vật lý đều nhau, nhưng **số 0 là quy ước tùy ý** (nhiệt độ $$^\circ\mathrm{C}$$, năm dương lịch) → cộng/trừ và **Trung bình** hợp lệ, nhưng **phép chia tỷ số vô nghĩa**.
+4. **Tỷ lệ (Ratio):** Có **điểm 0 tuyệt đối** (thu nhập, chiều cao, thời gian, nhiệt độ Kelvin) → mọi phép toán cộng, trừ, nhân, chia tỷ số đều hợp lệ.
+
+---
+
 ## 1. Mục tiêu bài học
 
 Sau khi hoàn thành bài học này, người học có thể:
@@ -119,6 +136,24 @@ print(f"Thạc Sĩ > Cử Nhân: {df.iloc[2]['TrinhDo_HocVan'] > df.iloc[0]['Tri
 ### Lỗi 2: Chọn sai biểu đồ cho kiểu dữ liệu
 - **Sai lầm**: Vẽ biểu đồ đường (line plot) cho dữ liệu danh mục không có thứ tự.
 - **Hậu quả**: Đường nối giữa các nhãn danh mục tạo cảm giác về một xu hướng liên tục không hề tồn tại.
+
+### Khung giải thích: tự tay kiểm tra vì sao $$40^\circ\mathrm{C}$$ KHÔNG "nóng gấp đôi" $$20^\circ\mathrm{C}$$ (nên đọc chậm)
+
+Hãy kiểm chứng sự khác biệt giữa thang **Khoảng (Interval)** và thang **Tỷ lệ (Ratio)** bằng phép đổi đơn vị đơn giản:
+
+1. **Kiểm tra nhiệt độ (Thang Khoảng):** So sánh hai ngày $$20^\circ\mathrm{C}$$ và $$40^\circ\mathrm{C}$$.
+   - Tỷ số ngây thơ theo độ C: $$\frac{40}{20} = 2.0$$ ("nóng gấp đôi"?).
+   - Đổi sang thang đo vật lý tuyệt đối **Kelvin** ($$K = {}^\circ\mathrm{C} + 273.15$$):
+     $$
+     20^\circ\mathrm{C} = 293.15\,\mathrm{K}, \qquad 40^\circ\mathrm{C} = 313.15\,\mathrm{K}
+     \;\Longrightarrow\;
+     \frac{313.15}{293.15} \approx 1.068!
+     $$
+   Năng lượng nhiệt thực tế chỉ tăng có **6.8%**, hoàn toàn không phải 100%! Nguyên nhân: điểm $$0^\circ\mathrm{C}$$ chỉ là nhiệt độ đóng băng của nước (quy ước), không phải trạng thái "không có nhiệt". Trong khi đó, *hiệu số* $$40 - 20 = 20^\circ\mathrm{C} = 313.15 - 293.15 = 20\,\mathrm{K}$$ lại hoàn toàn bất biến!
+
+2. **Đối chiếu với thu nhập (Thang Tỷ lệ):** Thu nhập 20 triệu và 40 triệu VND. Đổi sang USD (chia cho $$25{,}000$$) ta được $$800$$ USD và $$1{,}600$$ USD — tỷ số $$\frac{1600}{800} = \frac{40}{20} = 2.0$$ **giữ nguyên bất biến** vì 0 đồng thực sự có nghĩa là không có tiền!
+
+**Quy tắc vàng trước khi code:** Khi đưa biến định danh (như mã vùng `1, 2, 3`) vào mô hình học máy, hãy dùng **One-Hot Encoding** thay vì để nguyên số nguyên — nếu không, mô hình tuyến tính sẽ hiểu nhầm vùng `3` "lớn gấp ba lần" vùng `1`!
 
 ## Video tham khảo
 

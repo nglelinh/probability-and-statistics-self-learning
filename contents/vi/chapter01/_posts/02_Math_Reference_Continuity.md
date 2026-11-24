@@ -10,7 +10,19 @@ categories:
 lesson_type: required
 ---
 
-Bài học này giới thiệu các khái niệm cơ bản về tính liên tục, tính liên tục đều và tính liên tục Lipschitz — những công cụ cần thiết để phân tích hành vi của hàm số trong tối ưu hóa.
+Hãy hình dung một cảm biến nhiệt độ công nghiệp đo sai lệch chỉ $$0.001^\circ\mathrm{C}$$. Liệu sai số nhỏ xíu đó sẽ chỉ làm kết quả dự đoán lệch đi một chút không đáng kể, hay nó có thể khiến toàn bộ hệ thống điều khiển nhảy vọt sang một trạng thái hoàn toàn khác? Câu trả lời không nằm ở phần cứng, mà nằm ở một khái niệm giải tích quen thuộc nhưng thường bị dạy quá khô khan: **tính liên tục** và các cấp độ chặt chẽ hơn của nó (**liên tục đều**, **liên tục Lipschitz**).
+
+Trong xác suất, thống kê và học máy, tính liên tục là "hợp đồng ổn định" của mọi mô hình: nó đảm bảo rằng khi dữ liệu đầu vào nhiễu đi một chút, xác suất hay giá trị hàm mất mát không bị vỡ vụn, và các thuật toán tối ưu như Gradient Descent có thể hội tụ an toàn.
+
+---
+
+## Bản đồ kiến thức nền: Tính liên tục, Liên tục đều và Lipschitz là gì?
+
+Ba khái niệm trong bài này tạo thành một **chiếc thang độ mượt tăng dần** — mỗi bậc chặt hơn cho ta những bảo đảm mạnh hơn trong thống kê và học máy:
+
+1. **Liên tục tại từng điểm (Pointwise Continuity):** Đầu vào thay đổi đủ nhỏ quanh điểm $$x_0$$ thì đầu ra thay đổi nhỏ tùy ý — nhưng mức "đủ nhỏ" $$\delta$$ có thể phải thu nhỏ thê thảm tùy theo vị trí $$x_0$$.
+2. **Liên tục đều (Uniform Continuity):** Một thước đo $$\delta(\varepsilon)$$ duy nhất hoạt động *đồng thời trên toàn bộ miền xác định*, không phụ thuộc vào vị trí $$x$$ — cực kỳ cần thiết để đổi thứ tự giới hạn và tích phân trong lý thuyết xác suất.
+3. **Liên tục Lipschitz ($$\lvert f(x) - f(y)\rvert \le L\lvert x - y\rvert$$):** Độ dốc của hàm bị chặn toàn cục bởi hằng số $$L$$. Đây là điều kiện vàng trong **bất đẳng thức tập trung độ đo**, **đối ngẫu Wasserstein-1**, và **chứng minh hội tụ của Gradient Descent**.
 
 ---
 
@@ -107,6 +119,22 @@ Ba lớp hàm tương ứng với ba điều kiện trên tạo thành một qua
 **Ví dụ 4: $$f(x) = \sqrt{x}$$**
 - **Trên $$[0,1]$$**: Liên tục và liên tục đều, nhưng không liên tục Lipschitz (đạo hàm không bị chặn gần $$x = 0$$).
 - **Trên $$[a,1]$$ với $$a > 0$$**: Liên tục Lipschitz với $$L = 1/(2\sqrt{a})$$.
+
+### Khung giải thích: tự tay kiểm chứng $$f(x) = x^2$$ liên tục nhưng KHÔNG liên tục đều trên $$\mathbb{R}$$ (nên đọc chậm)
+
+Nhiều sinh viên học thuộc câu *"$$f(x) = x^2$$ không liên tục đều trên $$\mathbb{R}$$"* mà chưa từng thử thay số thật để thấy nó hỏng ở đâu. Hãy tự tay kiểm tra ngay trên giấy:
+
+1. **Cố định ngưỡng sai số đầu ra $$\varepsilon = 1$$.** Nếu $$f(x) = x^2$$ liên tục đều trên toàn bộ $$\mathbb{R}$$, thì phải tồn tại một khoảng cách $$\delta > 0$$ dùng chung cho mọi nơi sao cho hễ $$\lvert y - x\rvert < \delta$$ thì $$\lvert y^2 - x^2\rvert < 1$$.
+2. **Chọn hai điểm rất gần nhau ở xa gốc tọa độ:** Đặt $$x_n = n$$ và $$y_n = n + \frac{1}{n}$$.
+   - Khoảng cách đầu vào: $$\lvert y_n - x_n \rvert = \frac{1}{n}$$. Chọn $$n = 1000$$, hai điểm chỉ cách nhau $$0.001$$ (nhỏ hơn bất kỳ $$\delta > 0$$ nào bạn chọn trước!).
+   - Khoảng cách đầu ra:
+     $$
+     \lvert f(y_n) - f(x_n)\rvert = \Bigl(n + \frac{1}{n}\Bigr)^2 - n^2 = 2 + \frac{1}{n^2} > 2 > \varepsilon = 1!
+     $$
+   Dù ta ép hai điểm đầu vào gần sát nhau cỡ $$0.000001$$, độ chênh đầu ra vẫn vượt quá $$2$$ vì độ dốc $$f'(x) = 2x$$ tăng ra vô cực!
+3. **Đối chiếu với hàm 1-Lipschitz $$g(x) = \sin(x)$$:** Vì $$\lvert g'(x)\rvert = \lvert\cos(x)\rvert \le 1$$ tại mọi $$x \in \mathbb{R}$$, theo định lý giá trị trung bình ta luôn có $$\lvert \sin(y) - \sin(x)\rvert \le 1\cdot\lvert y - x\rvert$$ ở **mọi nơi trên $$\mathbb{R}$$** — chỉ cần chọn $$\delta = \varepsilon$$ là xong!
+
+**Bài học thống kê:** Khi hàm mất mát của mô hình học máy có hằng số Lipschitz $$L$$ hữu hạn (như mất mát Huber hay logistic, thay vì bình phương không bị chặn), mô hình ít bị một vài điểm ngoại lai (outlier) ở xa gốc kéo lệch nghiêm trọng.
 
 ## Video tham khảo
 

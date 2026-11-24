@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Chuyển từ hồi quy (dự đoán giá trị liên tục) sang phân loại (dự đoán nhãn rời rạc) đòi hỏi một cách tiếp cận khác. Hồi quy logistic (logistic regression) mở rộng khung mô hình tuyến tính sang bài toán phân loại thông qua hàm sigmoid. Trong bài học này, chúng ta sẽ tìm hiểu lý do không thể dùng hồi quy tuyến tính cho phân loại, cách hồi quy logistic giải quyết hạn chế đó và phương pháp ước lượng tham số bằng hợp lý cực đại (maximum likelihood).
+Một ngân hàng muốn dự đoán xác suất một khách hàng sẽ vỡ nợ thẻ tín dụng ($$Y = 1$$) hay trả đúng hạn ($$Y = 0$$) dựa trên tỷ lệ nợ trên thu nhập. Nếu thử ép hồi quy tuyến tính OLS vào bài toán này, đường thẳng dự báo sẽ hồn nhiên chạy vọt lên $$1{,}35$$ (xác suất 135%!) hoặc tụt xuống $$-0{,}20$$ (xác suất âm!), đồng thời sai số nhị phân không bao giờ tuân theo phân phối chuẩn đồng phương sai.
+
+**Hồi quy Logistic (Logistic Regression)** giải quyết bài toán phân loại bằng một ý tưởng cực kỳ thanh lịch: giữ nguyên biểu thức tuyến tính $$z = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p$$, nhưng đưa nó đi qua hàm cong chữ S **sigmoid** $$\sigma(z) = \frac{1}{1+e^{-z}}$$ để nén gọn vào khoảng $$(0, 1)$$. Không chỉ là mô hình phân loại tuyến tính nền tảng, hồi quy logistic thực chất chính là một **nơ-ron đơn lẻ** với hàm kích hoạt sigmoid và hàm mất mát cross-entropy — viên gạch khởi nguyên của cả học sâu hiện đại.
+
+---
+
+## Bản đồ kiến thức nền: Bốn trụ cột toán học của Hồi quy Logistic
+
+Để không bao giờ nhầm hồi quy logistic chỉ là "một hàm vẽ đường cong chữ S", hãy nắm vững bốn nền tảng sau:
+
+1. **Tỷ lệ cược (Odds) và Hàm liên kết Logit:** Nếu xác suất xảy ra sự kiện là $$p$$, thì **odds** là $$\frac{p}{1-p} \in (0, \infty)$$ và **log-odds (logit)** là $$\ln\frac{p}{1-p} \in (-\infty, +\infty)$$. Hồi quy logistic mô hình hóa tuyến tính chính log-odds này: $$\ln\frac{p}{1-p} = \mathbf{w}^T\mathbf{x}$$. Do đó mỗi hệ số $$\beta_j$$ có ý nghĩa diễn giải trực tiếp: tăng $$x_j$$ lên 1 đơn vị sẽ **nhân** odds lên $$e^{\beta_j}$$ lần (tỷ số odds — *odds ratio*).
+2. **MLE = Cực tiểu hóa Cross-Entropy (Log-Loss):** Khác với OLS, hồi quy logistic không dùng sai số bình phương (vì bình phương của sigmoid là hàm không lồi, dễ mắc kẹt cực trị địa phương). Thay vào đó, cực đại hóa log-likelihood Bernoulli sinh ra hàm mất mát **Binary Cross-Entropy** — hoàn toàn **lồi toàn cục**, đảm bảo Gradient Descent hay Newton–Raphson luôn hội tụ về đúng một nghiệm tối ưu duy nhất!
+3. **Biên quyết định tuyến tính (Linear Decision Boundary):** Ngưỡng phân loại $$p = 0{,}5$$ tương đương chính xác với siêu phẳng $$\mathbf{w}^T\mathbf{x} = 0$$. Mọi xác suất dự báo đều được quyết định bởi khoảng cách có dấu từ điểm dữ liệu đến siêu phẳng này.
+4. **Đánh giá khi dữ liệu mất cân bằng:** Khi chỉ có 1% giao dịch là gian lận, một mô hình ngốc nghếch luôn đoán "không gian lận" vẫn đạt **Accuracy 99%**. Đó là lý do các bài toán phân loại thực tế phải dùng **Precision, Recall, F1** và **ROC–AUC / PR–AUC**.
 
 ---
 
@@ -413,6 +426,39 @@ def plot_roc_curve():
 
 # plot_roc_curve()
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Tính xác suất, Odds Ratio và 1 bước Gradient Descent trên mô hình Logistic
+
+Giả sử một mô hình logistic dự đoán xác suất sinh viên đỗ kỳ thi chứng chỉ theo số giờ ôn tập $$x$$ có phương trình log-odds:
+
+$$z = -2{,}0 + 0{,}5x \implies p(x) = \sigma(z) = \frac{1}{1 + e^{-z}}.$$
+
+1. **Tính xác suất và tỷ lệ cược tại hai mốc giờ ôn:**
+   - Tại $$x = 4$$ giờ: $$z = -2{,}0 + 0{,}5(4) = 0 \implies p(4) = \frac{1}{1+e^0} = 0{,}50$$ (đây chính là ngưỡng ranh giới quyết định 50/50!).
+   - Tại $$x = 6$$ giờ: $$z = -2{,}0 + 0{,}5(6) = +1{,}0 \implies p(6) = \frac{1}{1+e^{-1}} \approx \frac{1}{1{,}3679} \approx 0{,}731$$.
+   - Tỷ lệ cược (odds) tại $$x = 6$$ giờ là $$\frac{p}{1-p} = e^{1{,}0} \approx 2{,}718$$ (cứ gần 2,72 khả năng đỗ thì mới có 1 khả năng trượt).
+2. **Diễn giải hệ số $$\beta_1 = 0{,}5$$ qua Odds Ratio:**
+   Mỗi khi ôn thêm **1 giờ**, log-odds tăng thêm $$0{,}5$$, tức tỷ lệ cược đỗ được **nhân lên $$e^{0{,}5} \approx 1{,}649$$ lần** (tăng khoảng $$64{,}9\%$$ odds, bất kể bạn đang ở mốc giờ ôn nào!).
+3. **Tính hàm mất mát Cross-Entropy và gradient cho 1 quan sát $$(x=6,\; y=1)$$:**
+   - Mất mát log-loss: $$L = -\bigl[y\ln p + (1-y)\ln(1-p)\bigr] = -\ln(0{,}731) \approx 0{,}313.$$
+   - Đạo hàm của $$L$$ theo $$z$$ rút gọn đẹp đến bất ngờ (nhờ tính chất $$\sigma'(z) = \sigma(z)(1-\sigma(z))$$):
+     $$\frac{\partial L}{\partial z} = p - y = 0{,}731 - 1 = -0{,}269.$$
+   - Theo quy tắc dây chuyền, $$\frac{\partial L}{\partial \beta_1} = (p - y)x = (-0{,}269)\times 6 = -1{,}614$$. Với tốc độ học $$\eta = 0{,}1$$, bước cập nhật Gradient Descent kéo $$\beta_1$$ tăng lên:
+     $$\beta_1^{\text{mới}} = 0{,}5 - 0{,}1(-1{,}614) = 0{,}6614,$$
+     đẩy xác suất dự báo cho sinh viên này tiến sát về nhãn thật $$y = 1$$!
+
+### Khung giải thích: Bốn điều cần nắm vững khi triển khai Hồi quy Logistic (nên đọc chậm)
+
+1. **Dùng Logistic để dự báo *xác suất*, đừng chỉ cắt cứng ở 0,5:** Ngưỡng $$0{,}5$$ chỉ tối ưu khi chi phí báo động giả và bỏ lọt bằng nhau. Trong tầm soát ung thư hay phát hiện gian lận, bạn hoàn toàn có thể hạ ngưỡng xuống $$0{,}15$$ hoặc $$0{,}20$$ dựa trên đường cong Precision–Recall.
+2. **Coi chừng hiện tượng tách biệt hoàn toàn (Complete Separation):** Nếu có một đường thẳng tách hoàn toàn lớp 0 và lớp 1 không sai điểm nào, MLE không điều chuẩn sẽ đẩy $$\|\boldsymbol{\beta}\| \to \infty$$ để ép $$p\to 1$$! Đó là lý do `LogisticRegression` trong scikit-learn luôn bật mặc định điều chuẩn L2 (`C=1.0`).
+3. **Gradient của Cross-Entropy gọn hệt như OLS:** Công thức $$\nabla_{\boldsymbol{\beta}} L = \mathbf{X}^T(\mathbf{p} - \mathbf{y})$$ có hình thức giống hệt gradient của bình phương tối thiểu, chỉ thay dự báo tuyến tính $$\hat{\mathbf{y}}$$ bằng xác suất $$\mathbf{p} = \sigma(\mathbf{X}\boldsymbol{\beta})$$ — một sự thống nhất tuyệt đẹp của họ Mô hình Tuyến tính Tổng quát (GLM).
+4. **Hồi quy Softmax mở rộng tự nhiên cho $$K$$ lớp:** Thay sigmoid 2 lớp bằng $$P(Y=k\mid\mathbf{x}) = \frac{e^{\mathbf{w}_k^T\mathbf{x}}}{\sum_j e^{\mathbf{w}_j^T\mathbf{x}}}$$, ta thu được chính lớp đầu ra của mọi mạng phân loại đa lớp và mô hình ngôn ngữ hiện đại.
+
+**Kiểm tra nhanh.** Với mô hình $$z = -2{,}0 + 0{,}5x$$ ở trên, nếu một sinh viên ôn $$x = 2$$ giờ, xác suất đỗ $$p(2)$$ bằng bao nhiêu — và nếu thực tế sinh viên đó *trượt* ($$y = 0$$), đạo hàm $$\frac{\partial L}{\partial z} = p - y$$ mang dấu dương hay âm?
+
+---
 
 ## Video tham khảo
 

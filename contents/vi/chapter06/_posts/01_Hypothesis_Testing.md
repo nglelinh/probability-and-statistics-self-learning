@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Kiểm định giả thuyết (hypothesis testing) là công cụ giúp đưa ra quyết định dựa trên dữ liệu: liệu một loại thuốc mới có hiệu quả hơn giả dược hay không, hay tỷ lệ chuyển đổi có thực sự tăng sau khi thay đổi giao diện? Bài học này trình bày khung lý thuyết của kiểm định giả thuyết, ý nghĩa của p-value (cùng các nhầm lẫn thường gặp), hai loại sai lầm trong kiểm định và các phép kiểm định phổ biến nhất.
+Một nhà máy đóng gói cà phê in đậm con số **500 g** trên bao bì. Sáng hôm đó, kiểm định viên cân ngẫu nhiên 16 gói từ dây chuyền và thấy khối lượng trung bình chỉ đạt **494 g**. Liệu dây chuyền đóng gói thực sự đang bị lệch định lượng và cần dừng máy sửa ngay, hay 6 gam hụt đi kia chỉ là dao động ngẫu nhiên vô hại của mẫu nhỏ?
+
+Câu hỏi đó — *tín hiệu thật hay nhiễu ngẫu nhiên?* — là cốt lõi của **kiểm định giả thuyết thống kê (hypothesis testing)**. Giống như nguyên tắc "suy đoán vô tội" trong phòng xử án, thống kê đặt ra giả thuyết mặc định $$H_0$$ ("không có sai lệch / không có hiệu ứng"), rồi đo xem dữ liệu quan sát được **bất thường đến mức nào** nếu $$H_0$$ thật sự đúng. Bài học này đi từ câu chuyện kinh điển *Quý cô nếm trà* của Ronald Fisher, bóc tách ý nghĩa thật sự của **p-value** (và cạm bẫy *p-hacking*), cân bằng hai loại sai lầm Loại I / Loại II, cho tới các phép kiểm định trụ cột ($$t$$-test, $$\chi^2$$) và bài toán đa kiểm định.
+
+---
+
+## Bản đồ kiến thức nền: Kiến trúc logic của Kiểm định Giả thuyết
+
+Nhiều người bấm nút chạy kiểm định trong Python nhưng lại diễn giải sai hoàn toàn kết quả vì bỏ qua bốn nền tảng logic sau:
+
+1. **Logic chứng minh phản chứng có xác suất:** Kiểm định không bao giờ "chứng minh $$H_0$$ đúng". Ta tạm giả sử $$H_0$$ đúng, tính xác suất xuất hiện dữ liệu cực đoan như (hoặc hơn) mẫu thực tế — đó chính là **p-value**. Nếu p-value quá nhỏ (ví dụ $$< 0{,}05$$), ta kết luận một trong hai điều: hoặc vừa xảy ra chuyện hiếm có khó tin, hoặc giả định $$H_0$$ đã sai — nên ta **bác bỏ $$H_0$$**.
+2. **Đánh đổi Sai lầm Loại I ($$\alpha$$) và Sai lầm Loại II ($$\beta$$):** Báo động giả (bác bỏ $$H_0$$ khi $$H_0$$ đúng, xác suất $$\alpha$$) và bỏ lọt tín hiệu (không bác bỏ $$H_0$$ khi $$H_1$$ đúng, xác suất $$\beta$$, với lực kiểm định $$\text{Power} = 1 - \beta$$) luôn kéo nhau về hai phía. Giảm $$\alpha$$ quá gắt sẽ làm tăng $$\beta$$ trừ khi bạn tăng cỡ mẫu $$n$$.
+3. **Ý nghĩa thống kê vs. Ý nghĩa thực tiễn:** Với 10 triệu người dùng, một sự thay đổi tỷ lệ click nhỏ xíu $$0{,}01\%$$ cũng có thể cho $$p < 0{,}0001$$ nhưng chẳng mang lại giá trị kinh doanh nào. Luôn báo cáo **độ lớn hiệu ứng (effect size)** và **khoảng tin cậy** đi kèm p-value.
+4. **Lạm phát sai lầm trong Đa kiểm định (Multiple Testing):** Khi bạn kiểm định 20 giả thuyết vô thưởng vô phạt ở ngưỡng $$\alpha = 0{,}05$$, xác suất có ít nhất một báo động giả nhảy vọt lên hơn 64%! Đó là lý do các hiệu chỉnh như Bonferroni hay Benjamini–Hochberg (FDR) là bắt buộc trong khoa học dữ liệu và y sinh hiện đại.
 
 ---
 
@@ -618,6 +631,38 @@ def multiple_testing_problem():
 
 # multiple_testing_problem()
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Kiểm định $$t$$ một mẫu cho dây chuyền cà phê 500 g và bẫy đa kiểm định
+
+Quay lại dây chuyền đóng gói cà phê với khối lượng chuẩn $$\mu_0 = 500\text{ g}$$. Cân thử $$n = 16$$ gói độc lập, ta thu được trung bình mẫu $$\bar{x} = 494\text{ g}$$ và độ lệch chuẩn mẫu $$s = 8\text{ g}$$. Kiểm định ở mức ý nghĩa $$\alpha = 0{,}05$$ (hai phía):
+
+1. **Phát biểu giả thuyết:**
+   $$H_0: \mu = 500\text{ g} \qquad \text{vs.} \qquad H_1: \mu \neq 500\text{ g}.$$
+2. **Tính sai số chuẩn và thống kê kiểm định $$t$$:**
+   $$\mathrm{SE} = \frac{s}{\sqrt{n}} = \frac{8}{\sqrt{16}} = 2{,}0\text{ g}, \qquad t = \frac{\bar{x} - \mu_0}{\mathrm{SE}} = \frac{494 - 500}{2{,}0} = -3{,}00.$$
+3. **So sánh với phân phối $$t$$ tại bậc tự do $$df = n - 1 = 15$$:**
+   - Giá trị tới hạn hai phía ở mức $$\alpha = 0{,}05$$: $$t_{0{,}025;\,15} \approx 2{,}131$$.
+   - Giá trị p-value chính xác: $$p = 2\,P(T_{15} \le -3{,}00) \approx 0{,}0090$$.
+4. **Kết luận:** Vì $$\lvert -3{,}00\rvert > 2{,}131$$ (hay $$p = 0{,}0090 < 0{,}05$$), ta **bác bỏ $$H_0$$** — dây chuyền đang đóng gói thiếu trọng lượng có ý nghĩa thống kê (và mức thiếu 6 g trên 500 g cũng đáng kể về mặt thực tiễn!).
+
+**Cộng thêm một phép tính nhỏ về Đa kiểm định:** Giả sử nhà máy kiểm tra đồng thời **20 dây chuyền hoàn toàn bình thường** (tất cả $$H_0$$ đều đúng) ở ngưỡng $$\alpha = 0{,}05$$ độc lập nhau. Xác suất *không có dây chuyền nào* báo động giả là $$(1 - 0{,}05)^{20} = 0{,}95^{20} \approx 0{,}358$$. Suy ra xác suất có **ít nhất 1 báo động giả** lên tới:
+
+$$P(\text{ít nhất 1 sai lầm Loại I}) = 1 - 0{,}95^{20} \approx 64{,}2\%!$$
+
+Nếu áp dụng hiệu chỉnh **Bonferroni**, ngưỡng mới cho từng dây chuyền phải siết xuống $$\alpha' = 0{,}05 / 20 = 0{,}0025$$.
+
+### Khung giải thích: Bốn bước đọc hiểu kết quả kiểm định không bị lừa bởi p-value (nên đọc chậm)
+
+1. **Nhớ đúng định nghĩa xác suất có điều kiện của p-value:** p-value là $$P(\text{dữ liệu cực đoan} \mid H_0\text{ đúng})$$, **tuyệt đối không phải** $$P(H_0\text{ đúng} \mid \text{dữ liệu})$$. Nhầm hai vế này là lỗi suy luận đảo xác suất có điều kiện (tương tự lỗi ở định lý Bayes).
+2. **Đừng bao giờ nói "chấp nhận $$H_0$$" khi $$p > 0{,}05$$:** Không đủ bằng chứng kết tội không có nghĩa là bị cáo chắc chắn vô tội — rất có thể cỡ mẫu $$n$$ quá nhỏ nên lực kiểm định (power) yếu, chưa đủ nhìn thấy hiệu ứng thật.
+3. **Kiểm tra xem có bao nhiêu phép thử đã chạy ngầm:** Một giá trị $$p = 0{,}03$$ rút ra từ 1 giả thuyết đặt trước có trọng lượng hoàn toàn khác với $$p = 0{,}03$$ được "đãi cát" sau khi thử 30 phân khúc khách hàng khác nhau (*p-hacking*).
+4. **Đặt p-value cạnh khoảng tin cậy và độ lớn hiệu ứng:** Trong ví dụ cà phê trên, khoảng tin cậy 95% là $$494 \pm 2{,}131 \times 2 = [489{,}74;\; 498{,}26]\text{ g}$$ — không chứa 500 g và cho biết ngay mức hụt nằm khoảng 2 đến 10 g.
+
+**Kiểm tra nhanh.** Trong ví dụ cà phê trên ($$\bar{x} = 494, s = 8$$), giả sử kiểm định viên chỉ cân có $$n = 4$$ gói thay vì 16 gói. Hãy tính nhanh lại thống kê $$t$$ — liệu lúc đó ta còn đủ bằng chứng bác bỏ $$H_0$$ ở mức $$\alpha = 0{,}05$$ ($$t_{0{,}025;\,3} \approx 3{,}182$$) không?
+
+---
 
 ## Video Tham Khảo
 

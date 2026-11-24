@@ -6,6 +6,23 @@ order: 3
 owner: "nglelinh"
 ---
 
+Năm 1973, nhà thống kê Francis Anscombe công bố bốn bộ dữ liệu nhỏ mang tên **Bộ tứ Anscombe** khiến cả giới khoa học dữ liệu phải giật mình: cả bốn bộ đều có *trung bình $$x$$ bằng nhau (9.0)*, *trung bình $$y$$ bằng nhau (7.5)*, *độ lệch chuẩn bằng nhau*, *hệ số tương quan giống hệt nhau ($$r = 0.816$$)* và *đường hồi quy tuyến tính y hệt nhau ($$y = 3 + 0.5x$$)*. Thế nhưng ngay khi vẽ lên mặt phẳng tọa độ, một bộ là đường thẳng nhiễu, một bộ là đường cong parabol hoàn hảo, một bộ là đường thẳng bị một điểm ngoại lai duy nhất kéo lệch, và bộ cuối cùng là một cột thẳng đứng cộng thêm một điểm lạc loài!
+
+Bài học bất hủ ấy khẳng định: **đừng bao giờ tin các con số tóm tắt khi chưa nhìn thấy biểu đồ của dữ liệu**. Trực quan hóa không phải khâu "trang trí cho slide đẹp mắt", mà là kính hiển vi đầu tiên giúp phát hiện cấu trúc ẩn, điểm ngoại lai và những cái bẫy thị giác.
+
+---
+
+## Bản đồ kiến thức nền: Trực quan hóa dữ liệu trong thống kê nghiên cứu những gì?
+
+Chọn đúng biểu đồ là một quyết định toán học gắn liền với kiểu dữ liệu và câu hỏi phân tích, gồm **bốn trụ cột**:
+
+1. **Phân phối 1 biến (Distribution):** Histogram, KDE (mật độ trơn) và Boxplot — cho thấy đỉnh phân phối (một đỉnh hay hai đỉnh?), độ lệch và các điểm ngoại lai theo quy tắc $$1.5 \times \mathrm{IQR}$$.
+2. **Quan hệ giữa 2+ biến (Relationships):** Biểu đồ phân tán (Scatter plot) phát hiện quan hệ phi tuyến; biểu đồ đường (Line chart) cho chuỗi thời gian; Heatmap cho ma trận tương quan.
+3. **So sánh theo nhóm (Comparison):** Bar chart và Violin/Boxplot nhóm giúp đối chiếu nhanh phân phối giữa các phân khúc.
+4. **Độ trung thực thị giác (Visual Integrity):** Hiểu **Hệ số nói dối (Lie Factor)** của Edward Tufte để không bị đánh lừa bởi trục tung bị cắt ngang, biểu đồ 3D méo góc nhìn hay quy mô diện tích sai tỉ lệ.
+
+---
+
 ## 1. Mục tiêu bài học
 
 Sau khi hoàn thành bài học này, người học có thể:
@@ -109,6 +126,28 @@ plt.show()
 
 3. **Tương quan giả (Spurious Correlations)**:
    - Hai đại lượng biến thiên cùng chiều trên biểu đồ không đồng nghĩa với quan hệ nhân quả (Correlation $\neq$ Causation). Ví dụ: doanh số bán kem và số vụ đuối nước cùng tăng vào mùa hè do cùng chịu tác động của biến ẩn là nhiệt độ.
+
+### Khung giải thích: tự tay tính Hệ số nói dối (Lie Factor) khi biểu đồ cắt trục tung (nên đọc chậm)
+
+Bạn rất hay gặp những biểu đồ quảng cáo cho thấy doanh số hay hiệu năng "tăng vọt gấp ba lần", nhưng nhìn kỹ hóa ra chỉ tăng có 2%! Hãy dùng công thức **Lie Factor** của Edward Tufte để vạch trần trò ảo thuật thị giác đó bằng số cụ thể:
+
+$$
+\text{Lie Factor} = \frac{\text{Mức thay đổi thể hiện trên hình vẽ (\%)}}{\text{Mức thay đổi thực tế của dữ liệu (\%)}}.
+$$
+
+Giả sử tỷ lệ khách hàng hài lòng tăng từ **98%** năm ngoái lên **100%** năm nay:
+- **Mức tăng thực tế của dữ liệu:** $$\frac{100 - 98}{98} \approx +2.04\%$$.
+- **Biểu đồ trung thực (trục tung bắt đầu từ $$0$$):** Chiều cao hai cột là $$98$$ và $$100$$ → cột mới cao hơn đúng $$+2.04\%$$ → $$\text{Lie Factor} = \frac{2.04\%}{2.04\%} = 1.0$$ (hoàn toàn trung thực!).
+- **Biểu đồ cắt trục tung (trục tung bắt đầu từ $$97$$):**
+  - Chiều cao hiển thị của cột 1: $$98 - 97 = 1$$ đơn vị.
+  - Chiều cao hiển thị của cột 2: $$100 - 97 = 3$$ đơn vị (**cao gấp 3 lần**, tức tăng $$+200\%$$ trên hình vẽ!).
+  - Tính **Lie Factor**:
+    $$
+    \text{Lie Factor} = \frac{200\%}{2.04\%} \approx 98!
+    $$
+  Chỉ bằng một thao tác cắt trục tung, biểu đồ đã **phóng đại sự thật lên gần 100 lần**!
+
+**Quy tắc thực hành:** Với **biểu đồ cột (Bar chart)** mã hóa giá trị bằng *độ dài cột*, trục tung **bắt buộc phải bắt đầu từ 0**. (Chỉ biểu đồ đường — Line chart — mới được phép thu hẹp trục tung để soi xu hướng nhỏ, và phải ghi chú rõ phạm vi trục.)
 
 ## Video tham khảo
 

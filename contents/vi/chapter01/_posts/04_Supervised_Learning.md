@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Học có giám sát (supervised learning) là nền tảng của nhiều bài toán học máy hiện đại, trong đó mô hình học từ dữ liệu đã gắn nhãn để dự đoán kết quả cho dữ liệu mới. Bài học này trình bày khung tư duy cơ bản của học thống kê (statistical learning), phân biệt hồi quy (regression) với phân loại (classification), và phân tích sự đánh đổi giữa độ chệch và phương sai (bias–variance tradeoff) — yếu tố lý giải vì sao mô hình phức tạp hơn không phải lúc nào cũng dự đoán tốt hơn.
+Một sinh viên chỉ học thuộc lòng đáp án đề thi năm ngoái có thể đạt 10/10 khi tự làm lại đề cũ ở nhà, nhưng lại trượt thảm hại khi bước vào phòng thi thật với bộ câu hỏi mới. Trong học máy, hiện tượng "học vẹt" đó có tên gọi chính thức là **quá khớp (overfitting)** — và toàn bộ ngành **học có giám sát (supervised learning)** xoay quanh một mục tiêu tối thượng duy nhất: không phải khớp hoàn hảo dữ liệu quá khứ, mà là **tổng quát hóa tốt sang dữ liệu tương lai chưa từng thấy**.
+
+Bài học này đặt khung toán học rõ ràng cho học có giám sát: từ bài toán hồi quy và phân loại, hàm mất mát, cho đến định lý nền tảng nhất về đánh đổi **Độ chệch – Phương sai (Bias–Variance Tradeoff)** và **Lời nguyền số chiều**.
+
+---
+
+## Bản đồ kiến thức nền: Học có giám sát là gì và nghiên cứu những gì?
+
+Từ góc nhìn xác suất – thống kê, **học có giám sát** giả định thế giới sinh ra các cặp dữ liệu $$(X, Y)$$ từ một phân phối ẩn chưa biết $$P(X, Y)$$, và ta cần học một hàm dự đoán $$\hat f(X)$$ từ mẫu hữu hạn $$n$$ điểm. Ngành này đứng trên **bốn trụ cột**:
+
+1. **Hồi quy vs. Phân loại:** Đầu ra $$Y$$ là số liên tục (giá nhà, nhiệt độ) → Hồi quy (thường dùng mất mát bình phương MSE); đầu ra $$Y$$ là nhãn rời rạc (thư rác/thường, bệnh/khỏe) → Phân loại (dùng cross-entropy hoặc 0–1 loss).
+2. **Rủi ro thực nghiệm vs. Rủi ro kỳ vọng:** Máy tính chỉ nhìn thấy lỗi trung bình trên tập huấn luyện, trong khi mục tiêu thật là kỳ vọng lỗi trên phân phối tổng thể $$P(X, Y)$$.
+3. **Phân rã Độ chệch – Phương sai (Bias–Variance Decomposition):** Mọi sai số dự đoán bình phương đều tách chính xác thành 3 phần: *Độ chệch bình phương* (mô hình quá đơn giản, bỏ lỡ quy luật thật) + *Phương sai* (mô hình quá nhạy, lắc lư mạnh mỗi khi đổi mẫu dữ liệu) + *Nhiễu bất khả kháng* của tự nhiên.
+4. **Hình học cao chiều (Lời nguyền số chiều):** Khi số đặc trưng $$p$$ tăng cao, dữ liệu trở nên cực kỳ thưa thớt, buộc ta phải dùng điều chuẩn (regularization) hoặc khai thác cấu trúc ẩn.
 
 ---
 
@@ -323,6 +336,23 @@ def demonstrate_curse_of_dimensionality():
 
 # demonstrate_curse_of_dimensionality()
 ```
+
+### Khung giải thích: tự tay kiểm chứng phân rã $$\mathrm{MSE} = \mathrm{Bias}^2 + \mathrm{Var}$$ bằng con số cụ thể (nên đọc chậm)
+
+Khẩu hiệu "mô hình phức tạp giảm Bias nhưng tăng Variance" sẽ sáng tỏ ngay lập tức khi bạn tự tính sai số của 3 mô hình trên cùng một điểm kiểm tra $$x_0$$ có giá trị thật $$f(x_0) = 10$$ (bỏ qua nhiễu ngoài $$\sigma^2 = 0$$ để dễ tính). Giả sử ta huấn luyện mỗi mô hình trên **3 tập dữ liệu ngẫu nhiên khác nhau** và thu được 3 dự đoán $$\hat f^{(1)}, \hat f^{(2)}, \hat f^{(3)}$$:
+
+- **Mô hình A (quá đơn giản — Underfitting):** Dự đoán $$\{7.9,\, 8.0,\, 8.1\}$$ (trung bình $$\bar{\hat f}_A = 8.0$$).
+  - $$\mathrm{Bias}^2 = (8.0 - 10)^2 = 4.00$$.
+  - $$\mathrm{Var} = \frac{(-0.1)^2 + 0^2 + (0.1)^2}{3} \approx 0.0067$$.
+  - $$\mathrm{MSE}_A = 4.00 + 0.0067 = 4.0067$$ (rất ổn định nhưng luôn lệch xa đáp án thật!).
+- **Mô hình B (quá phức tạp — Overfitting):** Dự đoán $$\{6,\, 10,\, 14\}$$ (trung bình $$\bar{\hat f}_B = 10.0$$).
+  - $$\mathrm{Bias}^2 = (10 - 10)^2 = 0$$ (trung bình không hề chệch!).
+  - $$\mathrm{Var} = \frac{(-4)^2 + 0^2 + 4^2}{3} = \frac{32}{3} \approx 10.67$$.
+  - $$\mathrm{MSE}_B = 0 + 10.67 = 10.67$$ (nhảy loạn xạ tùy mẫu huấn luyện, tệ gấp đôi mô hình A!).
+- **Mô hình C (cân bằng tốt):** Dự đoán $$\{9,\, 10,\, 11\}$$ (trung bình $$\bar{\hat f}_C = 10.0$$).
+  - $$\mathrm{Bias}^2 = 0,\quad \mathrm{Var} = \frac{(-1)^2 + 0^2 + 1^2}{3} \approx 0.67 \;\Longrightarrow\; \mathrm{MSE}_C \approx 0.67$$ — **thắng áp đảo cả A lẫn B!**
+
+Hãy tự kiểm tra lại bằng cách tính trực tiếp trung bình bình phương sai số với $$10$$ cho Mô hình B: $$\frac{(6-10)^2 + (10-10)^2 + (14-10)^2}{3} = \frac{32}{3} \approx 10.67$$ — khớp tuyệt đối với $$\mathrm{Bias}^2 + \mathrm{Var}$$!
 
 ## Video tham khảo
 

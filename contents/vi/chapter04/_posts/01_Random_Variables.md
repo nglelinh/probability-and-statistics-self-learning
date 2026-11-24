@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Biến ngẫu nhiên là cầu nối giữa xác suất trừu tượng và dữ liệu số cụ thể. Thay vì chỉ xét các "biến cố", chúng ta chuyển sang làm việc với các "giá trị số", tạo nền tảng cho thống kê và học máy (machine learning). Trong bài này, chúng ta sẽ phân biệt biến ngẫu nhiên rời rạc và biến ngẫu nhiên liên tục, đồng thời tìm hiểu ba hàm đặc trưng mô tả chúng: PMF, PDF và CDF.
+Thế giới ngẫu nhiên ban đầu toàn những sự kiện bằng lời: *"khách hàng có bấm mua hay không"*, *"một cuộc gọi tổng đài kéo dài bao lâu"*, hay *"hôm nay có bao nhiêu đơn hàng bị lỗi"*. Để đưa toán học giải tích và máy tính vào cuộc, ta cần một bước dịch gọn gàng: gán cho mỗi kết quả ngẫu nhiên một con số thực.
+
+Bước dịch đó chính là **Biến ngẫu nhiên (Random Variable)** $$X$$. Dù mang tên là "biến", về bản chất toán học nó là một **hàm số** $$X: \Omega \to \mathbb{R}$$ biến mọi hiện tượng hỗn độn thành ngôn ngữ của hàm khối xác suất (PMF), hàm mật độ xác suất (PDF) và hàm phân phối tích lũy (CDF).
+
+---
+
+## Bản đồ kiến thức nền: Biến ngẫu nhiên, PMF, PDF và CDF là gì?
+
+Toàn bộ Chương 4 xoay quanh **bốn khái niệm trụ cột** giúp ta làm việc trơn tru với cả thế giới rời rạc lẫn liên tục:
+
+1. **Biến ngẫu nhiên $$X(\omega)$$:** Cầu nối chuyển biến cố trừu tượng thành số thực để có thể cộng, nhân, tính trung bình và vẽ đồ thị.
+2. **Biến rời rạc & Hàm khối xác suất (PMF — $$p(x) = P(X=x)$$):** Nhận các giá trị đếm được (0, 1, 2, …); tổng mọi xác suất $$\sum p(x) = 1$$.
+3. **Biến liên tục & Hàm mật độ xác suất (PDF — $$f(x)$$):** Nhận giá trị trên cả một khoảng thực; xác suất tại *đúng một điểm đơn lẻ* luôn bằng $$0$$ ($$P(X=c)=0$$), còn xác suất rơi vào một khoảng là **diện tích** dưới đường cong $$\int_a^b f(x)\,dx$$.
+4. **Hàm phân phối tích lũy (CDF — $$F(x) = P(X \le x)$$):** Ngôn ngữ thống nhất hoạt động cho *mọi* biến ngẫu nhiên (rời rạc, liên tục, hay hỗn hợp), luôn đơn điệu tăng từ $$0$$ lên $$1$.
 
 ---
 
@@ -476,6 +489,25 @@ def probability_calculations_with_cdf():
 
 # probability_calculations_with_cdf()
 ```
+
+### Khung giải thích: tự tay kiểm chứng tại sao mật độ $$f(x)$$ có thể lớn hơn $$1$$ và cách dùng CDF (nên đọc chậm)
+
+Một hiểu lầm cực kỳ phổ biến của sinh viên là nghĩ *"$$f(x)$$ là xác suất nên $$f(x)$$ không bao giờ được vượt quá 1"*. Hãy kiểm tra ngay trên một ví dụ liên tục siêu gọn: xét thời gian chờ ngẫu nhiên $$X$$ phân bố đều trên đoạn $$[0,\, 0.5]$$ phút ($$X \sim \mathrm{Uniform}(0, 0.5)$$).
+
+1. **Tìm hàm mật độ PDF $$f(x)$$:** Vì mật độ là hằng số $$c$$ trên đoạn độ dài $$0.5$$ và tổng diện tích dưới đường cong bắt buộc bằng $$1$$:
+   $$
+   \int_0^{0.5} c\,dx = 0.5\,c = 1 \;\Longrightarrow\; c = 2!
+   $$
+   Như vậy $$f(x) = 2 > 1$$ trên toàn bộ khoảng $$[0, 0.5]$$ — hoàn toàn hợp lệ! Bởi $$f(x)$$ là **mật độ xác suất trên mỗi đơn vị độ dài** (giống mật độ khối lượng kg/m), chứ không phải xác suất!
+2. **Dựng hàm phân phối tích lũy CDF $$F(x) = P(X \le x)$$:**
+   - Với $$x < 0$$: $$F(x) = 0$$.
+   - Với $$0 \le x \le 0.5$$: $$F(x) = \int_0^x 2\,dt = 2x$$.
+   - Với $$x > 0.5$$: $$F(x) = 1$$.
+3. **Tính xác suất rơi vào khoảng $$[0.1,\, 0.35]$$ bằng hai cách để đối chiếu:**
+   - Dùng tích phân PDF: $$\int_{0.1}^{0.35} 2\,dx = 2(0.35 - 0.10) = 0.50$$.
+   - Dùng hiệu CDF (nhanh hơn nhiều): $$P(0.1 \le X \le 0.35) = F(0.35) - F(0.10) = 2(0.35) - 2(0.10) = 0.70 - 0.20 = 0.50$$!
+
+Khớp hoàn hảo: mật độ $$f(x)$$ có thể lớn hơn $$1$$, nhưng diện tích (xác suất) và giá trị CDF $$F(x)$$ thì luôn nằm gọn trong đoạn $$[0, 1]$$.
 
 ## Video Tham Khảo
 

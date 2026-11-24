@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Làm thế nào để chọn giữa một mô hình đơn giản và một mô hình phức tạp? Trong khi kiểm định chéo (cross-validation) đưa ra câu trả lời bằng thực nghiệm, các tiêu chí thống kê như AIC và BIC cung cấp khung lý thuyết để cân bằng giữa mức độ khớp dữ liệu (goodness-of-fit) và độ phức tạp của mô hình. Bài học này giới thiệu các tiêu chí phổ biến dùng cho việc lựa chọn mô hình một cách có nguyên tắc.
+Nếu bạn thêm một cột dữ liệu hoàn toàn ngẫu nhiên — chẳng hạn số đo cỡ giày của người bán nhà — vào mô hình hồi quy dự đoán giá nhà, hệ số xác định $$R^2$$ trên tập huấn luyện sẽ **không bao giờ giảm, mà gần như luôn tăng lên**! Quy luật trớ trêu ấy nhắc ta nhớ đến **Dao cạo Occam** trong khoa học: một mô hình phức tạp hơn luôn khớp dữ liệu cũ tốt hơn, nhưng liệu phần khớp thêm đó là quy luật thật hay chỉ đang ôm thêm nhiễu?
+
+Thay vì phải chạy kiểm định chéo tốn kém hàng chục lần, thống kê toán học cung cấp các **tiêu chí lựa chọn mô hình** (AIC, BIC, Adjusted $$R^2$$, Mallows' $$C_p$$): cân đo trực tiếp giữa **độ khớp dữ liệu** và **án phạt cho số tham số** ngay trên cùng một công thức gọn gàng.
+
+---
+
+## Bản đồ kiến thức nền: Lựa chọn mô hình và các tiêu chí thông tin là gì?
+
+Các tiêu chí lựa chọn mô hình trong bài này đều mang chung cấu trúc $$\text{Điểm phạt} = \text{Sai số khớp} + \text{Án phạt độ phức tạp}$$, chia thành **bốn công cụ chính**:
+
+1. **AIC (Akaike Information Criterion — $$2k - 2\ln\hat L$$):** Xuất phát từ lý thuyết thông tin (phân kỳ KL), hướng tới mục tiêu **dự đoán tốt nhất trên dữ liệu mới** (tiệm cận tương đương LOOCV).
+2. **BIC (Bayesian Information Criterion — $$k\ln n - 2\ln\hat L$$):** Xuất phát từ xấp xỉ tích phân Bayes, phạt nặng hơn AIC khi $$n \ge 8$$ (vì $$\ln n > 2$$), ưu tiên tìm ra **mô hình đúng tối giản** khi cỡ mẫu lớn.
+3. **Adjusted $$R^2$$:** Chỉnh lại $$R^2$$ cổ điển theo bậc tự do $$(n - k - 1)$$, chỉ tăng khi biến mới cải thiện mô hình đủ tốt hơn mức ngẫu nhiên.
+4. **Mallows' $$C_p$$:** Ước lượng trực tiếp sai số dự đoán bình phương ngoài mẫu trong hồi quy tuyến tính; mô hình tốt thường có $$C_p \approx p$$.
 
 ---
 
@@ -136,6 +149,26 @@ $$C_p = \frac{\text{RSS}_p}{\hat{\sigma}^2} - n + 2p$$
 trong đó $$\text{RSS}_p$$ là tổng bình phương phần dư của mô hình con có $$p$$ tham số và $$\hat{\sigma}^2$$ là ước lượng phương sai nhiễu lấy từ mô hình đầy đủ (full model).
 
 **Nguyên tắc:** Chọn mô hình có $$C_p$$ nhỏ và xấp xỉ $$p$$ ($$C_p \approx p$$).
+
+### Khung giải thích: tự tay tính AIC và BIC để thấy hai tiêu chí chọn khác nhau khi nào (nên đọc chậm)
+
+Cùng một bộ dữ liệu gồm $$n = 100$$ quan sát ($$\ln 100 \approx 4.605$$), xét hai mô hình hồi quy:
+- **Mô hình 1 (đơn giản):** $$k_1 = 2$$ tham số, log-likelihood cực đại $$\ln \hat L_1 = -50.0$$.
+- **Mô hình 2 (phức tạp hơn):** thêm 2 biến mới nên $$k_2 = 4$$ tham số, giúp log-likelihood cải thiện lên $$\ln \hat L_2 = -47.5$$ (tăng thêm $$\Delta\ln\hat L = +2.5$$).
+
+Hãy tự thay số vào hai công thức (giá trị càng **nhỏ** càng tốt):
+
+1. **Tính AIC ($$2k - 2\ln\hat L$$):**
+   - $$\mathrm{AIC}_1 = 2(2) - 2(-50.0) = 4 + 100 = 104.0$$.
+   - $$\mathrm{AIC}_2 = 2(4) - 2(-47.5) = 8 + 95 = 103.0$$.
+   Vì $$103.0 < 104.0$$, **AIC chọn Mô hình 2** (phần thưởng khớp thêm $$2\Delta\ln\hat L = 5$$ lớn hơn án phạt thêm $$2\Delta k = 4$$).
+
+2. **Tính BIC ($$k\ln n - 2\ln\hat L$$):**
+   - $$\mathrm{BIC}_1 = 2(4.605) - 2(-50.0) = 9.21 + 100 = 109.21$$.
+   - $$\mathrm{BIC}_2 = 4(4.605) - 2(-47.5) = 18.42 + 95 = 113.42$$.
+   Vì $$109.21 < 113.42$$, **BIC lại chọn Mô hình 1** (với $$n=100$$, mỗi tham số mới bị BIC phạt tới $$4.605$$ thay vì $$2$$, nên 2 tham số mới bị phạt $$9.21 > 5$$)!
+
+**Bài học thực hành:** Nếu mục tiêu của bạn là *dự đoán sát nhất*, hãy nghiêng về AIC (hoặc CV); nếu mục tiêu là *giải thích khoa học, chọn tập biến gọn gàng nhất*, hãy ưu tiên BIC.
 
 ## Video tham khảo
 

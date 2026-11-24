@@ -11,9 +11,19 @@ order: 6
 lesson_type: required
 ---
 
-Ở các bài trước, chúng ta đã thấy nhiều tính chất tối ưu của OLS. Tuy nhiên, OLS vẫn có một hạn chế đáng kể: việc đòi hỏi ước lượng phải hoàn toàn **không chệch (unbiased)** đôi khi khiến **phương sai (variance)** của ước lượng tăng quá cao, dẫn đến quá khớp (overfitting).
+Trong nghiên cứu y sinh hiện đại, một bộ dữ liệu có thể chỉ gồm $$N = 80$$ bệnh nhân nhưng đo tới $$p = 20{,}000$$ mức độ biểu hiện gene. Nếu bạn đưa thẳng dữ liệu này vào hồi quy OLS, ma trận $$\mathbf{X}^T\mathbf{X}$$ có kích thước $$20{,}000 \times 20{,}000$$ nhưng hạng tối đa chỉ là 80 — nó bị suy biến hoàn toàn, tạo ra vô số bộ hệ số khớp 100% tập huấn luyện nhưng dự báo thảm họa trên bệnh nhân mới!
 
-**Điều chuẩn (Regularization)** giải quyết vấn đề này bằng cách thêm một số hạng phạt (penalty term) vào hàm mất mát. Mô hình chấp nhận tăng nhẹ **độ chệch (bias)** để giảm mạnh **phương sai (variance)**, nhờ đó giảm tổng sai số dự báo (MSE).
+Bài học mở rộng này đào sâu vào cơ chế toán học đứng sau **Điều chuẩn (Regularization)**: vì sao cộng thêm $$\lambda I$$ trong Ridge lập tức chữa khỏi bệnh suy biến ma trận, hình học của chuẩn $$L_1$$ so với $$L_2$$, vai trò cầu nối của **Elastic Net**, và cách đánh giá trực quan trên dữ liệu thưa (sparse) bằng Python.
+
+---
+
+## Bản đồ kiến thức nền: Cơ chế ổn định hóa và chọn lọc trong không gian nhiều chiều
+
+Để làm chủ điều chuẩn khi số biến lớn ($$p \gg n$$) hoặc đa cộng tuyến nặng, hãy nắm ba trụ cột giải tích – đại số sau:
+
+1. **Dịch chuyển phổ giá trị riêng (Spectral Shift) trong Ridge:** Phân rã giá trị kỳ dị cho thấy OLS chia cho các giá trị riêng $$d_j^2$$ của $$\mathbf{X}^T\mathbf{X}$$ — khi $$d_j \approx 0$$, nhiễu bị khuếch đại ra vô cực. Ridge thay mẫu số thành $$d_j^2 + \lambda$$, chặn đứng mọi sự bùng nổ chỉ bằng một hằng số dương $$\lambda$$.
+2. **Đạo hàm dưới (Subgradient) tại gốc tọa độ trong Lasso:** Hàm $$\lvert\beta_j\rvert$$ có góc gãy (không khả vi) tại $$\beta_j = 0$$. Chính "điểm gãy" này tạo ra một vùng chết (dead zone) $$[-\lambda, +\lambda]$$: bất kỳ đặc trưng nào có tương quan với phần dư yếu hơn $$\lambda$$ đều bị giữ chặt ở đúng 0.
+3. **Hiệu ứng nhóm (Grouping Effect) của Elastic Net:** Khi hai đặc trưng mạnh tương quan sát nhau ($$r \approx 0{,}99$$), L1 thuần có xu hướng giữ ngẫu nhiên 1 biến và xóa biến kia, còn thành phần L2 trong Elastic Net buộc cả hai biến cùng chia sẻ trọng số ổn định.
 
 ---
 
@@ -114,6 +124,34 @@ plt.show()
 
 print(f"Số biến Lasso giữ lại: {np.sum(lasso.coef_ != 0)}")
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Chữa bệnh suy biến ma trận $$2\times 2$$ bằng Ridge
+
+Giả sử hai đặc trưng $$X_1$$ và $$X_2$$ giống hệt nhau (đa cộng tuyến 100%), tạo ra ma trận thiết kế suy biến:
+
+$$\mathbf{X}^T\mathbf{X} = \begin{pmatrix} 2 & 2 \\ 2 & 2 \end{pmatrix}, \qquad \mathbf{X}^T\mathbf{y} = \begin{pmatrix} 6 \\ 6 \end{pmatrix}.$$
+
+1. **Thử giải OLS:** Định thức $$\det(\mathbf{X}^T\mathbf{X}) = 2\times 2 - 2\times 2 = 0$$ (hai giá trị riêng là $$\mu_1 = 4$$ và $$\mu_2 = 0$$). Ma trận **không khả nghịch** — mọi cặp $$(\beta_1, \beta_2)$$ thỏa $$\beta_1 + \beta_2 = 3$$ (kể cả $$(+1000, -997)$$) đều cho cùng sai số OLS!
+2. **Bật Ridge với $$\lambda = 1$$:** Cộng ma trận đơn vị $$I$$ vào đường chéo chính:
+   $$\mathbf{X}^T\mathbf{X} + I = \begin{pmatrix} 3 & 2 \\ 2 & 3 \end{pmatrix}.$$
+   Định thức lập tức nhảy từ $$0$$ lên $$3\times 3 - 2\times 2 = 5 \neq 0$$ (hai giá trị riêng tăng đều lên $$5$$ và $$1$$)!
+3. **Tính nghiệm duy nhất của Ridge:**
+   $$(\mathbf{X}^T\mathbf{X} + I)^{-1} = \frac{1}{5}\begin{pmatrix} 3 & -2 \\ -2 & 3 \end{pmatrix} \implies \hat{\boldsymbol{\beta}}_{\text{Ridge}} = \frac{1}{5}\begin{pmatrix} 3 & -2 \\ -2 & 3 \end{pmatrix}\begin{pmatrix} 6 \\ 6 \end{pmatrix} = \frac{1}{5}\begin{pmatrix} 6 \\ 6 \end{pmatrix} = \begin{pmatrix} 1{,}2 \\ 1{,}2 \end{pmatrix}.$$
+
+Nhìn nghiệm $$(1{,}2;\; 1{,}2)$$: Ridge không chỉ cứu bài toán khỏi suy biến mà còn **chia đều trọng số** cho hai biến tương quan hoàn toàn (tổng bằng $$2{,}4$$, hơi co nhẹ từ $$3{,}0$$ về 0 để đánh đổi lấy sự ổn định tuyệt đối!).
+
+### Khung giải thích: Bốn bước triển khai điều chuẩn chuẩn xác trong thực tế (nên đọc chậm)
+
+1. **Kiểm tra độ suy biến của $$\mathbf{X}^T\mathbf{X}$$:** Khi số điều kiện lớn hoặc $$p > n$$, OLS không còn đáng tin — chuyển ngay sang Ridge/Lasso/Elastic Net.
+2. **Chuẩn hóa bắt buộc bên trong Cross-Validation:** Tính mean/std trên *tập train của từng fold* rồi áp cho tập validation để tránh rò rỉ dữ liệu (data leakage).
+3. **Vẽ đường dẫn điều chuẩn (Regularization Path):** Quan sát các hệ số $$\hat{\beta}_j(\lambda)$$ co về 0 theo $$\log\lambda$$ giúp bạn nhận diện ngay những đặc trưng "sống sót" bền bỉ nhất.
+4. **Dùng quy tắc "1 sai số chuẩn" (1-SE rule):** Thay vì chọn đúng $$\lambda$$ có lỗi CV thấp nhất tuyệt đối, nhiều nhà thống kê chọn $$\lambda$$ *lớn hơn* (mô hình đơn giản, gọn nhẹ hơn) có lỗi nằm trong vòng 1 sai số chuẩn quanh mức tối thiểu.
+
+**Kiểm tra nhanh.** Trong ví dụ ma trận $$\mathbf{X}^T\mathbf{X} = \begin{pmatrix} 2 & 2 \\ 2 & 2 \end{pmatrix}$$ ở trên, nếu bạn tăng tham số phạt Ridge từ $$\lambda = 1$$ lên $$\lambda = 4$$, nghiệm $$\hat{\boldsymbol{\beta}}_{\text{Ridge}}$$ mới bằng bao nhiêu? *(Gợi ý: $$(\mathbf{X}^T\mathbf{X} + 4I)\hat{\boldsymbol{\beta}} = (6,6)^T$$ với đối xứng $$\hat{\beta}_1 = \hat{\beta}_2$$.)*
+
+---
 
 ## Video tham khảo
 

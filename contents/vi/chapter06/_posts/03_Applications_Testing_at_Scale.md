@@ -10,11 +10,19 @@ categories:
 lesson_type: optional
 ---
 
-Bài đọc tùy chọn này giữ nguyên các định nghĩa về $$H_0$$, $$p$$-value, sai lầm loại I/II và suy diễn hệ số hồi quy, đồng thời theo dõi cách các công cụ đó vận hành trong những hệ thống thực hiện hàng nghìn kiểm định mỗi ngày: nền tảng thử nghiệm A/B công nghiệp, nghiên cứu tương quan toàn hệ gene (GWAS), thí nghiệm quảng cáo — xếp hạng, và các kiểm định tuần tự vẫn giữ nguyên tính hợp lệ khi người phân tích theo dõi kết quả liên tục ("nhìn trộm" — peeking).
+Tại các nền tảng công nghệ lớn chạy hơn 10.000 thử nghiệm A/B mỗi năm, một thói quen tưởng chừng rất chăm chỉ lại là thủ phạm phá hủy hàng loạt quyết định sản phẩm: mỗi sáng kỹ sư mở dashboard theo dõi $$p$$-value, và ngay khi thấy đường cong chạm xuống dưới $$0{,}05$$ liền bấm dừng thử nghiệm rồi tuyên bố *"tính năng mới thắng!"* Hiện tượng **nhìn trộm kết quả (peeking)** này đẩy tỷ lệ báo động giả thực tế từ 5% lên tới 25–30% — biến một thí nghiệm khoa học thành trò tung đồng xu có hệ thống.
 
-Sau bài học này, bạn có thể cài đặt kiểm định hai mẫu thực tế của một nền tảng thí nghiệm, giải thích vì sao việc nhìn trộm kết quả làm phình sai lầm loại I, áp dụng thủ tục Benjamini–Hochberg (đồng thời biết khi nào cần dùng Bonferroni hoặc ngưỡng toàn hệ gene), và trình bày được nguyên lý xây dựng một $$p$$-value luôn hợp lệ (always-valid $$p$$-value).
+Bài đọc tùy chọn này đưa khung kiểm định cổ điển của Chương 06 ra chiến trường quy mô lớn: từ thử nghiệm A/B công nghiệp, bài toán nhìn trộm và **$$p$$-value luôn hợp lệ (always-valid $$p$$-value)** dựa trên kiểm định tuần tự, cho đến kiểm soát **Tỷ lệ Phát hiện Sai (FDR — Benjamini–Hochberg)** trong nghiên cứu toàn hệ gene (GWAS) và tối ưu quảng cáo.
 
-Kiến thức tiên quyết gồm hai bài bắt buộc của Chương 06 (khung kiểm định giả thuyết và suy diễn mô hình tuyến tính) cùng phân phối Bernoulli/Nhị thức. Phần mô phỏng đa kiểm định trong bài kiểm định giả thuyết sẽ được kế thừa trực tiếp mà không chứng minh lại.
+---
+
+## Bản đồ kiến thức nền: Kiểm định giả thuyết thay đổi ra sao ở quy mô hàng nghìn thí nghiệm?
+
+Ở quy mô đại học, ta thường kiểm định 1 giả thuyết trên 1 cỡ mẫu $$n$$ ấn định trước. Khi bước vào khoa học dữ liệu và y sinh quy mô lớn, ba trụ cột mới xuất hiện:
+
+1. **Thử nghiệm A/B & Suy diễn hai mẫu quy mô sản phẩm:** Kiểm định chênh lệch tỷ lệ $$p_T - p_C$$ với hàng triệu lượt truy cập đòi hỏi tính lực kiểm định (power) trước khi chạy, theo dõi tỷ lệ phân bổ mẫu (SRM — Sample Ratio Mismatch), và tránh kết luận sớm trước khi hết chu kỳ tuần.
+2. **Kiểm định tuần tự (Sequential Testing) & Martingale:** Muốn được phép nhìn kết quả liên tục mỗi ngày mà không làm phình sai lầm Loại I, ta phải thay kiểm định cỡ mẫu cố định bằng các ranh giới kiểm định tuần tự (mSPRT, *always-valid p-value* và *confidence sequences*) được xây dựng từ bất đẳng thức martingale.
+3. **FWER (Bonferroni) vs. FDR (Benjamini–Hochberg):** Khi kiểm định đồng thời $$m$$ giả thuyết (từ vài chục chỉ số A/B đến hàng triệu biến thể gene GWAS), kiểm soát xác suất mắc *dù chỉ 1* sai lầm Loại I (FWER — Bonferroni) thường quá chặt và làm mất lực kiểm định. Thủ tục **Benjamini–Hochberg** chuyển sang kiểm soát *tỷ lệ kỳ vọng các báo động giả trong số các kết luận bác bỏ* (FDR) — trở thành tiêu chuẩn vàng của thống kê hiện đại.
 
 ---
 
@@ -141,6 +149,39 @@ Bài bắt buộc thứ hai đã xây dựng khoảng tin cậy và $$p$$-value 
 Nhìn trộm kết quả không phải mối đe dọa duy nhất đối với tính hợp lệ của thí nghiệm. Hiện tượng can nhiễu (interference — khi tác động lên một người dùng làm thay đổi kết quả của người dùng khác), hiệu ứng mới lạ (novelty effect) và lệch tỷ lệ mẫu (Sample Ratio Mismatch) đều có thể tạo ra kết quả "có ý nghĩa thống kê" dù không có hiệu ứng xử lý thực sự. Kiểm định luôn hợp lệ đánh đổi cỡ mẫu để đảm bảo tính hợp lệ ở mọi thời điểm dừng; vì thế, các nhóm cần kết quả sớm đôi khi ưu tiên giới hạn trước số lần xem (thiết kế tuần tự theo nhóm — group sequential design) thay vì dùng e-process tuần tự liên tục. Với FDR trực tuyến, quy trình đòi hỏi một dòng thí nghiệm được ghi nhận đầy đủ; việc âm thầm loại bỏ các kiểm định không thành công khỏi dòng sẽ làm mất hiệu lực của chứng minh toán học.
 
 Các hướng mở rộng tiếp nối chương này gồm kỹ thuật giảm phương sai trong kiểm định (như CUPED, sẽ đề cập ở Chương 07), suy diễn nhân quả khi cơ chế gán nhóm không phải phân phối Bernoulli thuần túy, và kết hợp e-value cho phân tích tổng hợp liên tục (living meta-analysis).
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Chạy thủ tục Benjamini–Hochberg (FDR) so với Bonferroni trên 5 thí nghiệm A/B
+
+Giả sử một nhóm sản phẩm chạy đồng thời $$m = 5$$ thử nghiệm A/B độc lập và thu được 5 giá trị $$p$$-value (đã sắp xếp tăng dần):
+
+$$p_{(1)} = 0{,}004,\quad p_{(2)} = 0{,}018,\quad p_{(3)} = 0{,}055,\quad p_{(4)} = 0{,}090,\quad p_{(5)} = 0{,}420.$$
+
+Ta kiểm soát **FDR ở mức $$q = 0{,}10$$** bằng thủ tục Benjamini–Hochberg: so sánh từng $$p_{(k)}$$ với ngưỡng bậc thang $$\frac{k}{m}q = \frac{k}{5}\times 0{,}10$$, tìm chỉ số lớn nhất $$k^*$$ thỏa mãn $$p_{(k)} \le \frac{k}{m}q$$:
+
+| Hạng $$k$$ | $$p_{(k)}$$ | Ngưỡng BH $$\frac{k}{5}\cdot 0{,}10$$ | $$p_{(k)} \le$$ ngưỡng BH? | Ngưỡng Bonferroni ($$\alpha=0{,}05$$) |
+| :--- | :--- | :--- | :--- | :--- |
+| $$1$$ | $$0{,}004$$ | $$0{,}020$$ | **Đạt** | $$0{,}010$$ (**Đạt**) |
+| $$2$$ | $$0{,}018$$ | $$0{,}040$$ | **Đạt** | $$0{,}010$$ (Không) |
+| $$3$$ | $$0{,}055$$ | $$0{,}060$$ | **Đạt** ($$k^* = 3$$) | $$0{,}010$$ (Không) |
+| $$4$$ | $$0{,}090$$ | $$0{,}080$$ | Không | $$0{,}010$$ (Không) |
+| $$5$$ | $$0{,}420$$ | $$0{,}100$$ | Không | $$0{,}010$$ (Không) |
+
+Kết quả tương phản cực rõ:
+- **Bonferroni (FWER $$\le 0{,}05$$):** chỉ bác bỏ duy nhất thí nghiệm 1 ($$0{,}004 \le 0{,}010$$), bỏ lọt cả thí nghiệm 2 lẫn 3.
+- **Benjamini–Hochberg (FDR $$\le 0{,}10$$):** bác bỏ cả 3 thí nghiệm đầu ($$k^* = 3$$), chấp nhận rằng trong số các phát hiện này, tỷ lệ báo động giả trung bình không vượt quá 10%.
+
+### Khung giải thích: Bốn kỷ luật vàng khi chạy kiểm định ở quy mô lớn (nên đọc chậm)
+
+1. **Khóa cỡ mẫu trước hoặc dùng kiểm định tuần tự:** Nếu dùng $$z$$-test / $$t$$-test cổ điển, tuyệt đối không dừng sớm chỉ vì thấy $$p < 0{,}05$$ giữa chừng. Nếu cần theo dõi hàng ngày, hãy dùng *always-valid p-value*.
+2. **Chọn đúng thước đo sai lầm tổng thể:** Dùng **FWER (Bonferroni)** khi chỉ 1 kết luận sai đã gây hậu quả cực đắt (như phê duyệt thuốc hay công bố gene GWAS $$5\times 10^{-8}$$); dùng **FDR (Benjamini–Hochberg)** trong giai đoạn sàng lọc khám phá hàng trăm ý tưởng sản phẩm.
+3. **Nhớ rằng nhiều chỉ số trong 1 thử nghiệm A/B cũng là đa kiểm định:** Nếu bạn đo 15 KPI cho cùng một thay đổi giao diện mà không hiệu chỉnh, xác suất ít nhất 1 KPI "xanh giả" đã vượt quá 50%.
+4. **Kiểm tra sức khỏe hạ tầng trước khi đọc p-value:** Luôn kiểm tra Sample Ratio Mismatch (tỷ lệ chia nhóm Control/Treatment có đúng 50/50 không) trước — một lỗi log dữ liệu nhỏ có thể tạo ra $$p < 10^{-10}$$ hoàn toàn giả tạo.
+
+**Kiểm tra nhanh.** Trong bảng 5 thí nghiệm trên, nếu ta siết mức FDR xuống chặt hơn một nửa thành $$q = 0{,}05$$ (ngưỡng BH mới là $$0{,}010;\; 0{,}020;\; 0{,}030;\; 0{,}040;\; 0{,}050$$), chỉ số lớn nhất $$k^*$$ bây giờ bằng bao nhiêu?
+
+---
 
 ## Video Tham Khảo
 

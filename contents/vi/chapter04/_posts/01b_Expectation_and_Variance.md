@@ -10,7 +10,18 @@ categories:
 lesson_type: required
 ---
 
-Nếu biến ngẫu nhiên mô tả những giá trị có thể xảy ra, thì kỳ vọng và phương sai cho biết giá trị trung bình dự kiến và mức độ phân tán quanh mức trung bình đó. Hai đại lượng này là nền tảng của thống kê, từ ước lượng tham số đến kiểm định giả thuyết. Trong bài này, chúng ta sẽ tìm hiểu công thức, ý nghĩa trực quan và các tính chất quan trọng của chúng kết hợp với minh họa mô phỏng.
+Giả sử hai quỹ đầu tư cùng quảng cáo mức **lợi nhuận kỳ vọng +10%/năm**. Quỹ A dao động êm ái giữa +8% và +12%; còn quỹ B lúc thì vọt lên +60%, lúc lại lao dốc -40% khiến bạn mất gần nửa tài sản! Nếu chỉ nhìn mỗi con số "kỳ vọng", hai quỹ trông hệt như nhau — nhưng độ rủi ro của chúng thuộc về hai thế giới hoàn toàn khác biệt.
+
+Biến ngẫu nhiên cho ta bức tranh toàn bộ phân phối, còn **Kỳ vọng (Expectation)**, **Phương sai (Variance)** và **Hiệp phương sai (Covariance)** là ba tọa độ tóm lược quyền lực nhất: trọng tâm phân phối nằm đâu, nó lắc lư mạnh cỡ nào, và hai biến ngẫu nhiên có "nhảy múa" cùng nhịp hay ngược nhịp nhau không.
+
+---
+
+## Bản đồ kiến thức nền: Kỳ vọng, Phương sai và Hiệp phương sai nghiên cứu những gì?
+
+1. **Kỳ vọng $$\mathbb{E}[X]$$ (Trọng tâm & Tính tuyến tính):** Trung bình có trọng số theo xác suất. Tính chất siêu mạnh là **tính tuyến tính $$\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]$$ luôn đúng ngay cả khi $$X, Y$$ phụ thuộc nhau!**
+2. **Phương sai $$\mathrm{Var}(X)$$ & Độ lệch chuẩn $$\sigma$$:** Đo mức phân tán trung bình bình phương quanh kỳ vọng ($$\mathrm{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2$$). Khi nhân biến với hằng số $$a$$, phương sai nhân với $$a^2$$ (còn cộng hằng số $$b$$ thì phương sai không đổi!).
+3. **Hiệp phương sai $$\mathrm{Cov}(X, Y)$$ & Hệ số tương quan $$\rho$$:** Đo mức độ đồng biến động tuyến tính giữa hai biến; chuẩn hóa về $$[-1, +1]$$ để không phụ thuộc đơn vị đo.
+4. **Quy tắc cộng phương sai & Đa dạng hóa rủi ro:** $$\mathrm{Var}(aX + bY) = a^2\mathrm{Var}(X) + b^2\mathrm{Var}(Y) + 2ab\,\mathrm{Cov}(X,Y)$$ — chính số hạng chéo $$2ab\,\mathrm{Cov}$$ là nền tảng toán học của lý thuyết danh mục đầu tư hiện đại (Markowitz) và giảm phương sai trong Ensemble Learning (Random Forest).
 
 ---
 
@@ -558,6 +569,29 @@ def correlation_not_causation():
 
 # correlation_not_causation()
 ```
+
+### Khung giải thích: tự tay tính sức mạnh giảm rủi ro khi ghép hai tài sản (nên đọc chậm)
+
+Tại sao câu tục ngữ *"đừng bỏ hết trứng vào một giỏ"* lại là một định lý chính xác của phương sai và hiệp phương sai? Hãy tự kiểm tra bằng số cụ thể với hai cổ phiếu $$X, Y$$ đều có lợi nhuận kỳ vọng $$\mathbb{E}[X] = \mathbb{E}[Y] = 10\%$$ và độ lệch chuẩn rủi ro $$\sigma_X = \sigma_Y = 20\%$$ (tức $$\mathrm{Var}(X) = \mathrm{Var}(Y) = 400$$).
+
+Bạn chia đôi vốn 50/50 lập danh mục $$W = 0.5X + 0.5Y$$:
+
+1. **Lợi nhuận kỳ vọng của danh mục (luôn giữ nguyên):**
+   $$\mathbb{E}[W] = 0.5(10\%) + 0.5(10\%) = 10\%.$$
+2. **Rủi ro khi hai cổ phiếu ĐỘC LẬP ($$\rho = 0 \Rightarrow \mathrm{Cov}(X,Y) = 0$$):**
+   $$
+   \mathrm{Var}(W) = (0.5)^2(400) + (0.5)^2(400) + 0 = 100 + 100 = 200
+   \;\Longrightarrow\;
+   \sigma_W = \sqrt{200} \approx 14.14\%!
+   $$
+   Chỉ bằng việc chia đôi vốn, **rủi ro giảm gần 30% mà lợi nhuận kỳ vọng không mất một xu nào**!
+3. **Rủi ro khi hai cổ phiếu TƯƠNG QUAN ÂM ($$\rho = -0.5 \Rightarrow \mathrm{Cov}(X,Y) = (-0.5)(20)(20) = -200$$):**
+   $$
+   \mathrm{Var}(W) = 100 + 100 + 2(0.5)(0.5)(-200) = 200 - 100 = 100
+   \;\Longrightarrow\;
+   \sigma_W = \sqrt{100} = 10.0\%!
+   $$
+   **Rủi ro bị cắt đi đúng một nửa** (từ $$20\%$$ xuống $$10\%$$)! Ngược lại, nếu $$\rho = +1$$ (hai cổ phiếu đi hệt nhau), $$\mathrm{Var}(W) = 200 + 200 = 400 \Rightarrow \sigma_W = 20\%$$ — đa dạng hóa hoàn toàn vô tác dụng. Đó cũng là lý do trong Random Forest, ta cố tình làm các cây quyết định ít tương quan nhau nhất có thể!
 
 ## Video Tham Khảo
 

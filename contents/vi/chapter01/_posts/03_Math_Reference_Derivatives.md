@@ -10,7 +10,20 @@ categories:
 lesson_type: required
 ---
 
-Bài học này trình bày khái niệm đạo hàm và các công cụ thiết yếu của giải tích đa biến làm nền tảng cho lý thuyết và thuật toán tối ưu hóa.
+Hãy tưởng tượng bạn đang đứng giữa một dãy núi dày đặc sương mù trong không gian nhiều chiều và cần tìm đường xuống đáy thung lũng thấp nhất. Bạn không nhìn thấy bản đồ toàn cảnh, nhưng chỉ cần cảm nhận độ dốc ngay dưới chân mình, bạn biết ngay hướng nào dốc xuống nhanh nhất để bước đi.
+
+Cảm giác "độ dốc cục bộ" đó chính là **đạo hàm** và phiên bản nhiều chiều của nó — **gradient**. Trong thống kê toán học và học máy, đạo hàm không phải để khảo sát hàm số cho vui: nó là động cơ đứng sau **Ước lượng hợp lý cực đại (MLE)**, **hồi quy bình phương tối thiểu**, và **thuật toán lan truyền ngược (backpropagation)** huấn luyện mọi mạng nơ-ron hiện đại.
+
+---
+
+## Bản đồ kiến thức nền: Đạo hàm đa biến, Gradient, Jacobian và Hessian là gì?
+
+Khi chuyển từ hàm một biến $$f(x)$$ sang hàm mất mát nhiều triệu tham số $$L(\theta_1, \dots, \theta_d)$$, giải tích đa biến cung cấp đúng **bốn công cụ cốt lõi**:
+
+1. **Đạo hàm riêng & Vectơ Gradient ($$\nabla f$$):** Gom toàn bộ tốc độ thay đổi theo từng trục tọa độ thành một vectơ. Điểm kỳ diệu là $$\nabla f(x)$$ luôn chỉ đúng hướng làm $$f$$ **tăng nhanh nhất**, nên đi ngược hướng $$-\nabla f(x)$$ là cách xuống dốc nhanh nhất cục bộ.
+2. **Ma trận Jacobian ($$J_f$$):** Khi đầu ra cũng là một vectơ (ví dụ một lớp mạng nơ-ron biến $$\mathbb{R}^n \to \mathbb{R}^m$$), tập hợp mọi đạo hàm riêng tạo thành ma trận $$m\times n$$ — cho phép áp dụng **quy tắc dây chuyền** bằng phép nhân ma trận.
+3. **Ma trận Hessian ($$H_f$$):** Ma trận đối xứng gồm các đạo hàm riêng bậc hai, đo **độ cong** của mặt hàm số. Nếu Hessian xác định dương khắp nơi, mặt mất mát có dạng cái bát lồi — mọi điểm dừng $$\nabla f = 0$$ đều là cực tiểu toàn cục!
+4. **Quy tắc dây chuyền (Chain Rule):** Chìa khóa phân rã đạo hàm của hàm hợp nhiều tầng thành tích các đạo hàm đơn giản từng bước.
 
 ---
 
@@ -122,6 +135,34 @@ $$h'(x) = \frac{\partial f}{\partial x} \cdot 1 + \frac{\partial f}{\partial y} 
 Giải phương trình $$h'(x) = 0$$ ta được $$x = 1/2$$, suy ra điểm tối ưu là $$(1/2, 1/2)$$.
 
 Ví dụ này cho thấy các khái niệm giải tích đa biến phối hợp với nhau như thế nào để giải bài toán tối ưu hóa một cách có hệ thống.
+
+### Khung giải thích: tự tay tính Gradient, Hessian và một bước hạ độ dốc trên hàm 2 biến (nên đọc chậm)
+
+Để thấy Gradient và Hessian phối hợp với nhau rõ như ban ngày, hãy xét hàm mất mát 2 tham số cực kỳ quen thuộc:
+
+$$
+L(w_1, w_2) = (w_1 - 2)^2 + 3(w_2 + 1)^2.
+$$
+
+1. **Tính Gradient $$\nabla L$$ và tìm cực tiểu chính xác:**
+   $$
+   \nabla L(w_1, w_2) = \begin{pmatrix} \frac{\partial L}{\partial w_1} \\ \frac{\partial L}{\partial w_2} \end{pmatrix}
+   = \begin{pmatrix} 2(w_1 - 2) \\ 6(w_2 + 1) \end{pmatrix}.
+   $$
+   Đặt $$\nabla L = 0$$ ta có ngay điểm dừng duy nhất $$w^* = (2, -1)^\top$$ với $$L(w^*) = 0$$.
+
+2. **Tính ma trận Hessian để kiểm tra độ cong:**
+   $$
+   H_L = \begin{pmatrix} \frac{\partial^2 L}{\partial w_1^2} & \frac{\partial^2 L}{\partial w_1 \partial w_2} \\ \frac{\partial^2 L}{\partial w_2 \partial w_1} & \frac{\partial^2 L}{\partial w_2^2} \end{pmatrix}
+   = \begin{pmatrix} 2 & 0 \\ 0 & 6 \end{pmatrix}.
+   $$
+   Hai trị riêng là $$2 > 0$$ và $$6 > 0$$ (ma trận xác định dương), khẳng định $$L$$ **lồi chặt** và $$w^* = (2, -1)^\top$$ chắc chắn là cực tiểu toàn cục. (Tỷ số $$6/2 = 3$$ gọi là *số điều kiện* — cho biết thung lũng dốc theo chiều $$w_2$$ gấp 3 lần chiều $$w_1$$.)
+
+3. **Chạy tay 1 bước Gradient Descent** xuất phát từ $$w^{(0)} = (0, 0)^\top$$ với bước học $$\eta = 0.1$$:
+   - Mất mát ban đầu: $$L(0, 0) = (-2)^2 + 3(1)^2 = 7$$.
+   - Gradient tại $$(0, 0)$$: $$\nabla L(0, 0) = (-4, 6)^\top$$.
+   - Bước cập nhật: $$w^{(1)} = \begin{pmatrix}0\\0\end{pmatrix} - 0.1\begin{pmatrix}-4\\6\end{pmatrix} = \begin{pmatrix}0.4\\-0.6\end{pmatrix}$$.
+   - Mất mát mới: $$L(0.4, -0.6) = (-1.6)^2 + 3(0.4)^2 = 2.56 + 0.48 = 3.04 < 7$$ — **giảm hơn một nửa chỉ sau 1 bước!**
 
 ## Video tham khảo
 

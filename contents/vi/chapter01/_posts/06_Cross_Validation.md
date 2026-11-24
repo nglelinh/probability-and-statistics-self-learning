@@ -10,7 +10,19 @@ categories:
 lesson_type: required
 ---
 
-Lựa chọn mô hình là một bài toán cốt lõi trong học máy: làm thế nào để chọn mức độ phức tạp phù hợp và ước lượng khả năng dự đoán của mô hình trên dữ liệu mới? Kiểm định chéo (cross-validation) và các phương pháp lấy mẫu lại (resampling) giải quyết câu hỏi này theo hướng thực nghiệm: thay vì phụ thuộc hoàn toàn vào các công thức lý thuyết, ta sử dụng chính dữ liệu hiện có để ước lượng sai số kiểm tra (test error) một cách đáng tin cậy.
+Đánh giá một mô hình học máy trên chính dữ liệu nó vừa học cũng giống như để một thí sinh tự chấm bài thi của mình bằng cuốn sách giáo khoa mở sẵn trước mặt: điểm số lúc nào cũng đẹp, nhưng chẳng nói lên điều gì về năng lực thật. Còn nếu chỉ tách một tập kiểm tra nhỏ cố định, kết quả đánh giá lại dễ may rủi phụ thuộc vào việc "đề thi" vô tình rơi trúng phần dễ hay phần khó.
+
+Để thoát khỏi thế tiến thoái lưỡng nan đó, thống kê tính toán phát minh ra họ phương pháp **kiểm định chéo (Cross-Validation)** và **lấy mẫu lại (Resampling — đặc biệt là Bootstrap)**: tận dụng chính tập dữ liệu hữu hạn ta đang có để xoay vòng vai trò học–thi nhiều lần, cho ra ước lượng trung thực về sai số tổng quát hóa và độ bất định của mô hình.
+
+---
+
+## Bản đồ kiến thức nền: Cross-Validation và Resampling là gì, nghiên cứu những gì?
+
+Các kỹ thuật lấy mẫu lại trong bài này xoay quanh **ba trụ cột thực hành** mà mọi nhà khoa học dữ liệu đều dùng hằng ngày:
+
+1. **K-Fold & Stratified K-Fold Cross-Validation:** Chia dữ liệu thành $$K$$ phần bằng nhau (thường $$K = 5$$ hoặc $$10$$), lần lượt giữ 1 phần làm tập kiểm định và huấn luyện trên $$K-1$$ phần còn lại. Với dữ liệu phân loại mất cân bằng, *Stratified K-Fold* giữ nguyên tỷ lệ nhãn ở từng fold.
+2. **Leave-One-Out CV (LOOCV — $$K = n$$):** Mỗi lần bỏ ra đúng 1 điểm để kiểm tra. Độ chệch cực nhỏ vì dùng gần như toàn bộ dữ liệu để học, nhưng chi phí tính toán lớn và các tập huấn luyện trùng nhau tới $$n-2$$ điểm nên phương sai ước lượng có thể cao.
+3. **Bootstrap (Lấy mẫu có hoàn lại):** Rút ngẫu nhiên $$n$$ điểm *có hoàn lại* từ tập $$n$$ điểm gốc hàng nghìn lần để ước lượng trực tiếp sai số chuẩn (SE) và khoảng tin cậy cho **mọi** thống kê (kể cả trung vị, tương quan hay hệ số hồi quy phức tạp) mà không cần giả định phân phối chuẩn!
 
 ---
 
@@ -330,6 +342,29 @@ def bootstrap_error_estimation(n_bootstrap=100):
 | **LOOCV** | Tập dữ liệu nhỏ ($$n < 100$$) | Độ chệch rất thấp | Phương sai cao, tốn chi phí tính toán |
 | **Stratified CV** | Phân loại mất cân bằng lớp | Bảo toàn tỷ lệ các lớp ở mỗi fold | — |
 | **Bootstrap** | Ước lượng độ bất định | Linh hoạt | Cài đặt phức tạp hơn |
+
+### Khung giải thích: tự tay tính 3-Fold CV và chứng minh quy luật $$36.8\%$$ Out-of-Bag của Bootstrap (nên đọc chậm)
+
+Hãy tự kiểm chứng hai con số cốt lõi nhất của bài học chỉ bằng vài dòng số học:
+
+1. **Tính tay điểm 3-Fold Cross-Validation và độ bất định:**
+   Giả sử bạn chia 60 điểm dữ liệu thành $$K = 3$$ fold (mỗi fold 20 điểm) và đo được sai số MSE trên 3 lần kiểm định lần lượt là $$e_1 = 0.40,\ e_2 = 0.60,\ e_3 = 0.50$$.
+   - Ước lượng sai số CV:
+     $$
+     \mathrm{CV}_3 = \frac{0.40 + 0.60 + 0.50}{3} = 0.50.
+     $$
+   - Độ lệch chuẩn giữa các fold: $$s_e = \sqrt{\frac{(-0.1)^2 + (0.1)^2 + 0^2}{3 - 1}} = \sqrt{0.01} = 0.10$$, suy ra sai số chuẩn $$\mathrm{SE} = \frac{0.10}{\sqrt{3}} \approx 0.058$$.
+   Báo cáo đúng chuẩn khoa học là $$0.50 \pm 0.06$$ — giúp bạn thấy ngay hai mô hình có CV bằng $$0.50$$ và $$0.48$$ thực ra **chưa khác biệt có ý nghĩa**!
+
+2. **Tại sao mỗi mẫu Bootstrap lại tự động bỏ sót khoảng $$36.8\%$$ dữ liệu gốc (Out-of-Bag)?**
+   Khi rút ngẫu nhiên $$n$$ lần *có hoàn lại* từ $$n$$ điểm:
+   - Xác suất một điểm cụ thể $$x_i$$ **không** được chọn trong 1 lần rút là $$1 - \frac{1}{n}$$.
+   - Vì $$n$$ lần rút độc lập, xác suất $$x_i$$ bị bỏ sót trong **cả $$n$$ lần rút** là:
+     $$
+     P(x_i \notin \text{Bootstrap}) = \Bigl(1 - \frac{1}{n}\Bigr)^n.
+     $$
+   - Thay số cụ thể: với $$n = 5$$ ta có $$0.8^5 = 0.3277$$; với $$n = 10$$ ta có $$0.9^{10} \approx 0.3487$$; với $$n = 100$$ ta có $$0.99^{100} \approx 0.3660$$; và khi $$n \to \infty$$ nó tiến về đúng $$e^{-1} \approx 0.3679$$ (**36.8%**)!
+   Chính khoảng **36.8% dữ liệu chưa từng được bốc trúng** này trở thành tập kiểm tra "miễn phí" (Out-of-Bag score) cực kỳ hữu ích trong thuật toán Random Forest!
 
 ## Video tham khảo
 

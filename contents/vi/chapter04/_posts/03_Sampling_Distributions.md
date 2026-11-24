@@ -10,9 +10,19 @@ categories:
 lesson_type: required
 ---
 
-Trong các bài học trước, chúng ta đã tìm hiểu về sự đánh đổi giữa độ chệch và phương sai (Bias–Variance Tradeoff). Để đánh giá mô hình một cách có cơ sở và thực hiện suy diễn thống kê (statistical inference), chúng ta cần nắm vững Định lý Giới hạn Trung tâm (CLT) và khái niệm phân phối lấy mẫu (sampling distribution).
+Làm thế nào một viện thăm dò dư luận ở một quốc gia 100 triệu dân chỉ cần phỏng vấn ngẫu nhiên đúng **1.000 người** mà vẫn dự báo được tỷ lệ ủng hộ toàn quốc với sai số chỉ khoảng $$\pm 3\%$$? Tại sao ta không cần hỏi 1 triệu người hay 10 triệu người?
 
-> **Lưu ý:** Nếu bạn chưa nắm vững các khái niệm xác suất cơ bản và các phân phối thông dụng (Bernoulli, Nhị thức, Chuẩn, Poisson...), hãy xem lại **[Chapter 03: Xác Suất](../../chapter03/_posts/01_Concept_of_Probability.md)** trước khi tiếp tục. Bài học này giả định bạn đã quen thuộc với các phân phối đó và tập trung vào ứng dụng của chúng trong việc lấy mẫu.
+Câu trả lời nằm ở một trong những định lý kỳ diệu nhất của toàn bộ toán học: **Định lý Giới hạn Trung tâm (Central Limit Theorem — CLT)** và lý thuyết **Phân phối Lấy mẫu (Sampling Distributions)**. Bất kể phân phối gốc của từng cá thể méo mó, lệch lạc hay rời rạc ra sao, chỉ cần bạn lấy trung bình cộng của một mẫu ngẫu nhiên đủ lớn, bản thân con số trung bình mẫu $$\bar X$$ sẽ tụ quanh giá trị thật theo đúng hình chiếc chuông phân phối Chuẩn với độ rộng co lại chính xác theo quy luật $$1/\sqrt{n}$$!
+
+---
+
+## Bản đồ kiến thức nền: Phân phối lấy mẫu và Định lý Giới hạn Trung tâm là gì?
+
+Bài học này là chiếc cầu nối quyết định từ *Xác suất* (Chương 3–4) sang *Suy luận Thống kê* (Chương 5–6), đứng trên **ba trụ cột**:
+
+1. **Thống kê mẫu là một biến ngẫu nhiên:** Nếu bạn rút một mẫu 100 người khác, trung bình mẫu $$\bar X$$ sẽ ra một số hơi khác. Phân phối xác suất của $$\bar X$$ qua vô số lần lấy mẫu lặp lại gọi là **phân phối lấy mẫu**.
+2. **Quy luật Sai số chuẩn (Standard Error — $$\mathrm{SE} = \sigma/\sqrt{n}$$):** Độ phân tán của $$\bar X$$ nhỏ hơn độ phân tán của từng cá thể đúng $$\sqrt{n}$$ lần — giải thích vì sao muốn giảm sai số đi một nửa, ta phải tăng cỡ mẫu lên **gấp 4 lần**.
+3. **Định lý Giới hạn Trung tâm (CLT):** Với $$n$$ đủ lớn, $$\bar X \approx \mathcal{N}\bigl(\mu,\, \sigma^2/n\bigr)$$ bất kể hình dạng phân phối gốc (miễn phương sai hữu hạn) — nền tảng của khoảng tin cậy, kiểm định giả thuyết, A/B testing và nhiễu mini-batch trong SGD!
 
 ---
 
@@ -142,6 +152,24 @@ Kỹ thuật tái lấy mẫu (resampling) giúp ước lượng phân phối l�
 
 **3. Kiểm định giả thuyết (Hypothesis Testing):**
 Đánh giá xem một mô hình mới có thực sự cải thiện so với mô hình cơ sở (baseline) hay sự chênh lệch chỉ do nhiễu ngẫu nhiên.
+
+### Khung giải thích: tự tay kiểm tra CLT trên 2 viên xúc xắc và tính sai số cuộc thăm dò $$n = 1{,}000$$ (nên đọc chậm)
+
+1. **Xem hình chiếc chuông bắt đầu hiện ra chỉ từ $$n = 2$$ viên xúc xắc:**
+   - Tung **1 viên xúc xắc** $$X_1$$: phân phối phẳng lì hình chữ nhật (mỗi mặt $$1..6$$ xác suất $$1/6$$), kỳ vọng $$\mu = 3.5$$, phương sai $$\sigma^2 = \frac{35}{12} \approx 2.917$$.
+   - Lấy trung bình **2 viên xúc xắc** $$\bar X_2 = \frac{X_1 + X_2}{2}$$: có $$36$$ cặp đồng khả năng. Xác suất nhận hai giá trị cực biên giảm thê thảm: $$P(\bar X_2 = 1) = \frac{1}{36}$$ và $$P(\bar X_2 = 6) = \frac{1}{36}$$, trong khi đỉnh nhọn vọt lên ngay tại trung tâm: $$P(\bar X_2 = 3.5) = \frac{6}{36} = \frac{1}{6}$$ (gấp 6 lần hai đầu mút!).
+   - Phương sai co lại đúng một nửa: $$\mathrm{Var}(\bar X_2) = \frac{\sigma^2}{2} = \frac{35}{24} \approx 1.458$$. Chỉ với $$n = 2$$, hình chữ nhật phẳng đã biến thành hình tam giác cân; đến $$n = 30$$, nó trở thành đường cong chuông Gauss gần như hoàn hảo!
+
+2. **Tính tay biên độ sai số của cuộc thăm dò $$n = 1{,}000$$ cử tri:**
+   Giả sử tỷ lệ ủng hộ thật quanh $$p = 0.50$$ (phương sai lớn nhất $$p(1-p) = 0.25$$). Với mẫu ngẫu nhiên $$n = 1{,}000$$:
+   $$
+   \mathrm{SE}(\hat p) = \sqrt{\frac{0.5 \times 0.5}{1000}} = \sqrt{0.00025} \approx 0.0158.
+   $$
+   Theo CLT, biên độ sai số ở mức tin cậy 95% là:
+   $$
+   \pm 1.96 \times 0.0158 \approx \pm 0.031 = \pm 3.1\%!
+   $$
+   Điều đáng kinh ngạc nhất trong công thức trên: **dân số tổng thể $$N$$ (1 triệu hay 100 triệu người) hoàn toàn không xuất hiện!** Miễn mẫu được chọn *ngẫu nhiên không thiên lệch*, 1.000 người là đủ đo mạch đập của cả một quốc gia.
 
 ## Video Tham Khảo
 

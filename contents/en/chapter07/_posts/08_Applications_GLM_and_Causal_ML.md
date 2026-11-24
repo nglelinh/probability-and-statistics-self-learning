@@ -10,23 +10,38 @@ categories:
 lesson_type: optional
 ---
 
-This optional lesson does not re-teach OLS, ridge, lasso, or logistic regression. It takes those linear tools into the forms that industry and causal machine learning actually ship: generalized linear models and mixed models for non-Gaussian and clustered outcomes, regression adjustment (CUPED and Lin-style ANCOVA) for experiments, and double/debiased machine learning when the assignment mechanism is not a clean coin flip.
+Run an ordinary A/B test on weekly user revenue, and you immediately hit a wall: a few “whale” shoppers spend $5,000 while most users spend $0, so your standard error is enormous—meaning you would need to wait eight weeks to detect a real 1% lift! Yet you already know how much each user spent *last* week, before the experiment even started. Subtracting out that predictable pre-experiment baseline cuts your variance in half—letting you finish the exact same experiment in **four weeks instead of eight**, for free!
 
-You should leave able to write a GLM log-likelihood, say when a random effect is required, implement CUPED as a control-variate adjustment, and sketch the residual-on-residual step that makes double ML regularisation-safe.
+This optional lesson takes Chapter 07’s linear regression tools straight into the four workhorses that modern industry and causal machine learning actually ship: **Generalized Linear Models (GLMs)** for non-Gaussian outcomes, **Mixed-Effects Models** for repeated user sessions, **CUPED / Lin regression adjustment** for randomized experiments, and **Double/Debiased Machine Learning (DML)** when treatment is observational rather than randomized.
 
-The required Chapter 07 lessons (simple regression, OLS, regularisation, logistic regression) and the Chapter 06 lesson on coefficient inference are the prerequisites. Matrix algebra at the level of $$(X^\top X)^{-1}$$ is enough.
+---
+
+## Background Knowledge Map: Four Extensions of Linear Regression
+
+Every tool in this lesson relaxes one specific assumption of classical OLS $$Y = X\beta + \varepsilon$$.
+
+### 1. Generalized Linear Models (GLMs) — Relaxing Gaussian Noise
+Classical OLS lets predictions go negative and assumes constant variance. **GLMs** keep the clean linear predictor $$\eta = X\beta$$ while plugging in a **link function** $$g(\mathbb{E}[Y \mid X]) = \eta$$ and an **exponential-family likelihood** (Bernoulli/logit, Poisson/log, Tweedie).
+- **Core questions:** How do we get calibrated, auditable models for counts, probabilities, and zero-inflated insurance claims?
+- **Real-world reach:** Wide & Deep ad click models, actuarial insurance pricing, and epidemiology rate modeling.
+
+### 2. Linear Mixed-Effects Models (LMM / GLMM) — Relaxing i.i.d. Rows
+When the same user logs 30 sessions, treating all 30 rows as independent OLS observations artificially inflates your sample size and shrinks standard errors—manufacturing fake significance. **Mixed models** add a **random intercept** $$u_i \sim \mathcal{N}(0, \sigma_u^2)$$ per user/cluster to capture within-user correlation honestly.
+- **Core questions:** How much variance lives *between* users versus *within* users?
+- **Real-world reach:** Longitudinal clinical trials, neuroscience recordings, and session-level product logs.
+
+### 3. Variance Reduction (CUPED) & Causal Machine Learning (Double ML)
+In **randomized** experiments, regression isn’t needed for causal identification—it is used purely to crush noise variance (**CUPED**, Lin’s interacted OLS). In **observational** data (no coin flip), naive regularized ML suffers from **regularization bias**; **Double/Debiased ML** uses **cross-fitting** and **residual-on-residual regression** (Neyman orthogonality) to recover valid causal effects $$\tau$$.
+- **Core questions:** When is a covariate safe to adjust for (pre-treatment vs. post-treatment)? How do we use tree/neural models for causal inference without regularization bias?
+- **Real-world reach:** Experimentation platforms (Microsoft/Netflix/Airbnb), pricing elasticity, and marketplace policy evaluation (`EconML`).
 
 ---
 
 ## From a line to a GLM
 
-OLS assumes
+OLS assumes $$Y = X\beta + \varepsilon$$ with $$\mathbb{E}[\varepsilon \mid X] = 0$$. A **Generalized Linear Model** (McCullagh & Nelder, 1989) keeps $$\eta = X\beta$$ and swaps in a link $$g(\mathbb{E}[Y \mid X]) = \eta$$ plus an exponential-family variance function. Logistic regression (Bernoulli + logit), Poisson log-linear models for counts, and Tweedie models for zero-heavy claims are all the same unified object.
 
-$$Y = X\beta + \varepsilon, \qquad E[\varepsilon \mid X] = 0.$$
-
-A generalized linear model (McCullagh and Nelder, 1989) keeps the linear predictor $$\eta = X\beta$$ and changes two pieces: a link $$g(E[Y \mid X]) = \eta$$, and an exponential-family variance function. Poisson log-linear models for counts, Tweedie models for insurance claims with a point mass at zero, and the logistic model you already know are the same object. Logistic regression is the Bernoulli GLM with the logit link; its MLE is the cross-entropy minimiser from Chapter 05.
-
-Industry still fits GLMs at scale because they are calibrated, cheap, and auditable. Recommendation and advertising stacks often keep a GLM (or a “wide” linear piece) next to a deep net: Cheng et al. (2016) named that pattern Wide & Deep. The linear piece memorises sparse IDs; the deep piece generalises. The statistical point is that a GLM is not a downgrade from a network. It is the likelihood that the network is approximating, plus an interpretable coefficient table when a regulator or a pricing actuary asks for one.
+Industry still fits GLMs at scale—often paired beside a neural net as **Wide & Deep** (Cheng et al., 2016)—because GLMs are calibrated, fast, and auditable when regulators or actuaries ask for coefficient tables.
 
 ```python
 import numpy as np
@@ -55,29 +70,37 @@ def poisson_glm_mle(X, y):
 
 ## Mixed models when users are not i.i.d.
 
-A/B logs and longitudinal product data violate independence. The same user contributes many sessions; the same query appears on many days. A linear mixed model writes
+A/B logs and longitudinal data violate independence: the same user contributes many sessions. A **linear mixed model** writes
 
 $$Y_{ij} = x_{ij}^\top \beta + u_i + \varepsilon_{ij}, \qquad u_i \sim \mathcal{N}(0, \sigma_u^2),$$
 
-so the user effect $$u_i$$ is a random intercept. Generalized linear mixed models (GLMMs) put that random effect inside a GLM. Bates, Mächler, Bolker, and Walker (2015) made the computational stack (`lme4`) that most applied fields still call. Yu, Grieco, Holmes, Xu and colleagues (2022) argue, in a neuroscience primer that transfers verbatim to sessionised product data, that treating repeated measures as independent OLS rows is the default statistical error; a mixed model is the repair.
-
-For an experimentation platform the practical rule is: if treatment is assigned at the user level, analyse at the user level (one aggregated outcome per user) *or* fit a mixed model with a user random effect. Analysing raw events with OLS understates the standard error and is a Chapter 06 validity failure dressed as a Chapter 07 regression.
+giving each user $$i$$ a random baseline $$u_i$$ (implemented in `lme4` by Bates et al., 2015; see also Yu et al., 2022). Practical rule: if treatment is assigned per user, either aggregate to **one row per user** or fit a **mixed model** with a user random intercept. Running raw OLS on event-level rows understates standard errors and creates false wins.
 
 ## Regression adjustment and CUPED
 
-Randomisation already identifies the average treatment effect (ATE). Regression is used to *reduce variance*, not to fix confounding. Deng, Xu, Kohavi, and Walker (2013) introduced CUPED (Controlled-experiment Using Pre-Experiment Data): replace the outcome $$Y$$ by
+Randomization already identifies the average treatment effect (ATE). Regression here serves purely to **reduce variance**. Deng, Xu, Kohavi, and Walker (2013) introduced **CUPED** (Controlled-experiment Using Pre-Experiment Data): replace $$Y$$ by
 
-$$Y^{\mathrm{cv}} = Y - \theta X, \qquad \theta = \frac{\mathrm{Cov}(Y,X)}{\mathrm{Var}(X)},$$
+$$Y^{\mathrm{cv}} = Y - \theta (X - \bar{X}), \qquad \theta = \frac{\mathrm{Cov}(Y,X)}{\mathrm{Var}(X)},$$
 
-where $$X$$ is a pre-experiment covariate, typically the same metric last week. The ATE on $$Y^{\mathrm{cv}}$$ equals the ATE on $$Y$$, and
+where $$X$$ is a **pre-experiment** covariate (such as last week’s spend). Because $$X$$ is independent of randomized treatment $$T$$, $$\mathbb{E}[Y^{\mathrm{cv}} \mid T=1] - \mathbb{E}[Y^{\mathrm{cv}} \mid T=0] = \text{ATE}$$ is completely unbiased, while variance shrinks by
 
 $$\mathrm{Var}(Y^{\mathrm{cv}}) = \mathrm{Var}(Y)\,(1-\rho_{YX}^2).$$
 
-A correlation of 0.7 halves the variance. That is a control variate from Monte Carlo, not a new causal trick.
+Lin (2013) and Reluga, Ye, and Zhao (2022) further showed that including treatment-by-covariate interactions with sandwich standard errors asymptotically guarantees variance is *never* worse than raw difference-in-means, and Deng et al. (2023) extended CUPED to ratio metrics and ML-predicted baselines (CUPAC).
 
-Lin (2013) made the fully interacted OLS recommendation precise: include treatment, covariates, *and* treatment-by-covariate interactions, and use a heteroscedastic (sandwich) standard error. Reluga, Ye, and Zhao (2022) give a unified comparison of the ANOVA (difference-in-means), ANCOVA, and fully interacted (“ANHECOVA”) estimators and recover the fact that ANCOVA does *not* uniformly dominate the raw mean difference, while the interacted estimator does, asymptotically, under complete randomisation.
+---
 
-Deng and coauthors (2023) revisit CUPED ten years on and argue for an *augmentation* view that covers ratio metrics and, with care, in-experiment covariates. The 2022–2024 follow-ups (CUPAC, ML-adjusted CUPED, cross-fit nonlinear adjustment) are the same Chapter 07 idea with a more flexible regression for $$E[Y \mid X]$$.
+### Worked Example 1: CUPED Variance Reduction & Sample-Size Savings by Hand
+
+Suppose your weekly user spend $$Y$$ has variance $$\operatorname{Var}(Y) = 100$$, and last week’s pre-experiment spend $$X$$ correlates with $$Y$$ at $$\rho_{YX} = 0.70$$ (with $$\operatorname{Var}(X) = 100$$, so $$\operatorname{Cov}(Y,X) = 70$$):
+
+1. **Optimal CUPED coefficient:** $$\theta = \dfrac{\operatorname{Cov}(Y,X)}{\operatorname{Var}(X)} = \dfrac{70}{100} = \mathbf{0.70}$$.
+2. **Adjusted variance:**
+   $$\operatorname{Var}(Y^{\mathrm{cv}}) = 100\,(1 - 0.70^2) = 100\,(1 - 0.49) = \mathbf{51.0}!$$
+3. **Practical impact on experiment speed:**
+   Because required sample size scales linearly with variance ($$n \propto \sigma^2$$), cutting variance by **49%** cuts required users—and experiment wait time—nearly in **half**! If $$\rho = 0.80$$, variance drops by $$64\%$$ (nearly $$3\times$$ faster experiments) without changing a single line of randomization!
+
+---
 
 ```python
 import numpy as np
@@ -102,21 +125,36 @@ def cuped_ate(y, t, x):
     return ate_raw, ate_cv, theta, reduction
 ```
 
-Centering $$X$$ keeps the intercept readable; it does not change the ATE. In a randomised experiment you do **not** need double ML. Ordinary CUPED or Lin regression is enough, and it is what most platforms run.
+Centering $$X$$ keeps the intercept readable without changing the ATE. In a randomized experiment you do **not** need Double ML—CUPED or Lin regression is already optimal and clean.
 
 ## Double machine learning when assignment is observational
 
-If treatment $$T$$ is not randomised, the regression
+When treatment $$T$$ is **not** randomized, we observe $$Y = \tau T + g(X) + \varepsilon$$ where confounder $$X$$ drives *both* $$T$$ and $$Y$$. Plugging a regularized ML model (Lasso, Gradient Boosting) directly into $$Y \sim \tau T + \hat{g}(X)$$ leaks shrinkage bias into $$\hat{\tau}$$.
 
-$$Y = \alpha + \tau T + X^\top \beta + \varepsilon$$
+Chernozhukov, Chetverikov, Demirer, Duflo, Hansen, Newey, and Robins (2018) solved this with **Double/Debiased ML (DML)**:
+1. Predict $$Y$$ from $$X$$ and $$T$$ from $$X$$ out-of-fold (**cross-fitting**).
+2. Form the two residualized variables:
+   $$\tilde{Y} = Y - \hat{\mathbb{E}}[Y \mid X], \qquad \tilde{T} = T - \hat{\mathbb{E}}[T \mid X].$$
+3. Regress $$\tilde{Y}$$ on $$\tilde{T}$$: $$\hat{\tau} = \dfrac{\sum \tilde{T}_i \tilde{Y}_i}{\sum \tilde{T}_i^2}$$.
 
-estimates a causal $$\tau$$ only under unconfoundedness and correct specification of $$E[Y \mid T,X]$$. Regularised ML used naively as a plug-in for the nuisance functions $$E[Y \mid X]$$ and $$E[T \mid X]$$ leaves a regularisation bias that does not vanish at $$n^{-1/2}$$.
+---
 
-Chernozhukov, Chetverikov, Demirer, Duflo, Hansen, Newey, and Robins (2018) fix that with *double/debiased ML*: estimate the two nuisances with cross-fitting, form residuals
+### Worked Example 2: Partialing Out a Confounder (Frisch–Waugh / DML) by Hand
 
-$$\tilde{Y} = Y - \hat{E}[Y \mid X], \qquad \tilde{T} = T - \hat{E}[T \mid X],$$
+Suppose true causal effect is **$$\tau = 2.0$$**, but a confounder $$X \in \{0, 1\}$$ (e.g., “high-income user”) raises both treatment probability and baseline spending: $$Y = 2T + 10X$$. You observe 4 users:
 
-and regress $$\tilde{Y}$$ on $$\tilde{T}$$. Neyman orthogonality makes the target moment insensitive to first-order nuisance errors; cross-fitting kills overfitting bias. Microsoft’s EconML library is the production implementation that applied teams actually call.
+| User | Confounder $$X$$ | Treatment $$T$$ | Outcome $$Y$$ | $$\hat{\mathbb{E}}[T \mid X]$$ | $$\tilde{T} = T - \hat{\mathbb{E}}[T \mid X]$$ | $$\hat{\mathbb{E}}[Y \mid X]$$ | $$\tilde{Y} = Y - \hat{\mathbb{E}}[Y \mid X]$$ |
+|------|------------------|-----------------|---------------|--------------------------------|------------------------------------------------|--------------------------------|------------------------------------------------|
+| 1 | $$0$$ | $$0$$ | $$0$$ | $$0.5$$ | $$-0.5$$ | $$1$$ | $$-1$$ |
+| 2 | $$0$$ | $$1$$ | $$2$$ | $$0.5$$ | $$+0.5$$ | $$1$$ | $$+1$$ |
+| 3 | $$1$$ | $$0$$ | $$10$$ | $$0.5$$ | $$-0.5$$ | $$11$$ | $$-1$$ |
+| 4 | $$1$$ | $$1$$ | $$12$$ | $$0.5$$ | $$+0.5$$ | $$11$$ | $$+1$$ |
+
+Now compute the residual-on-residual slope:
+$$\hat{\tau}_{\text{DML}} = \frac{(-0.5)(-1) + (0.5)(1) + (-0.5)(-1) + (0.5)(1)}{(-0.5)^2 + 0.5^2 + (-0.5)^2 + 0.5^2} = \frac{2.0}{1.0} = \mathbf{2.0}!$$
+Subtracting $$\hat{\mathbb{E}}[\,\cdot \mid X]$$ from *both* $$Y$$ and $$T$$ cleanly strips out the $$+10X$$ confounder! In high dimensions, **Neyman orthogonality** ensures that small estimation errors in $$\hat{m}_Y(X)$$ and $$\hat{m}_T(X)$$ multiply together ($$O(n^{-1/4}) \times O(n^{-1/4}) = O(n^{-1/2})$$), vanishing fast enough for valid confidence intervals!
+
+---
 
 ```python
 import numpy as np
@@ -143,16 +181,36 @@ def dml_ate(y, t, X, n_splits=5, random_state=0):
     return tau
 ```
 
-Athey and Imbens (2019) survey why economists—and, by the same math, data scientists in marketplaces—need this toolkit. Causal forests (Wager and Athey, 2018) extend the idea from a scalar ATE to heterogeneous effects. The regression chapter is the right home: the final step is still a regression, on residuals.
+Athey and Imbens (2019) and Wager and Athey (2018) (*Causal Forests*) extend the same residualization philosophy to heterogeneous treatment effects $$\tau(X)$$.
+
+---
+
+### Deep-Dive Explanation: Why Double ML Needs BOTH Residualization AND Cross-Fitting (Read Slowly)
+
+Why couldn’t you just run Gradient Boosting for $$Y \sim T + X$$ and read off the treatment effect? Walk through these four steps slowly.
+
+#### Step 1: Naive ML shrinkage steals credit from treatment $$T$$
+Suppose $$X$$ is correlated with $$T$$. A regularized ML model shrinks $$X$$’s effect slightly toward zero to reduce variance—so the leftover confounding from $$X$$ spills directly into $$\hat{\tau}$$, creating a bias of order $$O(n^{-1/4})$$ that ruins confidence intervals!
+
+#### Step 2: Residualizing BOTH $$Y$$ and $$T$$ creates Neyman orthogonality
+By regressing $$\tilde{Y} = Y - \hat{m}_Y(X)$$ on $$\tilde{T} = T - \hat{m}_T(X)$$, first-order errors in $$\hat{m}_Y$$ and $$\hat{m}_T$$ cancel out! Only their **product** remains: if each ML model converges at rate $$n^{-1/4}$$, their product converges at $$n^{-1/2}$$—restoring exact asymptotic normality.
+
+#### Step 3: Why cross-fitting is mandatory
+If you compute $$\tilde{Y}$$ and $$\tilde{T}$$ on the *same* data used to train the Gradient Boosting trees, overfitting correlates the residuals and re-introduces bias! Training on Fold A and computing residuals on Fold B (**cross-fitting**) breaks that correlation completely.
+
+#### Step 4: Remember the one assumption ML can never fix
+Double ML eliminates *functional-form* and *regularization* bias—it **cannot** fix an **unmeasured confounder** missing from $$X$$! No algorithm replaces domain knowledge or true randomization.
+
+---
 
 ## What to use when
 
 | Setting | Tool | Why |
 |---|---|---|
-| Randomised experiment, Gaussian metric | Difference in means or CUPED / Lin | Identified by design; regression only buys variance |
-| Randomised experiment, counts or binaries | GLM or transformation, then CUPED on the GLM residual | Match the likelihood to the outcome |
-| Repeated measures / nested users | Aggregate to the assignment unit, or GLMM | Independence is false at the event level |
-| Observational treatment, many covariates | Double ML or a causal forest | Regularisation bias otherwise |
+| Randomized experiment, Gaussian metric | Difference in means or CUPED / Lin | Identified by design; regression only cuts variance |
+| Randomized experiment, counts or binaries | GLM or transformation, then CUPED on residual | Match likelihood to outcome scale |
+| Repeated measures / nested users | Aggregate to assignment unit, or GLMM | Independence is false at the event level |
+| Observational treatment, many covariates | Double ML or a causal forest | Removes regularization bias via orthogonality |
 
 ## Challenges and extensions
 

@@ -11,7 +11,19 @@ order: 2
 lesson_type: required
 ---
 
-**Mô hình tuyến tính (Linear Model)** là một trong những công cụ nền tảng của thống kê và học máy. Dù có cấu trúc đơn giản, nó là cơ sở để hiểu nhiều phương pháp phức tạp hơn, chẳng hạn mạng nơ-ron (có thể xem như nhiều lớp mô hình tuyến tính ghép nối qua các hàm kích hoạt phi tuyến). Trong bài này, chúng ta sẽ đi sâu vào cơ sở toán học của hồi quy tuyến tính thay vì chỉ dừng lại ở việc gọi hàm `model.fit()`.
+Khi bạn gõ một dòng lệnh ngắn gọn `LinearRegression().fit(X, y)` trong Python, điều gì thực sự diễn ra trong một phần nghìn giây bên dưới lớp vỏ tiện lợi đó? Không có phép màu nào cả — chỉ có **hình học Euclid trong không gian $$n$$ chiều**! Bài toán tìm bộ hệ số tối ưu $$\hat{\boldsymbol{\beta}}$$ thực chất là bài toán tìm **hình chiếu vuông góc duy nhất** của vector dữ liệu $$\mathbf{y} \in \mathbb{R}^n$$ lên siêu phẳng (không gian cột) sinh bởi các cột của ma trận đặc trưng $$\mathbf{X}$$.
+
+Bài học này mở nắp ca-pô của **Hồi quy Tuyến tính Đa biến và Phương pháp Bình phương Tối thiểu (OLS)**: từ ký hiệu ma trận, nghiệm dạng đóng $$(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$$, ý nghĩa hình học trực giao, **Định lý Gauss–Markov** (vì sao OLS là bộ ước lượng tuyến tính không chệch có phương sai nhỏ nhất — BLUE), đến kỹ thuật phân tích phần dư.
+
+---
+
+## Bản đồ kiến thức nền: Ba góc nhìn thống nhất về Hồi quy Tuyến tính Đa biến
+
+Một người tốt nghiệp đại học nắm vững OLS khi nhìn thấy **ba góc nhìn hoàn toàn tương đương** của cùng một phương trình chuẩn $$\mathbf{X}^T\mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{X}^T\mathbf{y}$$:
+
+1. **Góc nhìn Giải tích (Tối ưu hóa):** Cực tiểu hóa hàm mất mát bình phương $$\|\mathbf{y} - \mathbf{X}\boldsymbol{\beta}\|_2^2$$ bằng cách lấy gradient theo vector $$\boldsymbol{\beta}$$ và đặt bằng $$\mathbf{0}$$. Vì hàm lồi bậc hai, điểm dừng chính là cực tiểu toàn cục duy nhất khi $$\mathbf{X}$$ đủ hạng cột.
+2. **Góc nhìn Đại số Tuyến tính & Hình học:** Đặt $$\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}}$$ nằm trong không gian cột $$\mathrm{Col}(\mathbf{X})$$. Vector khoảng cách ngắn nhất từ $$\mathbf{y}$$ tới $$\mathrm{Col}(\mathbf{X})$$ buộc phải **vuông góc** với mọi cột của $$\mathbf{X}$$, tức $$\mathbf{X}^T(\mathbf{y} - \mathbf{X}\hat{\boldsymbol{\beta}}) = \mathbf{0}$$ — ra ngay phương trình chuẩn! Ma trận mũ $$\mathbf{H} = \mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T$$ chính là toán tử chiếu vuông góc.
+3. **Góc nhìn Thống kê (Định lý Gauss–Markov):** Chỉ cần nhiễu có kỳ vọng 0, không tương quan và phương sai đồng nhất (chưa cần giả định phân phối chuẩn!), OLS đã là **BLUE** (*Best Linear Unbiased Estimator*) — không có bộ ước lượng tuyến tính không chệch nào khác có phương sai nhỏ hơn OLS.
 
 ---
 
@@ -150,6 +162,36 @@ def plot_residuals(y_true, y_pred):
     plt.tight_layout()
     plt.show()
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Giải phương trình chuẩn OLS và kiểm chứng tính trực giao trên ma trận $$3\times 2$$
+
+Xét 3 điểm dữ liệu $$(x_i, y_i)$$: $$(0, 1),\; (1, 2),\; (2, 4)$$. Ta muốn khớp mô hình $$y = \beta_0 + \beta_1 x + \varepsilon$$ bằng công thức ma trận OLS:
+
+1. **Lập ma trận thiết kế $$\mathbf{X}$$ (thêm cột toàn số 1 cho hệ số chặn) và vector $$\mathbf{y}$$:**
+   $$\mathbf{X} = \begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 1 & 2 \end{pmatrix}, \qquad \mathbf{y} = \begin{pmatrix} 1 \\ 2 \\ 4 \end{pmatrix}.$$
+2. **Tính $$\mathbf{X}^T\mathbf{X}$$ và $$\mathbf{X}^T\mathbf{y}$$:**
+   $$\mathbf{X}^T\mathbf{X} = \begin{pmatrix} 1 & 1 & 1 \\ 0 & 1 & 2 \end{pmatrix}\begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 1 & 2 \end{pmatrix} = \begin{pmatrix} 3 & 3 \\ 3 & 5 \end{pmatrix}, \qquad \mathbf{X}^T\mathbf{y} = \begin{pmatrix} 1+2+4 \\ 0+2+8 \end{pmatrix} = \begin{pmatrix} 7 \\ 10 \end{pmatrix}.$$
+3. **Nghịch đảo ma trận $$2\times 2$$ và tìm $$\hat{\boldsymbol{\beta}}$$:**
+   Định thức $$\det(\mathbf{X}^T\mathbf{X}) = 3\times 5 - 3\times 3 = 6 \neq 0$$, nên
+   $$(\mathbf{X}^T\mathbf{X})^{-1} = \frac{1}{6}\begin{pmatrix} 5 & -3 \\ -3 & 3 \end{pmatrix} \implies \hat{\boldsymbol{\beta}} = \frac{1}{6}\begin{pmatrix} 5 & -3 \\ -3 & 3 \end{pmatrix}\begin{pmatrix} 7 \\ 10 \end{pmatrix} = \frac{1}{6}\begin{pmatrix} 5 \\ 9 \end{pmatrix} = \begin{pmatrix} 5/6 \\ 3/2 \end{pmatrix}.$$
+   Vậy đường hồi quy là $$\hat{y} = \frac{5}{6} + \frac{3}{2}x \approx 0{,}833 + 1{,}5x$$.
+4. **Kiểm chứng trực giao hình học $$\mathbf{X}^T\mathbf{e} = \mathbf{0}$$:**
+   Dự báo $$\hat{\mathbf{y}} = (5/6,\; 14/6,\; 23/6)^T$$, suy ra vector phần dư $$\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}} = (1/6,\; -2/6,\; 1/6)^T$$. Kiểm tra tích vô hướng với cả hai cột của $$\mathbf{X}$$:
+   - Với cột hệ số chặn $$(1,1,1)^T$$: $$\frac{1}{6} - \frac{2}{6} + \frac{1}{6} = 0$$ (tổng phần dư luôn bằng 0!).
+   - Với cột đặc trưng $$(0,1,2)^T$$: $$0\cdot\frac{1}{6} + 1\cdot\left(-\frac{2}{6}\right) + 2\cdot\frac{1}{6} = 0$$ (phần dư trực giao hoàn toàn với $$\mathbf{X}$$!).
+
+### Khung giải thích: Bốn điều cần ghi nhớ từ cấu trúc ma trận của OLS (nên đọc chậm)
+
+1. **Điều kiện tồn tại nghiệm duy nhất nằm ở $$\det(\mathbf{X}^T\mathbf{X}) \neq 0$$:** Nếu hai cột đặc trưng tỷ lệ tuyến tính với nhau (đa cộng tuyến hoàn toàn) hoặc số biến lớn hơn số mẫu ($$p > n$$), ma trận $$\mathbf{X}^T\mathbf{X}$$ suy biến — không thể nghịch đảo được.
+2. **Trong thực tế tính toán, không bao giờ đảo $$\mathbf{X}^T\mathbf{X}$$ trực tiếp:** Tính $$\mathbf{X}^T\mathbf{X}$$ bình phương số điều kiện (condition number) của ma trận, dễ gây sai số dấu phẩy động. Các thư viện như NumPy/scikit-learn dùng phân rã **QR** hoặc **SVD** để giải trực tiếp phép chiếu vuông góc ổn định hơn hẳn.
+3. **Gauss–Markov chỉ nói về lớp bộ ước lượng *không chệch*:** Nếu ta chấp nhận hy sinh một chút độ chệch (như Ridge/Lasso ở bài sau), ta hoàn toàn có thể đạt MSE nhỏ hơn cả OLS khi đặc trưng nhiều hoặc đa cộng tuyến mạnh!
+4. **Đừng quên đọc phần dư:** Ngay cả khi nghiệm ma trận chạy mượt mà, phần dư có cấu trúc phi tuyến hoặc phương sai không đều sẽ báo hiệu mô hình tuyến tính đang thiếu biến hoặc cần biến đổi.
+
+**Kiểm tra nhanh.** Trong ví dụ 3 điểm trên, tổng bình phương phần dư bằng $$\|\mathbf{e}\|_2^2 = (1/6)^2 + (-2/6)^2 + (1/6)^2 = 6/36 = 1/6$$. Hãy kiểm chứng định lý Pythagoras trong $$\mathbb{R}^3$$: liệu $$\|\hat{\mathbf{y}}\|_2^2 + \|\mathbf{e}\|_2^2$$ có bằng đúng $$\|\mathbf{y}\|_2^2 = 1^2 + 2^2 + 4^2 = 21$$ không?
+
+---
 
 ## Video tham khảo
 

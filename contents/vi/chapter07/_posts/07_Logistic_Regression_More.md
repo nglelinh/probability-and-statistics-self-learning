@@ -11,7 +11,19 @@ order: 7
 lesson_type: required
 ---
 
-Mặc dù mang tên gọi có từ "Regression", **Hồi quy Logistic (Logistic Regression)** là một thuật toán **phân loại (classification)**, dùng để dự đoán xác suất một quan sát thuộc về một lớp cụ thể (chẳng hạn có bệnh hay không có bệnh). Ta không thể áp dụng trực tiếp hồi quy tuyến tính cho bài toán này vì hồi quy tuyến tính trả về giá trị thực trên toàn bộ khoảng $(-\infty, +\infty)$, trong khi xác suất $P$ phải nằm trong đoạn $[0, 1]$.
+Hãy tưởng tượng bạn đang vận hành hệ thống phát hiện giao dịch thẻ tín dụng gian lận. Mô hình hồi quy logistic trả về một con số xác suất mượt mà $$p \in (0, 1)$$ cho mỗi giao dịch. Câu hỏi thực chiến không chỉ là *"làm sao vẽ đường thẳng ngăn cách hai lớp?"*, mà còn là: **nếu ta hạ ngưỡng cảnh báo từ $$p = 0{,}50$$ xuống $$p = 0{,}20$$ để không bỏ sót kẻ gian, hình học của ranh giới quyết định sẽ thay đổi như thế nào?**
+
+Bài học củng cố này tập trung vào góc nhìn hình học và trực quan hóa của **Hồi quy Logistic**: cách hàm sigmoid biến khoảng cách tới siêu phẳng thành xác suất, cách đọc ý nghĩa của **log-odds (logit)**, và cách vẽ trực tiếp đường ranh giới quyết định trên mặt phẳng đặc trưng 2D bằng Python.
+
+---
+
+## Bản đồ kiến thức nền: Ba trụ cột hình học – xác suất của Phân loại Tuyến tính
+
+Để hiểu thật chắc cơ chế phân loại của Hồi quy Logistic trên mặt phẳng 2D cũng như không gian $$p$$ chiều:
+
+1. **Siêu phẳng phân cách & Độ tin cậy theo khoảng cách:** Biểu thức $$z = \beta_0 + \boldsymbol{\beta}^T\mathbf{x}$$ tỷ lệ thuận với khoảng cách có dấu từ điểm $$\mathbf{x}$$ tới đường ranh giới $$z = 0$$. Điểm nằm ngay trên đường ranh giới có $$z = 0 \implies p = 0{,}5$$ (bất định tối đa); điểm càng xa đường ranh giới về hai phía, $$\lvert z\rvert$$ càng lớn và xác suất càng tiến sát về $$0$$ hoặc $$1$$.
+2. **Dịch chuyển ngưỡng xác suất = Dịch song song đường ranh giới:** Chọn ngưỡng quyết định $$p \ge \tau$$ tương đương với $$z \ge \ln\frac{\tau}{1-\tau}$$. Nói cách khác, đổi ngưỡng $$\tau$$ **không hề xoay hướng** đường thẳng phân cách — nó chỉ tịnh tiến song song đường thẳng đó sang phía lớp được ưu tiên!
+3. **Tối ưu lồi qua Log-Loss:** Cực đại hóa hàm hợp lý Bernoulli tương đương cực tiểu hóa hàm log-loss lồi nghiêm ngặt (khi có điều chuẩn L2), đảm bảo nghiệm hình học tìm được là duy nhất và ổn định.
 
 ---
 
@@ -108,6 +120,38 @@ plt.plot(x_line, y_line, 'k--', linewidth=2, label='Decision Boundary Equation')
 plt.legend()
 plt.show()
 ```
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Vẽ đường ranh giới quyết định và dịch ngưỡng từ $$p=0{,}5$$ sang $$p=0{,}2$$
+
+Giả sử sau khi huấn luyện hồi quy logistic với 2 đặc trưng $$(x_1, x_2)$$, ta thu được hàm tuyến tính log-odds:
+
+$$z(x_1, x_2) = -4 + 2x_1 + x_2.$$
+
+1. **Đường ranh giới quyết định ở ngưỡng mặc định $$p = 0{,}5$$ (tức $$z = 0$$):**
+   $$-4 + 2x_1 + x_2 = 0 \iff x_2 = 4 - 2x_1.$$
+   Đường thẳng này cắt trục hoành tại $$(2, 0)$$ và trục tung tại $$(0, 4)$$.
+2. **Tính xác suất dự báo cho hai điểm nằm đối xứng qua đường ranh giới:**
+   - Điểm $$A(3, 0)$$: $$z = -4 + 2(3) + 0 = +2 \implies p(A) = \frac{1}{1 + e^{-2}} \approx 0{,}881$$ (phân loại lớp 1 với độ tự tin 88,1%).
+   - Điểm $$B(1, 0)$$: $$z = -4 + 2(1) + 0 = -2 \implies p(B) = \frac{1}{1 + e^{2}} \approx 0{,}119$$ (phân loại lớp 0; để ý $$p(A) + p(B) = 1$$!).
+3. **Hạ ngưỡng cảnh báo xuống $$p = 0{,}20$$ (để tăng Recall bắt gian lận):**
+   Đổi ngưỡng xác suất sang thang log-odds:
+   $$z_{\text{ngưỡng}} = \ln\frac{0{,}20}{1 - 0{,}20} = \ln(0{,}25) = -\ln 4 \approx -1{,}386.$$
+   Đường ranh giới mới là:
+   $$-4 + 2x_1 + x_2 = -1{,}386 \iff x_2 = 2{,}614 - 2x_1.$$
+   Đường phân cách giữ nguyên độ dốc $$-2$$ nhưng **tịnh tiến xuống dưới**, mở rộng vùng dự báo lớp 1 để bắt thêm các trường hợp nghi ngờ!
+
+### Khung giải thích: Bốn bước đọc vị mô hình phân loại tuyến tính (nên đọc chậm)
+
+1. **Kiểm tra khả năng tách tuyến tính trước khi đổ lỗi cho thuật toán:** Nếu hai lớp phân bố kiểu vòng tròn đồng tâm (lớp 1 ở giữa, lớp 0 bao quanh), không một đường thẳng $$\beta_0 + \beta_1 x_1 + \beta_2 x_2 = 0$$ nào tách được — bạn cần thêm đặc trưng bậc hai (như $$x_1^2 + x_2^2$$) hoặc chuyển sang mô hình phi tuyến.
+2. **Độ lớn vector $$\|\boldsymbol{\beta}\|$$ quyết định độ dốc vùng chuyển tiếp:** Nhân đôi cả $$\beta_0, \beta_1, \beta_2$$ không làm thay đổi vị trí đường $$z = 0$$, nhưng làm hàm sigmoid dựng đứng hơn (xác suất chuyển từ 0 sang 1 đột ngột hơn).
+3. **Tách biệt bước *học xác suất* với bước *chọn ngưỡng ra quyết định*:** Huấn luyện mô hình để tối ưu Log-Loss (xác suất hiệu chuẩn tốt), sau đó mới chọn ngưỡng $$\tau$$ dựa trên ma trận chi phí thực tế của bài toán.
+4. **Nhớ kiểm tra độ cân bằng lớp và hiệu chuẩn xác suất:** Khi lớp dương hiếm, hãy kiểm tra thêm biểu đồ hiệu chuẩn (calibration plot) để chắc chắn xác suất dự báo 0,20 thực sự tương ứng khoảng 20% ca dương.
+
+**Kiểm tra nhanh.** Với mô hình $$z(x_1, x_2) = -4 + 2x_1 + x_2$$ ở trên, điểm $$C(1{,}5;\; 0)$$ sẽ bị xếp vào lớp nào nếu dùng ngưỡng $$p = 0{,}50$$, và xếp vào lớp nào nếu hạ ngưỡng xuống $$p = 0{,}20$$?
+
+---
 
 ## Video tham khảo
 

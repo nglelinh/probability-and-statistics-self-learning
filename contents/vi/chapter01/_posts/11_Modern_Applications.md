@@ -10,7 +10,19 @@ categories:
 lesson_type: optional
 ---
 
-Mô phỏng Monte Carlo, kiểm định chéo (cross-validation) và các tiêu chí thông tin trong chương này không chỉ dừng ở bài tập minh họa, mà là công cụ thực tế giúp các hệ thống học máy hiện đại tự đánh giá khi không có công thức dạng đóng. Bài đọc tùy chọn này kết nối các khái niệm đó với ba hướng phát triển giai đoạn 2022–2024, giúp bạn thấy rõ nơi mô phỏng, lấy mẫu lại và lựa chọn mô hình xuất hiện trong các công trình nghiên cứu và thư viện thực tế.
+Phần lớn các công thức khoảng tin cậy cổ điển đều bắt đầu bằng một câu giả định rất đẹp nhưng hiếm khi đúng ngoài đời thực: *"Giả sử sai số tuân theo phân phối chuẩn..."*. Thế nhưng khi ta đưa vào một mạng nơ-ron sâu hay một mô hình ngôn ngữ lớn (LLM) như một hộp đen khổng lồ, chẳng ai biết phân phối sai số của nó có hình thù ra sao!
+
+Đó là lý do trong giai đoạn gần đây, những ý tưởng cốt lõi của Chương 1 — tách mẫu, mô phỏng Monte Carlo và kiểm định chéo — đã lột xác thành **ba vũ khí hiện đại cực kỳ thực dụng**: **Conformal Prediction** (tạo khoảng dự đoán có bảo đảm toán học hữu hạn mẫu cho *bất kỳ* mô hình hộp đen nào), mô phỏng thống kê trong **đánh giá LLM**, và lý thuyết chính xác giải thích **Cross-Validation thực sự ước lượng đại lượng nào**.
+
+---
+
+## Bản đồ kiến thức nền: Thống kê tính toán hiện đại mở rộng Chương 1 theo ba hướng nào?
+
+1. **Conformal Prediction (Dự đoán bảo giác — Không cần giả định phân phối):** Chỉ cần giả định dữ liệu *có thể hoán đổi* (exchangeable), phương pháp dùng một tập hiệu chuẩn (calibration set) tách riêng để đo phân vị của sai số và dựng khoảng dự đoán đạt độ phủ $$\ge 1 - \alpha$$ chính xác ngay cả với cỡ mẫu hữu hạn.
+2. **Mô phỏng & Bootstrap trong đánh giá LLM:** Thay vì tin một con số điểm benchmark duy nhất, các phòng thí nghiệm hiện đại dùng lấy mẫu nhiều lần và bootstrap để đo khoảng tin cậy khi so sánh hai mô hình ngôn ngữ.
+3. **Bản chất mục tiêu của Cross-Validation:** Kết quả gần đây (Bates, Hastie, Tibshirani 2024) làm rõ rằng CV ước lượng tốt *sai số trung bình trên các tập huấn luyện ngẫu nhiên*, chứ không nhất thiết sát với sai số riêng của *một* mô hình cố định vừa huấn luyện.
+
+---
 
 ## Conformal prediction như một quy trình kiểm định tách mẫu
 
@@ -64,6 +76,31 @@ print("nested CV mean:", scores.mean(), "sd:", scores.std(ddof=1))
 ## Tóm lược
 
 Khi một bài báo trình bày việc hiệu chỉnh tập dự đoán bằng conformal prediction cho mô hình hộp đen, báo cáo bảng xếp hạng Arena kèm khoảng tin cậy, hay dùng kiểm định chéo lồng nhau để đánh giá quy trình tinh chỉnh, đó đều là những ứng dụng trực tiếp của các ý tưởng trong chương này. Các chương tiếp theo sẽ bổ sung lý thuyết biến ngẫu nhiên và kiểm định giả thuyết, nhưng mô phỏng, lấy mẫu lại và thói quen xác định rõ *đại lượng sai số nào đang được ước lượng* vẫn luôn là nền tảng xuyên suốt.
+
+### Khung giải thích: tự tay dựng khoảng dự đoán Conformal Prediction trên 9 điểm hiệu chuẩn (nên đọc chậm)
+
+Để thấy Conformal Prediction đơn giản và chặt chẽ đến mức nào, giả sử bạn có một mô hình hộp đen bất kỳ dự đoán giá nhà (tỷ đồng) và muốn khoảng dự đoán phủ đúng ít nhất **90%** ($$\alpha = 0.1$$) trên nhà mới.
+
+1. **Bước 1 — Đo sai số tuyệt đối trên tập hiệu chuẩn ($$n = 9$$ căn nhà tách riêng):**
+   Tính $$s_i = \lvert y_i - \hat f(x_i)\rvert$$ rồi sắp xếp tăng dần:
+   $$
+   0.2,\; 0.5,\; 0.7,\; 0.9,\; 1.1,\; 1.4,\; 1.8,\; 2.0,\; 3.5.
+   $$
+2. **Bước 2 — Tính chỉ số phân vị hiệu chuẩn hữu hạn mẫu:**
+   Công thức Split Conformal chọn phần tử thứ $$k = \lceil (n + 1)(1 - \alpha) \rceil$$ trong dãy đã sắp xếp:
+   $$
+   k = \lceil (9 + 1)(1 - 0.1) \rceil = \lceil 9 \rceil = 9
+   \;\Longrightarrow\;
+   \hat q = s_{(9)} = 3.5.
+   $$
+   (Lưu ý yếu tố $$n+1$$ thay vì $$n$$ chính là mẹo đối xứng hoán vị giúp định lý đúng tuyệt đối ở mọi cỡ mẫu hữu hạn!)
+3. **Bước 3 — Phát ra khoảng dự đoán cho căn nhà mới:**
+   Nếu mô hình dự đoán căn nhà mới có giá $$\hat f(x_{\text{mới}}) = 20.0$$ tỷ, khoảng dự đoán Conformal là:
+   $$
+   \bigl[20.0 - 3.5,\; 20.0 + 3.5\bigr] = [16.5,\; 23.5]\text{ tỷ đồng}.
+   $$
+
+**Bảo chứng toán học:** Không cần biết mô hình bên trong là hồi quy tuyến tính hay mạng Transformer 100 tỷ tham số, miễn dữ liệu mới cùng phân phối hoán đổi với 9 điểm hiệu chuẩn, xác suất giá thật rơi vào $$[16.5, 23.5]$$ được chứng minh **$$\ge 90\%$$**!
 
 ## Video tham khảo
 

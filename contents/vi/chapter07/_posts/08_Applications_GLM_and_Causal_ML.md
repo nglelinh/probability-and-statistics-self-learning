@@ -10,11 +10,20 @@ categories:
 lesson_type: optional
 ---
 
-Bài tùy chọn này không nhắc lại OLS, Ridge, Lasso hay hồi quy logistic ở mức cơ bản, mà trình bày cách các mô hình tuyến tính đó được triển khai trong thực tế công nghiệp và học máy nhân quả: mô hình tuyến tính tổng quát (GLM) và mô hình hỗn hợp cho kết cục không tuân theo phân phối chuẩn hoặc dữ liệu có cấu trúc phân cụm, hiệu chỉnh hồi quy (CUPED và hồi quy tương tác theo Lin) trong thí nghiệm trực tuyến, cùng phương pháp học máy khử chệch hai bước (double/debiased machine learning) khi cơ chế gán xử lý không phải là ngẫu nhiên hóa thuần túy.
+Một công ty công nghệ muốn kiểm chứng liệu thuật toán tìm kiếm mới có làm tăng doanh thu trung bình trên mỗi người dùng thêm **1%** hay không. Nếu dùng kiểm định hai mẫu thông thường, độ nhiễu tự nhiên giữa các người dùng (người chi 50.000 đ, người chi 50 triệu đ) lớn đến mức thí nghiệm phải kéo dài suốt **8 tuần** mới đủ lực kiểm định. Nhưng chỉ bằng một dòng công thức tinh tế mang tên **CUPED** — tận dụng lịch sử chi tiêu *trước thí nghiệm* $$X$$ của chính người dùng đó làm biến kiểm soát tuyến tính — phương sai giảm ngay gần một nửa, rút thời gian thí nghiệm từ 8 tuần xuống còn **4 tuần** mà vẫn giữ nguyên độ tin cậy!
 
-Sau bài học này, bạn có thể viết hàm log-likelihood của một GLM, xác định khi nào cần bổ sung hiệu ứng ngẫu nhiên, cài đặt CUPED như một kỹ thuật biến kiểm soát, và phác thảo bước hồi quy phần dư theo phần dư giúp double ML tránh độ chệch do điều chuẩn.
+Bài đọc tùy chọn này nối thẳng mô hình tuyến tính cổ điển của Chương 07 tới ba vũ khí thực chiến của khoa học dữ liệu và kinh tế lượng hiện đại: **Mô hình Tuyến tính Tổng quát (GLM)** cho dữ liệu đếm/lệch, **Mô hình Hỗn hợp (Mixed Effects)** cho dữ liệu lặp theo người dùng, và **Hiệu chỉnh hồi quy (CUPED) cùng Double/Debiased Machine Learning (DML)** cho bài toán ước lượng tác động nhân quả.
 
-Kiến thức tiền đề gồm các bài bắt buộc của Chương 07 (hồi quy đơn, OLS, điều chuẩn, hồi quy logistic) và nội dung suy diễn thống kê ở Chương 06. Kiến thức đại số ma trận ở mức $$(X^\top X)^{-1}$$ là đủ để theo dõi bài.
+---
+
+## Bản đồ kiến thức nền: Bốn bước tiến hóa từ OLS cổ điển sang Suy diễn Nhân quả hiện đại
+
+Khi dữ liệu thực tế phá vỡ các giả định đẹp đẽ của OLS, thống kê hiện đại mở rộng theo bốn nhánh chính:
+
+1. **Mô hình Tuyến tính Tổng quát (GLM):** Thống nhất hồi quy tuyến tính (Gauss), hồi quy logistic (Bernoulli–Logit) và hồi quy đếm (Poisson–Log) dưới một khung duy nhất: phân phối thuộc họ mũ + hàm liên kết $$g(\mathbb{E}[Y\mid X]) = X\beta$$.
+2. **Mô hình Hỗn hợp (Mixed-Effects / Hierarchical Models):** Khi một người dùng phát sinh 50 phiên truy cập, 50 quan sát đó *không độc lập* nhau. Mô hình hỗn hợp tách biến thiên thành hiệu ứng cố định (chung cho toàn hệ thống) và hiệu ứng ngẫu nhiên (riêng từng người dùng/cửa hàng) để tránh sai số chuẩn bị đánh giá quá lạc quan.
+3. **Giảm phương sai trong thí nghiệm A/B (CUPED & Hồi quy Lin):** Dùng biến hiệp phương sai đo *trước thời điểm phân nhóm ngẫu nhiên* $$X$$ để trừ bớt phần biến thiên có thể dự đoán trước của $$Y$$ — giảm phương sai đúng theo hệ số $$(1 - \rho^2)$$ mà tuyệt đối không gây độ chệch.
+4. **Double / Debiased Machine Learning (DML):** Khi không thể chạy A/B (dữ liệu quan sát có nhiều biến gây nhiễu phi tuyến $$W$$), ta dùng học máy dự đoán phần dư của cả kết cục $$\tilde{Y} = Y - \hat{m}(W)$$ lẫn biến xử lý $$\tilde{T} = T - \hat{e}(W)$$ (kết hợp *cross-fitting*), rồi hồi quy $$\tilde{Y}$$ theo $$\tilde{T}$$ theo đúng Định lý Frisch–Waugh–Lovell để khử độ chệch điều chuẩn.
 
 ---
 
@@ -159,6 +168,33 @@ Athey và Imbens (2019) giải thích vì sao các nhà kinh tế lượng — v
 Dùng CUPED với hiệp biến đo *sau* khi xử lý có thể hấp thụ một phần hiệu ứng nhân quả và làm chệch ước lượng; Deng et al. (2013) nêu rõ $$X$$ phải là dữ liệu trước thí nghiệm. Mô hình hỗn hợp khi số lượng cụm quá ít thường cho sai số chuẩn thấp hơn thực tế. Double ML vẫn đòi hỏi giả định không còn biến gây nhiễu chưa đo lường — điều mà không thư viện phần mềm nào có thể tự kiểm tra. Ngoài ra, GLM có thể lệch hiệu chỉnh nếu thiếu các số hạng tương tác quan trọng; chẳng hạn mô hình Tweedie bỏ qua yếu tố mùa vụ (offset) có thể cho chỉ số khớp bề ngoài tốt nhưng dự báo sai lệch.
 
 Các hướng mở rộng tiếp theo bao gồm học có mục tiêu (targeted learning), học chính sách từ dữ liệu bandit đã ghi nhận (off-policy learning), và kết hợp CUPED với kiểm định tuần tự ở Chương 06.
+
+---
+
+### Ví dụ tính tay cầm tay chỉ việc: Tính mức tiết kiệm thời gian thử nghiệm A/B nhờ CUPED
+
+Giả sử trong một thử nghiệm A/B, doanh thu người dùng trong tuần thí nghiệm $$Y$$ có độ lệch chuẩn $$\sigma_Y = 20$$ (phương sai $$\mathrm{Var}(Y) = 400$$). Ta có thêm dữ liệu doanh thu tuần *trước* thí nghiệm $$X$$ của chính những người dùng đó, với cùng độ lệch chuẩn $$\sigma_X = 20$$ và hệ số tương quan $$\rho = \mathrm{Corr}(X, Y) = 0{,}70$$:
+
+1. **Tính hệ số điều chỉnh tối ưu CUPED:**
+   $$\theta^* = \frac{\mathrm{Cov}(Y, X)}{\mathrm{Var}(X)} = \rho\frac{\sigma_Y}{\sigma_X} = 0{,}70 \times \frac{20}{20} = 0{,}70.$$
+2. **Xây dựng biến kết cục đã giảm phương sai:**
+   $$Y_{\text{CUPED}} = Y - 0{,}70\,(X - \bar{X}).$$
+   Vì $$X$$ được đo *trước* khi chia nhóm ngẫu nhiên nên $$\mathbb{E}[X \mid T=1] = \mathbb{E}[X \mid T=0]$$, đảm bảo hiệu trung bình $$\mathbb{E}[Y_{\text{CUPED}} \mid T=1] - \mathbb{E}[Y_{\text{CUPED}} \mid T=0]$$ bằng **đúng** tác động nhân quả thật (hoàn toàn không chệch!).
+3. **Tính phương sai mới của $$Y_{\text{CUPED}}$$:**
+   $$\mathrm{Var}(Y_{\text{CUPED}}) = \mathrm{Var}(Y)(1 - \rho^2) = 400\,(1 - 0{,}70^2) = 400 \times 0{,}51 = 204.$$
+4. **Quy đổi ra thời gian chạy thí nghiệm:**
+   Phương sai giảm **49%** đồng nghĩa ta chỉ cần **51% cỡ mẫu** để đạt cùng sai số chuẩn và cùng lực kiểm định — một thí nghiệm vốn mất **8 tuần** nay chỉ cần khoảng **4,1 tuần**!
+
+### Khung giải thích: Bốn nguyên tắc sống còn khi dùng hồi quy cho nhân quả và sản phẩm (nên đọc chậm)
+
+1. **Biến kiểm soát trong CUPED bắt buộc phải đo TRƯỚC khi can thiệp:** Tuyệt đối không đưa vào CUPED một biến bị ảnh hưởng bởi chính tính năng đang thử nghiệm (*post-treatment bias*), nếu không ước lượng tác động nhân quả sẽ bị bóp méo.
+2. **Nhận diện đúng cấu trúc phân cụm dữ liệu:** Nếu chia nhóm A/B theo *người dùng* nhưng lại phân tích ở cấp độ *lượt nhấp chuột* mà không dùng mô hình hỗn hợp hoặc sai số chuẩn theo cụm (cluster-robust SE), p-value sẽ nhỏ giả tạo hàng chục lần.
+3. **Hiểu vì sao DML cần cả hai bước "khử phần dư" lẫn *cross-fitting*:** Nếu chỉ nhét biến xử lý $$T$$ vào chung một mô hình Lasso/Random Forest với $$W$$, điều chuẩn sẽ co nhầm hệ số nhân quả về 0. Hồi quy phần dư $$\tilde{Y}$$ theo phần dư $$\tilde{T}$$ trên các fold tách biệt khử sạch sai số bậc nhất này.
+4. **Mọi phương pháp dữ liệu quan sát đều mang giả định không kiểm chứng được:** DML xử lý xuất sắc các biến gây nhiễu *quan sát được* $$W$$, nhưng không thể tự cứu bạn nếu còn tồn tại biến gây nhiễu *ẩn* chưa được đo lường.
+
+**Kiểm tra nhanh.** Trong ví dụ CUPED trên, nếu tương quan giữa doanh thu trước và trong thí nghiệm tăng lên tới $$\rho = 0{,}80$$, phương sai giảm bao nhiêu phần trăm và thí nghiệm 8 tuần có thể rút ngắn xuống còn khoảng mấy tuần?
+
+---
 
 ## Video tham khảo
 

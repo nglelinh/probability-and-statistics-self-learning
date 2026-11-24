@@ -10,7 +10,20 @@ categories:
 lesson_type: optional
 ---
 
-Không gian mẫu, xác suất có điều kiện, định lý Bayes và tính độc lập trong chương này chính là những khái niệm thường bị dùng sai trong các hệ thống thực tế — khi nhầm lẫn điểm softmax với xác suất được hiệu chỉnh, nhầm likelihood của token với mức độ tin cậy, hoặc nhầm tương quan với quan hệ nhân quả. Bài đọc tùy chọn này giữ nguyên phần lý thuyết cốt lõi và chỉ ra bốn bối cảnh cụ thể nơi các khái niệm đó xuất hiện trong thực hành khoa học máy tính giai đoạn 2021–2023.
+Nếu một ứng dụng thời tiết báo *"80% khả năng mưa"* vào 100 ngày khác nhau, và thực tế trời mưa đúng 80 ngày trong số đó, ta gọi ứng dụng ấy **được hiệu chỉnh tốt (well-calibrated)**. Nhưng nhiều mạng nơ-ron sâu và mô hình ngôn ngữ lớn (LLM) hiện đại lại mắc bệnh "tự tin thái quá": chúng gán xác suất 99% cho câu trả lời sai bét! Và còn một hố sâu lớn hơn nữa: nhìn thấy những người mang ô thường gặp trời mưa ($$P(\text{Mưa}\mid \text{Mang ô})$$ rất cao) hoàn toàn không có nghĩa là cất ô ở nhà sẽ làm trời nắng ($$P(\text{Mưa}\mid \mathrm{do}(\text{Không mang ô}))$$)!
+
+Bài học này cho thấy những khái niệm sơ cấp của Chương 3 — xác suất có điều kiện, Bayes và tính độc lập — chính là chiếc chìa khóa mở cửa vào bốn chủ đề nóng nhất của AI hiện đại: **hiệu chỉnh xác suất**, **xác suất sinh token của LLM**, **Naive Bayes thực chiến**, và **suy diễn nhân quả**.
+
+---
+
+## Bản đồ kiến thức nền: Xác suất cơ bản bước vào AI hiện đại qua bốn cánh cửa nào?
+
+1. **Hiệu chỉnh xác suất (Calibration — ECE & Brier Score):** Đo xem con số xác suất mô hình in ra có khớp với *tần suất thực tế* hay không — sống còn trong y tế, tín dụng và xe tự lái.
+2. **Xác suất của LLM (Token Softmax vs. Độ tin cậy sự thật):** Xác suất softmax của LLM đo *độ hợp lý ngôn ngữ của token kế tiếp* theo ngữ cảnh, chứ **không** tự động là xác suất mệnh đề đó đúng sự thật ngoài đời.
+3. **Naive Bayes trong thực chiến:** Giả định độc lập có điều kiện $$P(x_1,\dots,x_d\mid y) = \prod P(x_j\mid y)$$ dù "ngây thơ" nhưng chạy siêu nhanh, chống overfit tốt trên văn bản chiều cao và là baseline khó đánh bại.
+4. **Đồ thị nhân quả (Causal DAG & toán tử $$\mathrm{do}$$):** Phân biệt rạch ròi giữa *quan sát thụ động* $$P(Y\mid X)$$ và *can thiệp chủ động* $$P(Y\mid \mathrm{do}(X))$$ khi có biến nhiễu ẩn (confounder).
+
+---
 
 ## Hiệu chỉnh xác suất (Calibration): khi $$P(Y=1\mid X=x)$$ là một tần suất
 
@@ -43,6 +56,25 @@ Nghịch lý Simpson trong phần bài tập là lời nhắc rằng điều ki�
 ## Tóm lược
 
 Khi một công trình nghiên cứu báo cáo chỉ số ECE, yêu cầu mô hình ngôn ngữ nêu xác suất bằng lời, triển khai `MultinomialNB` trong hệ thống thực tế hay nhận diện hiệu ứng nhân quả bằng DoWhy, đó đều là những ứng dụng trực tiếp của các khái niệm trong chương này. Các chương tiếp theo về biến ngẫu nhiên sẽ cụ thể hóa *cách* gán giá trị số cho biến cố, nhưng không làm thay đổi ý nghĩa nền tảng của xác suất có điều kiện $$P(\,\cdot\mid\,\cdot\,)$$.
+
+### Khung giải thích: tự tay tính Sai số Hiệu chỉnh (ECE) và phân biệt $$P(Y\mid X)$$ với $$P(Y\mid \mathrm{do}(X))$$ (nên đọc chậm)
+
+1. **Tính tay Expected Calibration Error (ECE) trên 100 dự đoán:**
+   Chia 100 dự đoán của một mô hình AI thành 2 nhóm (bin) theo mức độ tự tin:
+   - **Nhóm 1 (60 mẫu):** Mô hình báo tự tin trung bình $$\text{conf}_1 = 0.90$$, nhưng độ chính xác thực tế chỉ đạt $$\text{acc}_1 = 0.70$$ (tự tin thái quá 20%!).
+   - **Nhóm 2 (40 mẫu):** Mô hình báo tự tin trung bình $$\text{conf}_2 = 0.60$$, độ chính xác thực tế đúng $$\text{acc}_2 = 0.60$$ (hiệu chỉnh hoàn hảo).
+   Tính sai số hiệu chỉnh kỳ vọng (trung bình có trọng số theo số mẫu):
+   $$
+   \mathrm{ECE} = \frac{60}{100}\lvert 0.90 - 0.70\rvert + \frac{40}{100}\lvert 0.60 - 0.60\rvert = 0.6(0.20) + 0.4(0) = 0.12\;(12\%).
+   $$
+   Một mô hình có $$\mathrm{ECE} = 12\%$$ cần được hiệu chỉnh lại (ví dụ bằng *Temperature Scaling*) trước khi dùng cho các quyết định rủi ro cao!
+
+2. **Tại sao $$P(Y\mid X) \neq P(Y\mid \mathrm{do}(X))$$ (Ví dụ phong vũ biểu và trời mưa):**
+   Giả sử bão ($$Z$$) gây ra cả hai hiện tượng: làm kim phong vũ biểu tụt xuống ($$X=1$$) VÀ làm trời mưa ($$Y=1$$).
+   - **Xác suất quan sát có điều kiện:** Thấy kim phong vũ biểu tụt tự nhiên, khả năng trời sắp mưa rất cao: $$P(Y=1 \mid X=1) = 0.85$$.
+   - **Xác suất can thiệp:** Bạn thò tay vặn cưỡng bức kim phong vũ biểu xuống ($$\mathrm{do}(X=1)$$). Hành động này cắt đứt mũi tên từ bão $$Z \to X$$, chẳng ảnh hưởng gì tới bầu trời:
+     $$P(Y=1 \mid \mathrm{do}(X=1)) = P(Y=1) = 0.20 \neq 0.85!$$
+   Đây chính là ranh giới sống còn giữa *mô hình dự đoán* và *mô hình ra quyết định nhân quả*.
 
 ## Video tham khảo
 
