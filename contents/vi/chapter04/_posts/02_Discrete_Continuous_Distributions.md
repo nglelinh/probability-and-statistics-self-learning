@@ -16,7 +16,7 @@ Tung một đồng xu có tỷ lệ thành công $$p$$ là Bernoulli; đếm s�
 
 ---
 
-## Bản đồ kiến thức nền: Gia phả các phân phối xác suất rời rạc và liên tục
+## Kiến thức cần nhớ: Gia phả các phân phối xác suất rời rạc và liên tục
 
 Thay vì học rời rạc từng công thức, hãy nhìn cả hai họ phân phối như hai nhánh cây có quan hệ họ hàng chặt chẽ:
 
@@ -421,7 +421,7 @@ def demonstrate_distribution_relationships():
 # demonstrate_distribution_relationships()
 ```
 
-### Khung giải thích: tự tay kiểm tra xấp xỉ Nhị thức → Poisson và tính chất "không nhớ" của phân phối Mũ (nên đọc chậm)
+### Giải thích: tự tay kiểm tra xấp xỉ Nhị thức → Poisson và tính chất "không nhớ" của phân phối Mũ
 
 1. **Kiểm tra cầu nối Nhị thức → Poisson bằng số cụ thể:**
    Một dây chuyền sản xuất $$n = 100$$ vi mạch mỗi giờ, xác suất mỗi chip lỗi là $$p = 0.02$$ (kỳ vọng số chip lỗi $$\lambda = np = 2$$). Tính xác suất **không có chip nào lỗi** ($$X = 0$$):

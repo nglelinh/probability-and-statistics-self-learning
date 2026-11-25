@@ -16,7 +16,7 @@ This optional note does not re-derive PMFs. Instead, it shows how three Chapter 
 
 ---
 
-## Background Knowledge Map: Where Do Named Distributions Power Modern Systems?
+## Key ideas: Where Do Named Distributions Power Modern Systems?
 
 Three pillars connect Chapter 04 random variables directly to production forecasting and generative AI.
 
@@ -106,7 +106,7 @@ The sampling-distribution lesson then explains why a Monte Carlo estimate of per
 
 ---
 
-### Deep-Dive Explanation: How a Neural Network Outputs a Probability Distribution (Read Slowly)
+### Explanation: How a Neural Network Outputs a Probability Distribution
 
 Students often ask: *“How does a deep learning model like DeepAR or SEDD connect to Chapter 04 PMFs?”* Follow these four steps slowly.
 

@@ -16,7 +16,7 @@ Bài đọc tùy chọn này đưa khung kiểm định cổ điển của Chư�
 
 ---
 
-## Bản đồ kiến thức nền: Kiểm định giả thuyết thay đổi ra sao ở quy mô hàng nghìn thí nghiệm?
+## Kiến thức cần nhớ: Kiểm định giả thuyết thay đổi ra sao ở quy mô hàng nghìn thí nghiệm?
 
 Ở quy mô đại học, ta thường kiểm định 1 giả thuyết trên 1 cỡ mẫu $$n$$ ấn định trước. Khi bước vào khoa học dữ liệu và y sinh quy mô lớn, ba trụ cột mới xuất hiện:
 
@@ -152,7 +152,7 @@ Các hướng mở rộng tiếp nối chương này gồm kỹ thuật giảm p
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Chạy thủ tục Benjamini–Hochberg (FDR) so với Bonferroni trên 5 thí nghiệm A/B
+### Ví dụ tính tay làm từng bước: Chạy thủ tục Benjamini–Hochberg (FDR) so với Bonferroni trên 5 thí nghiệm A/B
 
 Giả sử một nhóm sản phẩm chạy đồng thời $$m = 5$$ thử nghiệm A/B độc lập và thu được 5 giá trị $$p$$-value (đã sắp xếp tăng dần):
 
@@ -172,7 +172,7 @@ Kết quả tương phản cực rõ:
 - **Bonferroni (FWER $$\le 0{,}05$$):** chỉ bác bỏ duy nhất thí nghiệm 1 ($$0{,}004 \le 0{,}010$$), bỏ lọt cả thí nghiệm 2 lẫn 3.
 - **Benjamini–Hochberg (FDR $$\le 0{,}10$$):** bác bỏ cả 3 thí nghiệm đầu ($$k^* = 3$$), chấp nhận rằng trong số các phát hiện này, tỷ lệ báo động giả trung bình không vượt quá 10%.
 
-### Khung giải thích: Bốn kỷ luật vàng khi chạy kiểm định ở quy mô lớn (nên đọc chậm)
+### Giải thích: Bốn kỷ luật vàng khi chạy kiểm định ở quy mô lớn
 
 1. **Khóa cỡ mẫu trước hoặc dùng kiểm định tuần tự:** Nếu dùng $$z$$-test / $$t$$-test cổ điển, tuyệt đối không dừng sớm chỉ vì thấy $$p < 0{,}05$$ giữa chừng. Nếu cần theo dõi hàng ngày, hãy dùng *always-valid p-value*.
 2. **Chọn đúng thước đo sai lầm tổng thể:** Dùng **FWER (Bonferroni)** khi chỉ 1 kết luận sai đã gây hậu quả cực đắt (như phê duyệt thuốc hay công bố gene GWAS $$5\times 10^{-8}$$); dùng **FDR (Benjamini–Hochberg)** trong giai đoạn sàng lọc khám phá hàng trăm ý tưởng sản phẩm.

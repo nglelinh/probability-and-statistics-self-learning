@@ -16,7 +16,7 @@ Phần lớn các công thức khoảng tin cậy cổ điển đều bắt đ�
 
 ---
 
-## Bản đồ kiến thức nền: Thống kê tính toán hiện đại mở rộng Chương 1 theo ba hướng nào?
+## Kiến thức cần nhớ: Thống kê tính toán hiện đại mở rộng Chương 1 theo ba hướng nào?
 
 1. **Conformal Prediction (Dự đoán bảo giác — Không cần giả định phân phối):** Chỉ cần giả định dữ liệu *có thể hoán đổi* (exchangeable), phương pháp dùng một tập hiệu chuẩn (calibration set) tách riêng để đo phân vị của sai số và dựng khoảng dự đoán đạt độ phủ $$\ge 1 - \alpha$$ chính xác ngay cả với cỡ mẫu hữu hạn.
 2. **Mô phỏng & Bootstrap trong đánh giá LLM:** Thay vì tin một con số điểm benchmark duy nhất, các phòng thí nghiệm hiện đại dùng lấy mẫu nhiều lần và bootstrap để đo khoảng tin cậy khi so sánh hai mô hình ngôn ngữ.
@@ -77,7 +77,7 @@ print("nested CV mean:", scores.mean(), "sd:", scores.std(ddof=1))
 
 Khi một bài báo trình bày việc hiệu chỉnh tập dự đoán bằng conformal prediction cho mô hình hộp đen, báo cáo bảng xếp hạng Arena kèm khoảng tin cậy, hay dùng kiểm định chéo lồng nhau để đánh giá quy trình tinh chỉnh, đó đều là những ứng dụng trực tiếp của các ý tưởng trong chương này. Các chương tiếp theo sẽ bổ sung lý thuyết biến ngẫu nhiên và kiểm định giả thuyết, nhưng mô phỏng, lấy mẫu lại và thói quen xác định rõ *đại lượng sai số nào đang được ước lượng* vẫn luôn là nền tảng xuyên suốt.
 
-### Khung giải thích: tự tay dựng khoảng dự đoán Conformal Prediction trên 9 điểm hiệu chuẩn (nên đọc chậm)
+### Giải thích: tự tay dựng khoảng dự đoán Conformal Prediction trên 9 điểm hiệu chuẩn
 
 Để thấy Conformal Prediction đơn giản và chặt chẽ đến mức nào, giả sử bạn có một mô hình hộp đen bất kỳ dự đoán giá nhà (tỷ đồng) và muốn khoảng dự đoán phủ đúng ít nhất **90%** ($$\alpha = 0.1$$) trên nhà mới.
 

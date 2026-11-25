@@ -16,7 +16,7 @@ This optional note maps Chapter 02’s three foundational habits—*what was mea
 
 ---
 
-## Background Knowledge Map: Why Descriptive Statistics Drives Data-Centric AI
+## Key ideas: Why Descriptive Statistics Drives Data-Centric AI
 
 Three core statistical ideas sit beneath every modern data-curation pipeline.
 
@@ -102,7 +102,7 @@ Hollmann, Müller, Eggensperger, and Hutter (*TabPFN*, [ICLR 2023](https://iclr.
 
 ---
 
-### Deep-Dive Explanation: Four Habits of Data-Centric Statistical Hygiene (Read Slowly)
+### Explanation: Four Habits of Data-Centric Statistical Hygiene
 
 Whenever you inherit a messy real-world dataset—whether 500 rows or 5 billion—run through these four checks slowly before touching a complex model.
 

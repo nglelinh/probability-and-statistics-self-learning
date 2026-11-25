@@ -18,7 +18,7 @@ You should finish able to compute a two-proportion $$z$$-test and Sample Ratio M
 
 ---
 
-## Background Knowledge Map: How Hypothesis Testing Scales Up
+## Key ideas: How Hypothesis Testing Scales Up
 
 Three statistical ideas govern testing when you move from one textbook experiment to 10,000 live experiments.
 
@@ -182,7 +182,7 @@ In a ranking or ads regression with thousands of features, celebrating every coe
 
 ---
 
-### Deep-Dive Explanation: Why Peeking and Multiple Testing Are the Exact Same Trap (Read Slowly)
+### Explanation: Why Peeking and Multiple Testing Are the Exact Same Trap
 
 At first glance, peeking at one A/B test 20 times and testing 20 different metrics once look like different problems. Walk through these four steps to see why they are mathematically twins.
 

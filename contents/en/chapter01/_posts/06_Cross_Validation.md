@@ -16,7 +16,7 @@ Suppose you have only 100 patient records—expensive, hard-won clinical data—
 
 ---
 
-## Background Knowledge Map: What Statistical Ideas Power Resampling?
+## Key ideas: What Statistical Ideas Power Resampling?
 
 Resampling looks like simple data-shuffling, yet three deep statistical principles govern why it works—and when it fails.
 
@@ -342,7 +342,7 @@ def bootstrap_error_estimation(n_bootstrap=100):
 
 ---
 
-### Deep-Dive Explanation: Why 5-Fold and 10-Fold Beat Both Single Splits and LOOCV (Read Slowly)
+### Explanation: Why 5-Fold and 10-Fold Beat Both Single Splits and LOOCV
 
 Why do experienced practitioners almost always default to $$K = 5$$ or $$K = 10$$ instead of $$K = 2$$ or $$K = n$$ (LOOCV)? Follow these four steps slowly.
 

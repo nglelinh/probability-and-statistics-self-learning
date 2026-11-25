@@ -16,7 +16,7 @@ Bài đọc tùy chọn này nối thẳng mô hình tuyến tính cổ điển 
 
 ---
 
-## Bản đồ kiến thức nền: Bốn bước tiến hóa từ OLS cổ điển sang Suy diễn Nhân quả hiện đại
+## Kiến thức cần nhớ: Bốn bước tiến hóa từ OLS cổ điển sang Suy diễn Nhân quả hiện đại
 
 Khi dữ liệu thực tế phá vỡ các giả định đẹp đẽ của OLS, thống kê hiện đại mở rộng theo bốn nhánh chính:
 
@@ -171,7 +171,7 @@ Các hướng mở rộng tiếp theo bao gồm học có mục tiêu (targeted 
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Tính mức tiết kiệm thời gian thử nghiệm A/B nhờ CUPED
+### Ví dụ tính tay làm từng bước: Tính mức tiết kiệm thời gian thử nghiệm A/B nhờ CUPED
 
 Giả sử trong một thử nghiệm A/B, doanh thu người dùng trong tuần thí nghiệm $$Y$$ có độ lệch chuẩn $$\sigma_Y = 20$$ (phương sai $$\mathrm{Var}(Y) = 400$$). Ta có thêm dữ liệu doanh thu tuần *trước* thí nghiệm $$X$$ của chính những người dùng đó, với cùng độ lệch chuẩn $$\sigma_X = 20$$ và hệ số tương quan $$\rho = \mathrm{Corr}(X, Y) = 0{,}70$$:
 
@@ -185,7 +185,7 @@ Giả sử trong một thử nghiệm A/B, doanh thu người dùng trong tuần
 4. **Quy đổi ra thời gian chạy thí nghiệm:**
    Phương sai giảm **49%** đồng nghĩa ta chỉ cần **51% cỡ mẫu** để đạt cùng sai số chuẩn và cùng lực kiểm định — một thí nghiệm vốn mất **8 tuần** nay chỉ cần khoảng **4,1 tuần**!
 
-### Khung giải thích: Bốn nguyên tắc sống còn khi dùng hồi quy cho nhân quả và sản phẩm (nên đọc chậm)
+### Giải thích: Bốn nguyên tắc quan trọng khi dùng hồi quy cho nhân quả và sản phẩm
 
 1. **Biến kiểm soát trong CUPED bắt buộc phải đo TRƯỚC khi can thiệp:** Tuyệt đối không đưa vào CUPED một biến bị ảnh hưởng bởi chính tính năng đang thử nghiệm (*post-treatment bias*), nếu không ước lượng tác động nhân quả sẽ bị bóp méo.
 2. **Nhận diện đúng cấu trúc phân cụm dữ liệu:** Nếu chia nhóm A/B theo *người dùng* nhưng lại phân tích ở cấp độ *lượt nhấp chuột* mà không dùng mô hình hỗn hợp hoặc sai số chuẩn theo cụm (cluster-robust SE), p-value sẽ nhỏ giả tạo hàng chục lần.

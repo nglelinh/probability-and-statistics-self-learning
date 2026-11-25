@@ -16,7 +16,7 @@ Bài học này đặt khung toán học rõ ràng cho học có giám sát: t�
 
 ---
 
-## Bản đồ kiến thức nền: Học có giám sát là gì và nghiên cứu những gì?
+## Kiến thức cần nhớ: Học có giám sát là gì và nghiên cứu những gì?
 
 Từ góc nhìn xác suất – thống kê, **học có giám sát** giả định thế giới sinh ra các cặp dữ liệu $$(X, Y)$$ từ một phân phối ẩn chưa biết $$P(X, Y)$$, và ta cần học một hàm dự đoán $$\hat f(X)$$ từ mẫu hữu hạn $$n$$ điểm. Ngành này đứng trên **bốn trụ cột**:
 
@@ -337,7 +337,7 @@ def demonstrate_curse_of_dimensionality():
 # demonstrate_curse_of_dimensionality()
 ```
 
-### Khung giải thích: tự tay kiểm chứng phân rã $$\mathrm{MSE} = \mathrm{Bias}^2 + \mathrm{Var}$$ bằng con số cụ thể (nên đọc chậm)
+### Giải thích: tự tay kiểm chứng phân rã $$\mathrm{MSE} = \mathrm{Bias}^2 + \mathrm{Var}$$ bằng con số cụ thể
 
 Khẩu hiệu "mô hình phức tạp giảm Bias nhưng tăng Variance" sẽ sáng tỏ ngay lập tức khi bạn tự tính sai số của 3 mô hình trên cùng một điểm kiểm tra $$x_0$$ có giá trị thật $$f(x_0) = 10$$ (bỏ qua nhiễu ngoài $$\sigma^2 = 0$$ để dễ tính). Giả sử ta huấn luyện mỗi mô hình trên **3 tập dữ liệu ngẫu nhiên khác nhau** và thu được 3 dự đoán $$\hat f^{(1)}, \hat f^{(2)}, \hat f^{(3)}$$:
 

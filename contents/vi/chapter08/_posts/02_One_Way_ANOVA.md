@@ -16,7 +16,7 @@ Bài học này hoàn thiện trọn vẹn quy trình **ANOVA Một Yếu Tố (
 
 ---
 
-## Bản đồ kiến thức nền: Bốn mảnh ghép trong quy trình kiểm định ANOVA Một Yếu Tố
+## Kiến thức cần nhớ: Bốn mảnh ghép trong quy trình kiểm định ANOVA Một Yếu Tố
 
 Một quy trình phân tích ANOVA hoàn chỉnh trên thực tế luôn đi qua bốn cột mốc không thể đảo thứ tự:
 
@@ -144,7 +144,7 @@ else:
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Lập trọn vẹn Bảng ANOVA và chạy hậu kiểm Tukey HSD
+### Ví dụ tính tay làm từng bước: Lập trọn vẹn Bảng ANOVA và chạy hậu kiểm Tukey HSD
 
 Tiếp nối chính bộ số liệu 3 nhóm ($$k = 3$$, $$n = 3$$ mỗi nhóm, $$N = 9$$) từ Bài 1 với $$\bar{x}_A = 4,\; \bar{x}_B = 7,\; \bar{x}_C = 10$$ và $$\mathrm{SS}_{\text{Between}} = 54,\; \mathrm{SS}_{\text{Within}} = 24$$:
 
@@ -170,7 +170,7 @@ So sánh chênh lệch tuyệt đối của từng cặp trung bình với ngư�
 
 Thấy ngay giá trị của Tukey HSD: mặc dù điểm trung bình xếp đều $$4 < 7 < 10$$, với cỡ mẫu $$n = 3$$ mỗi nhóm, dữ liệu chỉ đủ sức khẳng định chắc chắn **Nhóm C vượt trội Nhóm A**!
 
-### Khung giải thích: Bốn kỷ luật khi đọc Bảng ANOVA và Post-hoc (nên đọc chậm)
+### Giải thích: Bốn kỷ luật khi đọc Bảng ANOVA và Post-hoc
 
 1. **Nếu kiểm định $$F$$ không bác bỏ $$H_0$$ ($$p \ge 0{,}05$$), DỪNG LẠI NGAY:** Đừng cố chạy hậu kiểm để "moi" xem có cặp nào tình cờ $$p < 0{,}05$$ không — đó là một dạng *p-hacking*.
 2. **Đừng quên báo cáo độ lớn hiệu ứng ($$\eta^2$$ hoặc $$\omega^2$$):** Trong ví dụ trên, $$\eta^2 = \mathrm{SS}_{\text{Between}} / \mathrm{SS}_{\text{Total}} = 54/78 \approx 0{,}692$$ cho thấy yếu tố nhóm giải thích gần 70% biến thiên điểm số.

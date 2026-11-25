@@ -12,7 +12,7 @@ Câu chuyện ấy tóm gọn linh hồn của bài học này: một bảng d�
 
 ---
 
-## Bản đồ kiến thức nền: Các đặc trưng số trong thống kê mô tả đo những chiều kích nào?
+## Kiến thức cần nhớ: Các đặc trưng số trong thống kê mô tả đo những chiều kích nào?
 
 Để mô tả trọn vẹn một tập dữ liệu số mà không bị một con số đơn lẻ đánh lừa, thống kê mô tả luôn đi theo **bốn trụ cột bổ trợ nhau**:
 
@@ -138,7 +138,7 @@ Trong phân phối đối xứng (như phân phối chuẩn), trung bình cộng
 - `pandas.std()` mặc định `ddof=1` (chia cho $n-1$, tương ứng độ lệch chuẩn mẫu).
 - Khi tính trên dữ liệu mẫu bằng NumPy, cần truyền rõ tham số `ddof=1` (bậc tự do điều chỉnh).
 
-### Khung giải thích: tự tay tính Mean, Median, SD và IQR trước và sau khi có 1 ngoại lai (nên đọc chậm)
+### Giải thích: tự tay tính Mean, Median, SD và IQR trước và sau khi có 1 ngoại lai
 
 Hãy tự kiểm tra sức tàn phá của một điểm ngoại lai duy nhất trên mẫu lương của 5 nhân viên (triệu đồng/tháng):
 

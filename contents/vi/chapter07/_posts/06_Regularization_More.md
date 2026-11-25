@@ -17,7 +17,7 @@ Bài học mở rộng này đào sâu vào cơ chế toán học đứng sau **
 
 ---
 
-## Bản đồ kiến thức nền: Cơ chế ổn định hóa và chọn lọc trong không gian nhiều chiều
+## Kiến thức cần nhớ: Cơ chế ổn định hóa và chọn lọc trong không gian nhiều chiều
 
 Để làm chủ điều chuẩn khi số biến lớn ($$p \gg n$$) hoặc đa cộng tuyến nặng, hãy nắm ba trụ cột giải tích – đại số sau:
 
@@ -127,7 +127,7 @@ print(f"Số biến Lasso giữ lại: {np.sum(lasso.coef_ != 0)}")
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Chữa bệnh suy biến ma trận $$2\times 2$$ bằng Ridge
+### Ví dụ tính tay làm từng bước: Chữa bệnh suy biến ma trận $$2\times 2$$ bằng Ridge
 
 Giả sử hai đặc trưng $$X_1$$ và $$X_2$$ giống hệt nhau (đa cộng tuyến 100%), tạo ra ma trận thiết kế suy biến:
 
@@ -142,7 +142,7 @@ $$\mathbf{X}^T\mathbf{X} = \begin{pmatrix} 2 & 2 \\ 2 & 2 \end{pmatrix}, \qquad 
 
 Nhìn nghiệm $$(1{,}2;\; 1{,}2)$$: Ridge không chỉ cứu bài toán khỏi suy biến mà còn **chia đều trọng số** cho hai biến tương quan hoàn toàn (tổng bằng $$2{,}4$$, hơi co nhẹ từ $$3{,}0$$ về 0 để đánh đổi lấy sự ổn định tuyệt đối!).
 
-### Khung giải thích: Bốn bước triển khai điều chuẩn chuẩn xác trong thực tế (nên đọc chậm)
+### Giải thích: Bốn bước triển khai điều chuẩn chuẩn xác trong thực tế
 
 1. **Kiểm tra độ suy biến của $$\mathbf{X}^T\mathbf{X}$$:** Khi số điều kiện lớn hoặc $$p > n$$, OLS không còn đáng tin — chuyển ngay sang Ridge/Lasso/Elastic Net.
 2. **Chuẩn hóa bắt buộc bên trong Cross-Validation:** Tính mean/std trên *tập train của từng fold* rồi áp cho tập validation để tránh rò rỉ dữ liệu (data leakage).

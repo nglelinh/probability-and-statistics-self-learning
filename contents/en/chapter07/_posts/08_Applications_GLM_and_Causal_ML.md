@@ -16,7 +16,7 @@ This optional lesson takes Chapter 07’s linear regression tools straight into 
 
 ---
 
-## Background Knowledge Map: Four Extensions of Linear Regression
+## Key ideas: Four Extensions of Linear Regression
 
 Every tool in this lesson relaxes one specific assumption of classical OLS $$Y = X\beta + \varepsilon$$.
 
@@ -185,7 +185,7 @@ Athey and Imbens (2019) and Wager and Athey (2018) (*Causal Forests*) extend the
 
 ---
 
-### Deep-Dive Explanation: Why Double ML Needs BOTH Residualization AND Cross-Fitting (Read Slowly)
+### Explanation: Why Double ML Needs BOTH Residualization AND Cross-Fitting
 
 Why couldn’t you just run Gradient Boosting for $$Y \sim T + X$$ and read off the treatment effect? Walk through these four steps slowly.
 

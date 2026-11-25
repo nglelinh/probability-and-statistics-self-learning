@@ -16,7 +16,7 @@ Bước dịch đó chính là **Biến ngẫu nhiên (Random Variable)** $$X$$.
 
 ---
 
-## Bản đồ kiến thức nền: Biến ngẫu nhiên, PMF, PDF và CDF là gì?
+## Kiến thức cần nhớ: Biến ngẫu nhiên, PMF, PDF và CDF là gì?
 
 Toàn bộ Chương 4 xoay quanh **bốn khái niệm trụ cột** giúp ta làm việc trơn tru với cả thế giới rời rạc lẫn liên tục:
 
@@ -490,7 +490,7 @@ def probability_calculations_with_cdf():
 # probability_calculations_with_cdf()
 ```
 
-### Khung giải thích: tự tay kiểm chứng tại sao mật độ $$f(x)$$ có thể lớn hơn $$1$$ và cách dùng CDF (nên đọc chậm)
+### Giải thích: tự tay kiểm chứng tại sao mật độ $$f(x)$$ có thể lớn hơn $$1$$ và cách dùng CDF
 
 Một hiểu lầm cực kỳ phổ biến của sinh viên là nghĩ *"$$f(x)$$ là xác suất nên $$f(x)$$ không bao giờ được vượt quá 1"*. Hãy kiểm tra ngay trên một ví dụ liên tục siêu gọn: xét thời gian chờ ngẫu nhiên $$X$$ phân bố đều trên đoạn $$[0,\, 0.5]$$ phút ($$X \sim \mathrm{Uniform}(0, 0.5)$$).
 

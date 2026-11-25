@@ -16,7 +16,7 @@ Bài học này nối thẳng thống kê mô tả cổ điển với thực hà
 
 ---
 
-## Bản đồ kiến thức nền: Thống kê mô tả hiện đại ở quy mô dữ liệu lớn gồm những trụ cột nào?
+## Kiến thức cần nhớ: Thống kê mô tả hiện đại ở quy mô dữ liệu lớn gồm những trụ cột nào?
 
 1. **Kiểm toán & Thiết kế tập dữ liệu (Data-Centric AI):** Dùng bảng chéo, phân phối nhóm con và kiểm tra trùng lặp để phát hiện thiên lệch và rò rỉ dữ liệu ngay trước khi huấn luyện mô hình.
 2. **Thống kê vững trước lỗi nhãn (Robust Summary Statistics):** Thay Mean/SD bằng Median, Trimmed Mean, hàm mất mát Huber và **MAD (Median Absolute Deviation)** để điểm nhiễu cực đoan không phá hỏng kết quả đo.
@@ -58,7 +58,7 @@ Hollmann, Müller, Eggensperger và Hutter (*TabPFN*, [ICLR 2023](https://iclr.c
 
 Khi các công trình hiện đại đề cập đến việc lọc Common Crawl theo điểm CLIP, phát hiện nhãn lỗi bằng cleanlab, hay thận trọng khi gom cụm trên UMAP, đó đều là những ứng dụng trực tiếp của tư duy Chương 02. Các chương xác suất tiếp theo sẽ bổ sung mô hình sinh dữ liệu và lấy mẫu, nhưng không thay thế kỷ luật nền tảng về kiểu dữ liệu, đặc trưng tóm tắt và trực quan hóa.
 
-### Khung giải thích: tự tay tính MAD để phát hiện điểm ngoại lai mà Z-score cổ điển bỏ sót (nên đọc chậm)
+### Giải thích: tự tay tính MAD để phát hiện điểm ngoại lai mà Z-score cổ điển bỏ sót
 
 Tại sao trong dữ liệu lớn có lỗi nhãn, quy tắc quen thuộc "gắn cờ ngoại lai khi $$\lvert Z\rvert > 3$$" lại hay thất bại (hiện tượng *masking*)? Hãy thử ngay trên 6 điểm dữ liệu có **1 điểm nhập sai nhãn cực lớn**:
 

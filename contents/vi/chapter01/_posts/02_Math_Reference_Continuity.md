@@ -16,7 +16,7 @@ Trong xác suất, thống kê và học máy, tính liên tục là "hợp đ�
 
 ---
 
-## Bản đồ kiến thức nền: Tính liên tục, Liên tục đều và Lipschitz là gì?
+## Kiến thức cần nhớ: Tính liên tục, Liên tục đều và Lipschitz là gì?
 
 Ba khái niệm trong bài này tạo thành một **chiếc thang độ mượt tăng dần** — mỗi bậc chặt hơn cho ta những bảo đảm mạnh hơn trong thống kê và học máy:
 
@@ -120,7 +120,7 @@ Ba lớp hàm tương ứng với ba điều kiện trên tạo thành một qua
 - **Trên $$[0,1]$$**: Liên tục và liên tục đều, nhưng không liên tục Lipschitz (đạo hàm không bị chặn gần $$x = 0$$).
 - **Trên $$[a,1]$$ với $$a > 0$$**: Liên tục Lipschitz với $$L = 1/(2\sqrt{a})$$.
 
-### Khung giải thích: tự tay kiểm chứng $$f(x) = x^2$$ liên tục nhưng KHÔNG liên tục đều trên $$\mathbb{R}$$ (nên đọc chậm)
+### Giải thích: tự tay kiểm chứng $$f(x) = x^2$$ liên tục nhưng KHÔNG liên tục đều trên $$\mathbb{R}$$
 
 Nhiều sinh viên học thuộc câu *"$$f(x) = x^2$$ không liên tục đều trên $$\mathbb{R}$$"* mà chưa từng thử thay số thật để thấy nó hỏng ở đâu. Hãy tự tay kiểm tra ngay trên giấy:
 

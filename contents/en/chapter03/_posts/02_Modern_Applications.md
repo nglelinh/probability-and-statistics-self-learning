@@ -16,7 +16,7 @@ Sample spaces, conditional probability, Bayes’ theorem, and independence are n
 
 ---
 
-## Background Knowledge Map: Where Does Chapter 03 Probability Live in Modern AI?
+## Key ideas: Where Does Chapter 03 Probability Live in Modern AI?
 
 Three probability concepts sit directly behind calibration, LLMs, spam filters, and causal inference.
 
@@ -110,7 +110,7 @@ Look at that jaw-dropping reversal!
 
 ---
 
-### Deep-Dive Explanation: Four Probability Questions to Ask Any AI System (Read Slowly)
+### Explanation: Four Probability Questions to Ask Any AI System
 
 Before trusting a number printed between `0.00` and `1.00` by a modern ML or LLM system, walk through these four Chapter 03 questions slowly.
 

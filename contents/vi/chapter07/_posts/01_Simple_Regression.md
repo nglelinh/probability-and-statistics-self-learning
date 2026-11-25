@@ -16,7 +16,7 @@ Ngày nay, **tương quan và hồi quy tuyến tính đơn giản** là viên g
 
 ---
 
-## Bản đồ kiến thức nền: Bốn mảnh ghép cốt lõi của Tương quan và Hồi quy đơn
+## Kiến thức cần nhớ: Bốn mảnh ghép cốt lõi của Tương quan và Hồi quy đơn
 
 Trước khi chạy hồi quy trên dữ liệu thật, người làm khoa học dữ liệu cần phân biệt rạch ròi bốn khái niệm thường bị trộn lẫn:
 
@@ -610,7 +610,7 @@ def prediction_intervals():
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Khớp đường hồi quy OLS, tính $$r$$ và $$R^2$$ trên 4 điểm dữ liệu
+### Ví dụ tính tay làm từng bước: Khớp đường hồi quy OLS, tính $$r$$ và $$R^2$$ trên 4 điểm dữ liệu
 
 Giả sử ta quan sát 4 sinh viên với số giờ ôn tập $$x_i$$ và điểm bài kiểm tra $$y_i$$:
 
@@ -635,7 +635,7 @@ Hãy tính mọi đại lượng bằng tay trong chưa đầy 1 phút:
    $$r = \frac{S_{xy}}{\sqrt{S_{xx} S_{yy}}} = \frac{6{,}0}{\sqrt{5{,}0 \times 8{,}0}} = \frac{6}{\sqrt{40}} \approx 0{,}9487, \qquad R^2 = r^2 = \frac{36}{40} = 0{,}90.$$
    Các giá trị dự báo là $$\hat{y} = (3{,}2;\; 4{,}4;\; 5{,}6;\; 6{,}8)$$, phần dư $$e = (-0{,}2;\; +0{,}6;\; -0{,}6;\; +0{,}2)$$ có tổng đúng bằng $$0$$ và tổng bình phương $$\mathrm{RSS} = 0{,}04+0{,}36+0{,}36+0{,}04 = 0{,}80$$ — khớp khít với $$\mathrm{TSS}(1 - R^2) = 8{,}0 \times 0{,}10 = 0{,}80$$!
 
-### Khung giải thích: Bốn bước đọc hiểu một mô hình hồi quy đơn không rơi vào bẫy (nên đọc chậm)
+### Giải thích: Bốn bước đọc hiểu một mô hình hồi quy đơn không rơi vào bẫy
 
 1. **Vẽ biểu đồ phân tán (scatter plot) trước khi tính $$r$$:** Bộ tứ Anscombe nổi tiếng gồm 4 tập dữ liệu có *cùng* $$\bar{x}, \bar{y}, r = 0{,}816$$ và *cùng* đường hồi quy, nhưng hình dáng hoàn toàn khác nhau (một đường cong parabol, một đường thẳng bị một điểm ngoại lệ kéo lệch). Không bao giờ tin $$r$$ hay $$R^2$$ mà chưa nhìn đồ thị!
 2. **Đừng nhầm tương quan mạnh với quan hệ nhân quả:** Số kem bán ra và số vụ đuối nước có $$r > 0{,}9$$ chỉ vì cả hai cùng bị chi phối bởi nhiệt độ mùa hè (biến gây nhiễu). Muốn kết luận nhân quả cần thử nghiệm ngẫu nhiên (A/B) hoặc thiết kế suy diễn nhân quả.

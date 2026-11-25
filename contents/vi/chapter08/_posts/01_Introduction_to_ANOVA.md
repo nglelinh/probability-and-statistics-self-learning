@@ -16,7 +16,7 @@ Một công ty thương mại điện tử muốn so sánh tốc độ chuyển 
 
 ---
 
-## Bản đồ kiến thức nền: Logic phân rã phương sai của ANOVA là gì?
+## Kiến thức cần nhớ: Logic phân rã phương sai của ANOVA là gì?
 
 ANOVA là viên gạch nền tảng của thiết kế thí nghiệm hiện đại, kết nối ba khái niệm cốt lõi bạn đã học ở các chương trước:
 
@@ -136,7 +136,7 @@ print(f"Shapiro-Wilk for Group A: p-value={p_value:.3f}")
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Tự kiểm chứng đẳng thức $$\mathrm{SS}_{\text{Total}} = \mathrm{SS}_{\text{Between}} + \mathrm{SS}_{\text{Within}}$$
+### Ví dụ tính tay làm từng bước: Tự kiểm chứng đẳng thức $$\mathrm{SS}_{\text{Total}} = \mathrm{SS}_{\text{Between}} + \mathrm{SS}_{\text{Within}}$$
 
 Xét 3 nhóm phương pháp học tập ($$k = 3$$), mỗi nhóm có $$n = 3$$ sinh viên (tổng $$N = 9$$) với điểm số:
 - **Nhóm A:** `[2, 4, 6]` $$\implies \bar{x}_A = 4$$
@@ -157,7 +157,7 @@ Trung bình tổng thể (Grand Mean): $$\bar{x} = \frac{4 + 7 + 10}{3} = 7$$. B
 
 Kiểm tra cộng lại: **$$54 + 24 = 78$$ — chính xác tuyệt đối!** Tỷ lệ phương sai giải thích được bởi sự khác biệt giữa các nhóm (còn gọi là $$\eta^2$$, hệt như $$R^2$$ trong hồi quy) là $$54/78 \approx 69{,}2\%$$!
 
-### Khung giải thích: Bốn điều cốt lõi để hiểu sâu bản chất ANOVA (nên đọc chậm)
+### Giải thích: Bốn điều cốt lõi để hiểu sâu bản chất ANOVA
 
 1. **Tại sao "phân tích phương sai" lại kiểm định được "trung bình"?** Vì nếu trung bình các nhóm tách xa nhau, các điểm trung bình nhóm $$\bar{x}_j$$ sẽ trải rộng ra quanh $$\bar{x}$$, làm $$\mathrm{SS}_{\text{Between}}$$ phình to vượt trội so với nhiễu nội bộ $$\mathrm{SS}_{\text{Within}}$$.
 2. **ANOVA thực chất là trường hợp đặc biệt của Hồi quy Tuyến tính:** Nếu bạn mã hóa tên nhóm (A, B, C) thành biến giả (dummy variables) rồi chạy OLS, kiểm định $$F$$ tổng thể của hồi quy cho ra **chính xác cùng một con số $$F$$ và $$p$$-value** như ANOVA một yếu tố!

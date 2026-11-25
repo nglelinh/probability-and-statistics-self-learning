@@ -16,7 +16,7 @@ Cảm giác "độ dốc cục bộ" đó chính là **đạo hàm** và phiên 
 
 ---
 
-## Bản đồ kiến thức nền: Đạo hàm đa biến, Gradient, Jacobian và Hessian là gì?
+## Kiến thức cần nhớ: Đạo hàm đa biến, Gradient, Jacobian và Hessian là gì?
 
 Khi chuyển từ hàm một biến $$f(x)$$ sang hàm mất mát nhiều triệu tham số $$L(\theta_1, \dots, \theta_d)$$, giải tích đa biến cung cấp đúng **bốn công cụ cốt lõi**:
 
@@ -136,7 +136,7 @@ Giải phương trình $$h'(x) = 0$$ ta được $$x = 1/2$$, suy ra điểm t�
 
 Ví dụ này cho thấy các khái niệm giải tích đa biến phối hợp với nhau như thế nào để giải bài toán tối ưu hóa một cách có hệ thống.
 
-### Khung giải thích: tự tay tính Gradient, Hessian và một bước hạ độ dốc trên hàm 2 biến (nên đọc chậm)
+### Giải thích: tự tay tính Gradient, Hessian và một bước hạ độ dốc trên hàm 2 biến
 
 Để thấy Gradient và Hessian phối hợp với nhau rõ như ban ngày, hãy xét hàm mất mát 2 tham số cực kỳ quen thuộc:
 

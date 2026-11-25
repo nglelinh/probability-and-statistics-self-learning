@@ -16,7 +16,7 @@ lesson_type: required
 
 ---
 
-## Bản đồ kiến thức nền: Cross-Validation và Resampling là gì, nghiên cứu những gì?
+## Kiến thức cần nhớ: Cross-Validation và Resampling là gì, nghiên cứu những gì?
 
 Các kỹ thuật lấy mẫu lại trong bài này xoay quanh **ba trụ cột thực hành** mà mọi nhà khoa học dữ liệu đều dùng hằng ngày:
 
@@ -343,7 +343,7 @@ def bootstrap_error_estimation(n_bootstrap=100):
 | **Stratified CV** | Phân loại mất cân bằng lớp | Bảo toàn tỷ lệ các lớp ở mỗi fold | — |
 | **Bootstrap** | Ước lượng độ bất định | Linh hoạt | Cài đặt phức tạp hơn |
 
-### Khung giải thích: tự tay tính 3-Fold CV và chứng minh quy luật $$36.8\%$$ Out-of-Bag của Bootstrap (nên đọc chậm)
+### Giải thích: tự tay tính 3-Fold CV và chứng minh quy luật $$36.8\%$$ Out-of-Bag của Bootstrap
 
 Hãy tự kiểm chứng hai con số cốt lõi nhất của bài học chỉ bằng vài dòng số học:
 

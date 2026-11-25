@@ -16,7 +16,7 @@ Giả sử hai công ty khảo sát độc lập cùng công bố một dòng ti
 
 ---
 
-## Bản đồ kiến thức nền: Khoảng tin cậy đứng ở đâu trong suy diễn thống kê?
+## Kiến thức cần nhớ: Khoảng tin cậy đứng ở đâu trong suy diễn thống kê?
 
 Để không bao giờ diễn giải sai một khoảng tin cậy trong báo cáo hay bài báo khoa học, hãy nắm vững bốn trụ cột sau:
 
@@ -428,7 +428,7 @@ def bootstrap_ci():
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Dựng khoảng tin cậy 95% cho thời gian tải trang web
+### Ví dụ tính tay làm từng bước: Dựng khoảng tin cậy 95% cho thời gian tải trang web
 
 Một kỹ sư hiệu năng đo thời gian tải trang trên $$n = 9$$ lượt truy cập độc lập (giả sử xấp xỉ chuẩn, chưa biết phương sai tổng thể $$\sigma^2$$), thu được trung bình mẫu $$\bar{x} = 2{,}40\text{ giây}$$ và độ lệch chuẩn mẫu $$s = 0{,}60\text{ giây}$$. Hãy tự tay tính khoảng tin cậy 95% cho thời gian tải trung bình thật $$\mu$$:
 
@@ -442,7 +442,7 @@ Một kỹ sư hiệu năng đo thời gian tải trang trên $$n = 9$$ lượt 
    $$\mathrm{CI}_{95\%} = [2{,}40 - 0{,}461,\; 2{,}40 + 0{,}461] = [1{,}939,\; 2{,}861]\text{ giây}.$$
 4. **Thử nghiệm tư duy — Tăng cỡ mẫu lên gấp 4 lần ($$n = 36$$):** Nếu vẫn thu được $$\bar{x} = 2{,}40$$ và $$s = 0{,}60$$, khi đó $$\mathrm{SE} = 0{,}60/\sqrt{36} = 0{,}10$$ và $$t_{0{,}025;\,35} \approx 2{,}030$$, nên biên sai số thu hẹp xuống còn $$\mathrm{ME} = 0{,}203\text{ giây}$$ (khoảng $$[2{,}197,\; 2{,}603]$$). Muốn giảm một nửa độ rộng khoảng tin cậy, bạn phải trả giá bằng **gấp 4 lần dữ liệu** (quy luật $$1/\sqrt{n}$$)!
 
-### Khung giải thích: Ba câu hỏi cần tự kiểm trước khi đọc một khoảng tin cậy (nên đọc chậm)
+### Giải thích: Ba câu hỏi cần tự kiểm trước khi đọc một khoảng tin cậy
 
 1. **Khoảng này đo bất định của cái gì?** Sai số chuẩn $$s/\sqrt{n}$$ đo độ dao động của *trung bình mẫu*, KHÔNG phải độ trải rộng của từng cá thể dữ liệu (độ lệch chuẩn $$s$$). Đừng nhầm khoảng tin cậy 95% của trung bình với khoảng chứa 95% dữ liệu!
 2. **Độ tin cậy và độ rộng luôn đánh đổi nhau:** Với cùng một bộ dữ liệu, muốn tăng độ tin cậy từ 95% lên 99% ($$t_{0{,}005;\,8} \approx 3{,}355$$), khoảng bắt buộc phải phình rộng thêm gần 45%. Con đường duy nhất vừa tin cậy cao vừa hẹp là thu thập thêm mẫu hoặc giảm nhiễu đo lường.

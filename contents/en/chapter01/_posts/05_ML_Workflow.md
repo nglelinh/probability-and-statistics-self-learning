@@ -16,7 +16,7 @@ Earlier lessons introduced individual statistical tools one at a time. This less
 
 ---
 
-## Background Knowledge Map: What Statistical Principles Govern an ML Pipeline?
+## Key ideas: What Statistical Principles Govern an ML Pipeline?
 
 A clean pipeline is not bureaucratic boilerplate—every step defends against a specific statistical failure mode.
 
@@ -480,7 +480,7 @@ def complete_ml_workflow():
 
 ---
 
-### Deep-Dive Explanation: Why Three Splits and One Final Test Are Non-Negotiable (Read Slowly)
+### Explanation: Why Three Splits and One Final Test Are Non-Negotiable
 
 Why not save data by splitting only into Train and Test, tuning your hyperparameters on Test, and reporting the best score? Follow these four steps slowly.
 

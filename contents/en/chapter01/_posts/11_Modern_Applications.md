@@ -16,7 +16,7 @@ This optional note connects Chapter 01’s core toolkit to three major 2022–20
 
 ---
 
-## Background Knowledge Map: How Chapter 01 Tools Power Modern AI Evaluation
+## Key ideas: How Chapter 01 Tools Power Modern AI Evaluation
 
 Three statistical themes tie these recent papers directly back to our opening lessons.
 
@@ -119,7 +119,7 @@ That snippet does not claim a new theorem. It is the Bates–Hastie–Tibshirani
 
 ---
 
-### Deep-Dive Explanation: Why Exchangeability Unifies Conformal, Arena, and Nested CV (Read Slowly)
+### Explanation: Why Exchangeability Unifies Conformal, Arena, and Nested CV
 
 These three 2022–2024 breakthroughs look completely different on the surface, yet they obey the exact same four-step statistical discipline.
 

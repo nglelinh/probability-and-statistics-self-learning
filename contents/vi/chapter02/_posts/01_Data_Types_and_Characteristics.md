@@ -12,7 +12,7 @@ Mọi công cụ thống kê — từ trung bình, trung vị, biểu đồ cộ
 
 ---
 
-## Bản đồ kiến thức nền: Thang đo dữ liệu (NOIR) là gì và nghiên cứu những gì?
+## Kiến thức cần nhớ: Thang đo dữ liệu (NOIR) là gì và nghiên cứu những gì?
 
 Trong thống kê mô tả, dữ liệu được tổ chức theo hai trục: **Định tính vs. Định lượng** (rời rạc/liên tục) và **4 thang đo kinh điển của Stevens (NOIR)** — mỗi nấc mở khóa thêm một nhóm phép toán hợp lệ:
 
@@ -137,7 +137,7 @@ print(f"Thạc Sĩ > Cử Nhân: {df.iloc[2]['TrinhDo_HocVan'] > df.iloc[0]['Tri
 - **Sai lầm**: Vẽ biểu đồ đường (line plot) cho dữ liệu danh mục không có thứ tự.
 - **Hậu quả**: Đường nối giữa các nhãn danh mục tạo cảm giác về một xu hướng liên tục không hề tồn tại.
 
-### Khung giải thích: tự tay kiểm tra vì sao $$40^\circ\mathrm{C}$$ KHÔNG "nóng gấp đôi" $$20^\circ\mathrm{C}$$ (nên đọc chậm)
+### Giải thích: tự tay kiểm tra vì sao $$40^\circ\mathrm{C}$$ KHÔNG "nóng gấp đôi" $$20^\circ\mathrm{C}$$
 
 Hãy kiểm chứng sự khác biệt giữa thang **Khoảng (Interval)** và thang **Tỷ lệ (Ratio)** bằng phép đổi đơn vị đơn giản:
 

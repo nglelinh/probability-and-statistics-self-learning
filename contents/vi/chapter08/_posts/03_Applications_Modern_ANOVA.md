@@ -16,7 +16,7 @@ Bài đọc tùy chọn này khép lại Chương 08 bằng cách đưa ANOVA c�
 
 ---
 
-## Bản đồ kiến thức nền: Ba bước mở rộng ANOVA vào hệ thống thí nghiệm hiện đại
+## Kiến thức cần nhớ: Ba bước mở rộng ANOVA vào hệ thống thí nghiệm hiện đại
 
 Khi bước từ phòng thí nghiệm nông nghiệp của Fisher sang nền tảng thử nghiệm trực tuyến quy mô triệu người dùng, ANOVA mở rộng theo ba trụ cột sau:
 
@@ -139,7 +139,7 @@ Các hướng mở rộng gồm ANOVA hoán vị (permutation ANOVA) khi giả �
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Bóc tách Hiệu ứng chính và Hiệu ứng tương tác trong bảng giai thừa $$2\times 2$$
+### Ví dụ tính tay làm từng bước: Bóc tách Hiệu ứng chính và Hiệu ứng tương tác trong bảng giai thừa $$2\times 2$$
 
 Quay lại thử nghiệm triển khai giai thừa $$(2\times 2)$$ đo tỷ lệ chuyển đổi (%) theo **Mẫu nút bấm** (Cũ vs. Mới) và **Gói cước** (Cơ bản vs. Cao cấp), giả sử cỡ mẫu 4 ô bằng nhau:
 
@@ -160,7 +160,7 @@ Hãy tính tay hai con số quyết định chiến lược sản phẩm:
 
 Vì hai hiệu ứng ngược dấu nhau ($$+6\%$$ và $$-2\%$$ — gọi là **tương tác giao cắt / crossover interaction**), quyết định tối ưu không phải là chọn 1 nút cho tất cả, mà là **cá nhân hóa theo phân khúc**: bật Nút Mới cho Gói Cơ bản ($$16\%$$) và giữ Nút Cũ cho Gói Cao cấp ($$14\%$$), đẩy chuyển đổi trung bình toàn sàn lên **$$15\%$$** thay vì $$14\%$$!
 
-### Khung giải thích: Bốn nguyên tắc thiết kế thí nghiệm đa biến thể không mắc bẫy (nên đọc chậm)
+### Giải thích: Bốn nguyên tắc thiết kế thí nghiệm đa biến thể không mắc bẫy
 
 1. **Luôn kiểm tra tương tác trước khi diễn giải hiệu ứng chính:** Khi tương tác mạnh (đặc biệt là tương tác đổi dấu như ví dụ trên), hiệu ứng chính trung bình có thể hoàn toàn vô nghĩa hoặc gây hại nếu áp dụng đại trà.
 2. **Biểu đồ tương tác (Interaction Plot) nói lên tất cả:** Vẽ 2 đường nối Cũ $$\to$$ Mới cho hai gói cước: nếu hai đường **song song**, không có tương tác; nếu hai đường **cắt nhau hoặc loe rộng**, tương tác đang hiện diện rõ rệt.

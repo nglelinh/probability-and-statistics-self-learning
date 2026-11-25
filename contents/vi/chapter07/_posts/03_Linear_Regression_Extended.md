@@ -16,7 +16,7 @@ Bài học này đào sâu vào nền tảng đánh giá và kiểm chứng mô 
 
 ---
 
-## Bản đồ kiến thức nền: Bốn thước đo và giả định quyết định chất lượng mô hình OLS
+## Kiến thức cần nhớ: Bốn thước đo và giả định quyết định chất lượng mô hình OLS
 
 Để đánh giá một mô hình hồi quy đa biến một cách trưởng thành, hãy nắm chắc bốn trụ cột sau:
 
@@ -309,7 +309,7 @@ def comprehensive_model_evaluation():
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Khi một biến "rác" đánh lừa $$R^2$$ nhưng bị Adjusted $$R^2$$ vạch mặt
+### Ví dụ tính tay làm từng bước: Khi một biến "rác" đánh lừa $$R^2$$ nhưng bị Adjusted $$R^2$$ vạch mặt
 
 Giả sử bạn xây dựng mô hình hồi quy trên $$n = 12$$ quan sát với tổng biến thiên $$\mathrm{TSS} = 100$$:
 
@@ -325,7 +325,7 @@ Giả sử bạn xây dựng mô hình hồi quy trên $$n = 12$$ quan sát vớ
 
 Chỉ một phép chia đơn giản cho bậc tự do $$n - p - 1$$ (từ 10 xuống 9) đã phơi bày ngay sự thật: biến thứ hai không tạo đủ giảm RSS để bù đắp 1 bậc tự do bị tiêu tốn!
 
-### Khung giải thích: Bốn nguyên tắc vàng khi đánh giá mô hình hồi quy đa biến (nên đọc chậm)
+### Giải thích: Bốn nguyên tắc vàng khi đánh giá mô hình hồi quy đa biến
 
 1. **Không bao giờ dùng $$R^2$$ trên tập train để so sánh mô hình có số biến $$p$$ khác nhau:** Hãy dùng **Adjusted $$R^2$$**, **AIC/BIC**, hoặc tốt nhất là **Cross-Validation (kiểm chứng chéo)** trên dữ liệu chưa từng nhìn thấy.
 2. **Đọc RSE song song với $$R^2$$:** Một mô hình dự đoán giá nhà có $$R^2 = 0{,}85$$ nghe rất cao, nhưng nếu $$\mathrm{RSE} = 1{,}5$$ tỷ đồng thì vẫn quá thô cho giao dịch thực tế.

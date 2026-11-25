@@ -16,7 +16,7 @@ Hãy tưởng tượng bạn xây mô hình dự đoán giá nhà bằng OLS và
 
 ---
 
-## Bản đồ kiến thức nền: Bốn góc nhìn giúp hiểu thấu Ridge, Lasso và Elastic Net
+## Kiến thức cần nhớ: Bốn góc nhìn giúp hiểu thấu Ridge, Lasso và Elastic Net
 
 Tại sao chỉ đổi bình phương $$\beta_j^2$$ (L2) thành trị tuyệt đối $$\lvert\beta_j\rvert$$ (L1) lại tạo ra khác biệt một trời một vực về khả năng chọn lọc đặc trưng? Hãy nhìn qua bốn lăng kính:
 
@@ -356,7 +356,7 @@ def practical_feature_selection():
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Tận mắt thấy Lasso ép nhiễu về 0 còn Ridge thì không
+### Ví dụ tính tay làm từng bước: Tận mắt thấy Lasso ép nhiễu về 0 còn Ridge thì không
 
 Xét trường hợp trực giao chuẩn hóa ($$\mathbf{X}^T\mathbf{X} = I$$) với 2 đặc trưng độc lập:
 - Đặc trưng 1 là **tín hiệu mạnh** có ước lượng OLS $$\hat{\beta}_1^{\text{OLS}} = 3{,}0$$.
@@ -375,7 +375,7 @@ Với hàm mục tiêu chuẩn hóa $$\frac{1}{2}\|\mathbf{y} - \mathbf{X}\bolds
 
 Chỉ một dòng phép trừ đã lột tả trọn vẹn sự khác biệt: **Ridge co theo tỷ lệ** (chia cho $$1+\lambda$$), còn **Lasso trừ đi một lượng cố định $$\lambda$$ và cắt phẳng về 0** mọi hệ số yếu hơn ngưỡng $$\lambda$$!
 
-### Khung giải thích: Bốn câu hỏi giúp chọn đúng giữa OLS, Ridge, Lasso và Elastic Net (nên đọc chậm)
+### Giải thích: Bốn câu hỏi giúp chọn đúng giữa OLS, Ridge, Lasso và Elastic Net
 
 1. **Đã chuẩn hóa đặc trưng chưa?** Nếu biến $$X_1$$ đo bằng km còn $$X_2$$ đo bằng mét, hệ số $$\beta_1$$ sẽ lớn gấp 1.000 lần $$\beta_2$$ và bị Ridge/Lasso phạt oan nặng gấp triệu lần. Luôn đưa bước `StandardScaler` vào bên trong *Pipeline* (chỉ fit trên tập train!).
 2. **Bài toán của bạn là *thưa* (sparse) hay *dày* (dense)?** Nếu tin rằng chỉ có một nhóm nhỏ đặc trưng thực sự quan trọng trong hàng trăm biến (ví dụ chọn gene), dùng **Lasso**. Nếu hầu hết các biến đều đóng góp một chút và có tương quan chặt với nhau, **Ridge** thường dự báo tốt hơn.

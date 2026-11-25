@@ -16,7 +16,7 @@ Bài đọc tùy chọn này cho thấy những khái niệm tưởng chừng ch
 
 ---
 
-## Bản đồ kiến thức nền: Bốn cây cầu nối ước lượng cổ điển với Học máy hiện đại
+## Kiến thức cần nhớ: Bốn cây cầu nối ước lượng cổ điển với Học máy hiện đại
 
 Khi bước từ giáo trình thống kê sang kỹ thuật học máy (ML/AI), bốn khái niệm cốt lõi đổi tên nhưng giữ nguyên bản chất toán học:
 
@@ -186,7 +186,7 @@ Các hướng nghiên cứu mở tiếp nối chương này bao gồm ước lư
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Empirical Bayes cứu hệ thống xếp hạng khỏi bẫy "1/1 = 100%"
+### Ví dụ tính tay làm từng bước: Empirical Bayes cứu hệ thống xếp hạng khỏi bẫy "1/1 = 100%"
 
 Quay lại bài toán xếp hạng hai sản phẩm A và B ở đầu bài. Giả sử tỷ lệ mua trung bình trên toàn sàn là $$5\%$$, và từ dữ liệu lịch sử của hàng nghìn mặt hàng, hệ thống khớp được phân phối tiên nghiệm $$\mathrm{Beta}(\alpha = 5,\; \beta = 95)$$ (có thể hình dung như "100 lượt xem ảo với 5 lượt mua ảo"). Với mỗi sản phẩm có $$k$$ lượt mua trên $$n$$ lượt xem, ước lượng hậu nghiệm (Empirical Bayes) có công thức đóng cực gọn:
 
@@ -202,7 +202,7 @@ Hãy tự tính tay và so sánh MLE thô với Empirical Bayes:
 
 Nhìn bảng trên, bạn thấy ngay vẻ đẹp của **trọng số thích nghi**: viết lại $$\hat{p}_{\text{EB}} = \frac{n}{n+100}\cdot\frac{k}{n} + \frac{100}{n+100}\cdot 0{,}05$$. Khi $$n=1$$, hệ thống tin 99% vào mức nền toàn sàn; khi $$n=1000$$, hệ thống tin 91% vào chính dữ liệu của sản phẩm đó!
 
-### Khung giải thích: Chọn công cụ ước lượng nào khi triển khai hệ thống thực? (nên đọc chậm)
+### Giải thích: Chọn công cụ ước lượng nào khi triển khai hệ thống thực?
 
 1. **Hỏi trước về cỡ mẫu trên từng thực thể:** Nếu toàn bộ dữ liệu lớn nhưng *mỗi nhóm nhỏ* (mỗi người dùng, mỗi mặt hàng, mỗi khu vực) lại rất thưa dữ liệu, MLE thuần sẽ có phương sai khổng lồ — hãy dùng shrinkage (Empirical Bayes hoặc chính quy hóa).
 2. **Tách tối ưu hàm mất mát khỏi bài toán hiệu chuẩn (calibration):** Một mạng nơ-ron tối thiểu hóa cross-entropy (MLE) nhưng quá nhiều tham số vẫn có thể bị *quá tự tin* (overconfident) trên tập kiểm tra; cần thêm bước hiệu chuẩn nhiệt độ (temperature scaling) hoặc dự đoán bảo giác.

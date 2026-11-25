@@ -20,7 +20,7 @@ The prerequisites are the required lessons on point estimation (bias, variance, 
 
 ---
 
-## Background Knowledge Map: How Chapter 05 Estimators Scale to Modern ML
+## Key ideas: How Chapter 05 Estimators Scale to Modern ML
 
 Four classical estimation pillars map directly onto 2022–2026 production ML systems.
 
@@ -197,7 +197,7 @@ def split_conformal_interval(calib_scores, q=0.9):
 
 ---
 
-### Deep-Dive Explanation: Matching the Estimator to the Problem’s Geometry (Read Slowly)
+### Explanation: Matching the Estimator to the Problem’s Geometry
 
 How does a senior statistician decide between MLE, Method of Moments, Empirical Bayes, and Conformal Prediction on a real project? Follow these four steps slowly.
 

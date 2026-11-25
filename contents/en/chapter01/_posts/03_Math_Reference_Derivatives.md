@@ -16,7 +16,7 @@ This reference turns multivariable calculus from a list of formulas into a worki
 
 ---
 
-## Background Knowledge Map: Where Does Multivariable Calculus Power Statistics?
+## Key ideas: Where Does Multivariable Calculus Power Statistics?
 
 Three pillars connect undergraduate calculus directly to statistical estimation and machine learning.
 
@@ -174,7 +174,7 @@ Set $$h'(x) = 0$$ to get $$x = 1/2$$, hence the point $$(1/2, 1/2)$$. The same p
 
 ---
 
-### Deep-Dive Explanation: From Taylor’s Expansion to Statistical Optimization (Read Slowly)
+### Explanation: From Taylor’s Expansion to Statistical Optimization
 
 Every gradient method, Newton update, and asymptotic standard error in statistics grows out of one master formula: the **second-order Taylor expansion**. Follow these four steps slowly.
 

@@ -17,7 +17,7 @@ Bài học củng cố này tập trung vào góc nhìn hình học và trực q
 
 ---
 
-## Bản đồ kiến thức nền: Ba trụ cột hình học – xác suất của Phân loại Tuyến tính
+## Kiến thức cần nhớ: Ba trụ cột hình học – xác suất của Phân loại Tuyến tính
 
 Để hiểu thật chắc cơ chế phân loại của Hồi quy Logistic trên mặt phẳng 2D cũng như không gian $$p$$ chiều:
 
@@ -123,7 +123,7 @@ plt.show()
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Vẽ đường ranh giới quyết định và dịch ngưỡng từ $$p=0{,}5$$ sang $$p=0{,}2$$
+### Ví dụ tính tay làm từng bước: Vẽ đường ranh giới quyết định và dịch ngưỡng từ $$p=0{,}5$$ sang $$p=0{,}2$$
 
 Giả sử sau khi huấn luyện hồi quy logistic với 2 đặc trưng $$(x_1, x_2)$$, ta thu được hàm tuyến tính log-odds:
 
@@ -142,7 +142,7 @@ $$z(x_1, x_2) = -4 + 2x_1 + x_2.$$
    $$-4 + 2x_1 + x_2 = -1{,}386 \iff x_2 = 2{,}614 - 2x_1.$$
    Đường phân cách giữ nguyên độ dốc $$-2$$ nhưng **tịnh tiến xuống dưới**, mở rộng vùng dự báo lớp 1 để bắt thêm các trường hợp nghi ngờ!
 
-### Khung giải thích: Bốn bước đọc vị mô hình phân loại tuyến tính (nên đọc chậm)
+### Giải thích: Bốn bước đọc vị mô hình phân loại tuyến tính
 
 1. **Kiểm tra khả năng tách tuyến tính trước khi đổ lỗi cho thuật toán:** Nếu hai lớp phân bố kiểu vòng tròn đồng tâm (lớp 1 ở giữa, lớp 0 bao quanh), không một đường thẳng $$\beta_0 + \beta_1 x_1 + \beta_2 x_2 = 0$$ nào tách được — bạn cần thêm đặc trưng bậc hai (như $$x_1^2 + x_2^2$$) hoặc chuyển sang mô hình phi tuyến.
 2. **Độ lớn vector $$\|\boldsymbol{\beta}\|$$ quyết định độ dốc vùng chuyển tiếp:** Nhân đôi cả $$\beta_0, \beta_1, \beta_2$$ không làm thay đổi vị trí đường $$z = 0$$, nhưng làm hàm sigmoid dựng đứng hơn (xác suất chuyển từ 0 sang 1 đột ngột hơn).

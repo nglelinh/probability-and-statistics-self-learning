@@ -16,7 +16,7 @@ Bài học này ghép nối mọi kỹ thuật rời rạc thành một **quy tr
 
 ---
 
-## Bản đồ kiến thức nền: Quy trình Machine Learning chuẩn khoa học gồm những trụ cột nào?
+## Kiến thức cần nhớ: Quy trình Machine Learning chuẩn khoa học gồm những trụ cột nào?
 
 Một quy trình ML nghiêm túc thực chất là một **thí nghiệm thống kê có kiểm soát**, đứng trên **bốn trụ cột kỷ luật**:
 
@@ -510,7 +510,7 @@ def complete_ml_workflow():
 ✅ **Diễn giải mô hình**
 - Kiểm tra mức độ quan trọng của đặc trưng (feature importance) và phân tích phần dư (residual analysis) để hiểu hành vi của mô hình.
 
-### Khung giải thích: tự tay tính để thấy rò rỉ dữ liệu (Data Leakage) làm méo chuẩn hóa như thế nào (nên đọc chậm)
+### Giải thích: tự tay tính để thấy rò rỉ dữ liệu (Data Leakage) làm méo chuẩn hóa như thế nào
 
 Nhiều người nghĩ "chuẩn hóa z-score toàn bộ bảng dữ liệu trước rồi mới chia Train/Test có sao đâu?". Hãy thử ngay trên 5 con số thu nhập (triệu đồng): tập **Train** gồm $$\{10, 12, 14\}$$, còn tập **Test** tương lai bị dịch chuyển lên $$\{100, 104\}$$.
 

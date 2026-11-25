@@ -10,13 +10,13 @@ categories:
 lesson_type: required
 ---
 
-Trong Thế chiến II, tình báo quân Đồng minh đối mặt với một câu hỏi sống còn: nhà máy Đức đang sản xuất tổng cộng bao nhiêu chiếc xe tăng mỗi tháng? Những nguồn tin gián điệp truyền thống ước tính con số khoảng 1.400 chiếc/tháng, nhưng một nhóm nhà thống kê lại chọn cách nhìn vào những chi tiết nhỏ bé hơn nhiều: **số sê-ri nối tiếp nhau** (1, 2, ..., $$N$$) khắc trên hộp số của những chiếc xe tăng bị thu giữ. Giả sử bạn chỉ bắt được 4 chiếc mang số sê-ri `19, 40, 42, 60`. Rõ ràng tổng số xe $$N$$ ít nhất phải là 60 — nhưng ước lượng $$\hat{N} = 60$$ (chính là MLE thô!) chắc chắn luôn đánh giá *thấp hơn* sự thật vì rất hiếm khi bạn bắt trúng chiếc xe cuối cùng vừa xuất xưởng. Chỉ cần cộng thêm khoảng trống trung bình ở đầu kia ($$\hat{N} = \max X_i + \frac{\max X_i}{n} - 1 \approx 74$$), các nhà thống kê đã ước lượng sản lượng thực là 246 chiếc/tháng — và hồ sơ Đức thu được sau chiến tranh ghi nhận con số thật là **245**!
+Trong Thế chiến II, tình báo quân Đồng minh đối mặt với một câu hỏi quan trọng: nhà máy Đức đang sản xuất tổng cộng bao nhiêu chiếc xe tăng mỗi tháng? Những nguồn tin gián điệp truyền thống ước tính con số khoảng 1.400 chiếc/tháng, nhưng một nhóm nhà thống kê lại chọn cách nhìn vào những chi tiết nhỏ bé hơn nhiều: **số sê-ri nối tiếp nhau** (1, 2, ..., $$N$$) khắc trên hộp số của những chiếc xe tăng bị thu giữ. Giả sử bạn chỉ bắt được 4 chiếc mang số sê-ri `19, 40, 42, 60`. Rõ ràng tổng số xe $$N$$ ít nhất phải là 60 — nhưng ước lượng $$\hat{N} = 60$$ (chính là MLE thô!) chắc chắn luôn đánh giá *thấp hơn* sự thật vì rất hiếm khi bạn bắt trúng chiếc xe cuối cùng vừa xuất xưởng. Chỉ cần cộng thêm khoảng trống trung bình ở đầu kia ($$\hat{N} = \max X_i + \frac{\max X_i}{n} - 1 \approx 74$$), các nhà thống kê đã ước lượng sản lượng thực là 246 chiếc/tháng — và hồ sơ Đức thu được sau chiến tranh ghi nhận con số thật là **245**!
 
 Câu chuyện *German Tank Problem* đó là trái tim của **ước lượng điểm (point estimation)**: từ một mẫu dữ liệu hữu hạn đầy nhiễu, làm sao thiết kế một công thức (bộ ước lượng) vừa chính xác, vừa ổn định để đoán tham số ẩn của cả tổng thể? Bài học này dẫn bạn qua hai trụ cột chế tạo bộ ước lượng — **Ước lượng Hợp lý Cực đại (MLE)** và **Phương pháp Moment (MoM)** — cùng ba thước đo chất lượng kinh điển: độ chệch, phương sai và tính nhất quán.
 
 ---
 
-## Bản đồ kiến thức nền: Lý thuyết ước lượng điểm nghiên cứu điều gì?
+## Kiến thức cần nhớ: Lý thuyết ước lượng điểm nghiên cứu điều gì?
 
 Nếu xác suất đi theo chiều thuận — *biết tham số $$\theta$$ của mô hình, tính xác suất sinh ra dữ liệu $$X$$* — thì **thống kê suy diễn (statistical inference)** lật ngược mũi tên: *quan sát dữ liệu $$X$$, truy ngược lại tham số $$\theta$$*. Bốn trụ cột định hình toàn bộ ngành này:
 
@@ -446,7 +446,7 @@ def method_of_moments_example():
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Tính MLE cho phân phối mũ và soi độ chệch của phương sai mẫu
+### Ví dụ tính tay làm từng bước: Tính MLE cho phân phối mũ và soi độ chệch của phương sai mẫu
 
 Giả sử bạn đo thời gian chờ (tính bằng phút) giữa 5 cuộc gọi liên tiếp đến tổng đài và thu được mẫu số liệu nhỏ:
 
@@ -470,7 +470,7 @@ $$x = (2,\; 5,\; 3,\; 6,\; 4).$$
 
 Tại sao chia cho 5 lại chệch xuống? Vì $$\bar{x}$$ được chọn để **cực tiểu hóa** tổng bình phương độ lệch của chính 5 điểm đó, nên $$\sum(x_i - \bar{x})^2$$ luôn nhỏ hơn $$\sum(x_i - \mu)^2$$ một lượng trung bình đúng bằng $$\sigma^2$$ (mất 1 bậc tự do). Do đó $$\mathbb{E}[\hat{\sigma}^2_{\text{MLE}}] = \frac{4}{5}\sigma^2$$ — thiếu hụt 20% khi $$n=5$$!
 
-### Khung giải thích: Mạch suy luận khi thiết kế một bộ ước lượng (nên đọc chậm)
+### Giải thích: Mạch suy luận khi thiết kế một bộ ước lượng
 
 1. **Phân biệt rạch ròi bộ ước lượng (biến ngẫu nhiên) và giá trị ước lượng (con số cụ thể):** Khi nói "$$\bar{X}$$ không chệch", ta đang nói về trung bình của vô số lần lấy mẫu lặp lại, không phải nói con số $$4$$ trong lần đo duy nhất này bằng đúng $$\mu$$.
 2. **Dùng log-likelihood để chuyển bài toán xác suất thành giải tích:** Lấy log giữ nguyên vị trí cực đại nhưng đổi tích $$n$$ nhân tử thành tổng $$n$$ số hạng, tránh tràn số dấu phẩy động và giúp đạo hàm cực kỳ gọn gàng.

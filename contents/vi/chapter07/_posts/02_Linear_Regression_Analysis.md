@@ -17,7 +17,7 @@ Bài học này mở nắp ca-pô của **Hồi quy Tuyến tính Đa biến và
 
 ---
 
-## Bản đồ kiến thức nền: Ba góc nhìn thống nhất về Hồi quy Tuyến tính Đa biến
+## Kiến thức cần nhớ: Ba góc nhìn thống nhất về Hồi quy Tuyến tính Đa biến
 
 Một người tốt nghiệp đại học nắm vững OLS khi nhìn thấy **ba góc nhìn hoàn toàn tương đương** của cùng một phương trình chuẩn $$\mathbf{X}^T\mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{X}^T\mathbf{y}$$:
 
@@ -165,7 +165,7 @@ def plot_residuals(y_true, y_pred):
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Giải phương trình chuẩn OLS và kiểm chứng tính trực giao trên ma trận $$3\times 2$$
+### Ví dụ tính tay làm từng bước: Giải phương trình chuẩn OLS và kiểm chứng tính trực giao trên ma trận $$3\times 2$$
 
 Xét 3 điểm dữ liệu $$(x_i, y_i)$$: $$(0, 1),\; (1, 2),\; (2, 4)$$. Ta muốn khớp mô hình $$y = \beta_0 + \beta_1 x + \varepsilon$$ bằng công thức ma trận OLS:
 
@@ -182,7 +182,7 @@ Xét 3 điểm dữ liệu $$(x_i, y_i)$$: $$(0, 1),\; (1, 2),\; (2, 4)$$. Ta mu
    - Với cột hệ số chặn $$(1,1,1)^T$$: $$\frac{1}{6} - \frac{2}{6} + \frac{1}{6} = 0$$ (tổng phần dư luôn bằng 0!).
    - Với cột đặc trưng $$(0,1,2)^T$$: $$0\cdot\frac{1}{6} + 1\cdot\left(-\frac{2}{6}\right) + 2\cdot\frac{1}{6} = 0$$ (phần dư trực giao hoàn toàn với $$\mathbf{X}$$!).
 
-### Khung giải thích: Bốn điều cần ghi nhớ từ cấu trúc ma trận của OLS (nên đọc chậm)
+### Giải thích: Bốn điều cần ghi nhớ từ cấu trúc ma trận của OLS
 
 1. **Điều kiện tồn tại nghiệm duy nhất nằm ở $$\det(\mathbf{X}^T\mathbf{X}) \neq 0$$:** Nếu hai cột đặc trưng tỷ lệ tuyến tính với nhau (đa cộng tuyến hoàn toàn) hoặc số biến lớn hơn số mẫu ($$p > n$$), ma trận $$\mathbf{X}^T\mathbf{X}$$ suy biến — không thể nghịch đảo được.
 2. **Trong thực tế tính toán, không bao giờ đảo $$\mathbf{X}^T\mathbf{X}$$ trực tiếp:** Tính $$\mathbf{X}^T\mathbf{X}$$ bình phương số điều kiện (condition number) của ma trận, dễ gây sai số dấu phẩy động. Các thư viện như NumPy/scikit-learn dùng phân rã **QR** hoặc **SVD** để giải trực tiếp phép chiếu vuông góc ổn định hơn hẳn.

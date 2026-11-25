@@ -16,7 +16,7 @@ This optional lesson takes classical Chapter 08 **one-way ANOVA**, **two-way fac
 
 ---
 
-## Background Knowledge Map: How ANOVA Powers Multi-Variant Experimentation
+## Key ideas: How ANOVA Powers Multi-Variant Experimentation
 
 Three classical ideas from experimental design anchor modern A/B/n and factorial platforms.
 
@@ -166,7 +166,7 @@ def mixed_treatment_test(df):
 
 ---
 
-### Deep-Dive Explanation: Why ANOVA, Regression, and Mixed Models Are One Unified Machine (Read Slowly)
+### Explanation: Why ANOVA, Regression, and Mixed Models Are One Unified Machine
 
 Students often learn $$t$$-tests, ANOVA, linear regression, and mixed models in separate chapters as if they were unrelated recipes. Walk through these four steps to see that they are all the *exact same* linear model.
 

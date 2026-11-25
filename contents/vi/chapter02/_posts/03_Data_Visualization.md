@@ -12,7 +12,7 @@ Bài học bất hủ ấy khẳng định: **đừng bao giờ tin các con s�
 
 ---
 
-## Bản đồ kiến thức nền: Trực quan hóa dữ liệu trong thống kê nghiên cứu những gì?
+## Kiến thức cần nhớ: Trực quan hóa dữ liệu trong thống kê nghiên cứu những gì?
 
 Chọn đúng biểu đồ là một quyết định toán học gắn liền với kiểu dữ liệu và câu hỏi phân tích, gồm **bốn trụ cột**:
 
@@ -127,7 +127,7 @@ plt.show()
 3. **Tương quan giả (Spurious Correlations)**:
    - Hai đại lượng biến thiên cùng chiều trên biểu đồ không đồng nghĩa với quan hệ nhân quả (Correlation $\neq$ Causation). Ví dụ: doanh số bán kem và số vụ đuối nước cùng tăng vào mùa hè do cùng chịu tác động của biến ẩn là nhiệt độ.
 
-### Khung giải thích: tự tay tính Hệ số nói dối (Lie Factor) khi biểu đồ cắt trục tung (nên đọc chậm)
+### Giải thích: tự tay tính Hệ số nói dối (Lie Factor) khi biểu đồ cắt trục tung
 
 Bạn rất hay gặp những biểu đồ quảng cáo cho thấy doanh số hay hiệu năng "tăng vọt gấp ba lần", nhưng nhìn kỹ hóa ra chỉ tăng có 2%! Hãy dùng công thức **Lie Factor** của Edward Tufte để vạch trần trò ảo thuật thị giác đó bằng số cụ thể:
 

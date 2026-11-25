@@ -16,7 +16,7 @@ Thay vì phải chạy kiểm định chéo tốn kém hàng chục lần, thố
 
 ---
 
-## Bản đồ kiến thức nền: Lựa chọn mô hình và các tiêu chí thông tin là gì?
+## Kiến thức cần nhớ: Lựa chọn mô hình và các tiêu chí thông tin là gì?
 
 Các tiêu chí lựa chọn mô hình trong bài này đều mang chung cấu trúc $$\text{Điểm phạt} = \text{Sai số khớp} + \text{Án phạt độ phức tạp}$$, chia thành **bốn công cụ chính**:
 
@@ -150,7 +150,7 @@ trong đó $$\text{RSS}_p$$ là tổng bình phương phần dư của mô hình
 
 **Nguyên tắc:** Chọn mô hình có $$C_p$$ nhỏ và xấp xỉ $$p$$ ($$C_p \approx p$$).
 
-### Khung giải thích: tự tay tính AIC và BIC để thấy hai tiêu chí chọn khác nhau khi nào (nên đọc chậm)
+### Giải thích: tự tay tính AIC và BIC để thấy hai tiêu chí chọn khác nhau khi nào
 
 Cùng một bộ dữ liệu gồm $$n = 100$$ quan sát ($$\ln 100 \approx 4.605$$), xét hai mô hình hồi quy:
 - **Mô hình 1 (đơn giản):** $$k_1 = 2$$ tham số, log-likelihood cực đại $$\ln \hat L_1 = -50.0$$.

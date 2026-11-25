@@ -12,11 +12,11 @@ lesson_type: required
 
 Chỉ cần hai dòng lệnh `LinearRegression().fit(X, y)` trong Python, máy tính sẽ lập tức in ra một hệ số rất đẹp mắt: chẳng hạn mỗi triệu đồng tăng thêm cho ngân sách quảng cáo giúp doanh số tăng thêm **2,40 triệu đồng**. Nhưng nếu dừng lại ở con số đó, bạn đang lái xe mà không nhìn kính chắn gió: con số `2,40` kia là một quy luật vững chắc ($$2{,}40 \pm 0{,}30$$) hay chỉ là dao động vô nghĩa quanh số 0 ($$2{,}40 \pm 5{,}00$$)?
 
-**Suy diễn thống kê cho mô hình tuyến tính** bổ sung đúng phần còn thiếu giữa "khớp đường thẳng" và "ra quyết định khoa học". Bài học này giải mã bốn công cụ xuất hiện trong mọi bảng tóm tắt hồi quy (`statsmodels.OLS.summary()`): **khoảng tin cậy của từng hệ số**, **kiểm định $$t$$ cho từng biến**, **kiểm định $$F$$ cho ý nghĩa tổng thể của cả mô hình**, và sự khác biệt sống còn giữa **khoảng tin cậy cho trung bình** với **khoảng dự báo cho một quan sát mới**.
+**Suy diễn thống kê cho mô hình tuyến tính** bổ sung đúng phần còn thiếu giữa "khớp đường thẳng" và "ra quyết định khoa học". Bài học này giải mã bốn công cụ xuất hiện trong mọi bảng tóm tắt hồi quy (`statsmodels.OLS.summary()`): **khoảng tin cậy của từng hệ số**, **kiểm định $$t$$ cho từng biến**, **kiểm định $$F$$ cho ý nghĩa tổng thể của cả mô hình**, và sự khác biệt quan trọng giữa **khoảng tin cậy cho trung bình** với **khoảng dự báo cho một quan sát mới**.
 
 ---
 
-## Bản đồ kiến thức nền: Bốn mảnh ghép trong bảng suy diễn hồi quy tuyến tính
+## Kiến thức cần nhớ: Bốn mảnh ghép trong bảng suy diễn hồi quy tuyến tính
 
 Khi đọc một báo cáo hồi quy tuyến tính cổ điển (OLS dưới giả định nhiễu chuẩn $$\epsilon \sim \mathcal{N}(0, \sigma^2 I)$$), mọi con số đều xoay quanh bốn trụ cột sau:
 
@@ -160,7 +160,7 @@ $$\hat{y} \pm t_{\alpha/2, n-p-1} \cdot \hat{\sigma}\sqrt{1 + \mathbf{x}_0^T(X^T
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Giải mã trọn vẹn một bảng hồi quy $$n = 22$$ tháng
+### Ví dụ tính tay làm từng bước: Giải mã trọn vẹn một bảng hồi quy $$n = 22$$ tháng
 
 Giả sử ta hồi quy doanh số hàng tháng $$Y$$ theo ngân sách quảng cáo $$X$$ ($$p = 1$$ biến, $$n = 22$$ tháng, bậc tự do $$df = n - p - 1 = 20$$) và thu được:
 - Hệ số góc ước lượng: $$\hat{\beta}_1 = 2{,}40$$, sai số chuẩn $$\mathrm{SE}(\hat{\beta}_1) = 0{,}80$$.
@@ -183,7 +183,7 @@ Giả sử ta hồi quy doanh số hàng tháng $$Y$$ theo ngân sách quảng c
 
 Khoảng dự báo rộng tới **$$\pm 8{,}53$$ triệu** — gần gấp **5 lần** khoảng tin cậy của trung bình ($$\pm 1{,}78$$ triệu) — vì ngay cả khi ta biết chính xác 100% đường hồi quy thật, doanh số từng tháng đơn lẻ vẫn dao động ngẫu nhiên với độ lệch chuẩn $$\sigma = 4{,}0$$!
 
-### Khung giải thích: Bốn lưu ý sống còn khi suy diễn trên mô hình tuyến tính (nên đọc chậm)
+### Giải thích: Bốn lưu ý quan trọng khi suy diễn trên mô hình tuyến tính
 
 1. **Nhìn cặp ($$\hat{\beta}_j$$, $$\mathrm{SE}$$) trước khi nhìn dấu sao p-value:** Khoảng tin cậy $$[0{,}731,\; 4{,}069]$$ nói cho bạn nhiều thông tin hơn hẳn dòng chữ "$$p < 0{,}01$$" — nó cho thấy tác động thật có thể khiêm tốn ở mức $$0{,}73$$ hoặc rất lớn ở mức $$4{,}07$$.
 2. **Đừng bỏ qua kiểm định $$F$$ khi có nhiều biến:** Nếu mô hình có 50 biến độc lập không liên quan gì đến $$Y$$, trung bình sẽ có 2–3 biến tình cờ đạt $$p < 0{,}05$$ ở kiểm định $$t$$ riêng lẻ. Kiểm định $$F$$ tổng thể đóng vai trò "cổng kiểm soát" đầu tiên chống lại ảo giác này.

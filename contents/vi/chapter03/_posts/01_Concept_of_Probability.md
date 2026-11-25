@@ -16,7 +16,7 @@ Câu chuyện kinh điển về thiên lệch sống sót ấy cho thấy **xác
 
 ---
 
-## Bản đồ kiến thức nền: Lý thuyết xác suất cơ bản đứng trên những trụ cột nào?
+## Kiến thức cần nhớ: Lý thuyết xác suất cơ bản đứng trên những trụ cột nào?
 
 Ở bậc đại học, xác suất hiện đại (theo hệ tiên đề Kolmogorov) được dựng trên **bốn viên gạch cốt lõi**:
 
@@ -522,7 +522,7 @@ def test_independence():
 # test_independence()
 ```
 
-### Khung giải thích: tự tay kiểm tra Định lý Bayes và phân biệt Độc lập với Xung khắc (nên đọc chậm)
+### Giải thích: tự tay kiểm tra Định lý Bayes và phân biệt Độc lập với Xung khắc
 
 Hãy cầm bút kiểm chứng hai tình huống cốt lõi nhất của xác suất cơ bản:
 

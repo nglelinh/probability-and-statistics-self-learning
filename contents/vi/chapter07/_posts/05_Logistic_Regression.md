@@ -16,7 +16,7 @@ Một ngân hàng muốn dự đoán xác suất một khách hàng sẽ vỡ n�
 
 ---
 
-## Bản đồ kiến thức nền: Bốn trụ cột toán học của Hồi quy Logistic
+## Kiến thức cần nhớ: Bốn trụ cột toán học của Hồi quy Logistic
 
 Để không bao giờ nhầm hồi quy logistic chỉ là "một hàm vẽ đường cong chữ S", hãy nắm vững bốn nền tảng sau:
 
@@ -429,7 +429,7 @@ def plot_roc_curve():
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Tính xác suất, Odds Ratio và 1 bước Gradient Descent trên mô hình Logistic
+### Ví dụ tính tay làm từng bước: Tính xác suất, Odds Ratio và 1 bước Gradient Descent trên mô hình Logistic
 
 Giả sử một mô hình logistic dự đoán xác suất sinh viên đỗ kỳ thi chứng chỉ theo số giờ ôn tập $$x$$ có phương trình log-odds:
 
@@ -449,7 +449,7 @@ $$z = -2{,}0 + 0{,}5x \implies p(x) = \sigma(z) = \frac{1}{1 + e^{-z}}.$$
      $$\beta_1^{\text{mới}} = 0{,}5 - 0{,}1(-1{,}614) = 0{,}6614,$$
      đẩy xác suất dự báo cho sinh viên này tiến sát về nhãn thật $$y = 1$$!
 
-### Khung giải thích: Bốn điều cần nắm vững khi triển khai Hồi quy Logistic (nên đọc chậm)
+### Giải thích: Bốn điều cần nắm vững khi triển khai Hồi quy Logistic
 
 1. **Dùng Logistic để dự báo *xác suất*, đừng chỉ cắt cứng ở 0,5:** Ngưỡng $$0{,}5$$ chỉ tối ưu khi chi phí báo động giả và bỏ lọt bằng nhau. Trong tầm soát ung thư hay phát hiện gian lận, bạn hoàn toàn có thể hạ ngưỡng xuống $$0{,}15$$ hoặc $$0{,}20$$ dựa trên đường cong Precision–Recall.
 2. **Coi chừng hiện tượng tách biệt hoàn toàn (Complete Separation):** Nếu có một đường thẳng tách hoàn toàn lớp 0 và lớp 1 không sai điểm nào, MLE không điều chuẩn sẽ đẩy $$\|\boldsymbol{\beta}\| \to \infty$$ để ép $$p\to 1$$! Đó là lý do `LogisticRegression` trong scikit-learn luôn bật mặc định điều chuẩn L2 (`C=1.0`).

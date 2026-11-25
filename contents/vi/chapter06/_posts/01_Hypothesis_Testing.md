@@ -16,7 +16,7 @@ Câu hỏi đó — *tín hiệu thật hay nhiễu ngẫu nhiên?* — là cố
 
 ---
 
-## Bản đồ kiến thức nền: Kiến trúc logic của Kiểm định Giả thuyết
+## Kiến thức cần nhớ: Kiến trúc logic của Kiểm định Giả thuyết
 
 Nhiều người bấm nút chạy kiểm định trong Python nhưng lại diễn giải sai hoàn toàn kết quả vì bỏ qua bốn nền tảng logic sau:
 
@@ -634,7 +634,7 @@ def multiple_testing_problem():
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Kiểm định $$t$$ một mẫu cho dây chuyền cà phê 500 g và bẫy đa kiểm định
+### Ví dụ tính tay làm từng bước: Kiểm định $$t$$ một mẫu cho dây chuyền cà phê 500 g và bẫy đa kiểm định
 
 Quay lại dây chuyền đóng gói cà phê với khối lượng chuẩn $$\mu_0 = 500\text{ g}$$. Cân thử $$n = 16$$ gói độc lập, ta thu được trung bình mẫu $$\bar{x} = 494\text{ g}$$ và độ lệch chuẩn mẫu $$s = 8\text{ g}$$. Kiểm định ở mức ý nghĩa $$\alpha = 0{,}05$$ (hai phía):
 
@@ -653,7 +653,7 @@ $$P(\text{ít nhất 1 sai lầm Loại I}) = 1 - 0{,}95^{20} \approx 64{,}2\%!$
 
 Nếu áp dụng hiệu chỉnh **Bonferroni**, ngưỡng mới cho từng dây chuyền phải siết xuống $$\alpha' = 0{,}05 / 20 = 0{,}0025$$.
 
-### Khung giải thích: Bốn bước đọc hiểu kết quả kiểm định không bị lừa bởi p-value (nên đọc chậm)
+### Giải thích: Bốn bước đọc hiểu kết quả kiểm định không bị lừa bởi p-value
 
 1. **Nhớ đúng định nghĩa xác suất có điều kiện của p-value:** p-value là $$P(\text{dữ liệu cực đoan} \mid H_0\text{ đúng})$$, **tuyệt đối không phải** $$P(H_0\text{ đúng} \mid \text{dữ liệu})$$. Nhầm hai vế này là lỗi suy luận đảo xác suất có điều kiện (tương tự lỗi ở định lý Bayes).
 2. **Đừng bao giờ nói "chấp nhận $$H_0$$" khi $$p > 0{,}05$$:** Không đủ bằng chứng kết tội không có nghĩa là bị cáo chắc chắn vô tội — rất có thể cỡ mẫu $$n$$ quá nhỏ nên lực kiểm định (power) yếu, chưa đủ nhìn thấy hiệu ứng thật.

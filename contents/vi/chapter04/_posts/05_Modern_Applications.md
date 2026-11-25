@@ -16,7 +16,7 @@ Bài đọc tùy chọn này nối thẳng các họ phân phối kinh điển c
 
 ---
 
-## Bản đồ kiến thức nền: Các họ phân phối xác suất đóng vai trò gì trong hệ thống hiện đại?
+## Kiến thức cần nhớ: Các họ phân phối xác suất đóng vai trò gì trong hệ thống hiện đại?
 
 Với người đã tốt nghiệp đại học, giá trị lớn nhất của việc học các họ phân phối không nằm ở việc thuộc lòng bảng công thức, mà ở việc hiểu **ba trụ cột mô hình hóa** sau:
 
@@ -66,7 +66,7 @@ Khi một bài báo nghiên cứu đề cập đến "hàm hợp lý nhị thứ
 
 ---
 
-### Ví dụ tính tay cầm tay chỉ việc: Vì sao Poisson đánh giá quá thấp rủi ro "ngày 0 đơn"?
+### Ví dụ tính tay làm từng bước: Vì sao Poisson đánh giá quá thấp rủi ro "ngày 0 đơn"?
 
 Xét một mặt hàng có số đơn trung bình mỗi ngày là $$\mu = 10$$. Ta so sánh hai giả định phân phối cho số đơn hàng $$N$$ trong ngày:
 
@@ -83,7 +83,7 @@ Xét một mặt hàng có số đơn trung bình mỗi ngày là $$\mu = 10$$. 
 
 Cùng một giá trị trung bình 10 đơn/ngày, nhưng mô hình nhị thức âm dự báo xác suất bán 0 đơn cao gấp hơn **600 lần** Poisson (và tương tự, xác suất ngày bùng nổ trên 25 đơn cũng cao hơn hẳn).
 
-### Khung giải thích: Từ công thức PMF đến hệ thống sản xuất (nên đọc chậm)
+### Giải thích: Từ công thức PMF đến hệ thống sản xuất
 
 1. **Nhận diện bản chất biến mục tiêu:** Dữ liệu đếm luôn không âm và rời rạc; áp hồi quy Gauss trực tiếp có thể dự báo ra số đơn âm và bỏ qua phương sai phụ thuộc vào mức độ lớn của kỳ vọng.
 2. **Kiểm tra tỷ số phương sai / kỳ vọng:** Nếu phương sai thực nghiệm vượt xa trung bình ($$\mathrm{Var} \gg \mathbb{E}$$), Poisson sẽ bóp nghẹt đuôi phân phối — cần nâng cấp lên Negative Binomial hoặc Tweedie.

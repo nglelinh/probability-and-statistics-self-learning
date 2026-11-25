@@ -16,7 +16,7 @@ Câu đố kinh điển ấy hé lộ hai sự thật quan trọng nhất mở �
 
 ---
 
-## Bản đồ kiến thức nền: Thống kê tính toán là gì và nghiên cứu những gì?
+## Kiến thức cần nhớ: Thống kê tính toán là gì và nghiên cứu những gì?
 
 Nếu bạn đã tốt nghiệp đại học và từng học qua xác suất cơ bản, bạn hẳn nhớ cảm giác ngồi tính tay tích phân hàm mật độ hay tra bảng $$z$$, bảng $$t$$. **Thống kê tính toán** không vứt bỏ lý thuyết đó, mà mở rộng nó bằng **ba trụ cột lớn**:
 
@@ -92,7 +92,7 @@ print(f"Xác suất trùng ngày sinh với {n_people} người: {prob:.4f}")
 
 Đoạn mã trên không cần dùng công thức giai thừa hay lũy thừa, mà trực tiếp mô phỏng quá trình chọn ngày sinh ngẫu nhiên và đếm số lần có trùng lặp. Kết quả thu được xấp xỉ 0,507 (khoảng 50,7%), thường cao hơn đáng kể so với ước đoán trực giác ban đầu của nhiều người.
 
-### Khung giải thích: tự tay kiểm chứng Bài toán Sinh nhật và ước lượng $$\pi$$ bằng Monte Carlo (nên đọc chậm)
+### Giải thích: tự tay kiểm chứng Bài toán Sinh nhật và ước lượng $$\pi$$ bằng Monte Carlo
 
 Để cảm nhận rõ sự khác biệt giữa **giải tích chính xác** và **mô phỏng Monte Carlo**, hãy cầm bút tự kiểm tra hai phép tính gọn gàng sau:
 

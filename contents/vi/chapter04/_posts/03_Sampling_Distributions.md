@@ -16,7 +16,7 @@ Câu trả lời nằm ở một trong những định lý kỳ diệu nhất c�
 
 ---
 
-## Bản đồ kiến thức nền: Phân phối lấy mẫu và Định lý Giới hạn Trung tâm là gì?
+## Kiến thức cần nhớ: Phân phối lấy mẫu và Định lý Giới hạn Trung tâm là gì?
 
 Bài học này là chiếc cầu nối quyết định từ *Xác suất* (Chương 3–4) sang *Suy luận Thống kê* (Chương 5–6), đứng trên **ba trụ cột**:
 
@@ -153,7 +153,7 @@ Kỹ thuật tái lấy mẫu (resampling) giúp ước lượng phân phối l�
 **3. Kiểm định giả thuyết (Hypothesis Testing):**
 Đánh giá xem một mô hình mới có thực sự cải thiện so với mô hình cơ sở (baseline) hay sự chênh lệch chỉ do nhiễu ngẫu nhiên.
 
-### Khung giải thích: tự tay kiểm tra CLT trên 2 viên xúc xắc và tính sai số cuộc thăm dò $$n = 1{,}000$$ (nên đọc chậm)
+### Giải thích: tự tay kiểm tra CLT trên 2 viên xúc xắc và tính sai số cuộc thăm dò $$n = 1{,}000$$
 
 1. **Xem hình chiếc chuông bắt đầu hiện ra chỉ từ $$n = 2$$ viên xúc xắc:**
    - Tung **1 viên xúc xắc** $$X_1$$: phân phối phẳng lì hình chữ nhật (mỗi mặt $$1..6$$ xác suất $$1/6$$), kỳ vọng $$\mu = 3.5$$, phương sai $$\sigma^2 = \frac{35}{12} \approx 2.917$$.

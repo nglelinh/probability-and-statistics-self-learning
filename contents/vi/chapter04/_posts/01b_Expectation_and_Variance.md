@@ -16,7 +16,7 @@ Biến ngẫu nhiên cho ta bức tranh toàn bộ phân phối, còn **Kỳ v�
 
 ---
 
-## Bản đồ kiến thức nền: Kỳ vọng, Phương sai và Hiệp phương sai nghiên cứu những gì?
+## Kiến thức cần nhớ: Kỳ vọng, Phương sai và Hiệp phương sai nghiên cứu những gì?
 
 1. **Kỳ vọng $$\mathbb{E}[X]$$ (Trọng tâm & Tính tuyến tính):** Trung bình có trọng số theo xác suất. Tính chất siêu mạnh là **tính tuyến tính $$\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]$$ luôn đúng ngay cả khi $$X, Y$$ phụ thuộc nhau!**
 2. **Phương sai $$\mathrm{Var}(X)$$ & Độ lệch chuẩn $$\sigma$$:** Đo mức phân tán trung bình bình phương quanh kỳ vọng ($$\mathrm{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2$$). Khi nhân biến với hằng số $$a$$, phương sai nhân với $$a^2$$ (còn cộng hằng số $$b$$ thì phương sai không đổi!).
@@ -570,7 +570,7 @@ def correlation_not_causation():
 # correlation_not_causation()
 ```
 
-### Khung giải thích: tự tay tính sức mạnh giảm rủi ro khi ghép hai tài sản (nên đọc chậm)
+### Giải thích: tự tay tính sức mạnh giảm rủi ro khi ghép hai tài sản
 
 Tại sao câu tục ngữ *"đừng bỏ hết trứng vào một giỏ"* lại là một định lý chính xác của phương sai và hiệp phương sai? Hãy tự kiểm tra bằng số cụ thể với hai cổ phiếu $$X, Y$$ đều có lợi nhuận kỳ vọng $$\mathbb{E}[X] = \mathbb{E}[Y] = 10\%$$ và độ lệch chuẩn rủi ro $$\sigma_X = \sigma_Y = 20\%$$ (tức $$\mathrm{Var}(X) = \mathrm{Var}(Y) = 400$$).
 

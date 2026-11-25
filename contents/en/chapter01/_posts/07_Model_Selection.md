@@ -16,7 +16,7 @@ Cross-validation fights this empirically by holding out data. **Information crit
 
 ---
 
-## Background Knowledge Map: Where Do Information Criteria Come From?
+## Key ideas: Where Do Information Criteria Come From?
 
 Model selection criteria look like simple one-line formulas, yet they descend from three deep branches of statistical theory.
 
@@ -180,7 +180,7 @@ Ordinary $$R^2$$ climbed ($$0.800 \to 0.802$$), cheering on the junk variable. *
 
 ---
 
-### Deep-Dive Explanation: Where Does the Mysterious “$$+2k$$” in AIC Come From? (Read Slowly)
+### Explanation: Where Does the Mysterious “$$+2k$$” in AIC Come From?
 
 Why is the penalty in AIC specifically $$+2k$$—not $$+k$$ or $$+5k$$? Follow these four intuitive steps slowly.
 

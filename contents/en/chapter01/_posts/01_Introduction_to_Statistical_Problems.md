@@ -16,7 +16,7 @@ The goal of this opening lesson is not to hand you a stack of formulas to memori
 
 ---
 
-## Background Knowledge Map: What Fields Sit Behind Computational Statistics?
+## Key ideas: What Fields Sit Behind Computational Statistics?
 
 Before diving into code, it helps to see the three pillars of probability and statistics that make computational thinking work.
 
@@ -144,7 +144,7 @@ Plug in three simulation budgets:
 
 ---
 
-### Deep-Dive Explanation: How Random Repetition Becomes Mathematical Certainty (Read Slowly)
+### Explanation: How Random Repetition Becomes Mathematical Certainty
 
 Why does tossing virtual coins in a Python `for`-loop qualify as serious mathematics? Walk through these four steps slowly.
 

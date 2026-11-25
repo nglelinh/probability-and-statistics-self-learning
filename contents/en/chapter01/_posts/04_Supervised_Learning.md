@@ -16,7 +16,7 @@ Those two students are the living faces of **underfitting (high bias)** and **ov
 
 ---
 
-## Background Knowledge Map: What Fields Sit Behind Supervised Learning?
+## Key ideas: What Fields Sit Behind Supervised Learning?
 
 Supervised learning is not merely software engineering—it rests on three mathematical pillars.
 
@@ -311,7 +311,7 @@ Imagine points drawn uniformly inside the $$p$$-dimensional unit hypercube $$[0,
 
 ---
 
-### Deep-Dive Explanation: Deriving the Bias–Variance Decomposition Step by Step (Read Slowly)
+### Explanation: Deriving the Bias–Variance Decomposition Step by Step
 
 Why do the cross terms vanish cleanly in $$\mathbb{E}[(Y - \hat{f})^2] = \text{Bias}^2 + \text{Variance} + \sigma^2$$? Walk through these four algebraic steps slowly—every statistician should verify this once by hand.
 

@@ -16,7 +16,7 @@ This short mathematical reference builds the three-level ladder of smoothness—
 
 ---
 
-## Background Knowledge Map: Why Do Continuity Notions Matter in Statistics & ML?
+## Key ideas: Why Do Continuity Notions Matter in Statistics & ML?
 
 Real analysis can feel abstract until you see where each definition shows up in statistical algorithms.
 
@@ -151,7 +151,7 @@ The three notions nest cleanly (from strongest to weakest):
 
 ---
 
-### Deep-Dive Explanation: Why Swapping Two Quantifiers Changes Everything (Read Slowly)
+### Explanation: Why Swapping Two Quantifiers Changes Everything
 
 Students often wonder why real analysis makes such a fuss over moving “$$\forall c$$” in front of or behind “$$\exists \delta$$.” Walk through these four steps slowly to see the geometry behind the symbols.
 
