@@ -61,3 +61,7 @@ yarn-error.log*
 .env.*.local
 
 .venv
+
+# Python bytecode
+__pycache__/
+*.pyc
