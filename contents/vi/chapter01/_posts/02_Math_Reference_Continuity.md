@@ -18,6 +18,8 @@ Trong xác suất, thống kê và học máy, tính liên tục là "hợp đ�
 
 ## Kiến thức cần nhớ: Tính liên tục, Liên tục đều và Lipschitz là gì?
 
+![Tính Liên tục và Giới hạn trong Giải tích Thống kê]({{ site.baseurl }}/img/course/ch01_02_continuity.svg)
+
 Ba khái niệm trong bài này tạo thành một **chiếc thang độ mượt tăng dần** — mỗi bậc chặt hơn cho ta những bảo đảm mạnh hơn trong thống kê và học máy:
 
 1. **Liên tục tại từng điểm (Pointwise Continuity):** Đầu vào thay đổi đủ nhỏ quanh điểm $$x_0$$ thì đầu ra thay đổi nhỏ tùy ý — nhưng mức "đủ nhỏ" $$\delta$$ có thể phải thu nhỏ thê thảm tùy theo vị trí $$x_0$$.

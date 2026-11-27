@@ -18,6 +18,8 @@ Bài học này đặt khung toán học rõ ràng cho học có giám sát: t�
 
 ## Kiến thức cần nhớ: Học có giám sát là gì và nghiên cứu những gì?
 
+![Học có Giám sát: Hồi quy (Liên tục) vs. Phân loại (Rời rạc)]({{ site.baseurl }}/img/course/ch01_04_supervised.svg)
+
 Từ góc nhìn xác suất – thống kê, **học có giám sát** giả định thế giới sinh ra các cặp dữ liệu $$(X, Y)$$ từ một phân phối ẩn chưa biết $$P(X, Y)$$, và ta cần học một hàm dự đoán $$\hat f(X)$$ từ mẫu hữu hạn $$n$$ điểm. Ngành này đứng trên **bốn trụ cột**:
 
 1. **Hồi quy vs. Phân loại:** Đầu ra $$Y$$ là số liên tục (giá nhà, nhiệt độ) → Hồi quy (thường dùng mất mát bình phương MSE); đầu ra $$Y$$ là nhãn rời rạc (thư rác/thường, bệnh/khỏe) → Phân loại (dùng cross-entropy hoặc 0–1 loss).

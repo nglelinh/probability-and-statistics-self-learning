@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 230" width="880" height="230">
+  <rect width="880" height="230" fill="#FFFFFF"/>
+  <text x="440" y="34" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#0F172A">Phân loại Bài toán Thống kê: Mô tả, Suy diễn & Dự báo</text>
+  <rect x="24" y="68" width="186" height="96" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="117" y="121" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#1E293B">Dữ liệu mẫu D</text>
+  <line x1="210" y1="116" x2="236" y2="116" stroke="#1D4ED8" stroke-width="2.5"/>
+  <polygon points="236,111 246,116 236,121" fill="#1D4ED8"/>
+  <rect x="246" y="68" width="186" height="96" rx="10" fill="#EFF6FF" stroke="#1D4ED8" stroke-width="2"/>
+  <text x="339" y="121" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#1E3A8A">Thống kê Mô tả</text>
+  <line x1="432" y1="116" x2="458" y2="116" stroke="#1D4ED8" stroke-width="2.5"/>
+  <polygon points="458,111 468,116 458,121" fill="#1D4ED8"/>
+  <rect x="468" y="68" width="186" height="96" rx="10" fill="#EFF6FF" stroke="#1D4ED8" stroke-width="2"/>
+  <text x="561" y="121" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#1E3A8A">Suy diễn Tham số θ</text>
+  <line x1="654" y1="116" x2="680" y2="116" stroke="#0F766E" stroke-width="2.5"/>
+  <polygon points="680,111 690,116 680,121" fill="#0F766E"/>
+  <rect x="690" y="68" width="166" height="96" rx="10" fill="#F0FDFA" stroke="#0F766E" stroke-width="2"/>
+  <text x="773" y="121" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#115E59">Dự báo & Ra quyết định</text>
+  <text x="440" y="204" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#64748B">Xác suất & Thống kê · Sơ đồ khái niệm</text>
+</svg>

@@ -130,10 +130,10 @@ Một ví dụ kinh điển khác minh họa vai trò của biến gây nhiễu:
 - **Kết luận sai:** Ăn kem gây ra đuối nước.
 - **Nguyên nhân thực sự:** **Nhiệt độ (Z)** là biến gây nhiễu. Khi trời nóng, người dân vừa ăn kem nhiều hơn vừa đi bơi nhiều hơn, từ đó làm tăng số vụ đuối nước.
 
-![Spurious Correlation Ice Cream](../img/spurious_correlation_ice_cream.png)
+![Spurious Correlation Ice Cream]({{ site.baseurl }}/img/course/spurious_correlation_ice_cream.svg)
 *Dữ liệu cho thấy tương quan dương mạnh (đường đỏ), nhưng không tồn tại quan hệ nhân quả trực tiếp.*
 
-![Ice Cream and Crime](../img/ice_cream_crime.jpg)
+![Ice Cream and Crime]({{ site.baseurl }}/img/course/ice_cream_crime.svg)
 *Sơ đồ minh họa biến ẩn (Nhiệt độ) làm tăng đồng thời cả hai yếu tố.*
 
 ```python

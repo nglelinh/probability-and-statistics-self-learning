@@ -18,6 +18,8 @@ Bài học này nối thẳng thống kê mô tả cổ điển với thực hà
 
 ## Kiến thức cần nhớ: Thống kê mô tả hiện đại ở quy mô dữ liệu lớn gồm những trụ cột nào?
 
+![EDA Tự động và Phát hiện Trôi dạt Dữ liệu (Data Drift)]({{ site.baseurl }}/img/course/ch02_04_modern_eda.svg)
+
 1. **Kiểm toán & Thiết kế tập dữ liệu (Data-Centric AI):** Dùng bảng chéo, phân phối nhóm con và kiểm tra trùng lặp để phát hiện thiên lệch và rò rỉ dữ liệu ngay trước khi huấn luyện mô hình.
 2. **Thống kê vững trước lỗi nhãn (Robust Summary Statistics):** Thay Mean/SD bằng Median, Trimmed Mean, hàm mất mát Huber và **MAD (Median Absolute Deviation)** để điểm nhiễu cực đoan không phá hỏng kết quả đo.
 3. **Giới hạn của trực quan hóa phi tuyến (t-SNE, UMAP):** Các thuật toán giảm chiều xuống 2D chỉ giữ *láng giềng cục bộ*, thường làm méo khoảng cách toàn cục và kích thước cụm — không bao giờ dùng hình UMAP để kết luận "cụm A xa cụm B gấp đôi cụm C".

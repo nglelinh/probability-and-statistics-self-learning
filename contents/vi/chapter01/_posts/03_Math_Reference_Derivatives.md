@@ -18,6 +18,8 @@ Cảm giác "độ dốc cục bộ" đó chính là **đạo hàm** và phiên 
 
 ## Kiến thức cần nhớ: Đạo hàm đa biến, Gradient, Jacobian và Hessian là gì?
 
+![Đạo hàm, Gradient và Tìm Cực trị Hàm Hợp lý]({{ site.baseurl }}/img/course/ch01_03_derivatives.svg)
+
 Khi chuyển từ hàm một biến $$f(x)$$ sang hàm mất mát nhiều triệu tham số $$L(\theta_1, \dots, \theta_d)$$, giải tích đa biến cung cấp đúng **bốn công cụ cốt lõi**:
 
 1. **Đạo hàm riêng & Vectơ Gradient ($$\nabla f$$):** Gom toàn bộ tốc độ thay đổi theo từng trục tọa độ thành một vectơ. Điểm kỳ diệu là $$\nabla f(x)$$ luôn chỉ đúng hướng làm $$f$$ **tăng nhanh nhất**, nên đi ngược hướng $$-\nabla f(x)$$ là cách xuống dốc nhanh nhất cục bộ.

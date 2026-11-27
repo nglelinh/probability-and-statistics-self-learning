@@ -36,7 +36,7 @@ Một biến ngẫu nhiên (random variable) $$X$$ là một hàm số ánh xạ
 $$X: \Omega \to \mathbb{R}$$
 </div>
 
-![Random Variable Mapping](../img/random_variable_mapping.png)
+![Random Variable Mapping]({{ site.baseurl }}/img/course/random_variable_mapping.svg)
 *Minh họa biến ngẫu nhiên như một hàm ánh xạ từ các kết quả (outcomes) trong không gian mẫu sang tập số thực.*
 
 Mặc dù có tên gọi là "biến", về mặt toán học, biến ngẫu nhiên thực chất là một **hàm số**. Ý nghĩa của nó là gán một giá trị số cụ thể cho mỗi kết quả của phép thử ngẫu nhiên.

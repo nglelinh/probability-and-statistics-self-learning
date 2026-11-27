@@ -18,6 +18,8 @@ Bài đọc tùy chọn này nối thẳng mô hình tuyến tính cổ điển 
 
 ## Kiến thức cần nhớ: Bốn bước tiến hóa từ OLS cổ điển sang Suy diễn Nhân quả hiện đại
 
+![Mô hình Tuyến tính Tổng quát (GLM) & Học máy Nhân quả]({{ site.baseurl }}/img/course/ch07_08_glm_causal.svg)
+
 Khi dữ liệu thực tế phá vỡ các giả định đẹp đẽ của OLS, thống kê hiện đại mở rộng theo bốn nhánh chính:
 
 1. **Mô hình Tuyến tính Tổng quát (GLM):** Thống nhất hồi quy tuyến tính (Gauss), hồi quy logistic (Bernoulli–Logit) và hồi quy đếm (Poisson–Log) dưới một khung duy nhất: phân phối thuộc họ mũ + hàm liên kết $$g(\mathbb{E}[Y\mid X]) = X\beta$$.

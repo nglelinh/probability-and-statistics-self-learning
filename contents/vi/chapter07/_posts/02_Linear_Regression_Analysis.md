@@ -19,6 +19,8 @@ Bài học này mở nắp ca-pô của **Hồi quy Tuyến tính Đa biến và
 
 ## Kiến thức cần nhớ: Ba góc nhìn thống nhất về Hồi quy Tuyến tính Đa biến
 
+![Hồi quy Tuyến tính OLS và Phân tích Phần dư]({{ site.baseurl }}/img/course/ch07_02_ols_regression.svg)
+
 Một người tốt nghiệp đại học nắm vững OLS khi nhìn thấy **ba góc nhìn hoàn toàn tương đương** của cùng một phương trình chuẩn $$\mathbf{X}^T\mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{X}^T\mathbf{y}$$:
 
 1. **Góc nhìn Giải tích (Tối ưu hóa):** Cực tiểu hóa hàm mất mát bình phương $$\|\mathbf{y} - \mathbf{X}\boldsymbol{\beta}\|_2^2$$ bằng cách lấy gradient theo vector $$\boldsymbol{\beta}$$ và đặt bằng $$\mathbf{0}$$. Vì hàm lồi bậc hai, điểm dừng chính là cực tiểu toàn cục duy nhất khi $$\mathbf{X}$$ đủ hạng cột.

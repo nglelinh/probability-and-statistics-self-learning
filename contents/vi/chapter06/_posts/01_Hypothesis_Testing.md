@@ -47,7 +47,7 @@ Nhiều người bấm nút chạy kiểm định trong Python nhưng lại di�
 
 Vào một buổi chiều hè ở Cambridge năm 1920, một nhóm nhà khoa học, trong đó có Ronald Fisher, đang uống trà. Một quý cô khẳng định bà có thể phân biệt được tách trà được rót trà trước hay rót sữa trước.
 
-![Lady Tasting Tea](../img/lady_tasting_tea.jpg)
+![Lady Tasting Tea]({{ site.baseurl }}/img/course/lady_tasting_tea.svg)
 *Minh họa câu chuyện quý cô nếm trà (Ảnh: Wikimedia Commons).*
 
 Fisher đã thiết kế một thí nghiệm có kiểm soát:
@@ -695,3 +695,12 @@ Cho 5 nhóm cần kiểm định so sánh từng cặp (tổng cộng 10 phép s
 Cài đặt kiểm định hoán vị cho bài toán so sánh hai mẫu:
 - So sánh kết quả với kiểm định t (t-test).
 - Thử nghiệm trên dữ liệu không tuân theo phân phối chuẩn.
+
+### Video ngắn: Thí nghiệm Quý bà Nếm trà & p-value vs. Bayes
+
+<div class="reel-video" style="text-align:center;margin:1.5rem 0;">
+<video controls playsinline preload="metadata" style="width:100%;max-width:360px;height:auto;aspect-ratio:9/16;border-radius:8px;background:#10121a;" src="{{ site.baseurl }}/public/videos/reels/hypothesis-testing_vi.mp4"></video>
+</div>
+
+Video dài khoảng 23 giây (có thuyết minh tiếng Việt): trực giác p-value = 1/70 của Fisher và sự khác biệt với xác suất hậu nghiệm Bayes P(H|D).
+

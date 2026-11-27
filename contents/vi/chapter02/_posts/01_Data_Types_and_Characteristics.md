@@ -14,6 +14,8 @@ Mọi công cụ thống kê — từ trung bình, trung vị, biểu đồ cộ
 
 ## Kiến thức cần nhớ: Thang đo dữ liệu (NOIR) là gì và nghiên cứu những gì?
 
+![Phân loại Dữ liệu: Định danh, Thứ tự, Khoảng & Tỷ lệ]({{ site.baseurl }}/img/course/ch02_01_data_types.svg)
+
 Trong thống kê mô tả, dữ liệu được tổ chức theo hai trục: **Định tính vs. Định lượng** (rời rạc/liên tục) và **4 thang đo kinh điển của Stevens (NOIR)** — mỗi nấc mở khóa thêm một nhóm phép toán hợp lệ:
 
 1. **Định danh (Nominal):** Chỉ phân loại nhãn không có thứ tự (màu mắt, tỉnh thành, mã sản phẩm) → chỉ hợp lệ phép **đếm tần suất và Mode**.

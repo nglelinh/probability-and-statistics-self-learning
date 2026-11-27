@@ -18,6 +18,8 @@ Bài học này đào sâu vào nền tảng đánh giá và kiểm chứng mô 
 
 ## Kiến thức cần nhớ: Bốn thước đo và giả định quyết định chất lượng mô hình OLS
 
+![Mở rộng Hồi quy: Biến giả, Tương tác & Đa cộng tuyến]({{ site.baseurl }}/img/course/ch07_03_ext_regression.svg)
+
 Để đánh giá một mô hình hồi quy đa biến một cách trưởng thành, hãy nắm chắc bốn trụ cột sau:
 
 1. **Tính tối ưu Gauss–Markov (BLUE):** Dưới 4 giả định tuyến tính, lấy mẫu ngẫu nhiên, không đa cộng tuyến hoàn toàn, và nhiễu đồng phương sai có kỳ vọng 0, OLS đạt phương sai nhỏ nhất trong mọi bộ ước lượng tuyến tính không chệch. Khi một giả định vỡ (ví dụ phương sai nhiễu thay đổi — heteroscedasticity), OLS vẫn *không chệch* nhưng không còn hiệu quả nhất và sai số chuẩn cổ điển bị sai lệch.

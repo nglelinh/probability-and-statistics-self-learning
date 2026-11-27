@@ -206,7 +206,7 @@ $$\hat{\theta}_n \xrightarrow{P} \theta \quad \text{as } n \to \infty$$
 
 Trong lớp các bộ ước lượng không chệch, bộ ước lượng có phương sai $$\text{Var}(\hat{\theta})$$ nhỏ nhất được gọi là hiệu quả nhất.
 
-![Bias vs Variance Targets](../img/bias_variance_targets.png)
+![Bias vs Variance Targets]({{ site.baseurl }}/img/course/bias_variance_targets.svg)
 *Minh họa độ chệch (Bias) và phương sai (Variance) qua hình ảnh bắn bia. Mục tiêu lý tưởng là "Low Bias, Low Variance" (góc trên bên trái).*
 
 ### Sự Đánh Đổi Giữa Độ Chệch và Phương Sai (Bias–Variance Trade-off)
@@ -510,3 +510,20 @@ Với X ~ N(μ, σ²), kiểm chứng rằng trung bình mẫu là bộ ước l
 Sinh dữ liệu từ mô hình hỗn hợp: 0.6 × N(0, 1) + 0.4 × N(5, 1).
 - Cài đặt thuật toán EM để ước lượng các tham số.
 - So sánh kết quả ước lượng với các tham số thực.
+
+## So sánh Tần suất (Frequentist / MLE) và Bayesian (MAP & Điều chuẩn)
+
+Từ tài liệu suy diễn thống kê trong Học máy (*Deep AI KhanhBlog* & *Introduction to Bayesian Statistics*):
+- **Ước lượng Hợp lý Tối đa (MLE — Tần suất):** Tìm tham số $\hat{\mathbf{w}}_{\text{MLE}} = \arg\max_{\mathbf{w}} \sum_{i=1}^N \log P(\mathbf{x}_i \mid \mathbf{w})$ chỉ dựa vào dữ liệu quan sát $\mathcal{D}$. Khi cỡ mẫu $N$ nhỏ, MLE dễ bị quá khớp (*overfitting*).
+- **Ước lượng Hậu nghiệm Tối đa (MAP — Bayesian):** Bổ sung phân phối tiên nghiệm $P(\mathbf{w})$:
+  $$\hat{\mathbf{w}}_{\text{MAP}} = \arg\max_{\mathbf{w}} \left[ \sum_{i=1}^N \log P(\mathbf{x}_i \mid \mathbf{w}) + \log P(\mathbf{w}) \right].$$
+  Thành phần $\log P(\mathbf{w})$ đóng vai trò chính xác như **số hạng điều chuẩn (regularization)** trong Học máy: tiên nghiệm chuẩn $\mathcal{N}(0, \tau^2 I)$ sinh ra **Ridge ($L_2$)**, còn tiên nghiệm Laplace sinh ra **Lasso ($L_1$)**!
+
+### Video ngắn: Frequentist MLE vs. Bayesian MAP
+
+<div class="reel-video" style="text-align:center;margin:1.5rem 0;">
+<video controls playsinline preload="metadata" style="width:100%;max-width:360px;height:auto;aspect-ratio:9/16;border-radius:8px;background:#10121a;" src="{{ site.baseurl }}/public/videos/reels/bayes-mle-map_vi.mp4"></video>
+</div>
+
+Video dài khoảng 21 giây (có thuyết minh tiếng Việt): cách phân phối tiên nghiệm trong MAP trở thành thành phần điều chuẩn Ridge (L₂) và Lasso (L₁).
+

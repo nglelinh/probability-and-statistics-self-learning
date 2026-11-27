@@ -18,6 +18,8 @@ Bài học này cho thấy những khái niệm sơ cấp của Chương 3 — x
 
 ## Kiến thức cần nhớ: Xác suất cơ bản bước vào AI hiện đại qua bốn cánh cửa nào?
 
+![Định lý Bayes trong Hệ thống Gợi ý và Chẩn đoán AI]({{ site.baseurl }}/img/course/ch03_02_modern_bayes.svg)
+
 1. **Hiệu chỉnh xác suất (Calibration — ECE & Brier Score):** Đo xem con số xác suất mô hình in ra có khớp với *tần suất thực tế* hay không — quan trọng trong y tế, tín dụng và xe tự lái.
 2. **Xác suất của LLM (Token Softmax vs. Độ tin cậy sự thật):** Xác suất softmax của LLM đo *độ hợp lý ngôn ngữ của token kế tiếp* theo ngữ cảnh, chứ **không** tự động là xác suất mệnh đề đó đúng sự thật ngoài đời.
 3. **Naive Bayes trong thực chiến:** Giả định độc lập có điều kiện $$P(x_1,\dots,x_d\mid y) = \prod P(x_j\mid y)$$ dù "ngây thơ" nhưng chạy siêu nhanh, chống overfit tốt trên văn bản chiều cao và là baseline khó đánh bại.

@@ -18,6 +18,8 @@ Bài đọc tùy chọn này cho thấy những khái niệm tưởng chừng ch
 
 ## Kiến thức cần nhớ: Bốn cây cầu nối ước lượng cổ điển với Học máy hiện đại
 
+![Ước lượng Tham số MLE & MAP trong Học máy Hiện đại]({{ site.baseurl }}/img/course/ch05_03_mle_map_ml.svg)
+
 Khi bước từ giáo trình thống kê sang kỹ thuật học máy (ML/AI), bốn khái niệm cốt lõi đổi tên nhưng giữ nguyên bản chất toán học:
 
 1. **Cross-Entropy & Dự đoán token tiếp theo = MLE ở quy mô tỷ tham số:** Huấn luyện bộ phân loại softmax hay mô hình ngôn ngữ tự hồi quy bằng cực tiểu hóa cross-entropy hoàn toàn tương đương với cực đại hóa hàm log-likelihood $$\sum \log p(x_i \mid \theta)$$. Tối ưu bằng SGD/Adam chỉ là phiên bản tính số của phương trình đạo hàm hợp lý bằng 0.

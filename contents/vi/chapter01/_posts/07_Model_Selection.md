@@ -18,6 +18,8 @@ Thay vì phải chạy kiểm định chéo tốn kém hàng chục lần, thố
 
 ## Kiến thức cần nhớ: Lựa chọn mô hình và các tiêu chí thông tin là gì?
 
+![Chọn Mô hình: Cân bằng Độ phức tạp và Tổng quát hóa]({{ site.baseurl }}/img/course/ch01_07_model_selection.svg)
+
 Các tiêu chí lựa chọn mô hình trong bài này đều mang chung cấu trúc $$\text{Điểm phạt} = \text{Sai số khớp} + \text{Án phạt độ phức tạp}$$, chia thành **bốn công cụ chính**:
 
 1. **AIC (Akaike Information Criterion — $$2k - 2\ln\hat L$$):** Xuất phát từ lý thuyết thông tin (phân kỳ KL), hướng tới mục tiêu **dự đoán tốt nhất trên dữ liệu mới** (tiệm cận tương đương LOOCV).

@@ -146,10 +146,10 @@ Năm 1936, tạp chí *Literary Digest* gửi 10 triệu phiếu thăm dò qua �
 
 **Bài học:** *Một mẫu lớn nhưng thiên kiến còn tệ hơn một mẫu nhỏ nhưng ngẫu nhiên (A large biased sample is worse than a small random sample).*
 
-![Literary Digest 1936 Map](../img/literary_digest_1936.svg)
+![Literary Digest 1936 Map]({{ site.baseurl }}/img/course/literary_digest_1936.svg)
 *Bản đồ kết quả bầu cử 1936: Roosevelt (xanh) thắng áp đảo Landon (đỏ), trái ngược với dự đoán của Literary Digest.*
 
-![Sampling Bias 1936](../img/sampling_bias_1936.png)
+![Sampling Bias 1936]({{ site.baseurl }}/img/course/sampling_bias_1936.svg)
 *So sánh dự đoán của Literary Digest và kết quả bầu cử thực tế.*
 
 ```python
@@ -572,3 +572,8 @@ Dùng mô phỏng để kiểm tra xem đẳng thức $$P(X \cap Y) \approx P(X)
 Tìm hiểu về nghịch lý Simpson và xây dựng một ví dụ mô phỏng minh họa hiện tượng này.
 
 Bài tùy chọn tiếp theo, [03-02-00 Ứng dụng và phát triển gần đây]({% multilang_post_url contents/chapter03/02_Modern_Applications %}), kết nối xác suất có điều kiện, định lý Bayes và tính độc lập với hiệu chỉnh xác suất (calibration), mô hình ngôn ngữ lớn và đồ thị nhân quả (2021–2023).
+
+## Góc nhìn Blitzstein–Hwang & Duda–Hart–Stork: Story Proofs và Quyết định Bayes
+
+- **Chứng minh bằng Câu chuyện (*Story Proofs* — Blitzstein & Hwang):** Thay vì khai triển đại số cồng kềnh, ta diễn giải một đẳng thức tổ hợp bằng hai cách đếm cùng một câu chuyện thực tế (chẳng hạn đồng nhất thức Vandermonde $\binom{m+n}{k} = \sum_{j=0}^k \binom{m}{j}\binom{n}{k-j}$ chính là số cách chọn đội gồm $k$ người từ nhóm $m$ nam và $n$ nữ).
+- **Lý thuyết Quyết định Bayes (*Pattern Classification*, Duda–Hart–Stork Chương 2):** Khi phân loại giữa các lớp trạng thái $\omega_i$ từ véc-tơ đặc trưng $x$, quy tắc Bayes chọn lớp cực đại hóa xác suất hậu nghiệm $P(\omega_i \mid x) \propto p(x \mid \omega_i) P(\omega_i)$ — và khi tổng quát hóa bằng ma trận tổn thất $\lambda(\alpha_i \mid \omega_j)$, nó tối thiểu hóa rủi ro kỳ vọng có điều kiện.

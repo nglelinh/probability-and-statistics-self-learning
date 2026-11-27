@@ -18,6 +18,8 @@ Một công ty thương mại điện tử muốn so sánh tốc độ chuyển 
 
 ## Kiến thức cần nhớ: Logic phân rã phương sai của ANOVA là gì?
 
+![Ý tưởng ANOVA: Phân rã Phương sai Tổng (SST = SSB + SSW)]({{ site.baseurl }}/img/course/ch08_01_anova_intro.svg)
+
 ANOVA là viên gạch nền tảng của thiết kế thí nghiệm hiện đại, kết nối ba khái niệm cốt lõi bạn đã học ở các chương trước:
 
 1. **Chặn lạm phát sai lầm Loại I (Family-Wise Error Rate):** So sánh $$k$$ nhóm theo từng cặp tạo ra $$\binom{k}{2} = \frac{k(k-1)}{2}$$ phép thử (với $$k=6$$ đã là 15 cặp, FWER vượt 53%!). ANOVA gom tất cả về một giả thuyết không duy nhất: $$H_0: \mu_1 = \mu_2 = \cdots = \mu_k$$.

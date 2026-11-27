@@ -18,6 +18,8 @@ Bài đọc tùy chọn này đưa khung kiểm định cổ điển của Chư�
 
 ## Kiến thức cần nhớ: Kiểm định giả thuyết thay đổi ra sao ở quy mô hàng nghìn thí nghiệm?
 
+![Kiểm định Giả thuyết Quy mô lớn & Bài toán Đa kiểm định]({{ site.baseurl }}/img/course/ch06_03_ab_testing.svg)
+
 Ở quy mô đại học, ta thường kiểm định 1 giả thuyết trên 1 cỡ mẫu $$n$$ ấn định trước. Khi bước vào khoa học dữ liệu và y sinh quy mô lớn, ba trụ cột mới xuất hiện:
 
 1. **Thử nghiệm A/B & Suy diễn hai mẫu quy mô sản phẩm:** Kiểm định chênh lệch tỷ lệ $$p_T - p_C$$ với hàng triệu lượt truy cập đòi hỏi tính lực kiểm định (power) trước khi chạy, theo dõi tỷ lệ phân bổ mẫu (SRM — Sample Ratio Mismatch), và tránh kết luận sớm trước khi hết chu kỳ tuần.

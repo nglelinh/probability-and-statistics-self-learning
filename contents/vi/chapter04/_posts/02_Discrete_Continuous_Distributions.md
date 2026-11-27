@@ -18,6 +18,8 @@ Tung một đồng xu có tỷ lệ thành công $$p$$ là Bernoulli; đếm s�
 
 ## Kiến thức cần nhớ: Gia phả các phân phối xác suất rời rạc và liên tục
 
+![Hệ sinh thái Phân phối Xác suất Rời rạc & Liên tục]({{ site.baseurl }}/img/course/ch04_02_distributions.svg)
+
 Thay vì học rời rạc từng công thức, hãy nhìn cả hai họ phân phối như hai nhánh cây có quan hệ họ hàng chặt chẽ:
 
 1. **Nhánh Rời rạc (Đếm số lần xảy ra):**

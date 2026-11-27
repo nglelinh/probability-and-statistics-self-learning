@@ -18,6 +18,8 @@ lesson_type: required
 
 ## Kiến thức cần nhớ: Cross-Validation và Resampling là gì, nghiên cứu những gì?
 
+![Kiểm chứng Chéo k-Fold (k-Fold Cross-Validation)]({{ site.baseurl }}/img/course/ch01_06_cross_val.svg)
+
 Các kỹ thuật lấy mẫu lại trong bài này xoay quanh **ba trụ cột thực hành** mà mọi nhà khoa học dữ liệu đều dùng hằng ngày:
 
 1. **K-Fold & Stratified K-Fold Cross-Validation:** Chia dữ liệu thành $$K$$ phần bằng nhau (thường $$K = 5$$ hoặc $$10$$), lần lượt giữ 1 phần làm tập kiểm định và huấn luyện trên $$K-1$$ phần còn lại. Với dữ liệu phân loại mất cân bằng, *Stratified K-Fold* giữ nguyên tỷ lệ nhãn ở từng fold.

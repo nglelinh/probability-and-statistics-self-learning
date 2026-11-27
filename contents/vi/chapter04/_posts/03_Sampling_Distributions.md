@@ -18,6 +18,8 @@ Câu trả lời nằm ở một trong những định lý kỳ diệu nhất c�
 
 ## Kiến thức cần nhớ: Phân phối lấy mẫu và Định lý Giới hạn Trung tâm là gì?
 
+![Phân phối Mẫu & Định lý Giới hạn Trung tâm (CLT)]({{ site.baseurl }}/img/course/ch04_03_clt.svg)
+
 Bài học này là chiếc cầu nối quyết định từ *Xác suất* (Chương 3–4) sang *Suy luận Thống kê* (Chương 5–6), đứng trên **ba trụ cột**:
 
 1. **Thống kê mẫu là một biến ngẫu nhiên:** Nếu bạn rút một mẫu 100 người khác, trung bình mẫu $$\bar X$$ sẽ ra một số hơi khác. Phân phối xác suất của $$\bar X$$ qua vô số lần lấy mẫu lặp lại gọi là **phân phối lấy mẫu**.
@@ -182,3 +184,12 @@ Kỹ thuật tái lấy mẫu (resampling) giúp ước lượng phân phối l�
 **Bài 1:** Mô phỏng Định lý Giới hạn Trung tâm với phân phối Chi-bình phương (Chi-squared) và quan sát tốc độ hội tụ khi tăng cỡ mẫu.
 
 **Bài 2:** Tính khoảng tin cậy 95% cho giá trị trung bình bằng hai phương pháp: CLT và Bootstrap, sau đó so sánh hai kết quả.
+
+### Video ngắn: Định lý Giới hạn Trung tâm (CLT) & Sai số chuẩn
+
+<div class="reel-video" style="text-align:center;margin:1.5rem 0;">
+<video controls playsinline preload="metadata" style="width:100%;max-width:360px;height:auto;aspect-ratio:9/16;border-radius:8px;background:#10121a;" src="{{ site.baseurl }}/public/videos/reels/clt-sampling_vi.mp4"></video>
+</div>
+
+Video dài khoảng 21 giây (có thuyết minh tiếng Việt): vì sao trung bình mẫu hội tụ về phân phối chuẩn và quy tắc tăng cỡ mẫu 4 lần để giảm sai số chuẩn một nửa.
+

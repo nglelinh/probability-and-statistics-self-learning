@@ -14,6 +14,8 @@ Câu chuyện ấy tóm gọn linh hồn của bài học này: một bảng d�
 
 ## Kiến thức cần nhớ: Các đặc trưng số trong thống kê mô tả đo những chiều kích nào?
 
+![Các Đại lượng Đặc trưng: Vị trí, Phân tán & Hình dáng]({{ site.baseurl }}/img/course/ch02_02_numerical_measures.svg)
+
 Để mô tả trọn vẹn một tập dữ liệu số mà không bị một con số đơn lẻ đánh lừa, thống kê mô tả luôn đi theo **bốn trụ cột bổ trợ nhau**:
 
 1. **Xu hướng trung tâm (Center):** *Dữ liệu tụ quanh đâu?* Gồm Trung bình (Mean — nhạy với ngoại lai), Trung vị (Median — vững chắc khi phân phối lệch) và Yếu vị (Mode — giá trị phổ biến nhất).

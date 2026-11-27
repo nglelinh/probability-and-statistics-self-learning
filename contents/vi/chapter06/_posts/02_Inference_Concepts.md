@@ -18,6 +18,8 @@ Chỉ cần hai dòng lệnh `LinearRegression().fit(X, y)` trong Python, máy t
 
 ## Kiến thức cần nhớ: Bốn mảnh ghép trong bảng suy diễn hồi quy tuyến tính
 
+![Sai lầm Loại I, Loại II và Lực Kiểm định (Power)]({{ site.baseurl }}/img/course/ch06_02_inference_concepts.svg)
+
 Khi đọc một báo cáo hồi quy tuyến tính cổ điển (OLS dưới giả định nhiễu chuẩn $$\epsilon \sim \mathcal{N}(0, \sigma^2 I)$$), mọi con số đều xoay quanh bốn trụ cột sau:
 
 1. **Ma trận hiệp phương sai của ước lượng hệ số:** Nhờ tính tuyến tính của $$\hat{\beta} = (X^T X)^{-1} X^T y$$, phân phối lấy mẫu của các hệ số là phân phối chuẩn đa biến với hiệp phương sai $$\sigma^2 (X^T X)^{-1}$$. Các phần tử chéo cho ta sai số chuẩn $$\mathrm{SE}(\hat{\beta}_j)$$ — thước đo độ rung lắc của từng hệ số (và khi các biến bị đa cộng tuyến, $$(X^TX)^{-1}_{jj}$$ phình to khiến $$\mathrm{SE}$$ tăng vọt!).
@@ -205,3 +207,9 @@ Khoảng dự báo rộng tới **$$\pm 8{,}53$$ triệu** — gần gấp **5 l
 **Bài 1:** Cài đặt hàm tính khoảng dự báo (prediction intervals) cho mô hình hồi quy tuyến tính và vẽ biểu đồ minh họa so sánh với khoảng tin cậy.
 
 **Bài 2:** Áp dụng hiệu chỉnh đa kiểm định (Bonferroni) khi thực hiện kiểm định đồng thời nhiều hệ số hồi quy.
+
+## Góc nhìn Bayesian trong Thử nghiệm Lâm sàng: Credible Interval vs. p-value
+
+Theo *Giới thiệu phương pháp phân tích Bayes* (Hội Y Học TP.HCM) và John Kruschke (*Doing Bayesian Data Analysis*):
+- **Kiểm định Tần suất (p-value):** Trả lời câu hỏi đảo ngược $P(D \mid H_0)$ — giả sử giả thuyết vô hiệu $H_0$ đúng, xác suất thấy dữ liệu cực đoan như $D$ là bao nhiêu.
+- **Suy diễn Bayes:** Trả lời trực tiếp câu hỏi mà bác sĩ hoặc kỹ sư muốn biết: $P(H \mid D) \propto P(D \mid H) P(H)$. Từ phân phối hậu nghiệm, ta đọc được **Khoảng Tin cậy Bayes (Credible Interval / HDI 95%)** — tức khoảng giá trị thực sự chứa tham số với xác suất 95% dựa trên dữ liệu và tri thức tiền định.

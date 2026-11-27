@@ -19,6 +19,8 @@ Bài học củng cố này tập trung vào góc nhìn hình học và trực q
 
 ## Kiến thức cần nhớ: Ba trụ cột hình học – xác suất của Phân loại Tuyến tính
 
+![Mở rộng Logistic: Phân loại Đa lớp Softmax & ROC-AUC]({{ site.baseurl }}/img/course/ch07_07_softmax.svg)
+
 Để hiểu thật chắc cơ chế phân loại của Hồi quy Logistic trên mặt phẳng 2D cũng như không gian $$p$$ chiều:
 
 1. **Siêu phẳng phân cách & Độ tin cậy theo khoảng cách:** Biểu thức $$z = \beta_0 + \boldsymbol{\beta}^T\mathbf{x}$$ tỷ lệ thuận với khoảng cách có dấu từ điểm $$\mathbf{x}$$ tới đường ranh giới $$z = 0$$. Điểm nằm ngay trên đường ranh giới có $$z = 0 \implies p = 0{,}5$$ (bất định tối đa); điểm càng xa đường ranh giới về hai phía, $$\lvert z\rvert$$ càng lớn và xác suất càng tiến sát về $$0$$ hoặc $$1$$.

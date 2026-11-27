@@ -18,6 +18,8 @@ Bài học này ghép nối mọi kỹ thuật rời rạc thành một **quy tr
 
 ## Kiến thức cần nhớ: Quy trình Machine Learning chuẩn khoa học gồm những trụ cột nào?
 
+![Quy trình Học máy Chuẩn (Train / Validation / Test)]({{ site.baseurl }}/img/course/ch01_05_ml_workflow.svg)
+
 Một quy trình ML nghiêm túc thực chất là một **thí nghiệm thống kê có kiểm soát**, đứng trên **bốn trụ cột kỷ luật**:
 
 1. **Khám phá & Làm sạch (EDA & Preprocessing):** Hiểu phân phối, phát hiện giá trị thiếu, ngoại lai và thiên lệch dữ liệu trước khi đụng đến bất kỳ mô hình nào.

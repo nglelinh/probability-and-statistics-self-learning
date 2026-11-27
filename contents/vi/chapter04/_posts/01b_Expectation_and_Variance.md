@@ -108,7 +108,7 @@ Trong trường hợp này, **trung vị (Median)** phản ánh sát thực tế
 *   **Trung bình (Mean):** Nhạy cảm với giá trị ngoại lai và dễ bị kéo về phía đuôi dài của phân phối.
 *   **Trung vị (Median):** Ít chịu ảnh hưởng bởi giá trị ngoại lai (có tính vững — robust).
 
-![Average Trap Income](../img/average_trap_income.png)
+![Average Trap Income]({{ site.baseurl }}/img/course/average_trap_income.svg)
 *Phân phối thu nhập lệch phải (right-skewed): giá trị trung bình bị kéo về phía các mức thu nhập cực lớn, trong khi trung vị phản ánh sát hơn thu nhập của đa số.*
 
 ```python

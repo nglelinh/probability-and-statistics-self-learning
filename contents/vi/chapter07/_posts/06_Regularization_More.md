@@ -19,6 +19,8 @@ Bài học mở rộng này đào sâu vào cơ chế toán học đứng sau **
 
 ## Kiến thức cần nhớ: Cơ chế ổn định hóa và chọn lọc trong không gian nhiều chiều
 
+![So sánh Ridge (L₂), Lasso (L₁) và Elastic Net]({{ site.baseurl }}/img/course/ch07_06_elastic_net.svg)
+
 Để làm chủ điều chuẩn khi số biến lớn ($$p \gg n$$) hoặc đa cộng tuyến nặng, hãy nắm ba trụ cột giải tích – đại số sau:
 
 1. **Dịch chuyển phổ giá trị riêng (Spectral Shift) trong Ridge:** Phân rã giá trị kỳ dị cho thấy OLS chia cho các giá trị riêng $$d_j^2$$ của $$\mathbf{X}^T\mathbf{X}$$ — khi $$d_j \approx 0$$, nhiễu bị khuếch đại ra vô cực. Ridge thay mẫu số thành $$d_j^2 + \lambda$$, chặn đứng mọi sự bùng nổ chỉ bằng một hằng số dương $$\lambda$$.

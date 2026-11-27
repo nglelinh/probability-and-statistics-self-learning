@@ -18,6 +18,8 @@ Bài đọc tùy chọn này khép lại Chương 08 bằng cách đưa ANOVA c�
 
 ## Kiến thức cần nhớ: Ba bước mở rộng ANOVA vào hệ thống thí nghiệm hiện đại
 
+![ANOVA Hiện đại trong Thiết kế Thực nghiệm (DOE) & ML]({{ site.baseurl }}/img/course/ch08_03_modern_anova.svg)
+
 Khi bước từ phòng thí nghiệm nông nghiệp của Fisher sang nền tảng thử nghiệm trực tuyến quy mô triệu người dùng, ANOVA mở rộng theo ba trụ cột sau:
 
 1. **Thử nghiệm A/B/n = ANOVA Một Yếu Tố + Lựa chọn Hậu kiểm phù hợp:** So sánh đồng thời 1 bản gốc với $$k-1$$ biến thể đòi hỏi kiểm soát sai lầm tổng thể. Tùy mục tiêu, ta chọn **Dunnett** (chỉ so các biến thể với bản gốc), **Tukey HSD** (so mọi cặp, kiểm soát FWER), hoặc **Benjamini–Hochberg** (khi số biến thể rất lớn và ưu tiên kiểm soát FDR).

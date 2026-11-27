@@ -18,6 +18,8 @@ Bài học này hoàn thiện trọn vẹn quy trình **ANOVA Một Yếu Tố (
 
 ## Kiến thức cần nhớ: Bốn mảnh ghép trong quy trình kiểm định ANOVA Một Yếu Tố
 
+![Kiểm định ANOVA Một nhân tố & Hậu kiểm Tukey HSD]({{ site.baseurl }}/img/course/ch08_02_one_way_anova.svg)
+
 Một quy trình phân tích ANOVA hoàn chỉnh trên thực tế luôn đi qua bốn cột mốc không thể đảo thứ tự:
 
 1. **Chuẩn hóa theo Bậc tự do (Degrees of Freedom):** Chia $$\mathrm{SS}_{\text{Between}}$$ cho $$df_1 = k - 1$$ được $$\mathrm{MS}_{\text{Between}}$$; chia $$\mathrm{SS}_{\text{Within}}$$ cho $$df_2 = N - k$$ được $$\mathrm{MS}_{\text{Within}}$$. Dưới $$H_0$$ (mọi nhóm cùng trung bình), cả hai đại lượng đều là ước lượng không chệch của cùng một phương sai nhiễu $$\sigma^2$$, nên tỷ số $$F = \mathrm{MS}_{\text{Between}} / \mathrm{MS}_{\text{Within}}$$ dao động quanh 1!

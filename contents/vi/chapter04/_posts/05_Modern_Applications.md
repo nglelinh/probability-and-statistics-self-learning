@@ -18,6 +18,8 @@ Bài đọc tùy chọn này nối thẳng các họ phân phối kinh điển c
 
 ## Kiến thức cần nhớ: Các họ phân phối xác suất đóng vai trò gì trong hệ thống hiện đại?
 
+![Phân phối Xác suất trong Mô hình Sinh (VAE & Diffusion)]({{ site.baseurl }}/img/course/ch04_05_modern_dist.svg)
+
 Với người đã tốt nghiệp đại học, giá trị lớn nhất của việc học các họ phân phối không nằm ở việc thuộc lòng bảng công thức, mà ở việc hiểu **ba trụ cột mô hình hóa** sau:
 
 1. **Họ phân phối đếm & Hiện tượng phân tán quá mức (Overdispersion):** Poisson là điểm khởi đầu lý tưởng cho các sự kiện độc lập xảy ra với tốc độ không đổi. Khi tốc độ thay đổi ngẫu nhiên theo ngữ cảnh (nhu cầu mua sắm, lưu lượng máy chủ), trộn Poisson với phân phối Gamma sinh ra **phân phối nhị thức âm (Negative Binomial)** — giữ nguyên kỳ vọng nhưng mở rộng phương sai theo tham số phân tán $$\alpha$$.

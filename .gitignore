@@ -65,3 +65,5 @@ yarn-error.log*
 # Python bytecode
 __pycache__/
 *.pyc
+manim/reels/media/
+**/__pycache__/

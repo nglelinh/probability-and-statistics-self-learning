@@ -18,6 +18,8 @@ Hãy tưởng tượng bạn xây mô hình dự đoán giá nhà bằng OLS và
 
 ## Kiến thức cần nhớ: Bốn góc nhìn giúp hiểu thấu Ridge, Lasso và Elastic Net
 
+![Điều chuẩn Lasso 2D (2D Fused Lasso)]({{ site.baseurl }}/img/chapter_img/chapter01/2d_fused_lasso.png)
+
 Tại sao chỉ đổi bình phương $$\beta_j^2$$ (L2) thành trị tuyệt đối $$\lvert\beta_j\rvert$$ (L1) lại tạo ra khác biệt một trời một vực về khả năng chọn lọc đặc trưng? Hãy nhìn qua bốn lăng kính:
 
 1. **Tối ưu có ràng buộc & Hình học hình cầu L2 vs. Hình thoi L1:** Thêm hình phạt $$\lambda\|\boldsymbol{\beta}\|_2^2$$ tương đương ràng buộc $$\boldsymbol{\beta}$$ nằm trong một **hình cầu tròn trơn**; đường đồng mức hình elip của hàm mất mát OLS thường tiếp xúc tại điểm có các tọa độ *khác 0*. Ngược lại, hình phạt $$\lambda\|\boldsymbol{\beta}\|_1$$ tương đương ràng buộc trong một **hình thoi có góc nhọn nằm đúng trên các trục tọa độ** — nơi các hệ số bị ép về **đúng bằng 0**!
@@ -402,3 +404,12 @@ Vẽ đường biến thiên hệ số theo $$\lambda$$ của Ridge và Lasso tr
 
 **Bài 3: Hồi quy dữ liệu chiều cao (High-Dimensional Regression)**
 Tạo tập dữ liệu với $$p = 100, n = 50$$ rồi so sánh hiệu suất giữa OLS (không có nghiệm duy nhất), Ridge, Lasso và Elastic Net.
+
+### Video ngắn: Đánh đổi Bias–Variance & Điều chuẩn L₁/L₂
+
+<div class="reel-video" style="text-align:center;margin:1.5rem 0;">
+<video controls playsinline preload="metadata" style="width:100%;max-width:360px;height:auto;aspect-ratio:9/16;border-radius:8px;background:#10121a;" src="{{ site.baseurl }}/public/videos/reels/bias-variance-tradeoff_vi.mp4"></video>
+</div>
+
+Video dài khoảng 17 giây (có thuyết minh tiếng Việt): phân rã sai số kỳ vọng thành Bias², Variance và vai trò của Ridge/Lasso.
+

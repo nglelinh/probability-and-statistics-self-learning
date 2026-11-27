@@ -18,6 +18,8 @@ Một ngân hàng muốn dự đoán xác suất một khách hàng sẽ vỡ n�
 
 ## Kiến thức cần nhớ: Bốn trụ cột toán học của Hồi quy Logistic
 
+![Hồi quy Logistic: Hàm Sigmoid và Tối ưu Log-Loss]({{ site.baseurl }}/img/course/ch07_05_logistic.svg)
+
 Để không bao giờ nhầm hồi quy logistic chỉ là "một hàm vẽ đường cong chữ S", hãy nắm vững bốn nền tảng sau:
 
 1. **Tỷ lệ cược (Odds) và Hàm liên kết Logit:** Nếu xác suất xảy ra sự kiện là $$p$$, thì **odds** là $$\frac{p}{1-p} \in (0, \infty)$$ và **log-odds (logit)** là $$\ln\frac{p}{1-p} \in (-\infty, +\infty)$$. Hồi quy logistic mô hình hóa tuyến tính chính log-odds này: $$\ln\frac{p}{1-p} = \mathbf{w}^T\mathbf{x}$$. Do đó mỗi hệ số $$\beta_j$$ có ý nghĩa diễn giải trực tiếp: tăng $$x_j$$ lên 1 đơn vị sẽ **nhân** odds lên $$e^{\beta_j}$$ lần (tỷ số odds — *odds ratio*).

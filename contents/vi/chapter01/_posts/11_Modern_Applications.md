@@ -18,6 +18,8 @@ Phần lớn các công thức khoảng tin cậy cổ điển đều bắt đ�
 
 ## Kiến thức cần nhớ: Thống kê tính toán hiện đại mở rộng Chương 1 theo ba hướng nào?
 
+![Thống kê Hiện đại trong Học máy và Khoa học Dữ liệu]({{ site.baseurl }}/img/course/ch01_11_modern_apps.svg)
+
 1. **Conformal Prediction (Dự đoán bảo giác — Không cần giả định phân phối):** Chỉ cần giả định dữ liệu *có thể hoán đổi* (exchangeable), phương pháp dùng một tập hiệu chuẩn (calibration set) tách riêng để đo phân vị của sai số và dựng khoảng dự đoán đạt độ phủ $$\ge 1 - \alpha$$ chính xác ngay cả với cỡ mẫu hữu hạn.
 2. **Mô phỏng & Bootstrap trong đánh giá LLM:** Thay vì tin một con số điểm benchmark duy nhất, các phòng thí nghiệm hiện đại dùng lấy mẫu nhiều lần và bootstrap để đo khoảng tin cậy khi so sánh hai mô hình ngôn ngữ.
 3. **Bản chất mục tiêu của Cross-Validation:** Kết quả gần đây (Bates, Hastie, Tibshirani 2024) làm rõ rằng CV ước lượng tốt *sai số trung bình trên các tập huấn luyện ngẫu nhiên*, chứ không nhất thiết sát với sai số riêng của *một* mô hình cố định vừa huấn luyện.

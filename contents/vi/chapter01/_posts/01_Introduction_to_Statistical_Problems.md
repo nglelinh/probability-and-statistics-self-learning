@@ -18,6 +18,8 @@ Câu đố kinh điển ấy hé lộ hai sự thật quan trọng nhất mở �
 
 ## Kiến thức cần nhớ: Thống kê tính toán là gì và nghiên cứu những gì?
 
+![Phân loại Bài toán Thống kê: Mô tả, Suy diễn & Dự báo]({{ site.baseurl }}/img/course/ch01_01_stat_problems.svg)
+
 Nếu bạn đã tốt nghiệp đại học và từng học qua xác suất cơ bản, bạn hẳn nhớ cảm giác ngồi tính tay tích phân hàm mật độ hay tra bảng $$z$$, bảng $$t$$. **Thống kê tính toán** không vứt bỏ lý thuyết đó, mà mở rộng nó bằng **ba trụ cột lớn**:
 
 1. **Thống kê giải tích (Analytical Statistics):** Dùng công thức đóng, định lý giới hạn (Luật số lớn, Định lý giới hạn trung tâm) để tìm đáp án chính xác dưới các giả định lý tưởng (như dữ liệu tuân theo phân phối chuẩn).

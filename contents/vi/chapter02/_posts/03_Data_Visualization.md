@@ -14,6 +14,8 @@ Bài học bất hủ ấy khẳng định: **đừng bao giờ tin các con s�
 
 ## Kiến thức cần nhớ: Trực quan hóa dữ liệu trong thống kê nghiên cứu những gì?
 
+![Trực quan hóa Dữ liệu Khám phá (EDA)]({{ site.baseurl }}/img/course/ch02_03_dataviz.svg)
+
 Chọn đúng biểu đồ là một quyết định toán học gắn liền với kiểu dữ liệu và câu hỏi phân tích, gồm **bốn trụ cột**:
 
 1. **Phân phối 1 biến (Distribution):** Histogram, KDE (mật độ trơn) và Boxplot — cho thấy đỉnh phân phối (một đỉnh hay hai đỉnh?), độ lệch và các điểm ngoại lai theo quy tắc $$1.5 \times \mathrm{IQR}$$.

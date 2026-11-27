@@ -38,7 +38,7 @@ $$P(L \leq \theta \leq U) = 0.95$$
 **Cách hiểu đúng:**
 Nếu ta lặp lại quá trình lấy mẫu 100 lần độc lập và tính 100 khoảng tin cậy 95% tương ứng, thì **khoảng 95 trong số 100 khoảng đó** sẽ chứa tham số thực $$\mu$$. Cách diễn giải phổ biến rằng "có 95% xác suất tham số thực nằm trong một khoảng cụ thể vừa tính được" là **không chính xác** theo trường phái tần suất, vì tham số $$\theta$$ là hằng số cố định (không phải biến ngẫu nhiên) và khoảng đã tính cũng đã cố định.
 
-![Confidence Interval Visualization](../img/confidence_interval_viz.png)
+![Confidence Interval Visualization]({{ site.baseurl }}/img/course/confidence_interval_viz.svg)
 *Minh họa: 20 mẫu thử được rút ra. Các đoạn thẳng màu xanh chứa giá trị thực (Mean = 100), còn đoạn màu đỏ không chứa. Với mức tin cậy 95%, phần lớn các khoảng thu được sẽ chứa giá trị thực.*
 
 ```python
